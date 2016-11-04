@@ -1,0 +1,281 @@
+\subsection{A Semantic Operator for AICs}
+Recall that in this paper, we only consider normal AICs, i.e., expressions $r$ of the form 
+\[ l_1\land \ldots \land l_n \aicrule \alpha\]
+where $\alpha = \actof(l_1)^D$ (after renumbering the $l_i$).
+For such a rule, we define $\nup(r) = \l_2\land \dots \land l_n$. The intuition is that $\nup(r)$ is the non-updatable part of the body of $r$. 
+% As soon as $\nup(r)$ holds, so should $l_1^D$. Indeed, if $l_1$ holds, then $\alpha$ dictates to change its value; if $l_1$ does not hold, the integrity constraint is satisfied. 
+
+Given a fixed database $\db$.
+The sets of update actions $\UU$ that are of interest to us are those such that \textbf{(i)} \UU is consistent and \textbf{(ii)} each action in \UU modifies \db. As argued by  \citet{corr/Cruz-Filipe16}, the set of such sets is isomorphic to $2^{\atoms}$. Hence, from now on, we identify such a set with a subset of $\atoms$ (the atoms whose value is changed by \UU). 
+If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\in \db$ and $\remove a$ if $a\not \in \db$. 
+Thus, in the above identification, a set  of atoms $\UU\subseteq \atoms$ is identified with the set 
+\[\{\change a\mid a \in \UU \}\]
+of update actions.
+
+Furthermore, we prefer smaller set of updates over lager sets: if a database can be fixed by just having $\{\add a\}$, the set $\{\add a, \add b\}$ is not of interest to us. 
+The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$. 
+In this lattice, smaller elements correspond to more preferred repairs. 
+
+
+Now consider a set of (normal) AICs \aics. 
+\citet{corr/Cruz-Filipe16} associated with such a set a semantic operator
+% \footnote{Technically, his definition slightly differs from ours in the sense that $\nup$ is replaced by \body in his definition. However, it is not hard to see that the definitions are equivalent. The current definition satisifies our purpose better.} 
+\begin{align*}\Op: &2^{\atoms}\to  2^{\atoms}: \UU \mapsto  \\ &\UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\end{align*}
+
+Cruz-Filipe argued that a semantics for AICs based on grounded fixpoints of \Op coincides with the intuitions on a large set of natural examples and that it solves problems with several previously existing semantics. 
+In the following subsection, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs. 
+
+
+% Now, with these definitions, we can rephrase the definition of the operator \Op.
+% \begin{lemma}
+%  Let \UU be an update set (viewed as a subset of \atoms) and $a$ an atom. 
+%  Then $a\in \Op(\UU)$ if and only if 
+%  \begin{itemize}
+%   \item either $a\in \UU$ and $\suppout_\UU(a) =\lfalse$ or 
+%   \item $a\not \in \UU$ and $\suppin_\UU(a)=\ltrue$. 
+%  \end{itemize}
+%  \end{lemma}
+
+%  \begin{figure}
+% 	\centering
+% 	\begin{tabular}{|cc|c|c|c|}
+% \cline{1-4}
+% \multicolumn{2}{|c|}{\multirow{2}{*}{{ $a\in \Op(\UU)$, given $a\in \UU$} }}&\multicolumn{2}{c|}{$\suppin_{\db,\aics,\UU}(a)$}\\
+% % \cline{3-4}
+% 
+% \multicolumn{2}{|c|}{}& \multicolumn{1}{c|}{$\ltrue$}  & \multicolumn{1}{c|}{$\lfalse$} \\
+% \hline
+% \multirow{2}{*}{$\suppin_{\db,\aics,\UU}(a)$}&\ltrue &	\ltrue & \lfalse 	\\
+% \cline{2-4}
+% &\lfalse	& \lfalse & \lfalse	\\
+% % \cline{2-4}
+% % &\lunkn 	& \lunkn& \lfalse & \lunkn 		\\
+% \cline{1-4}
+% 	\end{tabular}
+% \label{fig:KT}
+% \end{figure}
+
+\subsection{An Approximator for \Op}
+
+A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$. Alternatively, it is an element of $(2^\atoms)^C$ (as standard). 
+The set of all partial action sets is denoted $P$.
+
+
+
+\begin{definition}\label{def:support}
+DEFINE SUPPORT voor een actie $\add a$ of $\remove a$. Niet voor $a$. 
+\end{definition}
+
+
+\begin{definition}\label{def:support}
+Given a database \db and a set of AICs \aics, $u\in \atoms$, we define the \emph{support} of $u$ with respect to $\langle \db, \aics\rangle$ as 
+\begin{align*}
+ \supp_{\db,\aics}(u) &= \max_{\leq_t}\{\nup(r)^{\db}\mid r\in \aics \land \head(r) = u\}.
+\end{align*}
+\end{definition}
+
+Using this notion of support, we define two additional values. 
+
+\begin{definition}
+If $a\in \atoms$, $\UU$ is a set of update actions and $\langle \db, \aics\rangle$ as before, we define 
+\begin{align*}
+ \suppin_{\db,\aics,\UU}(a) &= \supp_{\UU(\db), \aics}(\change a)\\
+  \suppout_{\db,\aics,\UU}(a) &= \supp_{\UU(\db), \aics}((\change a)^D)
+\end{align*}
+\end{definition}
+As before, we often drop $\db$ and \aics from the notation if they are clear from the context. 
+The first, \suppin, is true if there is support for $a$ being in the intended update set. It is true if there is at least one rule $r$ with $\change a$ as head such that $\nup(r)$ holds after updating \db with \UU. The second value gives the support for removing $a$ from the update set. 
+
+
+
+
+\begin{definition}
+ We extend $\supp$, $\suppin$ and $\suppout$ straightforwardly to the partial setting by replacing truth evaluation of a formula (in particular the formula $\nup$) by three-valued truth evaluation based on Kleene's truth tables \cite{Kleene38}.
+%  
+ \bart{Better: define it immediately in the three-valued setting. Two-vallued is psecial case}
+\end{definition}
+
+\begin{definition}
+
+Given \db and \aics. We define an operator $\Ap: P\to P$, given by the following truth tables:
+
+% \begin{figure}
+	\centering
+% % \begin{minipage}{0.3\linewidth}
+	\begin{tabular}{|cc|c|}
+\cline{1-3}
+\multicolumn{2}{|c|}{}&\multicolumn{1}{c|}{ $\Ap(\UUU)(a)$ if $\UUU(a)=\ltrue$}\\
+% \cline{3-5}
+\hline
+
+\multirow{3}{*}{$\suppout_\UUU(a)$}&\ltrue &	\lfalse	\\
+\cline{2-3}
+&\lunkn 	& \lunkn		\\
+\cline{2-3}
+&\lfalse	& \ltrue		\\
+\cline{1-3}
+	\end{tabular}\\
+% \end{minipage}
+
+\quad\\ 
+	\begin{tabular}{|cc|c|}
+\cline{1-3}
+\multicolumn{2}{|c|}{}&\multicolumn{1}{c|}{ $\Ap(\UUU)(a)$ if $\UUU(a)=\lfalse$}\\
+% \cline{3-5}
+\hline
+
+\multirow{3}{*}{$\suppin_\UUU(a)$}&\ltrue &	\ltrue	\\
+\cline{2-3}
+&\lunkn 	& \lunkn		\\
+\cline{2-3}
+&\lfalse	& \lfalse		\\
+\cline{1-3}	\end{tabular}
+
+	\quad\\ 
+
+	
+% \begin{minipage}{0.3\linewidth}
+	\begin{tabular}{|cc|c|c|c|}
+\cline{1-5}
+\multicolumn{2}{|c|}{\multirow{2}{*}{{ $\Ap(\UUU)(a)$ if $\UUU(a)=\lunkn$} }}&\multicolumn{3}{c|}{$\suppout_\UUU(a)$}\\
+% \cline{3-5}
+
+\multicolumn{2}{|c|}{}& \ltrue & \lunkn & \lfalse \\
+\hline
+\multirow{3}{*}{$\suppin_\UUU(a)$}&\ltrue &	\lunkn & \lunkn & \ltrue	\\
+\cline{2-5}
+&\lunkn	& \lunkn & \lunkn & \lunkn		\\
+\cline{2-5}
+&\lfalse 	& \lfalse& \lunkn & \lunkn 		\\
+\cline{1-5}
+	\end{tabular}
+
+ 
+\end{definition}
+
+The above definitions is motivated as follows. We intend \Ap to be an approximator of \Op. One of the requirements of an approximator is that it agrees with \Op whenever \UUU is two-valued. This explains the exact values (\ltrue and \lfalse) in the the first two tables. 
+A second requirement is that an approximator is \leqp-monotone. 
+This explains the $\lunkn$ values in the first two tables. Indeed, for instance for the first table, if $\UUU(a)=\ltrue$ and $\suppout_\UUU(a)=\lunkn$, this means that there is at least one rule with $r$ with $\nup(r)^\UUU=\lunkn$. Without a priori knowledge of the structures of the rules, in such a situation it is still possible to obtain $\UUU'\geqp\UUU$ and $\UUU''\geqp \UUU$ such that $\nup(r)^{\UUU'}=\lfalse$ and $\nup(r)^{\UUU''}=\ltrue$. As such, in order to have \leqp-monotonicity, we must have that $\Ap(\UUU)\leqp\ltrue$ and $\Ap(\UUU)\leqp \lfalse$, hence $\Ap(\UUU)=\lunkn$.
+
+Similar arguments also explain all the $\lunkn$ values found in the third table. 
+To explain the exact values in the last table, we consider two cases. 
+In both cases $\UUU(a)=\lunkn$, i.e., we have no prior knowledge of whether to update $a$ in the database or not. In the first case $\suppin_\UUU(a)=\ltrue$ and $\suppout_\UUU(a)=\lfalse$. This means that $\UUU$ contains enough information to decide that there is a rule that will require $\change a$ \emph{and} that there will no rule that requires $(\change a)^D$ in any more precise update set. 
+In such a situation, we have sufficient information to conclude that $\change a$ must be in the intended update set. 
+The other case is similar. 
+
+\begin{proposition}
+ \Ap is an approximator of \Op.
+\end{proposition}
+
+Thus, $\Ap$ defines a family of semantics for repairs: (partial) $\Ap$-stable repairs, the $\Ap$-well-founded repair, the $\Ap$-Kripke-Kleene repair, supported repairs, \Ap-grounded (partial) repair.
+Furthermore, all these semantics are nicely invariant under shifting. 
+\begin{proposition}
+ \Ap, and hence also \Op, is invariant under shifting.
+\end{proposition}
+
+\begin{example}
+ Consider the following set \aics of AICs:
+\begin{align*}
+ \lnot a \aicrule \add a\\
+ a \land \lnot b \aicrule \add b\\
+ \lnot a \land \lnot b \land \lnot c \aicrule \add c\\
+ a \land c \land b \aicrule \remove b
+\end{align*} with $\db = \emptyset$.
+Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
+\[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
+Here, we see that 
+\begin{align*}
+ \suppin_{\UUU_0}(a) &= \ltrue, & \suppout_{\UUU_0}(a) &=\lfalse \\
+ \suppin_{\UUU_0}(b) &= \lunkn, & \suppout_{\UUU_0}(b) &=\lunkn \\
+ \suppin_{\UUU_0}(c) &= \lunkn, & \suppout_{\UUU_0}(c) &=\lfalse 
+\end{align*}
+Hence, 
+\[\UUU_1 = \Ap(\UUU_0): a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lunkn\]
+is a refinement of $\UUU_0$. 
+Now, it can be verified that $\UUU_1$ is a fixpoint of $\Ap$. This is the Kripke-Kleene fixpoint. It is a partial repair set and provides the information that $a$ must be repaired, but it uncertain about $b$ and $c$. 
+
+A well-founded induction continues by unfoundedness refinement. 
+It can be verified that 
+\[\UUU_2 = a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lfalse\]
+is an unfoundedness refinement of $\UUU_1$.
+This follows easily from the fact that 
+\[\UUU_3 = \Ap(\UUU_2)= a\mapsto \ltrue, b\mapsto \ltrue, c\mapsto\lfalse.\]
+Hence $\UUU_3$ is an application refinement of $\UUU_2$. Since this is an exact point, it is the \Ap-well-founded fixpoint of \Op. It is clearly the intended repair in this example.
+
+Note that in this example, unfoundedness refinements take care of minimisations of repairs.  
+\end{example}
+
+\begin{example}
+ Consider the following set \aics of AICs:
+\begin{align*}
+ a \land \lnot b&\aicrule \add b\\
+ \lnot a \land b &\aicrule \add a \\
+ \lnot a \land \lnot b \land \lnot c &\aicrule \add c
+ \end{align*} with $\db = \emptyset$.
+
+Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
+\[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
+Here, we see that 
+\begin{align*}
+ \suppin_{\UUU_0}(a) &= \lunkn, & \suppout_{\UUU_0}(a) &=\lfalse \\
+ \suppin_{\UUU_0}(b) &= \lunkn, & \suppout_{\UUU_0}(b) &=\lfalse \\
+ \suppin_{\UUU_0}(c) &= \lunkn, & \suppout_{\UUU_0}(c) &=\lfalse 
+\end{align*}
+Hence, $\Ap(\UUU_0)=\UUU_0$ and $\UUU_0$ is the \Ap-Kripke-Kleene fixpoint. 
+A well-founded induction can continue with unfoundedness refinements. Indeed, consider 
+\[\UUU_1: a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto\lunkn.\]
+Since 
+\[\Ap(\UUU_1) = a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue,\] it holds that $\UUU_1$ is an unfoundedness refinement of $\UUU_2$. 
+Finally, we can conclude that $\UUU_2:=\Ap(\UUU_1)$ is the \Ap-well-founded fixpoint. This corresponds to the intended repair. 
+\end{example}
+
+As can be expected, not every set of AICs has a two-valued well-founded repair. That would simply be too much to ask. It would mean that for every set of AICs we can unambiguously define a single repair. The following example illustrates that this is indeed not always the case. It also illustrates that (for this specific example), \Ap-stable repairs provide a solution that corresponds to the intuitions. 
+
+\begin{example}
+ Consider the following set \aics of AICs:
+\begin{align*}
+ \lnot a \land \lnot b&\aicrule \add a\\
+ \lnot a \land \lnot b&\aicrule \add b\\
+ a \land \lnot c &\aicrule \add c 
+ \end{align*} with $\db = \emptyset$.
+ 
+ Intuitively, \aics has two ``good'' repairs. The first two rules state that either $a$ or $b$ should be added in order to ``fix'' the violated constraint $\lnot (\lnot a \land \lnot b)$. 
+ Depending on that choice, also $c$ might have to be added to the repair. The two intended repairs are thus $\{\add a,\add c\}$ and $\{\add b\}$. 
+ Let us investigate what the different AFT-style semantics give in this case. 
+ 
+ Consider 
+\[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
+
+Here, it holds that 
+\begin{align*}
+ \suppin_{\UUU_0}(a) &= \lunkn, & \suppout_{\UUU_0}(a) &=\lfalse \\
+ \suppin_{\UUU_0}(b) &= \lunkn, & \suppout_{\UUU_0}(b) &=\lfalse \\
+ \suppin_{\UUU_0}(c) &= \lunkn, & \suppout_{\UUU_0}(c) &=\lfalse 
+\end{align*}
+Hence, $\Ap(\UUU_0) = \UUU_0$ and $\UUU_0$ is the \Ap-Kripke-Kleene fixpoint. 
+Furthermore, we claim that there are no unfoundedness refinements of $\UUU_0$ and hence that $\UUU_0$ is also the \Ap-well-founded fixpoint. To see that our claim indeed holds, notice that any unfoundedness refinement of $\UUU_0$ should consist of making a subset of $U$ of $\{a,b,c\}$ false, in such a way that for each $u\in U$, $\Ap(\UUU_0[U: \lfalse])(u)=\lfalse$. 
+Assume $a\in U$. In order for $\Ap(\UUU_0[U: \lfalse])(a)$ to be false $b$ must be $\ltrue$ in $\UUU_0[U: \lfalse]$ (otherwise the body of the rule defining $\add a$ is unknown or true). That is not possible, hence $a\not \in U$. From a similar argument, we find that $b\not \in U$ and $c\not \in U$. 
+Trivially, the two intended repairs are more precise than the well-founded fixpoint. 
+
+Now, let us check whether $\UU := \{\add a, \add c\}$ is a stable fixpoint. 
+For this, we need to verify if 
+\[\UU =\lfp(\Ap(\cdot,\UU)_1).\]
+Define $\UU_0=\emptyset$. Then 
+\[(\UU_0,\UU) = a \mapsto \lunkn, b\mapsto \lfalse, c\mapsto \lunkn.\]
+Hence 
+\[\Ap(\UU_0,\UU) = a \mapsto \ltrue, b\mapsto \lunkn, c \mapsto \lunkn\]
+and 
+\[\UU_1 := \Ap(\UU_0,\UU)_1 = \{a\}.\]
+Similarly, 
+\[(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \lunkn.\]
+Hence 
+\[\Ap(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \false, c \mapsto \lunkn\]
+and 
+\[\UU_2 := \Ap(\UU_1,\UU)_1 = \UU.\]
+Furthermore, $\Ap(\UU_2,\UU) = \UU_2=\UU$, hence  we find that indeed, \UU is an \Ap-stable fixpoint. 
+The case for $\{\add b\}$ is similar. 
+
+It can also be verified that there are no other $\Ap$-stable fixpoints. Due to minimality, no other could contain $b$, hence they must be subsets of $\{a,c\}$. Again, due to minimality, the only such subset is \UU. 
+
+\end{example}
+Hence, in the above example, \Ap-stable repairs capture the intended semantics. 

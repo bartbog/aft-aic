@@ -1,0 +1,210 @@
+\subsection{Active Integrity Constraints}
+We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A literal is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
+The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$.
+
+An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
+Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$ from a database. Formally $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
+A set of update actions $\UU$ is \emph{consistent} if it does not contain an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
+Following \cite{corr/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
+\[\UU_1 \biguplus \UU_2 = (\UU_1 \cup \{\alpha \in \UU_2 \mid \alpha^D\not \in \UU_1) \setminus \{\alpha\in \UU_1 \mid \alpha^D\in \UU_2\}.\]
+This operation has the property that if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
+\[(\UU_1\biguplus \UU_2(\db) = \UU_2(\UU_1(\db)).\]
+
+Literals and update actions are related by natural mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$. 
+
+\begin{definition}
+ An \emph{active integrity constraint} (AIC) is a rule $r$ of the form
+ \todo{replace $\mid$ by $\lor$?}
+  \begin{equation} l_1\land \dots\land l_n\aicrule \alpha_1\mid\dots \mid \alpha_k \label{eq:aic}\end{equation}
+  such that $\litof(\alpha_i^D) \in \{l_1,\dots,\l_n\}$ for each $i$.
+  
+  We call $l_1\land \dots \land l_n$ the \emph{body} of $r$ and refer to it as $\body(r)$; $\alpha_1\mid\dots \mid \alpha_k$ is the head of $r$ and referred to as $\head (r)$.
+\end{definition}
+
+
+The informal reading of the above rule is ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one of the $\alpha_i$.''
+A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. The intuition is that atoms can only be changed if there is some rule that allows it. 
+
+
+An AIC is \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
+\[\{l_1\land \dots\land l_n\aicrule \alpha_i\mid 1\leq i\leq k\}.\]
+It is clear from the informal explanation above that the expectation is that normalization preserves semantics. However, not for all semantics defined for AICs this is the case (see, e.g., \cite{}). In the current paper, we assume \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed. 
+
+\begin{definition}
+ A set of update actions \UU is a \emph{weak repair} for \db and a set \aics of AICs (shortly, for $\fulldb$) if:
+ \begin{itemize}
+  \item every action in \UU changes \db, and 
+  \item $\UU(\db)\not\models \body(r)$ for each $r\in\aics$.
+ \end{itemize}
+A $\subseteq$-minimal weak repair is called a \emph{repair}.
+\end{definition}
+
+(Weak) repairs do not take the head of AICs into account. They allow arbitrary changes to the database. Several other semantics (founded (weak) repairs \cite{}, justified (weak) repairs \cite{}, well-founded (weak) repairs \cite{}, grounded repairs \cite{}) for AICs have been defined with the intention to only make changes explicitly allowed by one of the AICs. 
+
+% \begin{example}
+%  \bart{The definition of (weak) repairs is strange:}
+%  Consider $\db=\emptyset$ and $\eta = \{\lnot a\land \lnot b\aicrule \add a\}$. 
+%  In that case, both $U_1=\{\add a\}$ and $U_2=\{\add b\}$ are repairs of \db. 
+%  I.e., (weak) repairs only consider the ``constraint'' part of an AIC, not the ``active'' part.
+%  
+%  NOTE: that is exactly what founded/justified/well-founded/grounded/... repairs serve for. 
+% \end{example}
+
+
+\begin{definition}
+ A set of update actions \UU is \emph{founded} with respect to $\fulldb$ if, for each $\alpha \in \UU$, there is a rule  $r\in \aics$ with $\alpha\in\head(r)$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus\{\alpha\}$. A \emph{founded (weak) repair} is a (weak) repair that is founded.
+\end{definition}
+
+\begin{definition}
+ A (weak) repair \UU for \fulldb is \emph{well-founded} iff there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
+\end{definition}
+
+% \bart{Next one needed?}
+% \begin{definition}
+%  Let $\aics_1$ and $\aics_2$ be two sets of AICs over \atoms. We say that 
+%  \begin{itemize}
+%   \item $\aics_1$ and $\aics_2$ are \emph{strongly independent}, $\aics_1 \strongind \aics_2$, if for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\body(r_1)$ and $\body(r_2)$ contain no common or dual literals. 
+%   \item $\aics_1$ and $\aics_2$ are \emph{independent}, $\aics_1 \ind \aics_2$, if for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_i))$ and $\body(r_{3-i})$ contain no common or dual literals for $i=1,2$. 
+%   \item $\aics_1$ \emph{precedes} $\aics_2$, $\aics_1 \prec \aics_2$, if, for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_2))$ and $\body(r_1)$ contain no common or dual literals, but not conversely. 
+%  \end{itemize}
+% \end{definition}
+% \bart{the ``but not conversely'' in this definition makes it a strict relation. That is somewhat unnatural to me. I would give the non-strict definition. All results remain to hold and precedence becomes a generalisation of ``independent''. This is only a minor point.}
+
+\todo{define the ``shifting property''?}
+
+\subsection{Lattices, Operators and Fixpoints}
+A \emph{partially ordered set (poset)} $\langle L,\leq\rangle$ is a set $L$ equipped with a partial order $\leq$, i.e., a reflexive, antisymmetric, transitive relation. 
+As usual, we write $x<y$ as abbreviation for $x\leq y \land x\neq y$.
+If $S$ is a subset of $L$, then $x$ is an \emph{upper bound}, respectively a \emph{lower bound} of $S$ if for every $s\in S$, it holds that $s\leq x$ respectively $x\leq s$. 
+An element $x$ is a \emph{least upper bound}, respectively \emph{greatest lower bound} of $S$ if it is an upper bound that is smaller than every other upper bound, respectively a lower bound that is greater than every other lower bound. 
+If $S$ has a  least upper bound, respectively a greatest lower bound, we denote it $\lub(S)$, respectively $\glb(S)$.
+As is custom, we  sometimes call a greatest lower bound a \emph{meet}, and a least upper bound a \emph{join} and use the related notations $\bigand S = \glb(S)$, $x\land y=\glb(\{x,y\})$, $\bigor S = \lub(S)$ and $x\lor y=\lub(\{x,y\})$.
+% The relation $\leq$ is a \emph{total order} if for every $x,y\in L$, $x\leq y$ or $y\leq x$. 
+% A \emph{chain} is a subset $S$ of $L$ such that $\leq$ is a total order in $S$. We call $\langle L,\leq\rangle$ \emph{chain complete} if each of its chains has a least upper bound and a greatest lower bound. 
+ We call $\langle L,\leq\rangle$ a \emph{bounded lattice}  if every finite subset of $L$ has a least upper bound and a greatest lower bound. 
+ We call $\langle L,\leq\rangle$ a \emph{complete lattice}  if every subset of $L$ has a least upper bound and a greatest lower bound. 
+%  A complete lattice is always chain complete.
+% A chain complete poset has a least element $\bot$. 
+A complete lattice has both a least element $\bot$ and a greatest element $\top$. 
+
+A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other, a bounded lattice is \emph{complemented} if every element $x\in L$ has a \emph{complement}: an element $\lnot x \in L$ satisfying $x\land \lnot x  = \bot$ and $x\lor \lnot x =\top$.
+A \emph{Boolean lattice} is a distributive complemented lattice. 
+In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x\land \lnot y)$.
+
+
+
+An operator $O:L\to L$ is \emph{monotone} if $x\leq y$ implies that $O(x)\leq O(y)$ and \emph{anti-monotone} if $x\leq y$ implies that $O(y)\leq O(x)$. An element $x\in L$ is a \emph{prefixpoint}, a \emph{fixpoint}, a \emph{postfixpoint} of $O$ if $O(x)\leq x$, respectively $O(x)=x$, $x\leq O(x)$. 
+Every monotone operator $O$ in a %chain complete poset 
+complete lattice has a least fixpoint, denoted $\lfp(O)$, which is also $O$'s least prefixpoint and the limit (the least upper bound) of the increasing sequence $(x_i)_{i\geq 0}$ defined by
+\begin{itemize}
+	\item $x_0=\bot$,
+	\item $x_{i+1}=O(x_i)$, for successor ordinals $i+1$,
+	\item $x_\lambda=\lub(\{x_i\mid i<\lambda\})$, for limit ordinals $\lambda$.
+\end{itemize}
+
+
+\mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if for each $v\in L$ such that $O(v\land
+  x)\leq v$, it holds that $x\leq v$.   They called a point $x\in L$ \emph{strictly grounded} for $O$ if there is no $v\in L$ such that $v<x$ and $O(v)\land x \leq v$.
+They explained the intuition underlying these concepts under the assumption that the elements of $L$ are sets of ``facts'' of some kind and the $\leq$ relation is the subset relation between such sets:
+in this case, a point $x$ is grounded if it contains only facts that are sanctioned by the operator $O$, 
+in the sense that if we remove them from $x$, then the operator will add at least one of them again. 
+% They also called a point $x\in L$ \emph{
+They showed that for Boolean lattices, the notions of \emph{groundedness} and \emph{strict groundedness} coincide. 
+In this text, we are only concerned with Boolean lattices and hence freely switch between the two definitions. 
+
+
+
+\subsection{Approximation Fixpoint Theory}
+
+
+Given a lattice $L$, approximation fixpoint theory makes use of the bilattice 
+$L^2$.  We define two \emph{projection} functions for pairs as usual:
+$(x,y)_1=x$ and $(x,y)_2=y$.  Pairs $(x,y)\in L^2$ are used to
+approximate all elements in the interval $[x,y] = \{z\mid x\leq
+z\wedge z\leq y\}$. We call $(x,y)\in L^2$ \emph{consistent} if $x\leq
+y$, that is, if $[x,y]$ is non-empty. We use $L^c$ to denote the set
+of consistent elements. Elements $(x,x) \in L^c$ are called
+\emph{exact}; they constitute the embedding of $L$ in $L^2$.  We sometimes abuse notation and use the tuple $(x,y)$
+and the interval $[x,y]$ interchangeably.  The \emph{precision
+  ordering} on $L^2$ is defined as $(x,y) \leqp (u,v)$ if $x\leq u$
+and $v\leq y$. In case $(u,v)$ is consistent, this means that $(x,y)$
+approximates all elements approximated by $(u,v)$, or in other words
+that $[u,v]\subseteq [x,y]$.  If $L$ is a complete lattice, then
+$\langle L^2,\leqp\rangle$ is also a complete lattice.
+  
+% \nomenclature[leqp]{$\leqp$}{The precision ordering on $L^2$}
+% \nomenclature[A]{$A$}{An approximator of $O$}
+
+
+AFT studies fixpoints of lattice operators $O:L\ra L$ through operators approximating $O$.
+ An operator $A: L^2\to L^2$  is an \emph{approximator} of $O$ if it is \leqp-monotone,  and has the property that for all $x$, $O(x)\in A(x,x)$. %[x',y']$, where $(x',y')=A{x,x}$.
+Approximators are
+internal in $L^c$ (i.e., map $L^c$ into $L^c$).
+As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$. %  DMT \citeyear{DeneckerMT00}\cite{lpnmr/DeneckerV07}.  
+\cite{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
+
+AFT studies fixpoints of $O$ using fixpoints of $A$. 
+ \begin{itemize}
+  \item The \emph{$A$-Kripke-Kleene fixpoint} is the $\leqp$-least fixpoint of $A$ and has the property that it approximates all fixpoints of $O$. 
+\item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:x\mapsto A(x,y)_1$ and analogously for $A(x,\cdot)_2$. 
+\item The \emph{$A$-well-founded fixpoint} is the least precise partial $A$-stable fixpoint. 
+\item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent with the condition that $x=\lfp(A(\cdot, x)_1)$.  
+ \end{itemize}
+
+% % 
+% 
+% DEFINITIE VAN 4-WAARDIGE STABLE AND DE WELL-FOUNDED FIXPOINT? Pairs $(x,y)$ such that $x=\lfp(A(\cdot,y)_1$ and $y=\lfp(A(x,\cdot)_2$. The $A$-well-founded fixpoint is the least precise 4-valued $A$-stable fixpoint. 
+% 
+The $A$-Kripke-Kleene fixpoint of $O$ can be constructed as the limit of any monotone induction of $A$. 
+For the $A$-well-founded fixpoint, a similar constructive characterisation has been worked out by \citet{lpnmr/DeneckerV07}:
+% This concept is based on the following intuitions.
+%  A well-founded induction of $A$ is a process that uses $A$ to derive more and more information (i.e., to grow in \leqp). 
+%  At the same time, a well-founded induction tries to minimise the upper bounds $(x,y)_2$: if making the upper bound smaller can be done while guaranteeing that 
+ 
+
+\begin{definition}\label{002:def:refinement}
+An \emph{$A$-refinement} of $(x,y)$ is a pair $(x',y')\in L^2$ satisfying one of the following two conditions:
+\begin{enumerate}
+	\item $(x,y)\leqp(x',y')\leqp A(x,y)$, or \label{first}
+	\item $x'=x$ and  $A(x,y')_2\leq y'\leq y$. \label{second}
+\end{enumerate}
+An $A$-refinement is \emph{strict} if $(x,y)\neq (x',y')$.
+\end{definition}
+
+We call the first type (\ref{first}.) of refinements \emph{application refinements} and the second type (\ref{second}.) \emph{unfoundedness refinements}. If $(x',y')$ is an $A$-refinement of $(x,y)$ and $A$ is clear from the concepts, we often denote it $(x,y)\to(x',y')$.
+%
+% \nomenclature[alp]{$\alpha,\beta$}{Ordinal numbers}
+% \nomenclature[lam]{$\lambda$}{A limit ordinal}
+
+ \begin{definition}
+ A \emph{well-founded induction} of $A$  is a sequence 
+$(x_i,y_i)_{i\leq \beta}$
+with $\beta$ an ordinal such that 
+\begin{itemize}
+	\item $(x_0,y_0) = (\bot,\top)$;
+	\item $(x_{i+1},y_{i+1})$ is an A-refinement of $(x_{i},y_{i})$, for  all $i<\beta$;
+	\item $(x_{\lambda},y_{\lambda})= \lub_{\leqp} \{(x_i,y_i)\mid i<\lambda\}$
+	      for each limit ordinal $\lambda\leq\beta$.
+\end{itemize}
+A well-founded induction is \emph{terminal} if its limit $(x_\beta,y_\beta)$ has no strict $A$-refinements.
+% \marc{als je in sectie over fixpoints het leastfixpoint in een licthjes andere notatie geeft= $x_i\leq x_{i+1}\leq O(x_i)$, dan kan je hier gewoon zeggen: een well-founded induction is een monotone induction van de juiste operator (de vierwaardige stable operator)}\bart{precies zo geen fan van. De standaard def van leastfixpoint kent iedereen...}
+\end{definition}
+A well-founded induction is an algebraical generalisation of the well-founded model construction defined by \cite{GelderRS91}. 
+The first type of refinement corresponds to making a partial structure more precise by applying Fitting's immediate consequence operator; the second type of refinement corresponds to making a structure more precise by eliminating an unfounded set. 
+
+For a given approximator $A$, there are many different terminal well-founded inductions of $A$.
+\cite{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, the $A$-well-founded fixpoint of $O$ (and in fact, every tuple in a well-founded induction of $A$) is consistent. 
+% Well-founded inductions that only use the first sort of refinement converge to the $A$-Kripke-Kleene fixpoint. 
+
+The precision order can be pointwise extended to the family of approximators of $O$. It then follows that more precise approximators have a more precise well-founded fixpoint and that they have more stable fixpoints. 
+\cite{DeneckerMT04} showed that there exists a most precise approximator, $U_O$, called the ultimate approximator of $O$. 
+This operator is defined by \[U_O: L^c\to L^c: (x,y)\mapsto (\bigand O([x,y]), \bigor O([x,y])).\]
+% \nomenclature[UO]{$U_O$}{The ultimate approximator of $O$}
+Here, we used the notation $O(X) = \{O(x)\mid x\in X\}$ for a set $X\subseteq L$.
+ It then follows that for every
+approximator $A$, all  $A$-stable fixpoints are $U_O$-stable fixpoints, and  the $U_O$-well-founded fixpoint is always more precise than the $A$-well-founded fixpoint.  
+We refer to $U_O$-stable fixpoints as \emph{ultimate stable fixpoints} of $O$ and to the $U_O$-well-founded fixpoint as the \emph{ultimate well-founded fixpoint} of $O$.
+Semantics defined using the ultimate approximator have as advantage that they only depend on $O$ since the approximator can be derived from $O$.
+% In this paper, we will focus only on ultimate approximations. More specifically, we will show that for auto-epistemic logic, 
+% whose semantics is defined in terms of Approximation Fixpoint Theory, the ultimate approximator is not precise enough!
+% We will develop an alternative fixpoint theory that is more precise than the current one, and show that with this theory, we obtain several desirable properties in logics with a fixpoint semantics.
