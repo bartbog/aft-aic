@@ -57,46 +57,51 @@ In the following subsection, we define an approximator for \Op and hence, obtain
 
 \subsection{An Approximator for \Op}
 
-A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$. Alternatively, it is an element of $(2^\atoms)^C$ (as standard). 
+A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$.
+The intended reading of such a mapping is that $\UUU(a)$ is true if $a$ is changed by $\UUU$, it is false if $a$ is not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
+Alternatively, a partial action set is identified with an element of $(2^\atoms)^C$ (as standard). 
 The set of all partial action sets is denoted $P$.
 
+A three-valued database is a mapping $\tdb: \atoms \to \{\ltrue,\lfalse,\lunkn\}$.
+The intended reading is that $\tdb(a)$ is true if $a$ is in the database, $\tdb(a)$ is false if $a$ is not in the database and $\tdb(a)$ is unknown if $a$ is not in the database. 
+
+If $\UUU$ is a partial action set and \db is a (regular) database, then we define $\UUU(\db)$ to be the three-valued database such that 
+\[ \UUU(\db): a \mapsto \left \{\begin{array}{ll}
+                                 \db(a) & \text{if }\UUU(a) = \lfalse\\
+                                 \db(a)^{-1} & \text{if }\UUU(a) = \ltrue\\
+                                 \lunkn & \text{otherwise.}
+                                \end{array}\right.
+                                \]
+
 
 
 \begin{definition}\label{def:support}
-DEFINE SUPPORT voor een actie $\add a$ of $\remove a$. Niet voor $a$. 
-\end{definition}
-
-
-\begin{definition}\label{def:support}
-Given a database \db and a set of AICs \aics, $u\in \atoms$, we define the \emph{support} of $u$ with respect to $\langle \db, \aics\rangle$ as 
+Given a three-valued database \tdb, a set of AICs \aics and an update action $u$,  we define the \emph{support} of $u$ with respect to $\langle \tdb, \aics\rangle$ as 
 \begin{align*}
- \supp_{\db,\aics}(u) &= \max_{\leq_t}\{\nup(r)^{\db}\mid r\in \aics \land \head(r) = u\}.
+ \supp_{\tdb,\aics}(u) &= \max_{\leq_t}\{\nup(r)^{\tdb}\mid r\in \aics \land \head(r) = u\},
 \end{align*}
+where $\nup^{\tdb}$ refers to the standard three-valued truth evaluation based on Kleene's truth tables \cite{Kleene38}.
 \end{definition}
 
 Using this notion of support, we define two additional values. 
 
 \begin{definition}
-If $a\in \atoms$, $\UU$ is a set of update actions and $\langle \db, \aics\rangle$ as before, we define 
+If $a\in \atoms$, $\UUU$ is a partial set of update actions and $\langle \db, \aics\rangle$ as before, we define 
 \begin{align*}
- \suppin_{\db,\aics,\UU}(a) &= \supp_{\UU(\db), \aics}(\change a)\\
-  \suppout_{\db,\aics,\UU}(a) &= \supp_{\UU(\db), \aics}((\change a)^D)
+ \suppin_{\db,\aics,\UUU}(a) &= \supp_{\UUU(\db), \aics}(\change a)\\
+  \suppout_{\db,\aics,\UUU}(a) &= \supp_{\UUU(\db), \aics}((\change a)^D)
 \end{align*}
 \end{definition}
 As before, we often drop $\db$ and \aics from the notation if they are clear from the context. 
-The first, \suppin, is true if there is support for $a$ being in the intended update set. It is true if there is at least one rule $r$ with $\change a$ as head such that $\nup(r)$ holds after updating \db with \UU. The second value gives the support for removing $a$ from the update set. 
+The first, \suppin, is true if there is support for $a$ being in the intended update set. It is true if there is at least one rule $r$ with $\change a$ as head such that $\nup(r)$ holds after updating \db with \UUU. The second value gives the support for removing $a$ from the update set, i.e., for keeping $a$ as it is in the database (hence the name choice). 
+
+
 
 
 
 
 \begin{definition}
- We extend $\supp$, $\suppin$ and $\suppout$ straightforwardly to the partial setting by replacing truth evaluation of a formula (in particular the formula $\nup$) by three-valued truth evaluation based on Kleene's truth tables \cite{Kleene38}.
-%  
- \bart{Better: define it immediately in the three-valued setting. Two-vallued is psecial case}
-\end{definition}
-
-\begin{definition}
-
+\bart{truth tables are not so nice. Actually, a case split should be easier}
 Given \db and \aics. We define an operator $\Ap: P\to P$, given by the following truth tables:
 
 % \begin{figure}
