@@ -214,14 +214,24 @@ Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e.
 
 \end{proof}
 
-\bart{I got up to this point revising the text}
+Since \Ap is an approximator, it defines a family of semantics for AICs. 
 
+\begin{definition}\label{def:semantics}
+ Let $\fulldb$ be a database. 
+ \begin{compactitem}
+  \item A \emph{partial stable repair} of \fulldb is a three-valued update set \UUU such that \UUU is a partial $\Ap$-stable fixpoint. A \emph{stable repair} is a partial stable repair that is two-valued. 
+  \item The \emph{AFT-well-founded repair} of \fulldb is the $\Ap$-well-founded fixpoint (in general, this is a three-valued update set). 
+  \item The \emph{Kripke-Kleene repair} of \fulldb is the $\Ap$-Kripke-Kleene fixpoint (in general, this is a three-valued update set). 
+%   \item A \emph{supported 
+  \item A \emph{partial grounded repair} of \fulldb is a three-valued update set \UUU such that \UUU is a partial $\Ap$-grounded fixpoint. A \emph{grounded repair} is a partial grounded repair that is two-valued. 
+ \end{compactitem}
 
-Thus, $\Ap$ defines a family of semantics for repairs: (partial) $\Ap$-stable repairs, the $\Ap$-well-founded repair, the $\Ap$-Kripke-Kleene repair, supported repairs, \Ap-grounded (partial) repair.
-Furthermore, all these semantics are nicely invariant under shifting. 
-\begin{proposition}
- \Ap, and hence also \Op, is invariant under shifting.
-\end{proposition}
+\end{definition}
+\todo{state somewhere: it follwos easily that each of these repairs, if they are two-valued, they are indeed ``minimal weak repairs'' (i.e., repairs according to AIC terminology). }
+
+Grounded repairs were defined previously by \citet{}. All other classes of repairs defined in Definition \ref{def:semantics} are newly introduced semantics by the current paper. 
+We now illustrate these semantics by means of some examples. 
+
 
 \begin{example}
  Consider the following set \aics of AICs:
@@ -329,3 +339,37 @@ It can also be verified that there are no other $\Ap$-stable fixpoints. Due to m
 
 \end{example}
 Hence, in the above example, \Ap-stable repairs capture the intended semantics. 
+
+
+\todo{start new section here?}
+
+We now show that all of these semantics are nicely invariant under shifting. 
+\begin{proposition}
+ \Ap, and hence also \Op, is invariant under shifting.
+\end{proposition}
+\begin{proof}
+ \todo{will follow easily from the fact that we define everything in terms of $\change a$ and not in terms of $a$ directly. }
+\end{proof}
+
+\begin{proposition}\label{prop:wf-wf}
+ Suppose the AFT-well-founded repair is two-valued. In this case it is also well-founded (as define by \citet{}). 
+\end{proposition}
+\begin{proof}
+ \todo{idea of the proof. 
+ 
+ Take a well-founded induction $\left(\UUU_i\right)_{i\leq \beta}$. For each $i$, define $\UU_i$ as equal to $\UUU_i$ except that everything unknown in $\UUU_i$ is interpreted as $\lfalse$ in $\UU_i$. It is clear that $\UUU_i\leqp\UU_i$ in this case. 
+ Now, the claim is that $\UU_i$ and $\UU_{i+1}$ differ only in a set of atoms that have at least one rule body satisfied in $\UU_i$. Furthermore, that body remains satisfied if we add them one by one. To see this, for any set $\UU$ such that $\UU_i\subseteq \UU \subseteq \UU_{i+1}$, it also holds that $\UU\geqp \UUU_i$. For each atom derived in $\UUU_{i+1}$, there is a rule $r$ with $\nup(r)^{\UUU_i}=\ltrue$ and $\head(r)=a$. Since truth evaluation is $\leqp$-monotone, it also holds that $\nup(r)^{\UU} = \ltrue$. Hence, we can add those atoms one by one (TODO: make this more formal: explicitly construct the sequence). }
+ 
+\end{proof}
+\begin{example}The converse of Proposition \ref{prop:wf-wf} does
+not hold. Consider for instance 
+   \begin{align*}
+  a &\aicrule \remove a\\
+  a\land b &\aicrule \remove b\\
+  b \land c &\aicrule \remove  c
+ \end{align*}
+ and $\db=\{a,b,c\}$.
+ In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be removed no matter what. The second rule then becomes void (there is never a reason to remove $b$) and the last rule then dictates that also $c$ must be removed. 
+ However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also well-founded repair (according to \citet{}). It is non-minimal \todo{BETTER EXAMPLE: something minimal but unintended. A bit more complicated} 
+\end{example}
+
