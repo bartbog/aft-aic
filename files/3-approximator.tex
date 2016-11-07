@@ -101,76 +101,121 @@ The first, \suppin, is true if there is support for $a$ being in the intended up
 
 
 \begin{definition}
-\bart{truth tables are not so nice. Actually, a case split should be easier}
-Given \db and \aics. We define an operator $\Ap: P\to P$, given by the following truth tables:
+% \bart{truth tables are not so nice. Actually, a case split should be easier}
+Given \db and \aics. We define an operator $\Ap: P\to P$, as follows:
 
-% \begin{figure}
-	\centering
+% given by the following truth tables:
+% 
+% % \begin{figure}
+% 	\centering
+% % % \begin{minipage}{0.3\linewidth}
+% 	\begin{tabular}{|cc|c|}
+% \cline{1-3}
+% \multicolumn{2}{|c|}{}&\multicolumn{1}{c|}{ $\Ap(\UUU)(a)$ if $\UUU(a)=\ltrue$}\\
+% % \cline{3-5}
+% \hline
+% 
+% \multirow{3}{*}{$\suppout_\UUU(a)$}&\ltrue &	\lfalse	\\
+% \cline{2-3}
+% &\lunkn 	& \lunkn		\\
+% \cline{2-3}
+% &\lfalse	& \ltrue		\\
+% \cline{1-3}
+% 	\end{tabular}\\
+% % \end{minipage}
+% 
+% \quad\\ 
+% 	\begin{tabular}{|cc|c|}
+% \cline{1-3}
+% \multicolumn{2}{|c|}{}&\multicolumn{1}{c|}{ $\Ap(\UUU)(a)$ if $\UUU(a)=\lfalse$}\\
+% % \cline{3-5}
+% \hline
+% 
+% \multirow{3}{*}{$\suppin_\UUU(a)$}&\ltrue &	\ltrue	\\
+% \cline{2-3}
+% &\lunkn 	& \lunkn		\\
+% \cline{2-3}
+% &\lfalse	& \lfalse		\\
+% \cline{1-3}	\end{tabular}
+% 
+% 	\quad\\ 
+% 
+% 	
 % % \begin{minipage}{0.3\linewidth}
-	\begin{tabular}{|cc|c|}
-\cline{1-3}
-\multicolumn{2}{|c|}{}&\multicolumn{1}{c|}{ $\Ap(\UUU)(a)$ if $\UUU(a)=\ltrue$}\\
-% \cline{3-5}
-\hline
+% 	\begin{tabular}{|cc|c|c|c|}
+% \cline{1-5}
+% \multicolumn{2}{|c|}{\multirow{2}{*}{{ $\Ap(\UUU)(a)$ if $\UUU(a)=\lunkn$} }}&\multicolumn{3}{c|}{$\suppout_\UUU(a)$}\\
+% % \cline{3-5}
+% 
+% \multicolumn{2}{|c|}{}& \ltrue & \lunkn & \lfalse \\
+% \hline
+% \multirow{3}{*}{$\suppin_\UUU(a)$}&\ltrue &	\lunkn & \lunkn & \ltrue	\\
+% \cline{2-5}
+% &\lunkn	& \lunkn & \lunkn & \lunkn		\\
+% \cline{2-5}
+% &\lfalse 	& \lfalse& \lunkn & \lunkn 		\\
+% \cline{1-5}
+% 	\end{tabular}
+\begin{compactitem}
+ \item If $\UUU(a)=\lfalse$, then $\Ap(\UUU)(a) = \suppin_\UUU(a).$
+ \item If $\UUU(a)=\ltrue$, then $\Ap(\UUU)(a) = \suppout_\UUU(a)^{-1}.$
+ \item Otherwise (i.e., if $\UUU(a) = \lunkn$):
+  \begin{compactitem}
+    \item if $\suppin_\UUU(a) = \ltrue$ and $\suppout_\UUU(a)=\lfalse$, then $\Ap(\UUU)(a)=\ltrue$;
+    \item if $\suppout_\UUU(a) = \ltrue$ and $\suppin_\UUU(a)=\lfalse$, then $\Ap(\UUU)(a)=\lfalse$;
+    \item otherwise, $\Ap(\UUU)(a)=\lunkn$.
+\end{compactitem}
 
-\multirow{3}{*}{$\suppout_\UUU(a)$}&\ltrue &	\lfalse	\\
-\cline{2-3}
-&\lunkn 	& \lunkn		\\
-\cline{2-3}
-&\lfalse	& \ltrue		\\
-\cline{1-3}
-	\end{tabular}\\
-% \end{minipage}
-
-\quad\\ 
-	\begin{tabular}{|cc|c|}
-\cline{1-3}
-\multicolumn{2}{|c|}{}&\multicolumn{1}{c|}{ $\Ap(\UUU)(a)$ if $\UUU(a)=\lfalse$}\\
-% \cline{3-5}
-\hline
-
-\multirow{3}{*}{$\suppin_\UUU(a)$}&\ltrue &	\ltrue	\\
-\cline{2-3}
-&\lunkn 	& \lunkn		\\
-\cline{2-3}
-&\lfalse	& \lfalse		\\
-\cline{1-3}	\end{tabular}
-
-	\quad\\ 
-
-	
-% \begin{minipage}{0.3\linewidth}
-	\begin{tabular}{|cc|c|c|c|}
-\cline{1-5}
-\multicolumn{2}{|c|}{\multirow{2}{*}{{ $\Ap(\UUU)(a)$ if $\UUU(a)=\lunkn$} }}&\multicolumn{3}{c|}{$\suppout_\UUU(a)$}\\
-% \cline{3-5}
-
-\multicolumn{2}{|c|}{}& \ltrue & \lunkn & \lfalse \\
-\hline
-\multirow{3}{*}{$\suppin_\UUU(a)$}&\ltrue &	\lunkn & \lunkn & \ltrue	\\
-\cline{2-5}
-&\lunkn	& \lunkn & \lunkn & \lunkn		\\
-\cline{2-5}
-&\lfalse 	& \lfalse& \lunkn & \lunkn 		\\
-\cline{1-5}
-	\end{tabular}
+\end{compactitem}
 
  
 \end{definition}
 
-The above definitions is motivated as follows. We intend \Ap to be an approximator of \Op. One of the requirements of an approximator is that it agrees with \Op whenever \UUU is two-valued. This explains the exact values (\ltrue and \lfalse) in the the first two tables. 
-A second requirement is that an approximator is \leqp-monotone. 
-This explains the $\lunkn$ values in the first two tables. Indeed, for instance for the first table, if $\UUU(a)=\ltrue$ and $\suppout_\UUU(a)=\lunkn$, this means that there is at least one rule with $r$ with $\nup(r)^\UUU=\lunkn$. Without a priori knowledge of the structures of the rules, in such a situation it is still possible to obtain $\UUU'\geqp\UUU$ and $\UUU''\geqp \UUU$ such that $\nup(r)^{\UUU'}=\lfalse$ and $\nup(r)^{\UUU''}=\ltrue$. As such, in order to have \leqp-monotonicity, we must have that $\Ap(\UUU)\leqp\ltrue$ and $\Ap(\UUU)\leqp \lfalse$, hence $\Ap(\UUU)=\lunkn$.
+The above definitions is motivated as follows. Assume $\UUU$ is a three-valued update containing some three-valued information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
+In the case where $\UUU(a)=\lfalse$, $a$ is not an element of the (three-valued) update at hand. The only way to add $a$ to the update is if some rule supports adding $a$ (changing $a$). This is exactly captured by $\suppin$. 
+The case for $\UUU(a)=\ltrue$ is completely symmetrical, in this case the only reason for removing $a$ from the update at hand is if there is some rule that supports ``keeping $a$'', i.e., that supports $\change a^D$. 
+In the last case, where $\UUU(a)=\lunkn$, we have no information what the update does to $a$ yet. In this case, we can derive that $a$ \emph{must} be in the update if we already have support for $\change a$ and we are sure that there is no support for keeping $a$ (for $\change a^D$). Similarly, we can derive that $a$ \emph{must not} be in the update if we have support for $\change a^D$ but not for $\change a$. 
+In all other cases, we derive nothing about $a$ being in the update or not. 
 
-Similar arguments also explain all the $\lunkn$ values found in the third table. 
-To explain the exact values in the last table, we consider two cases. 
-In both cases $\UUU(a)=\lunkn$, i.e., we have no prior knowledge of whether to update $a$ in the database or not. In the first case $\suppin_\UUU(a)=\ltrue$ and $\suppout_\UUU(a)=\lfalse$. This means that $\UUU$ contains enough information to decide that there is a rule that will require $\change a$ \emph{and} that there will no rule that requires $(\change a)^D$ in any more precise update set. 
-In such a situation, we have sufficient information to conclude that $\change a$ must be in the intended update set. 
-The other case is similar. 
+
+% We intend \Ap to be an approximator of \Op. One of the requirements of an approximator is that it agrees with \Op whenever \UUU is two-valued. This explains the exact values (\ltrue and \lfalse) in the the first two tables. 
+% A second requirement is that an approximator is \leqp-monotone. 
+% This explains the $\lunkn$ values in the first two tables. Indeed, for instance for the first table, if $\UUU(a)=\ltrue$ and $\suppout_\UUU(a)=\lunkn$, this means that there is at least one rule with $r$ with $\nup(r)^\UUU=\lunkn$. Without a priori knowledge of the structures of the rules, in such a situation it is still possible to obtain $\UUU'\geqp\UUU$ and $\UUU''\geqp \UUU$ such that $\nup(r)^{\UUU'}=\lfalse$ and $\nup(r)^{\UUU''}=\ltrue$. As such, in order to have \leqp-monotonicity, we must have that $\Ap(\UUU)\leqp\ltrue$ and $\Ap(\UUU)\leqp \lfalse$, hence $\Ap(\UUU)=\lunkn$.
+% 
+% Similar arguments also explain all the $\lunkn$ values found in the third table. 
+% To explain the exact values in the last table, we consider two cases. 
+% In both cases $\UUU(a)=\lunkn$, i.e., we have no prior knowledge of whether to update $a$ in the database or not. In the first case $\suppin_\UUU(a)=\ltrue$ and $\suppout_\UUU(a)=\lfalse$. This means that $\UUU$ contains enough information to decide that there is a rule that will require $\change a$ \emph{and} that there will no rule that requires $(\change a)^D$ in any more precise update set. 
+% In such a situation, we have sufficient information to conclude that $\change a$ must be in the intended update set. 
+% The other case is similar. 
 
 \begin{proposition}
  \Ap is an approximator of \Op.
 \end{proposition}
+\begin{proof}
+First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. As argued before, in this case also $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
+\begin{compactitem}
+\item If $\UUU(a)=\lfalse$, then $\UUU'(a)=\lfalse$ as well by $\leqp$-monotonicity. In this case $\Ap(\UUU')(a) = \suppin_{\UUU'}(a) \geqp \suppin_{\UUU}(a) =  \Ap(\UUU)(a)$. 
+\item The case where $\UUU(a)=\ltrue$ is similar.
+\item Assume $\UUU(a) = \lunkn$. 
+\begin{compactitem}
+\item If $\suppin_\UUU(a) = \ltrue$ and $\suppout_\UUU(a)=\lfalse$, then $\Ap(\UUU)(a)=\ltrue$ and also $\suppin_{\UUU'}(a) = \ltrue$ and $\suppout_{\UUU'}(a)=\lfalse$. Hence if $\UUU'(a)=\lunkn$, this is trivially proven. In case $\UUU'(a)=\ltrue$, $\Ap(\UUU')(a) = \suppout_{\UUU'}(a)^{-1}=\ltrue$ and in case $\UUU'(a)=\lfalse$, $\Ap(\UUU')(a)= \suppin_{\UUU'}(a)= \ltrue$. Hence, in all cases $\Ap(\UUU)(a) = \Ap(\UUU')(a)$ and the claim follows.
+\item The case where $\suppout_\UUU(a)=\ltrue$ and $\suppin_\UUU(a) = \lfalse$ is similar to the previous.
+\item In all other cases, $\Ap(\UUU)(a)=\lunkn$, hence $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ is trivially satisfied.
+\end{compactitem}
+
+\end{compactitem}
+
+Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $a \in \atoms$, we again prove this claim by a case analysis on the definition of of $\Ap(\UU)(a)$. 
+\begin{compactitem}
+ \item If $\UU(a)=\lfalse$, then $\Op(\UUU)(a)= \ltrue$ if and only if there is some rule $r\in \eta$ with $\UU(\db) \models \body(r)$ and $\head(r)=\change a$. I.e., $\Op(\UU)(a)$ is true if and only if $\suppin_{\UU}(a) = \ltrue$, if and only if $\Ap(\UU)(a)=\ltrue$. 
+ \item The case for $\UU(a)=\lfalse$ is similar. 
+ \item The case where $\UU(a)= \lunkn$ cannot occur, since $\UU$ is two-valued. \qedhere
+\end{compactitem}
+
+\end{proof}
+
+\bart{I got up to this point revising the text}
+
 
 Thus, $\Ap$ defines a family of semantics for repairs: (partial) $\Ap$-stable repairs, the $\Ap$-well-founded repair, the $\Ap$-Kripke-Kleene repair, supported repairs, \Ap-grounded (partial) repair.
 Furthermore, all these semantics are nicely invariant under shifting. 
