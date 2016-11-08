@@ -229,6 +229,8 @@ Since \Ap is an approximator, it defines a family of semantics for AICs.
 \end{definition}
 \todo{state somewhere: it follwos easily that each of these repairs, if they are two-valued, they are indeed ``minimal weak repairs'' (i.e., repairs according to AIC terminology). }
 
+\todo{somewhere say something abut hte name clash: well-founded vs aft-well-founded}
+
 Grounded repairs were defined previously by \citet{}. All other classes of repairs defined in Definition \ref{def:semantics} are newly introduced semantics by the current paper. 
 We now illustrate these semantics by means of some examples. 
 
@@ -355,14 +357,35 @@ We now show that all of these semantics are nicely invariant under shifting.
  Suppose the AFT-well-founded repair is two-valued. In this case it is also well-founded (as define by \citet{}). 
 \end{proposition}
 \begin{proof}
- \todo{idea of the proof. 
- 
- Take a well-founded induction $\left(\UUU_i\right)_{i\leq \beta}$. For each $i$, define $\UU_i$ as equal to $\UUU_i$ except that everything unknown in $\UUU_i$ is interpreted as $\lfalse$ in $\UU_i$. It is clear that $\UUU_i\leqp\UU_i$ in this case. 
- Now, the claim is that $\UU_i$ and $\UU_{i+1}$ differ only in a set of atoms that have at least one rule body satisfied in $\UU_i$. Furthermore, that body remains satisfied if we add them one by one. To see this, for any set $\UU$ such that $\UU_i\subseteq \UU \subseteq \UU_{i+1}$, it also holds that $\UU\geqp \UUU_i$. For each atom derived in $\UUU_{i+1}$, there is a rule $r$ with $\nup(r)^{\UUU_i}=\ltrue$ and $\head(r)=a$. Since truth evaluation is $\leqp$-monotone, it also holds that $\nup(r)^{\UU} = \ltrue$. Hence, we can add those atoms one by one (TODO: make this more formal: explicitly construct the sequence). }
+Let $\left(\UUU_i\right)_{i\leq k}$ be a well-founded induction of \Ap. 
+For each $i$, define $\UU_i$ as $\{a \in \atoms \mid \UUU_i=\ltrue\}$. 
+We will prove the following claim by induction on the length $k$ of the well-founded induction (note that we restrict to finite well-founded inductions here since we assumed $\atoms$ is a finite set in the first place). 
+
+There exists a sequence $\alpha_1,\dots,\alpha_n$ such that $\UU_k=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $\{\alpha_1,\dots,\alpha_{i-1}\}(\db) \models \body (r_i)$ and $\alpha_i = \head(r_i)$.
+
+From this claim, taking any terminal well-founded induction yields the desired result. 
+
+We now show the claim indeed holds. 
+The claim is trivial for $k=0$. Assume the claim holds for $k$, we show that it also holds for $k+1$. 
+Thus assume $\alpha_1,\dots,\alpha_n$ is a sequence with $\UU_{k} = \{ \alpha_1,\dots,\alpha_n\}$ satisfying the above condition. 
+If $\UUU_{k+1}$ is an unfoundedness refinement of $\UUU_k$, then $\UU_{k+1}=\UU_k$ and there is nothing to show. Hence, assume that $\UUU_k \leqp \UUU_{k+1}\leqp \Ap(\UUU_k)$. In this case, $\UU_\{k+1\} = \UU_k \cup \{ b_j\mid 1\leq j\leq m\}$ for some sequence of elements $b_j$ such that $\Ap(\UUU_k)(b_j) = \ltrue$. For each $j$, let $\UU'_j$ denote $\{\alpha_1,\dots,\alpha_n,\beta_1,\dots,\beta_j\}$. 
+We claim that the sequence 
+$\alpha_1,\dots,\alpha_n,\beta_1,\dots,\beta_m$ still satisfies the condition in the claim. 
+To see this, note that from the definition of $\Ap$, it follows that for each $j\in \{1,\dots, m\}$ there is a rule $r_j$ with $\nup(r)^{\UUU_k(\db)}=\ltrue$ and $\head(r_j)=b_j$. Furthermore, for each $j$ it holds that $\UU_{j-1}' \geqp \UUU_k$ hence also $\nup(r)^{\UU_{j-1}'}$. Since $b_j\not \in \UU_{j-1}$, we also see that $\body(r_j)^{\UU_{j-1}'} = \ltrue$. Hence, the claim indeed follows for $\beta+1$ as well. 
+
+% 
+% 
+% $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
+% 
+% 
+%  \todo{idea of the proof. 
+%  
+%  Take a well-founded induction $\left(\UUU_i\right)_{i\leq \beta}$. For each $i$, define $\UU_i$ as equal to $\UUU_i$ except that everything unknown in $\UUU_i$ is interpreted as $\lfalse$ in $\UU_i$. It is clear that $\UUU_i\leqp\UU_i$ in this case. 
+%  Now, the claim is that $\UU_i$ and $\UU_{i+1}$ differ only in a set of atoms that have at least one rule body satisfied in $\UU_i$. Furthermore, that body remains satisfied if we add them one by one. To see this, for any set $\UU$ such that $\UU_i\subseteq \UU \subseteq \UU_{i+1}$, it also holds that $\UU\geqp \UUU_i$. For each atom derived in $\UUU_{i+1}$, there is a rule $r$ with $\nup(r)^{\UUU_i}=\ltrue$ and $\head(r)=a$. Since truth evaluation is $\leqp$-monotone, it also holds that $\nup(r)^{\UU} = \ltrue$. Hence, we can add those atoms one by one (TODO: make this more formal: explicitly construct the sequence). }
  
 \end{proof}
 \begin{example}The converse of Proposition \ref{prop:wf-wf} does
-not hold. Consider for instance 
+not hold. Consider for instance the following set $\aics$ of AICs
    \begin{align*}
   a &\aicrule \remove a\\
   a\land b &\aicrule \remove b\\
@@ -370,6 +393,8 @@ not hold. Consider for instance
  \end{align*}
  and $\db=\{a,b,c\}$.
  In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be removed no matter what. The second rule then becomes void (there is never a reason to remove $b$) and the last rule then dictates that also $c$ must be removed. 
- However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also well-founded repair (according to \citet{}). It is non-minimal \todo{BETTER EXAMPLE: something minimal but unintended. A bit more complicated} 
+ However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also well-founded repair (according to \citet{}). 
 \end{example}
+
+\todo{check the link between ``justified repair'' and ``stable repair''}
 
