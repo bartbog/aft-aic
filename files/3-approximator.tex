@@ -396,5 +396,19 @@ not hold. Consider for instance the following set $\aics$ of AICs
  However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also well-founded repair (according to \citet{}). 
 \end{example}
 
-\todo{check the link between ``justified repair'' and ``stable repair''}
+\todo{check the link between ``justified repair'' and ``stable repair''. My feeling is that they should be very closely related. For instance in Example 20 in the GF and AIC paper, this is a case where stable coincides with justified. However, there is also a notion of ultimate stable repair (which coincides here with grounded). This is similar to logic programming, where 
+\begin{align*}
+ a &\lrule b.\\
+ a &\lrule \lnot b.\\
+b &\lrule a.
+\end{align*}
+does not have $\{a,b\}$ as a stable model, but does have it as an ultimate stable model. 
+
+
+More explanation why I feel these two are related. The definition of justified repair works as follows. First, fix all no-effect actions. Those are the things you \emph{do not change}. Then, the condition is that we have a minimal model that has at least those actions. 
+This is very similar to the notions of a reduct in logic programming: first fix the negative atoms (to get a reduct), then consider minimal models of the reduct. 
+}
+
+\todo{link with logic programming. 
+IF $\db=\empty$ and the only update actions in heads are of the form $\add a$, i.e., never $\remove a$. Then I think we can easily prove equivalence with logic programming. (syntactic transformation that transforms an AIC in a logic program such that the approximator is preserved (and hence also the various families of semantics are preserved). }
 
