@@ -59,6 +59,19 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
  A (weak) repair \UU for \fulldb is \emph{well-founded} iff there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
 \end{definition}
 
+\begin{definition}
+  \todo{definition of justified repair. 
+  
+  I am not sure the definition in ``grounded fixpoints and active integrity constraints'' is correct. THat definition contains an item ``U is a justified action set if it is the least superset of $U\cup ne$ closed under $\eta$''. However, this is equivalent with 
+  ``$U$ is a justfied action set if $ne \subseteq U$ and $U$ is closed under $\eta$.'', which seems quite wrong. Shouldn't this be ``$U$ is a justified action set if it is the least superset of $ne$ closed under $\eta$''? I.e., the scoping if ``least among which sets'' changes... (in the grounded fixpoints paper, you are referring to ``U is least among sets that are superset of U, which seems quite meaningless'' }
+  
+  \todo{something else releated to this definition. THe notion of ``closed'' as defined in the original paper and also the grounded fixpoints paper is quite surprising. I am in particular surprised by the fact that this does not take \db into account. Consider for instance the following \aics:
+  \[a\aicrule \remove a\]
+  with an empty database. The only $U$ that is closed here is $\{\remove a\}$. 
+  It makes sense, though. And this insight might make some proofs easier later in the paper (sorry, I'm just using this paper as well to record my thoughts)}
+\end{definition}
+
+
 % \bart{Next one needed?}
 % \begin{definition}
 %  Let $\aics_1$ and $\aics_2$ be two sets of AICs over \atoms. We say that 
