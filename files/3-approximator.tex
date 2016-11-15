@@ -8,9 +8,11 @@ For such a rule, we define $\nup(r) = \l_2\land \dots \land l_n$. The intuition 
 Given a fixed database $\db$.
 The sets of update actions $\UU$ that are of interest to us are those such that \textbf{(i)} \UU is consistent and \textbf{(ii)} each action in \UU modifies \db. As argued by  \citet{corr/Cruz-Filipe16}, the set of such sets is isomorphic to $2^{\atoms}$. Hence, from now on, we identify such a set with a subset of $\atoms$ (the atoms whose value is changed by \UU). 
 If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\in \db$ and $\remove a$ if $a\not \in \db$. 
-Thus, in the above identification, a set  of atoms $\UU\subseteq \atoms$ is identified with the set 
-\[\{\change a\mid a \in \UU \}\]
+Thus, in the above identification, a set  of atoms $\bar\UU\subseteq \atoms$ is identified with the set 
+\[\UU = \{\change a\mid a \in \bar \UU \}\]
 of update actions.
+Usually, we omit the bar, and simply write $\UU$ for the subset of \atoms as well. Only in places where the distinction between the two is essential (in technical parts of proofs), we explicitly write $\bar \UU$. 
+% In some technical parts of the paper, we often switch between 
 
 Furthermore, we prefer smaller set of updates over lager sets: if a database can be fixed by just having $\{\add a\}$, the set $\{\add a, \add b\}$ is not of interest to us. 
 The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$. 
@@ -409,9 +411,141 @@ More explanation why I feel these two are related. The definition of justified r
 This is very similar to the notions of a reduct in logic programming: first fix the negative atoms (to get a reduct), then consider minimal models of the reduct. 
 }
 
-\begin{proposition}
- 
+\begin{proposition}\label{prop:stable_is_justified}
+If \UU is a \Ap-stable repair, then \UU is a justified repair. 
 \end{proposition}
+\todo{Throughout the paper, I sometimes use the symbol $a$ for an action, sometimes for an atom. That must be confusing. However, due to the identification of a set of update actions with a subset of \atoms this mixup I'm doing is not so strainge. It might be better to streamline it a bit more} 
+\begin{proof}
+We can safely assume that \UU is a repair of \db (otherwise, it is neither a justified repair, nor a $\Ap$-stable repair.
+
+
+ Before starting the actual proof, we introduce a couple of auxiliary operators. 
+ For each set of update actions $\VV$, let $\ext(\VV)$ denote $\VV\cup \neff_\UU(\db)$.
+ Notice that even if $\VV$ is consistent, $\ext(\VV)$ can be inconsistent. 
+ For each set of update actions $\VV$, let $\closure(\VV)$ denote \[\closure(\VV)= \VV\cup \{head(r) \mid \actof(\nup(r)) \subseteq \VV\}.\] 
+%  \todo{maybe closure should be defined differently: probably we need to drop teh \VV}
+ Now, we define the operator (on sets of update actions):
+\[O: \VV \mapsto \closure(\ext(\VV)) \setminus \neff_\UU(\db).\]
+Below, we will prove the following claims:
+\begin{compactdesc}
+ \item \textbf{Claim 1}: \UU is a minimal prefixpoint of $O$ if and only if $\UU$ is a justified repair of \fulldb. 
+ \item \textbf{Claim 2}: For any literal $l$, $\actof(l)\in \VV\cup \neff_\UU(\db)$ if and only if $(\bar \VV, \bar \UU)(\db)(l) = \ltrue$. 
+ \item \textbf{Claim 3}: For any literal $l$, $\actof(l)\in \closure(\ext(\VV))$ if and only if  $\supp_{(\bar\VV,\bar\UU)(\db),\aics}(l) = \ltrue$. 
+ \item \textbf{Claim 4}: For every set of update actions $\VV\subseteq \UU$: 
+ \[\Ap(\bar\VV,\bar\UU)_1\subseteq \overline{O(\VV)}.\] 
+\end{compactdesc}
+Now, assume $\UU$ is a $\Ap$-stable repair. Since we are only working with normal AICs $O$ is a monotone operator, hence it has a unique minimal prefixpoint, which is also its least fixpoint. Since $\UU$ is a repair, it is a fixpoint of $O$, we should show that it is minimal. Assume $\UU'\subseteq \UU$ is a prefixpoint of $O$ as well. This means $O(\UU')\subseteq \UU'$ 
+and hence 
+\[\Ap(\overline{\UU'},\bar\UU)_1 \subseteq \overline{(O(\UU'))}\subseteq \overline{\UU'},\]
+i.e., $\overline{\UU'}$ is a prefixpoint of $\Ap(\cdot,\bar\UU)_1$. 
+Since $\bar\UU$ is an $\Ap$-stable repair, $\bar\UU$ is the least prefixpoint of $\Ap(\cdot,\bar\UU)_1$ and thus $\bar\UU = \overline{\UU'}$. Hence indeed, $\UU$ is a justified repair. 
+
+
+% 
+% From Claim 4, it follows that this least fixpoint must thus also be the least fixpoint of $\Ap(\cdot,\bar\UU)_1$ (note that dropping the assumptions of consistency or of ``all actions should change \db'' never yields smaller fixpoints, since dropping one of these assumptions never adds subsets of this least fixpoint). 
+% Hence, $\UU$ is a minimal prefixpoint of $O$ if and only if $\bar \UU$ is a stable fixpoint of $\Ap$. By Claim 1, we then find that our proposition indeed holds. 
+% % 
+% All that remains is to prove our claims. 
+
+\textbf{Claim 1} This follows immediately from the definition of justified repair. Prefixpoints of the \closure operator are sets of update actions closed under \aics. Hence $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a minimal set of update actions that contains $\neff_{\UU}(\db)$ and is closed under $\aics$. 
+
+
+
+
+
+\textbf{Claim 2} First assume that $\actof(l)\in\VV\cup\neff_\UU(\db)$. 
+Assume $l=a$ or $l=\lnot a$ for some atom $a\in \atoms$.  We consider two cases:
+\begin{compactitem}
+ \item If $\actof(l)\in \neff_\UU(\db)$, then $\db(l) = \ltrue$ and $\UU$ does not change the value of $l$, hence $a\not\in\bar\UU$. Thus $(\bar \VV,\bar \UU)(a)=\lfalse$ and in this case $(\bar \VV,\bar \UU)(\db)(l) = \db(l) = \ltrue$. 
+ \item If $\actof(l)\not\in \neff_\UU(\db)$, then it must hold that $\actof(l) \in \VV\subseteq \UU$. Since $\actof(l)\in \UU$ and every action in \UU changes \db, it must hold that $\db(\lit)=\lfalse$. Now, since $\lit \in \VV$, $a\in \bar \VV$ and $(\bar \VV, \bar \UU) (a) = \ltrue$. Thus $(\bar\VV,\bar\UU)(\db)(l) = \db(l)^{-1} = \ltrue$ in this case. 
+\end{compactitem}
+For the other direction, assume that $(\bar\VV,\bar\UU)(\db)(l) = \ltrue$. Furthermore, assume that $\actof(l)\not\in \neff_\UU(\db)$, we show that $l\in \VV$. 
+We fist show that $\db\not\models l$. Assume towards contradiction that $\db \models l$. 
+It must then hold that $l^D \in \UU$ since $\actof(l)\not\in\neff_\UU(\db)$. This means that $a\in \bar \UU$. 
+However, 
+since $(\bar \VV, \bar \UU)(\db)(l) = \ltrue =\db(l)$, it must hold that $(\bar \VV,\bar \UU)(a) = \lfalse$, i.e., that $a\not \in \bar \UU$. This yields a contradiction, hence we can safely assume that $\db\not\models l$. 
+Now in this case 
+$(\bar \VV, \bar \UU)(\db)(l) = \ltrue \db(l)^{-1}$. Hence it must hold that $(\bar \VV,\bar \UU)(a) = \ltrue$, i.e., that $a\in \bar \VV$. Since $\db(\lit) = \lfalse$, this means that $\lit\in \VV$, which is exactly what we needed to prove. 
+
+
+\textbf{Claim 3} 
+Let $l$ be a literal. 
+It holds that  $\supp_{(\bar\VV,\bar\UU)(\db),\aics}(\actof(l)) = \ltrue$ if and only if there is some rule $r$ with $\head(r)=\actof(l)$ and $\nup(r)^{ (\bar\VV,\$, \bar\UU)(\db)} = \ltrue$. This means that for each literal $l'\in \nup(r)$, $l'^{(\bar\VV,\$, \bar\UU)(\db)} = \ltrue$. From Claim 2 it then follows that this is equivalent with the condition that each literal $l'\in\nup(r)$ is an element of   $\VV\cup \neff_\UU(\db)$, i.e., with  the condition that $\actof(l) \in \closure(\ext(\VV))$. 
+
+
+\textbf{Claim 4}
+Take an atom $a$ and a set $\VV$ of update actions. It holds that $a\in \Ap(\bar\VV,\bar\UU)_1)$ if and only if one of the following holds:
+\begin{compactitem}
+ \item $(\bar \VV,\bar \UU)(a) = \lfalse$ and $\supp_{(\bar\VV,\bar\UU)(\db),\aics}(\change a)=\ltrue$
+ \item $(\bar \VV,\bar \UU)(l) = \lunkn$, $ \supp_{(\bar\VV,\bar\UU)(\db),\aics}(\change a)=\ltrue$ and $\supp_{(\bar\VV,\bar\UU)(\db),\aics}(\change a^D) = \lfalse$.
+\end{compactitem}
+In both cases, $\supp_{(\bar\VV,\bar\UU)(\db),\aics}(\change a)=\ltrue$, hence by Claim 3, $\change a\in \closure(\ext(\VV))$. Now if $\VV\subseteq \UU$, then $a\in\Ap(\bar\VV,\bar\UU)_1$ entails $a\in \bar\UU$, hence also $\change a \in \UU$ and thus $\change a \in \closure(\ext(\VV)) \cap \UU = O(\UU)$, which we needed to prove. 
+
+
+
+
+% \todo{todo} Since we assumed that $\UU$ is a weak repair,  it follows easily that $\closure(\UU)=\UU$, that $\closure(\ext(\UU)) = \ext(\UU)$ and that $O(\UU) = \UU$. 
+% Now, for a literal $a$, it holds that 
+% 
+% Take any $\VV\subseteq \UU$; it follow that every action in \VV changes \db and that \VV is consistent. 
+% 
+% Let $a$ be an update action. It hold that $a\in \closure(\ext(\VV))$ if and only if there is a rule $r$ with $\head(r)= a$ and $\actof(\nup(r))\subseteq \VV\cup\neff_\UU(\db)$
+% 
+% 
+% 
+% We first show that $O(\VV)\subseteq A(\bar\VV,\bar\UU)_1$.
+% Take any action $a\in O(\VV)$
+% 
+% TODO: get to $a\in O(\VV)$ IFF $\suppin_\VV(a) = \ltrue$. 
+% THen: we can't have both $a \in O(\VV)$ and $a^D\in O(\VV)$ since $O(\VV)\subseteq O(\UU) = \UU$ is consistent.
+% 
+% First notice that it follows easily from
+%  
+% %  $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$
+%  
+%  
+% 
+% 
+% 
+% 
+%  First assume $\UU$ is a justified repair. 
+%  For each set of update actions $\UU'$, let $c(\UU')$ denote $\UU'\cup \neff_\UU(\db)$. 
+%  Since $\UU$ is a justified repair, $s(\UU)$ is a justified action set. 
+%  This means that 
+%  
+%  \todo{IDEA:
+%  Consider the operator 
+%  \[O: \UU'\mapsto close(c(\UU')) \setminus neff_\UU(\db)\]
+%  My feeling is that $O= \Ap(\cdot,\UU)_1$
+%  AND: that the condition ``justified repair'' can be rewritten to ``minimal prefixpoitn'' of $O$. In that case, since $O$ is monotone, we get that ``minimal prefixpoint'' coincides with least fixpoint. QED
+%  (we will be using the fact the \aics is normal in the proof)
+%  Be careful, this operator is not defined when $\UU'$ is inconsistent with $\neff$, however, it should suffice to have it defined when the union is consistent.
+%  
+%  
+%  To see this, notice that NEFF = the stuff you don't change. In our representation of three-valued update sets, this EXACTLY corresponds to the upper bound}
+%  
+\end{proof}
+
+\begin{example}
+ The converse of Proposition \ref{prop:stable_is_justified} does not hold. Consider the following set \aics of AICs. 
+ \begin{align*}
+  \lnot a \lrule \add a\\
+  a\land \lnot b \lrule \add b\\
+  a \land \lnot b \lrule \remove a
+ \end{align*}
+ with $\db=\empty$. 
+ In this case $\{\add a,\add b\}$ is a justified repair of \fulldb, but not a stable repair. 
+ To see that it is not a stable repair, it suffices to note that 
+ \[\Ap(\emptyset,\{a,b\}) = (\emptyset,\{a,b\})\]
+ and hence
+ \[
+  \lfp \Ap(\cdot,\{a,b\})_1 = \emptyset\neq \{a,b\}.
+ \]
+To see that it is a justified repair, note that $\{\add a,\add b\}$ is the least set closed under \aics. 
+
+\end{example}
+
+
 
 
 

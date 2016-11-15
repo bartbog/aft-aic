@@ -1,3 +1,5 @@
+\todo{The well-founded semantics for AICs seems to assume a \emph{FINITE} database is given. However, using ordinals, the definition easily extends to the infinite context as well. We should choose, do we want this infintie context or not?}
+
 \subsection{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A literal is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
 The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$.
@@ -10,7 +12,7 @@ Following \cite{corr/Cruz-Filipe16}, we define an operation $\biguplus$ on consi
 This operation has the property that if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
 \[(\UU_1\biguplus \UU_2(\db) = \UU_2(\UU_1(\db)).\]
 
-Literals and update actions are related by natural mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$. 
+Literals and update actions are related by natural mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  These mappings naturally extend to sets of literals/action sets. 
 
 \begin{definition}
  An \emph{active integrity constraint} (AIC) is a rule $r$ of the form
@@ -62,8 +64,21 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 
 \begin{definition}
-  \todo{definition of justified repair. 
-  
+  Let \UU be a set of update actions and \fulldb a database. 
+  \begin{compactitem}
+   \item The \emph{no-effect actions} wrt \db and \UU are the actions that affect neither \db, nor $\UU(\db)$: 
+   \begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\end{align*}
+   \item The set of \emph{non-updatable literals} of an AIC $r$ are all body literals of $r$ that do not occur in the head of $r$
+   \[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right).\]
+   \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$
+   \item \UU is a \emph{justified action set} if it is a minimal superset of $\neff_\db(\UU)$ closed under \aics
+   \item \UU is a \emph{justfied (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
+  \end{compactitem}
+
+
+
+
+  \todo{
   I am not sure the definition in ``grounded fixpoints and active integrity constraints'' is correct. THat definition contains an item ``U is a justified action set if it is the least superset of $U\cup ne$ closed under $\eta$''. However, this is equivalent with 
   ``$U$ is a justfied action set if $ne \subseteq U$ and $U$ is closed under $\eta$.'', which seems quite wrong. Shouldn't this be ``$U$ is a justified action set if it is the least superset of $ne$ closed under $\eta$''? I.e., the scoping if ``least among which sets'' changes... (in the grounded fixpoints paper, you are referring to ``U is least among sets that are superset of U, which seems quite meaningless'' }
   
@@ -72,6 +87,8 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
   with an empty database. The only $U$ that is closed here is $\{\remove a\}$. 
   It makes sense, though. And this insight might make some proofs easier later in the paper (sorry, I'm just using this paper as well to record my thoughts)}
 \end{definition}
+
+\bart{all justified weak repairs are justified repairs, right?}
 
 
 % \bart{Next one needed?}
@@ -113,11 +130,11 @@ In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x
 An operator $O:L\to L$ is \emph{monotone} if $x\leq y$ implies that $O(x)\leq O(y)$ and \emph{anti-monotone} if $x\leq y$ implies that $O(y)\leq O(x)$. An element $x\in L$ is a \emph{prefixpoint}, a \emph{fixpoint}, a \emph{postfixpoint} of $O$ if $O(x)\leq x$, respectively $O(x)=x$, $x\leq O(x)$. 
 Every monotone operator $O$ in a %chain complete poset 
 complete lattice has a least fixpoint, denoted $\lfp(O)$, which is also $O$'s least prefixpoint and the limit (the least upper bound) of the increasing sequence $(x_i)_{i\geq 0}$ defined by
-\begin{itemize}
+\begin{compactitem}
 	\item $x_0=\bot$,
 	\item $x_{i+1}=O(x_i)$, for successor ordinals $i+1$,
 	\item $x_\lambda=\lub(\{x_i\mid i<\lambda\})$, for limit ordinals $\lambda$.
-\end{itemize}
+\end{compactitem}
 
 
 \mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if for each $v\in L$ such that $O(v\land
@@ -161,12 +178,12 @@ As usual, we often restrict our attention to \emph{symmetric} approximators: app
 \cite{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
 
 AFT studies fixpoints of $O$ using fixpoints of $A$. 
- \begin{itemize}
+ \begin{compactitem}
   \item The \emph{$A$-Kripke-Kleene fixpoint} is the $\leqp$-least fixpoint of $A$ and has the property that it approximates all fixpoints of $O$. 
 \item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:x\mapsto A(x,y)_1$ and analogously for $A(x,\cdot)_2$. 
 \item The \emph{$A$-well-founded fixpoint} is the least precise partial $A$-stable fixpoint. 
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent with the condition that $x=\lfp(A(\cdot, x)_1)$.  
- \end{itemize}
+ \end{compactitem}
 
 % % 
 % 
@@ -197,12 +214,12 @@ We call the first type (\ref{first}.) of refinements \emph{application refinemen
  A \emph{well-founded induction} of $A$  is a sequence 
 $(x_i,y_i)_{i\leq \beta}$
 with $\beta$ an ordinal such that 
-\begin{itemize}
+\begin{compactitem}
 	\item $(x_0,y_0) = (\bot,\top)$;
 	\item $(x_{i+1},y_{i+1})$ is an A-refinement of $(x_{i},y_{i})$, for  all $i<\beta$;
 	\item $(x_{\lambda},y_{\lambda})= \lub_{\leqp} \{(x_i,y_i)\mid i<\lambda\}$
 	      for each limit ordinal $\lambda\leq\beta$.
-\end{itemize}
+\end{compactitem}
 A well-founded induction is \emph{terminal} if its limit $(x_\beta,y_\beta)$ has no strict $A$-refinements.
 % \marc{als je in sectie over fixpoints het leastfixpoint in een licthjes andere notatie geeft= $x_i\leq x_{i+1}\leq O(x_i)$, dan kan je hier gewoon zeggen: een well-founded induction is een monotone induction van de juiste operator (de vierwaardige stable operator)}\bart{precies zo geen fan van. De standaard def van leastfixpoint kent iedereen...}
 \end{definition}
