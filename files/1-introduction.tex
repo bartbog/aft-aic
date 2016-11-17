@@ -1,12 +1,30 @@
-Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
-Sometimes, databases can reach states in which one of the integrity constraints is violated, for instance due to execution of some invalid update, due to merging two databases, ... 
-In such case, one needs to repair the database \cite{ai/EiterG92}. 
-The problem with this is that it is often unclear which repairs should be considered ``good repairs''. 
-This is where active integrity constraints (AICs)  kick in \mycite{AIC} . 
-The idea of AICs is that instead of simply specifying which properties a valid state of the database should adhere to, one also specifies how violation of these properties can be repaired. 
-However, when there are multiple active integrity constraints present, there may be dependencies between them. 
-For instance, certain ways of fixing one AIC might result in a state where another AIC is violated. 
-Defining a natural semantics for such AICs has been a topic of intensive research \cite{iclp/CaropreseGSZ06,sebd/MolinaroGC06,iclp/CaropreseTZ07,dasfaa/CaropreseGM07,iclp/CaropreseT08,tkde/CaropreseGZ09,tplp/CaropreseT11,corr/Cruz-Filipe16}. 
+One of the key components of modern-day databases are integrity constraints: logical formulas that specify semantic relationships between the data being modelled that have to be satisfied at all times.
+When the database is changed (typically by updating), it is necessary to check that its integrity constraints are still valid, and in the negative case it must be repaired.
+
+The problem of database repair has been an important topic of research for more than thirty years~\cite{icdt/Abiteboul88}.
+There are two major problems when deciding how to repair an inconsistent database: \emph{finding} possible repairs and \emph{choosing} which one to apply.
+Indeed, there are typically several ways to fix an inconsistent database, and several criteria to choose the ``best'' one have been proposed over the years.
+Among the most widely accepted criteria are minimality of change~\cite{Winslett90,ai/EiterG92} -- change as little as possible -- and the common-sense law of inertia~\cite{PrzymusinskiT97} -- do not change anything unless there is a reason to do it.
+
+A typical implementation of integrity constraints in database systems is by means of event-condition-action rules~\cite{TenienteO95,WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
+However, these rules do not have a declarative semantics, making their joint behaviour hard to understand.
+
+The formalism of active integrity constraints~\cite{ppdp/FlescaGZ04} was inspired by the same idea.
+Active integrity constraints express database dependencies through logic programming-style rules that include update actions in their heads.
+They come with a declarative semantics~\cite{iclp/CaropreseGSZ06,tplp/CaropreseT11} that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair.
+These repairs can be computed directly by means of tree algorithms~\cite{tase/Cruz-FilipeEGN13}, which have been implemented as a prototype~\cite{CFHLNS15}.
+
+%% Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
+%% Sometimes, databases can reach states in which one of the integrity constraints is violated, for instance due to execution of some invalid update, due to merging two databases, ... 
+%% In such case, one needs to repair the database \cite{ai/EiterG92}. 
+%% The problem with this is that it is often unclear which repairs should be considered ``good repairs''. 
+%% This is where active integrity constraints (AICs)  kick in \mycite{AIC} . 
+%% The idea of AICs is that instead of simply specifying which properties a valid state of the database should adhere to, one also specifies how violation of these properties can be repaired. 
+%% However, when there are multiple active integrity constraints present, there may be dependencies between them. 
+%% For instance, certain ways of fixing one AIC might result in a state where another AIC is violated. 
+%%
+%% lcf: not sure what to include from this list of references
+%% Defining a natural semantics for such AICs has been a topic of intensive research \cite{iclp/CaropreseGSZ06,sebd/MolinaroGC06,iclp/CaropreseTZ07,dasfaa/CaropreseGM07,iclp/CaropreseT08,tkde/CaropreseGZ09,tplp/CaropreseT11,iclp/Cruz-Filipe16}. 
 
 It is striking that many of the intuitions underlying about what ``good'' repairs are, are very similar to intuitions that have appeared in other domains of non-monotonic reasoning, such as for instance logic programming \mycite{LP} or default logic \mycite{DL}. 
 For instance \todo{minimality} of change \cite{}, ... 
@@ -16,7 +34,7 @@ Essentially, fixing similar problems as in other NMR domains...
 
 In this paper, we define a new class of semantics for AICs that are natural counterparts of existing semantics in  various non-monotonic reasoning domains. 
 To be precise, we define semantics for AICs based on approximation fixpoint theory \mycite{AFT}, an abstract algebraic framework that unifies semantics of logic programming, default logic, autoepistemic logic \mycite{AEL}, abstract argumentation frameworks \mycite{AF} and abstract dialectical frameworks \mycite{ADF}. 
-In order to do so, we continue the work of Cruz-Filipe \cite{corr/Cruz-Filipe16}, who defined a semantic operator for AICs and used it to study the grounded fixpoint semantics \mycite{GroundedFixpoints} for AICs. 
+In order to do so, we continue the work of Cruz-Filipe \cite{iclp/Cruz-Filipe16}, who defined a semantic operator for AICs and used it to study the grounded fixpoint semantics \mycite{GroundedFixpoints} for AICs. 
 In this paper, we define an approximating operator of Cruz-Filipe's semantic operator. 
 When this operator is defined, approximation fixpoint theory immediately provides us with \textit{(i)} a supported fixpoint semantics, \textit{(ii)} a well-founded fixpoint semantics, \textit{(iii)} a (partial) stable fixpoint semantics, \textit{(iv)} a Kripke-Kleene fixpoint semantics, and \textit{(v)} a (partial) grounded fixpoint semantics. 
 We study properties of these new semantics and study how they compare to existing semantics. 
