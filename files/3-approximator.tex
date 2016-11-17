@@ -529,11 +529,11 @@ In both cases, $\supp_{(\bar\VV,\bar\UU)(\db),\aics}(\change a)=\ltrue$, hence b
 \begin{example}
  The converse of Proposition \ref{prop:stable_is_justified} does not hold. Consider the following set \aics of AICs. 
  \begin{align*}
-  \lnot a \lrule \add a\\
-  a\land \lnot b \lrule \add b\\
-  a \land \lnot b \lrule \remove a
+  \lnot a \aicrule \add a\\
+  a\land \lnot b \aicrule \add b\\
+  a \land \lnot b \aicrule \remove a
  \end{align*}
- with $\db=\empty$. 
+ with $\db=\emptyset$. 
  In this case $\{\add a,\add b\}$ is a justified repair of \fulldb, but not a stable repair. 
  To see that it is not a stable repair, it suffices to note that 
  \[\Ap(\emptyset,\{a,b\}) = (\emptyset,\{a,b\})\]

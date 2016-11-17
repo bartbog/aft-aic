@@ -10,9 +10,9 @@ A set of update actions $\UU$ is \emph{consistent} if it does not contain an act
 Following \cite{corr/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
 \[\UU_1 \biguplus \UU_2 = (\UU_1 \cup \{\alpha \in \UU_2 \mid \alpha^D\not \in \UU_1) \setminus \{\alpha\in \UU_1 \mid \alpha^D\in \UU_2\}.\]
 This operation has the property that if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
-\[(\UU_1\biguplus \UU_2(\db) = \UU_2(\UU_1(\db)).\]
+\[\left(\UU_1\biguplus \UU_2\right)(\db) = \UU_2(\UU_1(\db)).\]
 
-Literals and update actions are related by natural mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  These mappings naturally extend to sets of literals/action sets. 
+Literals and update actions are related by natural mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  These mappings naturally extend to sets of literals/actions. 
 
 \begin{definition}
  An \emph{active integrity constraint} (AIC) is a rule $r$ of the form
@@ -36,10 +36,10 @@ In the current paper, we assume \emph{all AICs are normal}. Extensions of the se
 
 \begin{definition}
  A set of update actions \UU is a \emph{weak repair} for \db and a set \aics of AICs (shortly, for $\fulldb$) if:
- \begin{itemize}
+ \begin{compactitem}
   \item every action in \UU changes \db, and 
   \item $\UU(\db)\not\models \body(r)$ for each $r\in\aics$.
- \end{itemize}
+ \end{compactitem}
 A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 
@@ -95,11 +95,11 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 % \luis{Depends on what we want to do}
 % \begin{definition}
 %  Let $\aics_1$ and $\aics_2$ be two sets of AICs over \atoms. We say that 
-%  \begin{itemize}
+%  \begin{compactitem}
 %   \item $\aics_1$ and $\aics_2$ are \emph{strongly independent}, $\aics_1 \strongind \aics_2$, if for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\body(r_1)$ and $\body(r_2)$ contain no common or dual literals. 
 %   \item $\aics_1$ and $\aics_2$ are \emph{independent}, $\aics_1 \ind \aics_2$, if for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_i))$ and $\body(r_{3-i})$ contain no common or dual literals for $i=1,2$. 
 %   \item $\aics_1$ \emph{precedes} $\aics_2$, $\aics_1 \prec \aics_2$, if, for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_2))$ and $\body(r_1)$ contain no common or dual literals, but not conversely. 
-%  \end{itemize}
+%  \end{compactitem}
 % \end{definition}
 % \bart{the ``but not conversely'' in this definition makes it a strict relation. That is somewhat unnatural to me. I would give the non-strict definition. All results remain to hold and precedence becomes a generalisation of ``independent''. This is only a minor point.}
 % \luis{What we use is the strict relation, but we can treat the non-strict as primitive. I have to look on the original work to see exactly if there are any unexpected problems.}
