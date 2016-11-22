@@ -1,1 +1,6 @@
 AFT-semantics-AIC.pdf
+*.log
+*.aux
+*.blg
+*.bbl
+*.tex~
