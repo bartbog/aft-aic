@@ -344,8 +344,8 @@ Furthermore, $\Ap(\UU_2,\UU) = \UU_2=\UU$, hence  we find that indeed, \UU is an
 The case for $\{\add b\}$ is similar. 
 
 It can also be verified that there are no other $\Ap$-stable fixpoints. Due to minimality, no other could contain $b$, hence they must be subsets of $\{a,c\}$. Again, due to minimality, the only such subset is \UU. 
-
 \end{example}
+
 Hence, in the above example, \Ap-stable repairs capture the intended semantics. 
 
 \subsection{Properties of AFT-Style Semantics}
@@ -360,7 +360,7 @@ We now show that all of these semantics are nicely invariant under shifting.
 \end{proof}
 
 \begin{proposition}\label{prop:wf-wf}
- Suppose the AFT-well-founded repair is two-valued. In this case it is also well-founded (as defined by \citet{}). 
+ If the AFT-well-founded repair is two-valued,  it is also well-founded (as defined by \citet{}). 
 \end{proposition}
 \begin{proof}
 Let $\left(\UUU_i\right)_{i\leq k}$ be a well-founded induction of \Ap. 
@@ -551,12 +551,17 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
 To see that it is a justified repair, note that $\{\add a,\add b\}$ is the least set closed under \aics. 
 \end{example}
 
-While the conve..... does not hold in general, in certain cases, it does, as the following proposition shows. 
+While the converse of Proposition \ref{prop:stable_is_justified} does not hold in general, for a broad class of active integrity constraints, it does holds. We first define this class and then prove that this is indeed the case. 
+
+\begin{definition}
+ A set of AICs \aics is called \emph{unipolar} if there are no rules $r,r'\in\aics$ with $\head(r)=\head(r')^D$. 
+\end{definition}
+
+
+
 
 \begin{proposition}\label{prop:justified_is_stable_sometimes}
-Suppose $\eta$ and $\db$ have the property that every update action $u$ in the head of a rule of $r\in\eta$ modifies \db. 
-Then each justified repair is \Ap-stable. 
-% If \UU is a \Ap-stable repair, then \UU is a justified repair. 
+If \aics is unipolar, then each justified repair of \fulldb is \Ap-stable. 
 \end{proposition}
 \begin{proof}
  To prove this theorem, we show the following strengthening of \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}. 
@@ -564,13 +569,14 @@ Then each justified repair is \Ap-stable.
   \item \textbf{Claim 4'}: For every set of update actions $\VV\subseteq \UU$: 
  \[\Ap(\overline\VV,\overline\UU)_1= \overline{O(\VV)}.\] 
 \end{compactdesc}
- It then follows easily that $\UU$ is a minimal fixpoint of $O$ iff $\bar\UU$ is a minimal fixpoint of $\Ap(\overline\VV,\overline\UU)_1$ and the result follows. 
+ It then follows easily that $\UU$ is a minimal fixpoint of $O$ iff $\bar\UU$ is a minimal fixpoint of $\Ap(\overline\VV,\overline\UU)_1$ and the result follows from \textbf{Claim 1} in the proof of Proposition \ref{prop:stable_is_justified} and the definition of \Ap-stable fixpoint. 
  
 \textbf{Claim 4'}
-One direction of this claim has been proven as \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}. 
- Take an atom $a$ and a set $\VV\subseteq\UU$ of update actions such that $a\in \overline{O(\VV)}$; we show that $a\in\Ap(\overline\VV,\overline\UU)_1$. Since $a\in\overline{O(\VV)}$, it holds that $\change a\in \closure(\ext(\VV))$ and thus (by \textbf{Claim 3}) that $\suppin_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\ltrue$. Furthermore, by the condition on $\eta$ and $\db$, it holds that $\suppout_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\lfalse$. Hence, it must hold that $\Ap(\overline\VV,\overline\UU)(a)=\ltrue$ and thus that  $a\in \Ap(\overline\VV,\overline\UU)_1$, which we needed to prove. 
+One direction of this claim has been proven as \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}; we show that the other inclusion also holds.. 
+ Take an atom $a$ and a set $\VV\subseteq\UU$ of update actions such that $a\in \overline{O(\VV)}$; we show that $a\in\Ap(\overline\VV,\overline\UU)_1$. Since $a\in\overline{O(\VV)}$, it holds that $\change a\in \closure(\ext(\VV))$ and thus (by \textbf{Claim 3}) that $\suppin_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\ltrue$. This means that there is at least one rule $r\in\aics$ with $\head(r)=\change a$. Since \aics is unipolar, there can be no rules $r'\in\aics$ with $\head(r') = (\change a)^D$ hence, it holds that $\suppout_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\lfalse$. From the definition of $\Ap$, we then find that $\Ap(\overline\VV,\overline\UU)(a)=\ltrue$ and thus that  $a\in \Ap(\overline\VV,\overline\UU)_1$, which we needed to prove. 
 \qedhere
 \end{proof}
+
 
 \bart{I think the previous proposition can be strengthened even. 
 I think it holds as well when \aics is ``unipolar'' (new term I invented: for each atom $a$, only $\add a$ or $\remove a$ occurs in rule  heads). 
