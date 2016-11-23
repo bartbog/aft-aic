@@ -1,0 +1,36 @@
+\subsection{Preliminaries: Logic Programming}
+
+
+\subsection{AIC and Logic Programs}
+
+\bart{I don't know how valuable the following result is. }
+\begin{proposition}\label{prop:lplink}
+ If $\db=\emptyset$, and the only update actions in \aics are of the form $\add a$, then, consider the following logic program: 
+ \begin{align*}
+  \PP =& \{a \lrule \nup(r)\mid r\in \aics, \head(r)= \add a\}\\
+  &\cup \{a \lrule a\mid a \in \atoms\}
+ \end{align*}
+then $\Ap = \Psi_\PP$. 
+
+Hence, all AFT semantics for \fulldb coincide in this case with the equally-named semantics for the logic program \PP. 
+\end{proposition}
+\begin{proof}
+ \todo{case analysis on the definition of \Ap. 
+ The condition on \fulldb guarantees that $\suppout$ is always false.}
+\end{proof}
+
+\begin{example}
+ Proposition \ref{prop:lplink} does not hold in general, not even for unipolar \aics. 
+ Consider for instance the following sets of \aics. 
+ \begin{align*}\eta_1 &= \left\{\begin{array}{ll}
+                    a &\aicrule \remove a\\
+                    b & \aicrule \remove b
+                   \end{array}\right.\\
+                   \eta_2 &=\emptyset.
+\end{align*}
+These two are not equivalent under all AFT semantics. 
+For the first one, the KK-repair is $\{a\mapsto\lunkn,b\mapsto\lunkn\}$, while for the latter, the KK-repair is $\{a\mapsto\lfalse,b\mapsto\lfalse\}$. However, they have the same translation to logic programs.          
+%                    
+% 
+\end{example}
+
