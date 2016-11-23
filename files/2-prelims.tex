@@ -104,8 +104,21 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 % \bart{the ``but not conversely'' in this definition makes it a strict relation. That is somewhat unnatural to me. I would give the non-strict definition. All results remain to hold and precedence becomes a generalisation of ``independent''. This is only a minor point.}
 % \luis{What we use is the strict relation, but we can treat the non-strict as primitive. I have to look on the original work to see exactly if there are any unexpected problems.}
 
-\todo{define the ``shifting property''?}
 
+\citet{tcs/MarekT98} defined in the context of revision programming \emph{the shifting property}; this property was later transferred to active integrity constraints \cite{tplp/CaropreseT11}. 
+Intuitively, a semantics for AICs possesses the shifting property if transforming a database into an isomorphic one preserves the semantics at hand. 
+
+\begin{definition}
+ Let $S\subseteq\atoms$ be a set of atoms and $l$ a literal. The \emph{shift of $l$} with respect to $S$ is defined as 
+ \[\shift_S(l) = \left\{\begin{array}{ll}                                                                                                             l&\text{if $l\not\in S$}\\                                                                                                              l^D&\text{otherwise}                                                                                                                                      \end{array}\right.\]]
+ The shift function is extended to sets of literals, update actions and AICs in the straightforward manner. 
+\end{definition}
+
+\begin{definition}
+ We say that a semantics for AICs \emph{has the shifting property} if for each database \fulldb, \UU is a repair of \fulldb accepted by the semantics if and only if $\shift_S(\UU)$ is a repair of $\langle\shift_S\db,\shift_S\aics\rangle$ accepted by the semantics.
+\end{definition}
+
+If a semantics satisfies the shifting property, by taking $S=\db$, we can reduce any situation to the case where $\db=\emptyset$. 
 \subsection{Lattices, Operators and Fixpoints}
 A \emph{partially ordered set (poset)} $\langle L,\leq\rangle$ is a set $L$ equipped with a partial order $\leq$, i.e., a reflexive, antisymmetric, transitive relation. 
 As usual, we write $x<y$ as abbreviation for $x\leq y \land x\neq y$.
