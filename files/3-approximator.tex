@@ -105,7 +105,7 @@ The first, \suppin, is true if there is support for $a$ being in the intended up
 
 \begin{definition}
 % \overlinet{truth tables are not so nice. Actually, a case split should be easier}
-Given \db and \aics. We define an operator $\Ap: P\to P$, as follows:
+Given \db and \aics. We define an operator $\Apfull: P\to P$, as follows:
 
 % given by the following truth tables:
 % 
@@ -160,17 +160,17 @@ Given \db and \aics. We define an operator $\Ap: P\to P$, as follows:
 % \cline{1-5}
 % 	\end{tabular}
 \begin{compactitem}
- \item If $\UUU(a)=\lfalse$, then $\Ap(\UUU)(a) = \suppin_\UUU(a).$
- \item If $\UUU(a)=\ltrue$, then $\Ap(\UUU)(a) = \suppout_\UUU(a)^{-1}.$
+ \item If $\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a) = \suppin_\UUU(a).$
+ \item If $\UUU(a)=\ltrue$, then $\Apfull(\UUU)(a) = \suppout_\UUU(a)^{-1}.$
  \item Otherwise (i.e., if $\UUU(a) = \lunkn$):
   \begin{compactitem}
-    \item if $\suppin_\UUU(a) = \ltrue$ and $\suppout_\UUU(a)=\lfalse$, then $\Ap(\UUU)(a)=\ltrue$;
-    \item if $\suppout_\UUU(a) = \ltrue$ and $\suppin_\UUU(a)=\lfalse$, then $\Ap(\UUU)(a)=\lfalse$;
-    \item otherwise, $\Ap(\UUU)(a)=\lunkn$.
+    \item if $\suppin_\UUU(a) = \ltrue$ and $\suppout_\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a)=\ltrue$;
+    \item if $\suppout_\UUU(a) = \ltrue$ and $\suppin_\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a)=\lfalse$;
+    \item otherwise, $\Apfull(\UUU)(a)=\lunkn$.
 \end{compactitem}
 
 \end{compactitem}
-
+When $\db$ is clear from the context, we write \Ap for \Apfull.
  
 \end{definition}
 
@@ -353,11 +353,20 @@ Hence, in the above example, \Ap-stable repairs capture the intended semantics.
 
 We now show that all of these semantics are nicely invariant under shifting. 
 \begin{proposition}
- \Ap, and hence also \Op, is invariant under shifting.
+ \Ap, and hence also \Op, is invariant under shifting, i.e., for each set $S\subseteq \atoms$:
+ \[\Apfull = \threeap_{\langle\shift_S(\db),\shift_S(\eta)\rangle}\]
 \end{proposition}
 \begin{proof}
- \todo{will follow easily from the fact that we define everything in terms of $\change a$ and not in terms of $a$ directly. }
+First note that for each update action $u$, $u$ changes $\db$ iff $\shift_S(u)$ changes $\shift_S(\db)$. Hence for each atom $\change_{\db} a = \change_{\shift_S(\db)} a$ and thus
+$\overline{\UU}=\overline{\shift_S(\UU)}$ 
+(where the first identification is with respect to \db and the second with respect to $\shift_S(\db)$. 
+Now, the operator \Ap is defined entirely in terms of these sets, hence, the result follows. 
+\bart{Proof is still a bit of handwaving if you ask me. Could probably be more formalised}
 \end{proof}
+\begin{corollary}
+ All AFT-style semantics for AICs have the shifting property. 
+\end{corollary}
+
 
 \begin{proposition}\label{prop:wf-wf}
  If the AFT-well-founded repair is two-valued,  it is also well-founded (as defined by \citet{}). 
