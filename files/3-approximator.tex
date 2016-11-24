@@ -12,7 +12,7 @@ If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update
 Thus, in the above identification, a set  of atoms $\overline\UU\subseteq \atoms$ is identified with the set 
 \[\UU = \{\change a\mid a \in \overline \UU \}\]
 of update actions.
-Usually, we omit the bar, and simply write $\UU$ for the subset of \atoms as well. Only in places where the distinction between the two is essential (in technical parts of proofs), we explicitly write $\overline \UU$. 
+Usually, we omit the bar, and simply write $\UU$ for the subset of \atoms as well. Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline \UU$. 
 % In some technical parts of the paper, we often switch between 
 
 Furthermore, we prefer smaller sets of updates over lager sets: if a database can be fixed by just having $\{\add a\}$, the set $\{\add a, \add b\}$ is not of interest to us. 
@@ -105,7 +105,7 @@ The first, \suppin, is true if there is support for $a$ being in the intended up
 
 \begin{definition}
 % \overlinet{truth tables are not so nice. Actually, a case split should be easier}
-Given \db and \aics. We define an operator $\Apfull: P\to P$, as follows:
+Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
 
 % given by the following truth tables:
 % 
@@ -174,7 +174,7 @@ When $\db$ is clear from the context, we write \Ap for \Apfull.
  
 \end{definition}
 
-The above definitions is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
+The above definition is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
 In the case where $\UUU(a)=\lfalse$, $a$ is not an element of the (partial) update set at hand. The only way to add $a$ to the update is if some rule supports adding $a$ (changing $a$). This is exactly captured by $\suppin$. 
 The case for $\UUU(a)=\ltrue$ is completely symmetrical, in this case the only reason for removing $a$ from the update at hand is if there is some rule that supports ``keeping $a$'', i.e., that supports $\change a^D$. 
 In the last case, where $\UUU(a)=\lunkn$, we have no information what the update does to $a$ yet. In this case, we can derive that $a$ \emph{must} be in the update if we already have support for $\change a$ and we are sure that there is no support for keeping $a$ (for $\change a^D$). Similarly, we can derive that $a$ \emph{must not} be in the update if we have support for $\change a^D$ but not for $\change a$. 
@@ -273,6 +273,8 @@ Hence $\UUU_3$ is an application refinement of $\UUU_2$. Since this is an exact 
 Note that in this example, unfoundedness refinements take care of minimisations of repairs.  
 \end{example}
 
+\luis{Despite all the information in the background, I guess one can only understand this if one already knows something about AFT. We should state it explicitly in the beginning.}
+
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}
@@ -360,8 +362,9 @@ We now show that all of these semantics are nicely invariant under shifting.
 First note that for each update action $u$, $u$ changes $\db$ iff $\shift_S(u)$ changes $\shift_S(\db)$. Hence for each atom $\change_{\db} a = \change_{\shift_S(\db)} a$ and thus
 $\overline{\UU}=\overline{\shift_S(\UU)}$ 
 (where the first identification is with respect to \db and the second with respect to $\shift_S(\db)$. 
-Now, the operator \Ap is defined entirely in terms of these sets, hence, the result follows. 
+Since \Ap is defined entirely in terms of these sets, the result follows. 
 \bart{Proof is still a bit of handwaving if you ask me. Could probably be more formalised}
+\luis{I'm ok with it :-) I don't see that we gain a lot by adding a formal proof.}
 \end{proof}
 \begin{corollary}
  All AFT-style semantics for AICs have the shifting property. 
@@ -369,7 +372,7 @@ Now, the operator \Ap is defined entirely in terms of these sets, hence, the res
 
 
 \begin{proposition}\label{prop:wf-wf}
- If the AFT-well-founded repair is two-valued,  it is also well-founded (as defined by \citet{}). 
+ If the AFT-well-founded repair is two-valued,  it is also well-founded (as defined by \citet{tase/Cruz-FilipeEGN13}). 
 \end{proposition}
 \begin{proof}
 Let $\left(\UUU_i\right)_{i\leq k}$ be a well-founded induction of \Ap. 
@@ -408,7 +411,9 @@ not hold. Consider for instance the following set $\aics$ of AICs
  \end{align*}
  and $\db=\{a,b,c\}$.
  In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be removed no matter what. The second rule then becomes void (there is never a reason to remove $b$) and the last rule then dictates that also $c$ must be removed. 
- However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also well-founded repair (according to \citet{}). 
+ However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also well-founded repair, obtained by applying first the second rule and then the first one.
+ %(according to \citet{iclp/Cruz-Filipe16}). 
+ %LCF: it's so simple to explain...
 \end{example}
 
 % \todo{check the link between ``justified repair'' and ``stable repair''. My feeling is that they should be very closely related. For instance in Example 20 in the GF and AIC paper, this is a case where stable coincides with justified. However, there is also a notion of ultimate stable repair (which coincides here with grounded). This is similar to logic programming, where 
@@ -428,6 +433,7 @@ not hold. Consider for instance the following set $\aics$ of AICs
 If \UU is a \Ap-stable repair, then \UU is a justified repair. 
 \end{proposition}
 \todo{Throughout the paper, I sometimes use the symbol $a$ for an action, sometimes for an atom. That must be confusing. However, due to the identification of a set of update actions with a subset of \atoms this mixup I'm doing is not so strainge. It might be better to streamline it a bit more} 
+\luis{the ``standard'' practice is to use $\alpha$ for actions}
 \begin{proof}
 We can safely assume that \UU is a repair of \db (otherwise, it is neither a justified repair, nor a $\Ap$-stable repair.
 
@@ -538,7 +544,7 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
 %  To see this, notice that NEFF = the stuff you don't change. In our representation of three-valued update sets, this EXACTLY corresponds to the upper bound}
 %  
 \end{proof}
-
+\luis{this one I still need to read closely}
 
 
 
@@ -593,4 +599,9 @@ One direction of this claim has been proven as \textbf{Claim 4} in the proof of 
 \begin{corollary}
  The AFT-well-founded repair approximates all justified repairs. 
 \end{corollary}
+\luis{I have to think about this unipolar stuff. Does it make sense in the database world?}
 
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../AFT-semantics-AIC.tex"
+%%% End:

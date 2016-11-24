@@ -1,5 +1,7 @@
 \todo{The well-founded semantics for AICs seems to assume a \emph{FINITE} database is given. However, using ordinals, the definition easily extends to the infinite context as well. We should choose, do we want this infintie context or not?}
 
+\luis{Although the mathematical side of my brain would love that generalization, I think we shouldn't discuss it.  Databases are by definition finite, and I'm afraid referees might kill us.}
+
 \subsection{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A literal is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
 The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$.
@@ -22,7 +24,7 @@ Literals and update actions are related by natural mappings \litof and \actof, w
   
   We call $l_1\land \dots \land l_n$ the \emph{body} of $r$ and refer to it as $\body(r)$; $\alpha_1\mid\dots \mid \alpha_k$ is the head of $r$ and referred to as $\head (r)$.
 \end{definition}
-
+\luis{I wouldn't use $\lor$, because actions are not logical formulas.}
 
 The informal reading of the above rule is ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one of the $\alpha_i$.''
 A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. The intuition is that atoms can only be changed if there is some rule that allows it. 
@@ -32,7 +34,8 @@ An AIC is \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form
 \[\{l_1\land \dots\land l_n\aicrule \alpha_i\mid 1\leq i\leq k\}.\]
 It is clear from the informal explanation above that the expectation is that normalization preserves semantics. Indeed, this is the case for most semantics of AICs (the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which pose several other problems~\cite{tase/Cruz-FilipeEGN13}).
 %However, not for all semantics defined for AICs this is the case (see, e.g., \cite{}).
-In the current paper, we assume \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed. 
+In the current paper, we assume \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed.
+\luis{If we have results about justified repairs, it might make sense to include remarks on whether they hold in the non-normal case. If we do that, we need to revise this sentence.}
 
 \begin{definition}
  A set of update actions \UU is a \emph{weak repair} for \db and a set \aics of AICs (shortly, for $\fulldb$) if:
@@ -75,20 +78,22 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
    \item \UU is a \emph{justfied (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
   \end{compactitem}
 
-
-
-
-  \todo{
-  I am not sure the definition in ``grounded fixpoints and active integrity constraints'' is correct. THat definition contains an item ``U is a justified action set if it is the least superset of $U\cup ne$ closed under $\eta$''. However, this is equivalent with 
-  ``$U$ is a justfied action set if $ne \subseteq U$ and $U$ is closed under $\eta$.'', which seems quite wrong. Shouldn't this be ``$U$ is a justified action set if it is the least superset of $ne$ closed under $\eta$''? I.e., the scoping if ``least among which sets'' changes... (in the grounded fixpoints paper, you are referring to ``U is least among sets that are superset of U, which seems quite meaningless'' }
+  %% \todo{
+  %% I am not sure the definition in ``grounded fixpoints and active integrity constraints'' is correct. THat definition contains an item ``U is a justified action set if it is the least superset of $U\cup ne$ closed under $\eta$''. However, this is equivalent with 
+  %% ``$U$ is a justfied action set if $ne \subseteq U$ and $U$ is closed under $\eta$.'', which seems quite wrong. Shouldn't this be ``$U$ is a justified action set if it is the least superset of $ne$ closed under $\eta$''? I.e., the scoping if ``least among which sets'' changes... (in the grounded fixpoints paper, you are referring to ``U is least among sets that are superset of U, which seems quite meaningless'' }
+  %% LCF: yes, I noticed and corrected that when preparing the journal submission :)
   
   \todo{something else releated to this definition. THe notion of ``closed'' as defined in the original paper and also the grounded fixpoints paper is quite surprising. I am in particular surprised by the fact that this does not take \db into account. Consider for instance the following \aics:
   \[a\aicrule \remove a\]
   with an empty database. The only $U$ that is closed here is $\{\remove a\}$. 
   It makes sense, though. And this insight might make some proofs easier later in the paper (sorry, I'm just using this paper as well to record my thoughts)}
+
+\luis{maybe we should say this explicitly? for me the notion of closed is a bit arbitrary, like most of the definitions regarding justified repairs}
 \end{definition}
 
 \bart{all justified weak repairs are justified repairs, right?}
+
+\luis{no: they actually have an example in their 2011 paper. That was actually one of the first things that sent my alarm bells off.}
 
 
 % \bart{Next one needed?}
@@ -110,12 +115,12 @@ Intuitively, a semantics for AICs possesses the shifting property if transformin
 
 \begin{definition}
  Let $S\subseteq\atoms$ be a set of atoms and $l$ a literal. The \emph{shift of $l$} with respect to $S$ is defined as 
- \[\shift_S(l) = \left\{\begin{array}{ll}                                                                                                             l&\text{if $l\not\in S$}\\                                                                                                              l^D&\text{otherwise}                                                                                                                                      \end{array}\right.\]]
+ \[\shift_S(l) = \left\{\begin{array}{ll}                                                                                                             l&\text{if $l\not\in S$}\\                                                                                                              l^D&\text{otherwise}                                                                                                                                      \end{array}\right.\]
  The shift function is extended to sets of literals, update actions and AICs in the straightforward manner. 
 \end{definition}
 
 \begin{definition}
- We say that a semantics for AICs \emph{has the shifting property} if for each database \fulldb, \UU is a repair of \fulldb accepted by the semantics if and only if $\shift_S(\UU)$ is a repair of $\langle\shift_S\db,\shift_S\aics\rangle$ accepted by the semantics.
+ We say that a semantics for AICs \emph{has the shifting property} if for each database \fulldb, \UU is a repair of \fulldb accepted by the semantics if and only if $\shift_S(\UU)$ is a repair of $\langle\shift_S(\db),\shift_S(\aics)\rangle$ accepted by the semantics.
 \end{definition}
 
 If a semantics satisfies the shifting property, by taking $S=\db$, we can reduce any situation to the case where $\db=\emptyset$. 
@@ -258,3 +263,10 @@ Semantics defined using the ultimate approximator have as advantage that they on
 % We will develop an alternative fixpoint theory that is more precise than the current one, and show that with this theory, we obtain several desirable properties in logics with a fixpoint semantics.
 
 \todo{Say something about partial grounded fixpoints?}
+
+\luis{It might be good to point out that we will include examples of all these constructions in the next section.}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../AFT-semantics-AIC.tex"
+%%% End:
