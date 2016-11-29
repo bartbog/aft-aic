@@ -2,6 +2,8 @@
 
 \luis{Although the mathematical side of my brain would love that generalization, I think we shouldn't discuss it.  Databases are by definition finite, and I'm afraid referees might kill us.}
 
+\bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
+
 \subsection{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A literal is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
 The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$.
@@ -18,13 +20,14 @@ Literals and update actions are related by natural mappings \litof and \actof, w
 
 \begin{definition}
  An \emph{active integrity constraint} (AIC) is a rule $r$ of the form
- \todo{replace $\mid$ by $\lor$?}
+%  \todo{replace $\mid$ by $\lor$?}
   \begin{equation} l_1\land \dots\land l_n\aicrule \alpha_1\mid\dots \mid \alpha_k \label{eq:aic}\end{equation}
   such that $\litof(\alpha_i^D) \in \{l_1,\dots,\l_n\}$ for each $i$.
   
   We call $l_1\land \dots \land l_n$ the \emph{body} of $r$ and refer to it as $\body(r)$; $\alpha_1\mid\dots \mid \alpha_k$ is the head of $r$ and referred to as $\head (r)$.
 \end{definition}
-\luis{I wouldn't use $\lor$, because actions are not logical formulas.}
+% \luis{I wouldn't use $\lor$, because actions are not logical formulas.}
+%BART: OK
 
 The informal reading of the above rule is ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one of the $\alpha_i$.''
 A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. The intuition is that atoms can only be changed if there is some rule that allows it. 
@@ -36,6 +39,7 @@ It is clear from the informal explanation above that the expectation is that nor
 %However, not for all semantics defined for AICs this is the case (see, e.g., \cite{}).
 In the current paper, we assume \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed.
 \luis{If we have results about justified repairs, it might make sense to include remarks on whether they hold in the non-normal case. If we do that, we need to revise this sentence.}
+\bart{The problem is that the AFT semantics are not defined for non-deterministic operators, so we won't be able to derive much useful stuff from there I'm affraid}
 
 \begin{definition}
  A set of update actions \UU is a \emph{weak repair} for \db and a set \aics of AICs (shortly, for $\fulldb$) if:
@@ -264,7 +268,11 @@ Semantics defined using the ultimate approximator have as advantage that they on
 
 \todo{Say something about partial grounded fixpoints?}
 
-\luis{It might be good to point out that we will include examples of all these constructions in the next section.}
+% \luis{It might be good to point out that we will include examples of all these constructions in the next section.}
+% 
+% \bart{Agree}
+
+When we introduce semantics for AIC based on AFT in the next section, we provide examples of the different constructions considered here. 
 
 %%% Local Variables:
 %%% mode: latex

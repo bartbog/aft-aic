@@ -1,8 +1,12 @@
 \todo{Some complexity results.
 Probably: well-founded/KK: polynomially computable (data complexity), stable fixpoints: NP-complete, ... Copy results from logic programming basically. Similarly, complexity increases if we start using ultimate approximators}
 
-\luis{The plan: recall the translation \mathsf{aic} from the Caroprese paper, show that the operator we use to define fixpoints is preserved by this operator, get upper bounds for all complexity problems.  For lower bounds I need to think a bit more.}
+\luis{The plan: recall the translation $\mathsf{aic}$ from the Caroprese paper, show that the operator we use to define fixpoints is preserved by this operator, get upper bounds for all complexity problems.  For lower bounds I need to think a bit more.}
 
+\bart{Lower bound for stable: every normal logic program can be seen  as an AIC. Should have te same stable smeantics (note: our transformation in theprevious section adds rules 
+\[a\lrule a\] but these do not change stable models. 
+
+Lower bounds for KK well-founded. Well...polytime upper bound is al that needs to be sshown?}
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../AFT-semantics-AIC.tex"
