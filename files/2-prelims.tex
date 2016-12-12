@@ -1,8 +1,8 @@
-\todo{The well-founded semantics for AICs seems to assume a \emph{FINITE} database is given. However, using ordinals, the definition easily extends to the infinite context as well. We should choose, do we want this infintie context or not?}
-
-\luis{Although the mathematical side of my brain would love that generalization, I think we shouldn't discuss it.  Databases are by definition finite, and I'm afraid referees might kill us.}
-
-\bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
+% \todo{The well-founded semantics for AICs seems to assume a \emph{FINITE} database is given. However, using ordinals, the definition easily extends to the infinite context as well. We should choose, do we want this infintie context or not?}
+% 
+% \luis{Although the mathematical side of my brain would love that generalization, I think we shouldn't discuss it.  Databases are by definition finite, and I'm afraid referees might kill us.}
+% 
+% \bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
 
 \subsection{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A literal is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
@@ -41,6 +41,7 @@ In the current paper, we assume \emph{all AICs are normal}. Extensions of the se
 \luis{If we have results about justified repairs, it might make sense to include remarks on whether they hold in the non-normal case. If we do that, we need to revise this sentence.}
 \bart{The problem is that the AFT semantics are not defined for non-deterministic operators, so we won't be able to derive much useful stuff from there I'm affraid}
 \luis{We can always define stuff in general via normalization. Since justified repairs don't work well with normalization, this means that the relationships need to be analyzed again. For example, does Proposition 3.13 hold if we start with non-normal AICs, and consider stable repairs after normalization vs justified repairs without normalizing?}
+\bart{Hmmm... I Don't immediately have the answer to that one... Don't have any intuitions either. }
 
 \begin{definition}
  A set of update actions \UU is a \emph{weak repair} for \db and a set \aics of AICs (shortly, for $\fulldb$) if:
@@ -144,6 +145,8 @@ As is custom, we  sometimes call a greatest lower bound a \emph{meet}, and a lea
 % A chain complete poset has a least element $\bot$. 
 A complete lattice has both a least element $\bot$ and a greatest element $\top$. 
 
+Since we apply our results to (finite) databases, for the sake of simplicity we will assume $L$ to be a \emph{finite} set in this text. All presented results easily generalize to the infinite setting as well. 
+
 A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other, a bounded lattice is \emph{complemented} if every element $x\in L$ has a \emph{complement}: an element $\lnot x \in L$ satisfying $x\land \lnot x  = \bot$ and $x\lor \lnot x =\top$.
 A \emph{Boolean lattice} is a distributive complemented lattice. 
 In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x\land \lnot y)$.
@@ -152,22 +155,23 @@ In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x
 
 An operator $O:L\to L$ is \emph{monotone} if $x\leq y$ implies that $O(x)\leq O(y)$ and \emph{anti-monotone} if $x\leq y$ implies that $O(y)\leq O(x)$. An element $x\in L$ is a \emph{prefixpoint}, a \emph{fixpoint}, a \emph{postfixpoint} of $O$ if $O(x)\leq x$, respectively $O(x)=x$, $x\leq O(x)$. 
 Every monotone operator $O$ in a %chain complete poset 
-complete lattice has a least fixpoint, denoted $\lfp(O)$, which is also $O$'s least prefixpoint and the limit (the least upper bound) of the increasing sequence $(x_i)_{i\geq 0}$ defined by
-\begin{compactitem}
-	\item $x_0=\bot$,
-	\item $x_{i+1}=O(x_i)$, for successor ordinals $i+1$,
-	\item $x_\lambda=\lub(\{x_i\mid i<\lambda\})$, for limit ordinals $\lambda$.
-\end{compactitem}
+complete lattice has a least fixpoint, denoted $\lfp(O)$, which is also $O$'s least prefixpoint and the limit (the least upper bound) of the increasing sequence $(x_i)_{i \in \nat}$ defined by $x_0=\bot$ and $x_{i+1} = O(x_i)$. 
+% \begin{compactitem}
+% 	\item $x_0=\bot$,
+% 	\item $x_{i+1}=O(x_i)$, for successor ordinals $i+1$,
+% 	\item $x_\lambda=\lub(\{x_i\mid i<\lambda\})$, for limit ordinals $\lambda$.
+% \end{compactitem}
 
 
 \mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if for each $v\in L$ such that $O(v\land
-  x)\leq v$, it holds that $x\leq v$.   They called a point $x\in L$ \emph{strictly grounded} for $O$ if there is no $v\in L$ such that $v<x$ and $O(v)\land x \leq v$.
+  x)\leq v$, it holds that $x\leq v$.   
+%   They called a point $x\in L$ \emph{strictly grounded} for $O$ if there is no $v\in L$ such that $v<x$ and $O(v)\land x \leq v$.
 They explained the intuition underlying these concepts under the assumption that the elements of $L$ are sets of ``facts'' of some kind and the $\leq$ relation is the subset relation between such sets:
 in this case, a point $x$ is grounded if it contains only facts that are sanctioned by the operator $O$, 
 in the sense that if we remove them from $x$, then the operator will add at least one of them again. 
 % They also called a point $x\in L$ \emph{
-They showed that for Boolean lattices, the notions of \emph{groundedness} and \emph{strict groundedness} coincide. 
-In this text, we are only concerned with Boolean lattices and hence freely switch between the two definitions. 
+% They showed that for Boolean lattices, the notions of \emph{groundedness} and \emph{strict groundedness} coincide. 
+% In this text, we are only concerned with Boolean lattices and hence freely switch between the two definitions. 
 
 
 
@@ -235,15 +239,15 @@ We call the first type (\ref{first}.) of refinements \emph{application refinemen
 
  \begin{definition}
  A \emph{well-founded induction} of $A$  is a sequence 
-$(x_i,y_i)_{i\leq \beta}$
-with $\beta$ an ordinal such that 
+$(x_i,y_i)_{i\leq n}$
+with $n\in\nat$ such that 
 \begin{compactitem}
 	\item $(x_0,y_0) = (\bot,\top)$;
-	\item $(x_{i+1},y_{i+1})$ is an A-refinement of $(x_{i},y_{i})$, for  all $i<\beta$;
-	\item $(x_{\lambda},y_{\lambda})= \lub_{\leqp} \{(x_i,y_i)\mid i<\lambda\}$
-	      for each limit ordinal $\lambda\leq\beta$.
+	\item $(x_{i+1},y_{i+1})$ is an A-refinement of $(x_{i},y_{i})$, for  all $i<n$.
+% 	\item $(x_{\lambda},y_{\lambda})= \lub_{\leqp} \{(x_i,y_i)\mid i<\lambda\}$
+% 	      for each limit ordinal $\lambda\leq\beta$.
 \end{compactitem}
-A well-founded induction is \emph{terminal} if its limit $(x_\beta,y_\beta)$ has no strict $A$-refinements.
+A well-founded induction is \emph{terminal} if its limit $(x_n,y_n)$ has no strict $A$-refinements.
 % \marc{als je in sectie over fixpoints het leastfixpoint in een licthjes andere notatie geeft= $x_i\leq x_{i+1}\leq O(x_i)$, dan kan je hier gewoon zeggen: een well-founded induction is een monotone induction van de juiste operator (de vierwaardige stable operator)}\bart{precies zo geen fan van. De standaard def van leastfixpoint kent iedereen...}
 \end{definition}
 A well-founded induction is an algebraical generalisation of the well-founded model construction defined by \cite{GelderRS91}. 
@@ -253,19 +257,19 @@ For a given approximator $A$, there are many different terminal well-founded ind
 \cite{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, the $A$-well-founded fixpoint of $O$ (and in fact, every tuple in a well-founded induction of $A$) is consistent. 
 % Well-founded inductions that only use the first sort of refinement converge to the $A$-Kripke-Kleene fixpoint. 
 
-\todo{Drop section on ultimate approximators, unless we use it.}
-The precision order can be pointwise extended to the family of approximators of $O$. It then follows that more precise approximators have a more precise well-founded fixpoint and that they have more stable fixpoints. 
-\cite{DeneckerMT04} showed that there exists a most precise approximator, $U_O$, called the ultimate approximator of $O$. 
-This operator is defined by \[U_O: L^c\to L^c: (x,y)\mapsto (\bigand O([x,y]), \bigor O([x,y])).\]
-% \nomenclature[UO]{$U_O$}{The ultimate approximator of $O$}
-Here, we used the notation $O(X) = \{O(x)\mid x\in X\}$ for a set $X\subseteq L$.
- It then follows that for every
-approximator $A$, all  $A$-stable fixpoints are $U_O$-stable fixpoints, and  the $U_O$-well-founded fixpoint is always more precise than the $A$-well-founded fixpoint.  
-We refer to $U_O$-stable fixpoints as \emph{ultimate stable fixpoints} of $O$ and to the $U_O$-well-founded fixpoint as the \emph{ultimate well-founded fixpoint} of $O$.
-Semantics defined using the ultimate approximator have as advantage that they only depend on $O$ since the approximator can be derived from $O$.
-% In this paper, we will focus only on ultimate approximations. More specifically, we will show that for auto-epistemic logic, 
-% whose semantics is defined in terms of Approximation Fixpoint Theory, the ultimate approximator is not precise enough!
-% We will develop an alternative fixpoint theory that is more precise than the current one, and show that with this theory, we obtain several desirable properties in logics with a fixpoint semantics.
+% \todo{Drop section on ultimate approximators, unless we use it.}
+% The precision order can be pointwise extended to the family of approximators of $O$. It then follows that more precise approximators have a more precise well-founded fixpoint and that they have more stable fixpoints. 
+% \cite{DeneckerMT04} showed that there exists a most precise approximator, $U_O$, called the ultimate approximator of $O$. 
+% This operator is defined by \[U_O: L^c\to L^c: (x,y)\mapsto (\bigand O([x,y]), \bigor O([x,y])).\]
+% % \nomenclature[UO]{$U_O$}{The ultimate approximator of $O$}
+% Here, we used the notation $O(X) = \{O(x)\mid x\in X\}$ for a set $X\subseteq L$.
+%  It then follows that for every
+% approximator $A$, all  $A$-stable fixpoints are $U_O$-stable fixpoints, and  the $U_O$-well-founded fixpoint is always more precise than the $A$-well-founded fixpoint.  
+% We refer to $U_O$-stable fixpoints as \emph{ultimate stable fixpoints} of $O$ and to the $U_O$-well-founded fixpoint as the \emph{ultimate well-founded fixpoint} of $O$.
+% Semantics defined using the ultimate approximator have as advantage that they only depend on $O$ since the approximator can be derived from $O$.
+% % In this paper, we will focus only on ultimate approximations. More specifically, we will show that for auto-epistemic logic, 
+% % whose semantics is defined in terms of Approximation Fixpoint Theory, the ultimate approximator is not precise enough!
+% % We will develop an alternative fixpoint theory that is more precise than the current one, and show that with this theory, we obtain several desirable properties in logics with a fixpoint semantics.
 
 \todo{Say something about partial grounded fixpoints?}
 
