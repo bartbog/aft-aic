@@ -8,16 +8,15 @@ Recall that in this paper, we only consider normal AICs.
 
 Given a fixed database $\db$.
 The sets of update actions $\UU$ that are of interest to us are those such that \textbf{(i)} \UU is consistent and \textbf{(ii)} each action in \UU modifies \db. As argued by  \citet{iclp/Cruz-Filipe16}, the set of such sets is isomorphic to $2^{\atoms}$. Hence, from now on, we identify such a set with a subset of $\atoms$ (the atoms whose value is changed by \UU). 
-If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\in \db$ and $\remove a$ if $a\not \in \db$. 
+If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\not\in \db$ and $\remove a$ if $a \in \db$. 
 Thus, in the above identification, a set  of atoms $\overline\UU\subseteq \atoms$ is identified with the set 
 \[\UU = \{\change a\mid a \in \overline \UU \}\]
 of update actions.
 Usually, we omit the bar, and simply write $\UU$ for the subset of \atoms as well. Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline \UU$. 
 % In some technical parts of the paper, we often switch between 
 
-Furthermore, we prefer smaller sets of updates over lager sets: if a database can be fixed by just having $\{\add a\}$, the set $\{\add a, \add b\}$ is not of interest to us. 
-The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$. 
-In this lattice, smaller elements correspond to more preferred repairs. 
+Following the principle of minimality of change \cite{Winslett90,ai/EiterG92}, we prefer smaller sets of updates over lager sets.
+The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$, where  smaller elements correspond to more preferred repairs. 
 
 
 Now consider a set of (normal) AICs \aics. 
@@ -96,7 +95,11 @@ If $a\in \atoms$, $\UUU$ is a partial set of update actions and $\langle \db, \a
 \end{align*}
 \end{definition}
 As before, we often drop $\db$ and \aics from the notation if they are clear from the context. 
-The first, \suppin, is true if there is support for $a$ being in the intended update set. It is true if there is at least one rule $r$ with $\change a$ as head such that $\nup(r)$ holds after updating \db with \UUU. The second value gives the support for removing $a$ from the update set, i.e., for keeping $a$ as it is in the database (hence the name choice). 
+Intuitively, 
+$\suppin_{\UUU}(a)$ is true if there is support for \emph{changing} $a$ after updating the database with $\UUU$, i.e., if at least one rule $r$ with $\head(r)=\change a$ has $\nup(r)^{\UUU(\db)} = \ltrue$;  
+$\suppin_{\UUU}(a)$ is unknown if it is not true and there is at least one rule $r$ with $\head(r)=\change a$ that has $\nup(r)^{\UUU(\db)} = \lunkn$; 
+otherwise $\suppin_{\UUU}(a)$ is false. 
+Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as it is in the database (hence the name choice). 
 
 
 
@@ -197,7 +200,7 @@ In all other cases, we derive nothing about $a$ being in the update or not.
 % \begin{proof}[Sketch of the proof]
 % \leqp-monotonicity of \Ap follows from the fact that Kleene-valuation is \leqp-monotone and 
 % \end{proof}
-\begin{proof}
+\longpaper{\begin{proof}
 First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. Then, it holds that $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
 \begin{compactitem}
 \item If $\UUU(a)=\lfalse$, then $\UUU'(a)=\lfalse$ since $\UUU'\geqp\UUU$. In this case $\Ap(\UUU')(a) = \suppin_{\UUU'}(a) \geqp \suppin_{\UUU}(a) =  \Ap(\UUU)(a)$. 
@@ -218,7 +221,7 @@ Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e.
  \item The case where $\UU(a)= \lunkn$ cannot occur, since $\UU$ is two-valued. \qedhere
 \end{compactitem}
 
-\end{proof}
+\end{proof}}
 
 Since \Ap is an approximator, it defines a family of semantics for AICs. 
 
@@ -231,13 +234,16 @@ Since \Ap is an approximator, it defines a family of semantics for AICs.
 %   \item A \emph{supported 
   \item A \emph{partial grounded repair} of \fulldb is a partial update set \UUU such that \UUU is a partial $\Ap$-grounded fixpoint. A \emph{grounded repair} is a partial grounded repair that is two-valued. 
  \end{compactitem}
-
 \end{definition}
-\todo{state somewhere: it follwos easily that each of these repairs, if they are two-valued, they are indeed ``minimal weak repairs'' (i.e., repairs according to AIC terminology). }
 
-\todo{somewhere say something abut hte name clash: well-founded vs aft-well-founded}
+The terminology in the above definition uses ``repairs'' for certain classes of fixpoints of a semantic operator. It follows easily that  all two-valued (non-partial) update sets that are called ``repair'' in the the above definition, indeed are repairs according to AIC terminology. 
+% Indeed, this follows from the fact that 
+ 
+% \todo{state somewhere: it follwos easily that each of these repairs, if they are two-valued, they are indeed ``minimal weak repairs'' (i.e., repairs according to AIC terminology). }
 
-Grounded repairs were defined previously by \citet{}. All other classes of repairs defined in Definition \ref{def:semantics} are newly introduced semantics by the current paper. 
+The well-founded semantics induced by AFT can in general differ from the existing well-founded semantics for AICs, as we show in Example \ref{ex:wf:wf}. To distinguish the two, we use the term AFT-well-founded semantics for the well-founded semantics induced by AFT. 
+
+Grounded repairs were defined previously by \citet{iclp/Cruz-Filipe16}. All other classes of repairs defined in Definition \ref{def:semantics} are newly introduced semantics by the current paper. 
 We now illustrate these semantics by means of some examples. 
 
 
@@ -249,6 +255,7 @@ We now illustrate these semantics by means of some examples.
  \lnot a \land \lnot b \land \lnot c \aicrule \add c\\
  a \land c \land b \aicrule \remove b
 \end{align*} with $\db = \emptyset$.
+\longpaper{
 Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
 \[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
 Here, we see that 
@@ -271,11 +278,22 @@ This follows easily from the fact that
 Hence $\UUU_3$ is an application refinement of $\UUU_2$. Since this is an exact point, it is the \Ap-well-founded fixpoint of \Op. It is clearly the intended repair in this example.
 
 Note that in this example, unfoundedness refinements take care of minimisations of repairs.  
+}
+\shortpaper{
+The \Ap-well-founded fixpoint can be computed as the limit of the following well-founded induction: 
+\begin{align*}
+\UUU_0&: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\\
+\UUU_1 = \Ap(\UUU_0)&: a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lunkn\\
+\UUU_2 &:a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lfalse\\
+\UUU_3 = \Ap(\UUU_2)&: a\mapsto \ltrue, b\mapsto \ltrue, c\mapsto\lfalse,
+\end{align*}
+where $\UUU_2$ is an unfounded refinement of $ \UUU_1$ and all other refinements are application refinements. 
+Note that unfoundedness refinements serve to minimize repairs.  
+% 
+}
 \end{example}
 
-\luis{Despite all the information in the background, I guess one can only understand this if one already knows something about AFT. We should state it explicitly in the beginning.}
-\bart{You mean in thebeginning of the example or of the paper?}
-\luis{I guess in the beginning of the paper... just prepare people psychologically so that they won't be scared off too easily :-)}
+
 
 \begin{example}
  Consider the following set \aics of AICs:
@@ -283,8 +301,9 @@ Note that in this example, unfoundedness refinements take care of minimisations 
  a \land \lnot b&\aicrule \add b\\
  \lnot a \land b &\aicrule \add a \\
  \lnot a \land \lnot b \land \lnot c &\aicrule \add c
- \end{align*} with $\db = \emptyset$.
+ \end{align*} with $\db = \emptyset$. Intuitively, we expect $\add c$ to be an element of ``good'' repairs, and (following the minimality of change principle), no other actions to be in ``good'' repairs. I
 
+ \longpaper{
 Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
 \[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
 Here, we see that 
@@ -297,8 +316,17 @@ Hence, $\Ap(\UUU_0)=\UUU_0$ and $\UUU_0$ is the \Ap-Kripke-Kleene fixpoint.
 A well-founded induction can continue with unfoundedness refinements. Indeed, consider 
 \[\UUU_1: a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto\lunkn.\]
 Since 
-\[\Ap(\UUU_1) = a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue,\] it holds that $\UUU_1$ is an unfoundedness refinement of $\UUU_2$. 
-Finally, we can conclude that $\UUU_2:=\Ap(\UUU_1)$ is the \Ap-well-founded fixpoint. This corresponds to the intended repair. 
+\[\Ap(\UUU_1) = a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue,\] it holds that $\UUU_1$ is an unfoundedness refinement of $\UUU_1$. 
+Finally, we can conclude that $\UUU_2:=\Ap(\UUU_1)$ is the \Ap-well-founded fixpoint. This corresponds to the intended repair. }
+\shortpaper{
+The \Ap-well-founded fixpoint can be computed as the limit of the following well-founded induction:
+\begin{align*}
+ \UUU_0&: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\\
+\UUU_1 &: a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto\lunkn.\\
+\UUU_2 = \Ap(\UUU_1) &:  a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue. 
+\end{align*}
+Again, the AFT-well-founded repair is two-valued and corresponds to the intuitions.
+}
 \end{example}
 
 As can be expected, not every set of AICs has a two-valued well-founded repair. That would simply be too much to ask. It would mean that for every set of AICs we can unambiguously define a single repair. The following example illustrates that this is indeed not always the case. It also illustrates that (for this specific example), \Ap-stable repairs provide a solution that corresponds to the intuitions. 
@@ -313,7 +341,7 @@ As can be expected, not every set of AICs has a two-valued well-founded repair. 
  
  Intuitively, \aics has two ``good'' repairs. The first two rules state that either $a$ or $b$ should be added in order to ``fix'' the violated constraint $\lnot (\lnot a \land \lnot b)$. 
  Depending on that choice, the last rule determines whether or not $c$ should be repaired.  The two intended repairs are thus $\{\add a,\add c\}$ and $\{\add b\}$. 
- Let us investigate what the different AFT-style semantics give in this case. 
+ \longpaper{Let us investigate what the different AFT-style semantics give in this case. 
  
  Consider 
 \[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
@@ -347,35 +375,45 @@ and
 Furthermore, $\Ap(\UU_2,\UU) = \UU_2=\UU$, hence  we find that indeed, \UU is an \Ap-stable fixpoint. 
 The case for $\{\add b\}$ is similar. 
 
-It can also be verified that there are no other $\Ap$-stable fixpoints. Due to minimality, no other could contain $b$, hence they must be subsets of $\{a,c\}$. Again, due to minimality, the only such subset is \UU. 
+It can also be verified that there are no other $\Ap$-stable fixpoints. Due to minimality, no other could contain $b$, hence they must be subsets of $\{a,c\}$. Again, due to minimality, the only such subset is \UU.}
+\shortpaper{In can be verified that these two intended repairs are indeed stable and that the AFT-well-founded repair maps all atoms to $\lunkn$ (hence it approximates the two intended repairs).} 
 \end{example}
 
-Hence, in the above example, \Ap-stable repairs capture the intended semantics. 
+\longpaper{Hence, in the above example, \Ap-stable repairs capture the intended semantics. }
 
 \subsection{Properties of AFT-Style Semantics}
 % \todo{start new section here?}
+\luis{If we have results about justified repairs, it might make sense to include remarks on whether they hold in the non-normal case. If we do that, we need to revise this sentence (refers to some sentence in intro).}
+\bart{The problem is that the AFT semantics are not defined for non-deterministic operators, so we won't be able to derive much useful stuff from there I'm affraid}
+\luis{We can always define stuff in general via normalization. Since justified repairs don't work well with normalization, this means that the relationships need to be analyzed again. For example, does Proposition 3.13 hold if we start with non-normal AICs, and consider stable repairs after normalization vs justified repairs without normalizing?}
+\bart{Hmmm... I Don't immediately have the answer to that one... Don't have any intuitions either. }
+
 
 We now show that all of these semantics are nicely invariant under shifting. 
 \begin{proposition}
  \Ap, and hence also \Op, is invariant under shifting, i.e., for each set $S\subseteq \atoms$:
  \[\Apfull = \threeap_{\langle\shift_S(\db),\shift_S(\eta)\rangle}\]
 \end{proposition}
+\longpaper{
 \begin{proof}
 First note that for each update action $u$, $u$ changes $\db$ iff $\shift_S(u)$ changes $\shift_S(\db)$. Hence for each atom $\change_{\db} a = \change_{\shift_S(\db)} a$ and thus
 $\overline{\UU}=\overline{\shift_S(\UU)}$ 
 (where the first identification is with respect to \db and the second with respect to $\shift_S(\db)$. 
 Since \Ap is defined entirely in terms of these sets, the result follows. 
-\bart{Proof is still a bit of handwaving if you ask me. Could probably be more formalised}
-\luis{I'm ok with it :-) I don't see that we gain a lot by adding a formal proof.}
+% \bart{Proof is still a bit of handwaving if you ask me. Could probably be more formalised}
+% \luis{I'm ok with it :-) I don't see that we gain a lot by adding a formal proof.}
+% \luis{I was rereading Caroprese's work, and they talk about shifting in their 2011 paper (Theorem 20). This also allows us to handwave a bit, I guess.  As an alternative, we can prove the theorem formally using the lemmas they have in the Appendix.}
 \end{proof}
+}
 \begin{corollary}
  All AFT-style semantics for AICs have the shifting property. 
 \end{corollary}
-\luis{I was rereading Caroprese's work, and they talk about shifting in their 2011 paper (Theorem 20). This also allows us to handwave a bit, I guess.  As an alternative, we can prove the theorem formally using the lemmas they have in the Appendix.}
+
 
 \begin{proposition}\label{prop:wf-wf}
  If the AFT-well-founded repair is two-valued,  it is also well-founded (as defined by \citet{tase/Cruz-FilipeEGN13}). 
 \end{proposition}
+\longpaper{
 \begin{proof}
 Let $\left(\UUU_i\right)_{i\leq k}$ be a well-founded induction of \Ap. 
 For each $i$, define $\UU_i$ as $\{a \in \atoms \mid \UUU_i=\ltrue\}$. 
@@ -404,7 +442,8 @@ To see this, note that from the definition of $\Ap$, it follows that for each $j
 %  Now, the claim is that $\UU_i$ and $\UU_{i+1}$ differ only in a set of atoms that have at least one rule body satisfied in $\UU_i$. Furthermore, that body remains satisfied if we add them one by one. To see this, for any set $\UU$ such that $\UU_i\subseteq \UU \subseteq \UU_{i+1}$, it also holds that $\UU\geqp \UUU_i$. For each atom derived in $\UUU_{i+1}$, there is a rule $r$ with $\nup(r)^{\UUU_i}=\ltrue$ and $\head(r)=a$. Since truth evaluation is $\leqp$-monotone, it also holds that $\nup(r)^{\UU} = \ltrue$. Hence, we can add those atoms one by one (TODO: make this more formal: explicitly construct the sequence). }
 %  
 \end{proof}
-\begin{example}The converse of Proposition \ref{prop:wf-wf} does
+}
+\begin{example}\label{ex:wf:wf}The converse of Proposition \ref{prop:wf-wf} does
 not hold. Consider for instance the following set $\aics$ of AICs
    \begin{align*}
   a &\aicrule \remove a\\
@@ -412,8 +451,8 @@ not hold. Consider for instance the following set $\aics$ of AICs
   b \land c &\aicrule \remove  c
  \end{align*}
  and $\db=\{a,b,c\}$.
- In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be removed no matter what. The second rule then becomes void (there is never a reason to remove $b$) and the last rule then dictates that also $c$ must be removed. 
- However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also well-founded repair, obtained by applying first the second rule and then the first one.
+ In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be removed no matter what. The second rule then becomes void (there is never a reason to remove $b$) and the last rule dictates that also $c$ must be removed. 
+ However, also $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is a well-founded repair, obtained by applying first the second rule and then the first one.
  %(according to \citet{iclp/Cruz-Filipe16}). 
  %LCF: it's so simple to explain...
 \end{example}
@@ -436,7 +475,8 @@ If \UU is a \Ap-stable repair, then \UU is a justified repair.
 \end{proposition}
 \todo{Throughout the paper, I sometimes use the symbol $a$ for an action, sometimes for an atom. That must be confusing. However, due to the identification of a set of update actions with a subset of \atoms this mixup I'm doing is not so strainge. It might be better to streamline it a bit more} 
 \luis{the ``standard'' practice is to use $\alpha$ for actions}
-\begin{proof}
+\bart{Hmmm... We should streamline this. I think I'm also using $u$ sometimes}
+\longpaper{\begin{proof}
 We can safely assume that \UU is a repair of \db (otherwise, it is neither a justified repair, nor a $\Ap$-stable repair.
 
 
@@ -546,7 +586,7 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
 %  To see this, notice that NEFF = the stuff you don't change. In our representation of three-valued update sets, this EXACTLY corresponds to the upper bound}
 %  
 \end{proof}
-\luis{this one I still need to read closely}
+\luis{this one I still need to read closely}}
 
 
 
@@ -560,11 +600,14 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
  with $\db=\emptyset$. 
  In this case $\{\add a,\add b\}$ is a justified repair of \fulldb, but not a stable repair. 
  To see that it is not a stable repair, it suffices to note that 
- \[\Ap(\emptyset,\{a,b\}) = (\emptyset,\{a,b\})\]
+ \longpaper{\[}\shortpaper{$}
+ \Ap(\emptyset,\{a,b\}) = (\emptyset,\{a,b\})
+ \shortpaper{$}\longpaper{\]}
  and hence
- \[
+  \longpaper{\[}\shortpaper{$}
   \lfp \Ap(\cdot,\{a,b\})_1 = \emptyset\neq \{a,b\}.
- \]
+  \shortpaper{$}\longpaper{\]}
+  
 To see that it is a justified repair, note that $\{\add a,\add b\}$ is the least set closed under \aics. 
 \end{example}
 
@@ -580,6 +623,7 @@ While the converse of Proposition \ref{prop:stable_is_justified} does not hold i
 \begin{proposition}\label{prop:justified_is_stable_sometimes}
 If \aics is unipolar, then each justified repair of \fulldb is \Ap-stable. 
 \end{proposition}
+\longpaper{
 \begin{proof}
  To prove this theorem, we show the following strengthening of \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}. 
  \begin{compactdesc}
@@ -592,11 +636,15 @@ If \aics is unipolar, then each justified repair of \fulldb is \Ap-stable.
 One direction of this claim has been proven as \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}; we show that the other inclusion also holds.. 
  Take an atom $a$ and a set $\VV\subseteq\UU$ of update actions such that $a\in \overline{O(\VV)}$; we show that $a\in\Ap(\overline\VV,\overline\UU)_1$. Since $a\in\overline{O(\VV)}$, it holds that $\change a\in \closure(\ext(\VV))$ and thus (by \textbf{Claim 3}) that $\suppin_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\ltrue$. This means that there is at least one rule $r\in\aics$ with $\head(r)=\change a$. Since \aics is unipolar, there can be no rules $r'\in\aics$ with $\head(r') = (\change a)^D$ hence, it holds that $\suppout_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\lfalse$. From the definition of $\Ap$, we then find that $\Ap(\overline\VV,\overline\UU)(a)=\ltrue$ and thus that  $a\in \Ap(\overline\VV,\overline\UU)_1$, which we needed to prove. 
 \qedhere
-\end{proof}
+\end{proof}}
 
-\begin{proposition}[Lemma 19 of \cite{iclp/Cruz-Filipe16}]
+From existing result, we easily find how justified repairs and the AFT-well-founded repair relate. 
+
+\begin{proposition}[Lemma 19 of \citet{iclp/Cruz-Filipe16}]
  All justified repairs are grounded.
 \end{proposition}
+
+
 
 \begin{corollary}
  The AFT-well-founded repair approximates all justified repairs. 

@@ -60,3 +60,8 @@
 \DeclareRobustCommand\citeauthor{\def\citeauthoryear##1##2{##1}\@nbcite}
 \DeclareRobustCommand\citeyear{\def\citeauthoryear##1##2{##2}\@nbcite}
 \makeatother
+
+
+\newboolean{shortpaper}
+\newcommand\longpaper[1]{\ifthenelse{\boolean{shortpaper}}{}{#1}}
+\newcommand\shortpaper[1]{\ifthenelse{\boolean{shortpaper}}{#1}{}}
