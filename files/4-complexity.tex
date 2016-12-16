@@ -1,7 +1,18 @@
 \todo{Some complexity results.
 Probably: well-founded/KK: polynomially computable (data complexity), stable fixpoints: NP-complete, ... Copy results from logic programming basically. Similarly, complexity increases if we start using ultimate approximators}
 
-\luis{The plan: recall the translation $\mathsf{aic}$ from the Caroprese paper, show that the operator we use to define fixpoints is preserved by this operator, get upper bounds for all complexity problems.  For lower bounds I need to think a bit more.}
+To establish lower bounds for the complexity of computing the different semantics of AICs, we use a reduction from simple logic programs to AICs, as defined in~\cite{tplp/CaropreseT11}.
+A simple logic program is one where rules are not trivial tautologies, i.e., they do not contain contradictory atoms in their bodies and they do not include their head in their body.
+
+The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
+Given a logic program $P$, we define $\aic(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
+Those authors then prove that the answer set semantics for $P$ coincides with the justified repair semantics for $\aicop(P)$ (with respect to the empty database).
+
+More generally, with this definition it is immediate that the operator $\threeap_{\langle\emptyset,\aicop(P)\rangle}$ coincides with the corresponding operator $T_P$, used to define AFT semantics for logic programs.
+\luis{I'm a bit uncertain about the notation here, so I'm using $T_P$ as a placeholder for something with the right font.}
+This immediately implies that each semantics for AIC defined from $\Apfull$ has at least the same complexity as the corresponding semantics for logic programs.
+
+\luis{I need to think a bit about this, but it seems to me that we can actually invert this transformation.  That would then give \emph{upper} bounds for these semantics.}
 
 \bart{Lower bound for stable: every normal logic program can be seen  as an AIC. Should have te same stable smeantics (note: our transformation in theprevious section adds rules 
 \[a\lrule a\] but these do not change stable models. 
