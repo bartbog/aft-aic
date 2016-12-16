@@ -9,10 +9,8 @@ Given a logic program $P$, we define $\aic(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
 Those authors then prove that the answer set semantics for $P$ coincides with the justified repair semantics for $\aicop(P)$ (with respect to the empty database).
 
 More generally, with this definition it is immediate that the operator $\threeap_{\langle\emptyset,\aicop(P)\rangle}$ coincides with the corresponding operator $T_P$, used to define AFT semantics for logic programs.
-\luis{I'm a bit uncertain about the notation here, so I'm using $T_P$ as a placeholder for something with the right font.}
+\luis{I'm a bit uncertain about the notation here, so I'm using $T_P$ as a placeholder for something with the right font.  Does it suffice to say that $\Ap$ coincides with $\Psi_P$?}
 This immediately implies that each semantics for AIC defined from $\Apfull$ has at least the same complexity as the corresponding semantics for logic programs.
-
-\luis{I need to think a bit about this, but it seems to me that we can actually invert this transformation.  That would then give \emph{upper} bounds for these semantics.}
 
 \bart{Lower bound for stable: every normal logic program can be seen  as an AIC. Should have te same stable smeantics (note: our transformation in theprevious section adds rules 
 \[a\lrule a\] but these do not change stable models. 
