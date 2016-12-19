@@ -26,33 +26,32 @@ These repairs can be computed directly by means of tree algorithms~\cite{tase/Cr
 %% lcf: not sure what to include from this list of references
 %% Defining a natural semantics for such AICs has been a topic of intensive research \cite{iclp/CaropreseGSZ06,sebd/MolinaroGC06,iclp/CaropreseTZ07,dasfaa/CaropreseGM07,iclp/CaropreseT08,tkde/CaropreseGZ09,tplp/CaropreseT11,iclp/Cruz-Filipe16}. 
 
-It is striking that many of the intuitions underlying about what ``good'' repairs are, such as minimality of change, are very similar to intuitions that have appeared in other domains of non-monotonic reasoning, such as for instance logic programming \mycite{LP} or default logic \mycite{DL}. 
+It is striking that many of the intuitions underlying about what ``good'' repairs are, such as minimality of change, are very similar to intuitions that have appeared in other domains of non-monotonic reasoning, such as for instance logic programming \mycite{LP} and default logic \mycite{DL}. 
 % For instance \todo{minimality} of change \cite{}, ... 
 Still, it has been hard to find a set of satisfying set of semantics for AICs.
-\todo{list some problems}. 
+\todo{list some problems.}
 
 % Essentially, fixing similar problems as in other NMR domains... 
 
 
 In this paper, we transfer existing work from the field of non-monotonic reasoning to AICs. 
 To this end, we define a new class of semantics for AICs that are natural counterparts of existing semantics in various non-monotonic reasoning domains. 
-To be precise, we define semantics for AICs based on approximation fixpoint theory \mycite{AFT}, an abstract algebraic framework that unifies semantics of logic programming, default logic, autoepistemic logic \mycite{AEL}, abstract argumentation frameworks \mycite{AF} and abstract dialectical frameworks \mycite{ADF}. 
-In order to do so, we continue the work of Cruz-Filipe \cite{iclp/Cruz-Filipe16}, who defined a semantic operator for AICs and used it to study the grounded fixpoint semantics \mycite{GroundedFixpoints} for AICs. 
+To be precise, we define semantics for AICs based on approximation fixpoint theory \cite{\refto{AFT}}, an abstract algebraic framework that unifies semantics of logic programming, default logic, autoepistemic logic \mycite{AEL}, abstract argumentation frameworks \cite{\refto{AF}} and abstract dialectical frameworks \mycite{ADF}, as shown by Denecker, Marek and Truszczy{\'n}ski [\citeyear{DeneckerMT00,DeneckerMT03}] and \citet{journals/ai/Strass13}. 
+In order to do so, we continue the work of \citet{iclp/Cruz-Filipe16}, who defined a semantic operator for AICs and used it to study the grounded fixpoint semantics \mycite{GroundedFixpoints} for AICs. 
 In this paper, we define an approximating operator of Cruz-Filipe's semantic operator. 
-When this operator is defined, approximation fixpoint theory immediately provides us with \textit{(i)} a supported fixpoint semantics, \textit{(ii)} a well-founded fixpoint semantics, \textit{(iii)} a (partial) stable fixpoint semantics, \textit{(iv)} a Kripke-Kleene fixpoint semantics, and \textit{(v)} a (partial) grounded fixpoint semantics. 
+When this operator is defined, approximation fixpoint theory immediately provides us with \begin{inparaenum} \item a supported fixpoint semantics, \item a well-founded fixpoint semantics, \item a (partial) stable fixpoint semantics, \item a Kripke-Kleene fixpoint semantics, and \item a (partial) grounded fixpoint semantics. \end{inparaenum} 
 We study properties of these new semantics and study how they compare to existing semantics. 
 Furthermore, we argue that from a practical point of view, the AFT-style well-founded semantics is very valuable. 
-Indeed, we show that this semantics can be computed in polynomial time and that on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs.  
+Indeed, we show that this semantics can be computed in polynomial time and that on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
 
-Summarized, the main contribution of this paper is that we provide solid foundations for relating the field of AICs to research in non-monotonic reasoning. 
-By establishing this relationship, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
+Despite defining a class new class of interesting semantics, our work provides solid foundations for transferring a rich body of work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
 Following results from \citet{tplp/CaropreseT11}, our work also opens the way to applying AFT to revision programming. 
-To establish this relationship, we define a family of new semantics for AICs with some desirable properties:
-\begin{compactitem}
- \item Each of our semantics satisfies the so-called \emph{shifting property} \cite{tcs/MarekT98}. 
- \item The AFT-based well-founded semantics provides good over and under approximations of various other semantics, resulting in a computationally attractive method for reasoning approximately in one of these semantics. 
- \item The AFT-based stable semantics is closely related to the grounded fixpoint semantics, but computationally more attractive.
-\end{compactitem}
+% To establish this relationship, we define a family of new semantics for AICs with some desirable properties:
+% \begin{compactitem}
+%  \item Each of our semantics satisfies the so-called \emph{shifting property} \cite{tcs/MarekT98}. 
+%  \item The AFT-based well-founded semantics provides good over and under approximations of various other semantics, resulting in a computationally attractive method for reasoning approximately in one of these semantics. 
+%  \item The AFT-based stable semantics is closely related to the grounded fixpoint semantics, but computationally more attractive.
+% \end{compactitem}
 
 % 
 % Somewhere we should summarize our contributions:
@@ -73,5 +72,5 @@ To establish this relationship, we define a family of new semantics for AICs wit
 
 
 \luis{Despite all the information in the background, I guess one can only understand this if one already knows something about AFT. We should state it explicitly in the beginning.}
-\bart{You mean in thebeginning of the example or of the paper?}
+\bart{You mean in the beginning of the example or of the paper?}
 \luis{I guess in the beginning of the paper... just prepare people psychologically so that they won't be scared off too easily :-)}

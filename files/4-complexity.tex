@@ -5,7 +5,7 @@ To establish lower bounds for the complexity of computing the different semantic
 A simple logic program is one where rules are not trivial tautologies, i.e., they do not contain contradictory atoms in their bodies and they do not include their head in their body.
 
 The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
-Given a logic program $P$, we define $\aic(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
+Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
 Those authors then prove that the answer set semantics for $P$ coincides with the justified repair semantics for $\aicop(P)$ (with respect to the empty database).
 
 More generally, with this definition it is immediate that the operator $\threeap_{\langle\emptyset,\aicop(P)\rangle}$ coincides with the corresponding operator $T_P$, used to define AFT semantics for logic programs.

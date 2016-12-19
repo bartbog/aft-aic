@@ -11,12 +11,14 @@ The satisfaction relation between databases \db and literals is defined as usual
 An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
 Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$ from a database. Formally $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
 A set of update actions $\UU$ is \emph{consistent} if it does not contain an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
-Following \cite{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
+Following \citet{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
 \[\UU_1 \biguplus \UU_2 = (\UU_1 \cup \{\alpha \in \UU_2 \mid \alpha^D\not \in \UU_1) \setminus \{\alpha\in \UU_1 \mid \alpha^D\in \UU_2\}.\]
 This operation has the property that if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
 \[\left(\UU_1\biguplus \UU_2\right)(\db) = \UU_2(\UU_1(\db)).\]
 
-Literals and update actions are related by natural mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  These mappings naturally extend to sets of literals/actions. 
+Literals and update actions are related by mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a$ and $\actof = \litof^{-1}$
+%, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  
+These mappings naturally extend to sets of literals/actions. 
 
 \begin{definition}
  An \emph{active integrity constraint} (AIC) is a rule $r$ of the form

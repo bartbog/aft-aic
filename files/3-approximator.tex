@@ -15,8 +15,8 @@ of update actions.
 Usually, we omit the bar, and simply write $\UU$ for the subset of \atoms as well. Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline \UU$. 
 % In some technical parts of the paper, we often switch between 
 
-Following the principle of minimality of change \cite{Winslett90,ai/EiterG92}, we prefer smaller sets of updates over lager sets.
-The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$, where  smaller elements correspond to more preferred repairs. 
+Following the principle of minimality of change \cite{Winslett90,ai/EiterG92}, we prefer smaller sets of updates. % over lager sets.
+The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$, where  smaller elements correspond to ``better'' repairs. 
 
 
 Now consider a set of (normal) AICs \aics. 
@@ -178,8 +178,8 @@ When $\db$ is clear from the context, we write \Ap for \Apfull.
 \end{definition}
 
 The above definition is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
-In the case where $\UUU(a)=\lfalse$, $a$ is not an element of the (partial) update set at hand. The only way to add $a$ to the update is if some rule supports adding $a$ (changing $a$). This is exactly captured by $\suppin$. 
-The case for $\UUU(a)=\ltrue$ is completely symmetrical, in this case the only reason for removing $a$ from the update at hand is if there is some rule that supports ``keeping $a$'', i.e., that supports $\change a^D$. 
+In the case where $\UUU(a)=\lfalse$, $a$ is not an element of the (partial) update set at hand. The only way to add $a$ to the update is if some rule supports changing $a$, which is captured by $\suppin$. 
+The case for $\UUU(a)=\ltrue$ is completely symmetrical, in this case the only reason for removing $a$ from the update at hand is if there is some rule that supports keeping $a$.
 In the last case, where $\UUU(a)=\lunkn$, we have no information what the update does to $a$ yet. In this case, we can derive that $a$ \emph{must} be in the update if we already have support for $\change a$ and we are sure that there is no support for keeping $a$ (for $\change a^D$). Similarly, we can derive that $a$ \emph{must not} be in the update if we have support for $\change a^D$ but not for $\change a$. 
 In all other cases, we derive nothing about $a$ being in the update or not. 
 
@@ -241,7 +241,7 @@ The terminology in the above definition uses ``repairs'' for certain classes of 
  
 % \todo{state somewhere: it follwos easily that each of these repairs, if they are two-valued, they are indeed ``minimal weak repairs'' (i.e., repairs according to AIC terminology). }
 
-The well-founded semantics induced by AFT can in general differ from the existing well-founded semantics for AICs, as we show in Example \ref{ex:wf:wf}. To distinguish the two, we use the term AFT-well-founded semantics for the well-founded semantics induced by AFT. 
+The well-founded semantics induced by AFT can in general differ from the existing well-founded semantics for AICs, as we show in Example \ref{ex:wf:wf}. To distinguish the two, we use the term \emph{AFT-well-founded semantics}. % for the well-founded semantics induced by AFT. 
 
 Grounded repairs were defined previously by \citet{iclp/Cruz-Filipe16}. All other classes of repairs defined in Definition \ref{def:semantics} are newly introduced semantics by the current paper. 
 We now illustrate these semantics by means of some examples. 
@@ -301,7 +301,7 @@ Note that unfoundedness refinements serve to minimize repairs.
  a \land \lnot b&\aicrule \add b\\
  \lnot a \land b &\aicrule \add a \\
  \lnot a \land \lnot b \land \lnot c &\aicrule \add c
- \end{align*} with $\db = \emptyset$. Intuitively, we expect $\add c$ to be an element of ``good'' repairs, and (following the minimality of change principle), no other actions to be in ``good'' repairs. I
+ \end{align*} with $\db = \emptyset$. Intuitively, we expect $\add c$ to be an element of ``good'' repairs, and (following the minimality of change principle), no other actions to be in ``good'' repairs. 
 
  \longpaper{
 Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
@@ -329,7 +329,7 @@ Again, the AFT-well-founded repair is two-valued and corresponds to the intuitio
 }
 \end{example}
 
-As can be expected, not every set of AICs has a two-valued well-founded repair. That would simply be too much to ask. It would mean that for every set of AICs we can unambiguously define a single repair. The following example illustrates that this is indeed not always the case. It also illustrates that (for this specific example), \Ap-stable repairs provide a solution that corresponds to the intuitions. 
+As can be expected, not every set of AICs has a two-valued well-founded repair. That would simply be too much to ask. It would mean that for every set of AICs we can unambiguously identify a single repair. The following example illustrates that this is indeed not always the case. It also illustrates that (for this specific example), \Ap-stable repairs provide a solution that corresponds to the intuitions. 
 
 \begin{example}
  Consider the following set \aics of AICs:
@@ -452,7 +452,7 @@ not hold. Consider for instance the following set $\aics$ of AICs
  \end{align*}
  and $\db=\{a,b,c\}$.
  In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be removed no matter what. The second rule then becomes void (there is never a reason to remove $b$) and the last rule dictates that also $c$ must be removed. 
- However, also $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is a well-founded repair, obtained by applying first the second rule and then the first one.
+ However, also $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is a well-founded repair, obtained by first applying the second rule and then the first one.
  %(according to \citet{iclp/Cruz-Filipe16}). 
  %LCF: it's so simple to explain...
 \end{example}
@@ -638,7 +638,7 @@ One direction of this claim has been proven as \textbf{Claim 4} in the proof of 
 \qedhere
 \end{proof}}
 
-From existing result, we easily find how justified repairs and the AFT-well-founded repair relate. 
+From the following existing result, we easily find how justified repairs and the AFT-well-founded repair relate. 
 
 \begin{proposition}[Lemma 19 of \citet{iclp/Cruz-Filipe16}]
  All justified repairs are grounded.
@@ -647,7 +647,7 @@ From existing result, we easily find how justified repairs and the AFT-well-foun
 
 
 \begin{corollary}
- The AFT-well-founded repair approximates all justified repairs. 
+ The AFT-well-founded repair (and hence also the Kripke-Kleene repair) approximates all justified repairs. 
 \end{corollary}
 \luis{I have to think about this unipolar stuff. Does it make sense in the database world?}
 \bart{I guess it would. You might never want to throw away information, only add things. Or in certain tables, only add, in other tables, only remove while repairing?}
