@@ -13,10 +13,10 @@ Intuitively, update actions represent changes to the database: $\add a$ adds $a$
 A set of update actions $\UU$ is \emph{consistent} if it does not contain an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
 Following \citet{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
 \[\UU_1 \biguplus \UU_2 = (\UU_1 \cup \{\alpha \in \UU_2 \mid \alpha^D\not \in \UU_1) \setminus \{\alpha\in \UU_1 \mid \alpha^D\in \UU_2\}.\]
-This operation has the property that if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
+This operation has the property that: if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
 \[\left(\UU_1\biguplus \UU_2\right)(\db) = \UU_2(\UU_1(\db)).\]
 
-Literals and update actions are related by mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a$ and $\actof = \litof^{-1}$
+Literals and update actions are related by mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a$ and $\actof = \litof^{-1}$.
 %, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  
 These mappings naturally extend to sets of literals/actions. 
 
@@ -25,14 +25,14 @@ These mappings naturally extend to sets of literals/actions.
 %  \todo{replace $\mid$ by $\lor$?}
   \begin{equation} l_1\land \dots\land l_n\aicrule \alpha_1\mid\dots \mid \alpha_k \label{eq:aic}\end{equation}
   such that $\litof(\alpha_i^D) \in \{l_1,\dots,\l_n\}$ for each $i$.
-  
-  We call $l_1\land \dots \land l_n$ the \emph{body} of $r$ and refer to it as $\body(r)$; $\alpha_1\mid\dots \mid \alpha_k$ is the head of $r$ and referred to as $\head (r)$.
+%  
+  We call $l_1\land \dots \land l_n$ the \emph{body} of $r$, denoted $\body(r)$, and $\alpha_1\mid\dots \mid \alpha_k$ the head of $r$, denoted $\head (r)$.
 \end{definition}
 % \luis{I wouldn't use $\lor$, because actions are not logical formulas.}
 %BART: OK
 
-The informal reading of the above rule is ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one of the $\alpha_i$.''
-A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. The intuition is that atoms can only be changed if there is some rule that allows it. 
+The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one of the $\alpha_i$.''
+A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms can only be changed if there is some rule that allows it. 
 
 
 An AIC is \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
@@ -50,7 +50,7 @@ In the current paper, we assume \emph{all AICs are normal}. Extensions of the se
 A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 
-(Weak) repairs do not take the head of AICs into account. They allow arbitrary changes to the database. Several other semantics (founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, grounded repairs \cite{iclp/Cruz-Filipe16}) for AICs have been defined with the intention to only make changes explicitly allowed by one of the AICs. 
+(Weak) repairs do not take the head of AICs into account, and thus allow arbitrary changes to the database. We now summarize several other semantics for AICs that have been defined with the intention to allow only changes explicitly described by one of the AICs: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, and grounded repairs \cite{iclp/Cruz-Filipe16}.
 
 % \begin{example}
 %  \bart{The definition of (weak) repairs is strange:}
@@ -74,30 +74,26 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
   Let \UU be a set of update actions and \fulldb a database. 
   \begin{compactitem}
    \item The \emph{no-effect actions} wrt \db and \UU are the actions that affect neither \db, nor $\UU(\db)$: 
-   \begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\end{align*}
+   \begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\,.\end{align*}
    \item The set of \emph{non-updatable literals} of an AIC $r$ are all body literals of $r$ that do not occur in the head of $r$
-   \[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right).\]
-   \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$
-   \item \UU is a \emph{justified action set} if it is a minimal superset of $\neff_\db(\UU)$ closed under \aics
+   \[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]
+   \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$.
+   \item \UU is a \emph{justified action set} if it is a minimal superset of $\neff_\db(\UU)$ closed under \aics.
    \item \UU is a \emph{justfied (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
   \end{compactitem}
 
-  %% \todo{
-  %% I am not sure the definition in ``grounded fixpoints and active integrity constraints'' is correct. THat definition contains an item ``U is a justified action set if it is the least superset of $U\cup ne$ closed under $\eta$''. However, this is equivalent with 
-  %% ``$U$ is a justfied action set if $ne \subseteq U$ and $U$ is closed under $\eta$.'', which seems quite wrong. Shouldn't this be ``$U$ is a justified action set if it is the least superset of $ne$ closed under $\eta$''? I.e., the scoping if ``least among which sets'' changes... (in the grounded fixpoints paper, you are referring to ``U is least among sets that are superset of U, which seems quite meaningless'' }
-  %% LCF: yes, I noticed and corrected that when preparing the journal submission :)
-  
-  \todo{something else releated to this definition. THe notion of ``closed'' as defined in the original paper and also the grounded fixpoints paper is quite surprising. I am in particular surprised by the fact that this does not take \db into account. Consider for instance the following \aics:
-  \[a\aicrule \remove a\]
-  with an empty database. The only $U$ that is closed here is $\{\remove a\}$. 
-  It makes sense, though. And this insight might make some proofs easier later in the paper (sorry, I'm just using this paper as well to record my thoughts)}
-
-\luis{maybe we should say this explicitly? for me the notion of closed is a bit arbitrary, like most of the definitions regarding justified repairs}
+%  \todo{something else releated to this definition. THe notion of ``closed'' as defined in the original paper and also the grounded fixpoints paper is quite surprising. I am in particular surprised by the fact that this does not take \db into account. Consider for instance the following \aics:
+%  \[a\aicrule \remove a\]
+%  with an empty database. The only $U$ that is closed here is $\{\remove a\}$. 
+%  It makes sense, though. And this insight might make some proofs easier later in the paper (sorry, I'm just using this paper as well to record my thoughts)}
 \end{definition}
+Although the notion of closed set of actions does not take the database into account, its role in the definition of justified weak repairs is as part of the definition of justified action set -- where all actions that do not change the database are included.
 
-\bart{all justified weak repairs are justified repairs, right?}
+\citet{tplp/CaropreseT11} includes an example showing that a justified weak repair may not be a repair.
 
-\luis{no: they actually have an example in their 2011 paper. That was actually one of the first things that sent my alarm bells off.}
+%\bart{all justified weak repairs are justified repairs, right?}
+
+%\luis{no: they actually have an example in their 2011 paper. That was actually one of the first things that sent my alarm bells off.}
 
 
 % \bart{Next one needed?}
@@ -124,17 +120,17 @@ Intuitively, a semantics for AICs possesses the shifting property if transformin
 \end{definition}
 
 \begin{definition}
- We say that a semantics for AICs \emph{has the shifting property} if for each database \fulldb, \UU is a repair of \fulldb accepted by the semantics if and only if $\shift_S(\UU)$ is a repair of $\langle\shift_S(\db),\shift_S(\aics)\rangle$ accepted by the semantics.
+ We say that a semantics for AICs \emph{has the shifting property} if: for all \fulldb, \UU is a repair of \fulldb accepted by the semantics if and only if $\shift_S(\UU)$ is a repair of $\langle\shift_S(\db),\shift_S(\aics)\rangle$ accepted by the semantics.
 \end{definition}
 
-If a semantics satisfies the shifting property, by taking $S=\db$, we can reduce any situation to the case where $\db=\emptyset$. 
+If a semantics satisfies the shifting property, then we can reduce any situation to the case $\db=\emptyset$ by taking $S=\db$. 
 \subsection{Lattices, Operators and Fixpoints}
 A \emph{partially ordered set (poset)} $\langle L,\leq\rangle$ is a set $L$ equipped with a partial order $\leq$, i.e., a reflexive, antisymmetric, transitive relation. 
 As usual, we write $x<y$ as abbreviation for $x\leq y \land x\neq y$.
-If $S$ is a subset of $L$, then $x$ is an \emph{upper bound}, respectively a \emph{lower bound} of $S$ if for every $s\in S$, it holds that $s\leq x$ respectively $x\leq s$. 
-An element $x$ is a \emph{least upper bound}, respectively \emph{greatest lower bound} of $S$ if it is an upper bound that is smaller than every other upper bound, respectively a lower bound that is greater than every other lower bound. 
-If $S$ has a  least upper bound, respectively a greatest lower bound, we denote it $\lub(S)$, respectively $\glb(S)$.
-As is custom, we  sometimes call a greatest lower bound a \emph{meet}, and a least upper bound a \emph{join} and use the related notations $\bigand S = \glb(S)$, $x\land y=\glb(\{x,y\})$, $\bigor S = \lub(S)$ and $x\lor y=\lub(\{x,y\})$.
+If $S$ is a subset of $L$, then $x$ is an \emph{upper bound}, respectively a \emph{lower bound} of $S$ if for every $s\in S$, it holds that $s\leq x$, respectively $x\leq s$. 
+An element $x$ is a \emph{least upper bound} (respectively \emph{greatest lower bound} of $S$) if it is an upper bound that is smaller than every other upper bound (resp.\ a lower bound that is greater than every other lower bound).
+If $S$ has a least upper bound (resp.\ a greatest lower bound) we denote it $\lub(S)$ (resp.\ $\glb(S)$).
+As is custom, we sometimes call a greatest lower bound a \emph{meet}, and a least upper bound a \emph{join} and use the related notations $\bigand S = \glb(S)$, $x\land y=\glb(\{x,y\})$, $\bigor S = \lub(S)$ and $x\lor y=\lub(\{x,y\})$.
 % The relation $\leq$ is a \emph{total order} if for every $x,y\in L$, $x\leq y$ or $y\leq x$. 
 % A \emph{chain} is a subset $S$ of $L$ such that $\leq$ is a total order in $S$. We call $\langle L,\leq\rangle$ \emph{chain complete} if each of its chains has a least upper bound and a greatest lower bound. 
  We call $\langle L,\leq\rangle$ a \emph{bounded lattice}  if every finite subset of $L$ has a least upper bound and a greatest lower bound. 
@@ -143,9 +139,9 @@ As is custom, we  sometimes call a greatest lower bound a \emph{meet}, and a lea
 % A chain complete poset has a least element $\bot$. 
 A complete lattice has both a least element $\bot$ and a greatest element $\top$. 
 
-Since we apply our results to (finite) databases, for the sake of simplicity we will assume $L$ to be a \emph{finite} set in this text. All presented results easily generalize to the infinite setting as well. 
+Since we apply our results to (finite) databases, for the sake of simplicity we assume $L$ to be a \emph{finite} set in this text. All presented results easily generalize to the infinite setting as well. 
 
-A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other, a bounded lattice is \emph{complemented} if every element $x\in L$ has a \emph{complement}: an element $\lnot x \in L$ satisfying $x\land \lnot x  = \bot$ and $x\lor \lnot x =\top$.
+A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other. A bounded lattice is \emph{complemented} if every element $x\in L$ has a \emph{complement}: an element $\lnot x \in L$ satisfying $x\land \lnot x  = \bot$ and $x\lor \lnot x =\top$.
 A \emph{Boolean lattice} is a distributive complemented lattice. 
 In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x\land \lnot y)$.
 
@@ -161,8 +157,7 @@ complete lattice has a least fixpoint, denoted $\lfp(O)$, which is also $O$'s le
 % \end{compactitem}
 
 
-\mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if for each $v\in L$ such that $O(v\land
-  x)\leq v$, it holds that $x\leq v$.   
+\mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if, for each $v\in L$ such that $O(v\land x)\leq v$, it holds that $x\leq v$.
 %   They called a point $x\in L$ \emph{strictly grounded} for $O$ if there is no $v\in L$ such that $v<x$ and $O(v)\land x \leq v$.
 They explained the intuition underlying these concepts under the assumption that the elements of $L$ are sets of ``facts'' of some kind and the $\leq$ relation is the subset relation between such sets:
 in this case, a point $x$ is grounded if it contains only facts that are sanctioned by the operator $O$, 

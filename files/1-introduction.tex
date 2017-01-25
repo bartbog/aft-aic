@@ -9,9 +9,9 @@ Among the most widely accepted criteria are minimality of change~\cite{Winslett9
 A typical implementation of integrity constraints in database systems is by means of event-condition-action rules~\cite{TenienteO95,WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
 However, these rules do not have a declarative semantics, making their joint behaviour hard to understand.
 
-The formalism of active integrity constraints~\cite{ppdp/FlescaGZ04} was inspired by the same idea.
-Active integrity constraints express database dependencies through logic programming-style rules that include update actions in their heads.
-They come with a declarative semantics~\cite{iclp/CaropreseGSZ06,tplp/CaropreseT11} that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair.
+The formalism of active integrity constraints (AICs,~\cite{ppdp/FlescaGZ04}) was inspired by a similar idea.
+AICs express database dependencies through logic programming-style rules that include update actions in their heads.
+They come with a declarative semantics~\cite{tplp/CaropreseT11} that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair.
 These repairs can be computed directly by means of tree algorithms~\cite{tase/Cruz-FilipeEGN13}, which have been implemented as a prototype~\cite{CFHLNS15}.
 
 %% Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
@@ -29,7 +29,9 @@ These repairs can be computed directly by means of tree algorithms~\cite{tase/Cr
 It is striking that many of the intuitions underlying about what ``good'' repairs are, such as minimality of change, are very similar to intuitions that have appeared in other domains of non-monotonic reasoning, such as for instance logic programming \mycite{LP} and default logic \mycite{DL}. 
 % For instance \todo{minimality} of change \cite{}, ... 
 Still, it has been hard to find a set of satisfying set of semantics for AICs.
-\todo{list some problems.}
+%\todo{list some problems.}
+As shown in~\cite{tase/Cruz-FilipeEGN13}, the intuitive semantics of founded repairs~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia, while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs in some cases.
+That work proposed an alternative operational semantics of well-founded repairs, which however is not modular~\cite{foiks/Cruz-Filipe14} and therefore is severely restricted in its practical applicability.
 
 % Essentially, fixing similar problems as in other NMR domains... 
 
@@ -41,10 +43,10 @@ In order to do so, we continue the work of \citet{iclp/Cruz-Filipe16}, who defin
 In this paper, we define an approximating operator of Cruz-Filipe's semantic operator. 
 When this operator is defined, approximation fixpoint theory immediately provides us with \begin{inparaenum} \item a supported fixpoint semantics, \item a well-founded fixpoint semantics, \item a (partial) stable fixpoint semantics, \item a Kripke-Kleene fixpoint semantics, and \item a (partial) grounded fixpoint semantics. \end{inparaenum} 
 We study properties of these new semantics and study how they compare to existing semantics. 
-Furthermore, we argue that from a practical point of view, the AFT-style well-founded semantics is very valuable. 
-Indeed, we show that this semantics can be computed in polynomial time and that on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
+Furthermore, we argue that, from a practical point of view, the AFT-style well-founded semantics is very valuable. 
+Indeed, we show that this semantics can be computed in polynomial time, and that, on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
 
-Despite defining a class new class of interesting semantics, our work provides solid foundations for transferring a rich body of work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
+Besides defining a class new class of interesting semantics, our work provides solid foundations for transferring a rich body of work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
 Following results from \citet{tplp/CaropreseT11}, our work also opens the way to applying AFT to revision programming. 
 % To establish this relationship, we define a family of new semantics for AICs with some desirable properties:
 % \begin{compactitem}
@@ -71,6 +73,6 @@ Following results from \citet{tplp/CaropreseT11}, our work also opens the way to
 %  
 
 
-\luis{Despite all the information in the background, I guess one can only understand this if one already knows something about AFT. We should state it explicitly in the beginning.}
-\bart{You mean in the beginning of the example or of the paper?}
-\luis{I guess in the beginning of the paper... just prepare people psychologically so that they won't be scared off too easily :-)}
+%\luis{Despite all the information in the background, I guess one can only understand this if one already knows something about AFT. We should state it explicitly in the beginning.}
+%\bart{You mean in the beginning of the example or of the paper?}
+%\luis{I guess in the beginning of the paper... just prepare people psychologically so that they won't be scared off too easily :-)}
