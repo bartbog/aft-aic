@@ -171,12 +171,12 @@ in the sense that if we remove them from $x$, then the operator will add at leas
 \subsection{Approximation Fixpoint Theory}
 
 
-Given a lattice $L$, approximation fixpoint theory makes use of the bilattice 
+Given a lattice $L$, approximation fixpoint theory (AFT) uses the bilattice 
 $L^2$.  We define two \emph{projection} functions for pairs as usual:
 $(x,y)_1=x$ and $(x,y)_2=y$.  Pairs $(x,y)\in L^2$ are used to
-approximate all elements in the interval $[x,y] = \{z\mid x\leq
-z\wedge z\leq y\}$. We call $(x,y)\in L^2$ \emph{consistent} if $x\leq
-y$, that is, if $[x,y]$ is non-empty. We use $L^c$ to denote the set
+approximate elements in the interval $[x,y] = \{z\mid x\leq
+z\wedge z\leq y\}$. We call $(x,y)\in L^2$ \emph{consistent} if $x\leq 
+y$, that is, if $[x,y]$ is non-empty, and use $L^c$ to denote the set
 of consistent elements. Elements $(x,x) \in L^c$ are called
 \emph{exact}; they constitute the embedding of $L$ in $L^2$.  We sometimes abuse notation and use the tuple $(x,y)$
 and the interval $[x,y]$ interchangeably.  The \emph{precision
@@ -191,18 +191,18 @@ $\langle L^2,\leqp\rangle$ is also a complete lattice.
 
 
 AFT studies fixpoints of lattice operators $O:L\ra L$ through operators approximating $O$.
- An operator $A: L^2\to L^2$  is an \emph{approximator} of $O$ if it is \leqp-monotone,  and has the property that for all $x$, $O(x)\in A(x,x)$. %[x',y']$, where $(x',y')=A{x,x}$.
+ An operator $A: L^2\to L^2$  is an \emph{approximator} of $O$ if it is \leqp-monotone,  and has the property that $O(x)\in A(x,x)$ for all $x$. %[x',y']$, where $(x',y')=A{x,x}$.
 Approximators are
 internal in $L^c$ (i.e., map $L^c$ into $L^c$).
-As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$. %  DMT \citeyear{DeneckerMT00}\cite{lpnmr/DeneckerV07}.  
-\cite{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
+As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that, for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$. %  DMT \citeyear{DeneckerMT00}\cite{lpnmr/DeneckerV07}.
+\citet{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
 
 AFT studies fixpoints of $O$ using fixpoints of $A$. 
  \begin{compactitem}
-  \item The \emph{$A$-Kripke-Kleene fixpoint} is the $\leqp$-least fixpoint of $A$ and has the property that it approximates all fixpoints of $O$. 
+  \item The \emph{$A$-Kripke-Kleene fixpoint} is the $\leqp$-least fixpoint of $A$, and it approximates all fixpoints of $O$. 
 \item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:x\mapsto A(x,y)_1$ and analogously for $A(x,\cdot)_2$. 
 \item The \emph{$A$-well-founded fixpoint} is the least precise partial $A$-stable fixpoint. 
-\item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent with the condition that $x=\lfp(A(\cdot, x)_1)$.  
+\item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
  \end{compactitem}
 
 % % 
@@ -225,7 +225,7 @@ An \emph{$A$-refinement} of $(x,y)$ is a pair $(x',y')\in L^2$ satisfying one of
 An $A$-refinement is \emph{strict} if $(x,y)\neq (x',y')$.
 \end{definition}
 
-We call the first type (\ref{first}.) of refinements \emph{application refinements} and the second type (\ref{second}.) \emph{unfoundedness refinements}. If $(x',y')$ is an $A$-refinement of $(x,y)$ and $A$ is clear from the concepts, we often denote it $(x,y)\to(x',y')$.
+We call the first type (\ref{first}.) of refinements \emph{application refinements} and the second type (\ref{second}.) \emph{unfoundedness refinements}. If $(x',y')$ is an $A$-refinement of $(x,y)$ and $A$ is clear from the context, we often write $(x,y)\to(x',y')$.
 %
 % \nomenclature[alp]{$\alpha,\beta$}{Ordinal numbers}
 % \nomenclature[lam]{$\lambda$}{A limit ordinal}
@@ -243,11 +243,11 @@ with $n\in\nat$ such that
 A well-founded induction is \emph{terminal} if its limit $(x_n,y_n)$ has no strict $A$-refinements.
 % \marc{als je in sectie over fixpoints het leastfixpoint in een licthjes andere notatie geeft= $x_i\leq x_{i+1}\leq O(x_i)$, dan kan je hier gewoon zeggen: een well-founded induction is een monotone induction van de juiste operator (de vierwaardige stable operator)}\bart{precies zo geen fan van. De standaard def van leastfixpoint kent iedereen...}
 \end{definition}
-A well-founded induction is an algebraical generalisation of the well-founded model construction defined by \cite{GelderRS91}. 
+A well-founded induction is an algebraical generalisation of the well-founded model construction defined in \cite{GelderRS91}. 
 The first type of refinement corresponds to making a partial structure more precise by applying Fitting's immediate consequence operator; the second type of refinement corresponds to making a structure more precise by eliminating an unfounded set. 
 
 For a given approximator $A$, there are many different terminal well-founded inductions of $A$.
-\cite{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, the $A$-well-founded fixpoint of $O$ (and in fact, every tuple in a well-founded induction of $A$) is consistent. 
+\citet{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, then the $A$-well-founded fixpoint of $O$ (in fact, every tuple in a well-founded induction of $A$) is consistent. 
 % Well-founded inductions that only use the first sort of refinement converge to the $A$-Kripke-Kleene fixpoint. 
 
 % \todo{Drop section on ultimate approximators, unless we use it.}
@@ -264,7 +264,7 @@ For a given approximator $A$, there are many different terminal well-founded ind
 % % whose semantics is defined in terms of Approximation Fixpoint Theory, the ultimate approximator is not precise enough!
 % % We will develop an alternative fixpoint theory that is more precise than the current one, and show that with this theory, we obtain several desirable properties in logics with a fixpoint semantics.
 
-\todo{Say something about partial grounded fixpoints?}
+%\todo{Say something about partial grounded fixpoints?}
 
 % \luis{It might be good to point out that we will include examples of all these constructions in the next section.}
 % 
