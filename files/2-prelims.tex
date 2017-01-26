@@ -4,7 +4,7 @@
 % 
 % \bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
 
-\subsection{Active Integrity Constraints}
+\paragraph{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A literal is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
 The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$.
 
@@ -124,7 +124,7 @@ Intuitively, a semantics for AICs possesses the shifting property if transformin
 \end{definition}
 
 If a semantics satisfies the shifting property, then we can reduce any situation to the case $\db=\emptyset$ by taking $S=\db$. 
-\subsection{Lattices, Operators and Fixpoints}
+\paragraph{Lattices, Operators and Fixpoints}
 A \emph{partially ordered set (poset)} $\langle L,\leq\rangle$ is a set $L$ equipped with a partial order $\leq$, i.e., a reflexive, antisymmetric, transitive relation. 
 As usual, we write $x<y$ as abbreviation for $x\leq y \land x\neq y$.
 If $S$ is a subset of $L$, then $x$ is an \emph{upper bound}, respectively a \emph{lower bound} of $S$ if for every $s\in S$, it holds that $s\leq x$, respectively $x\leq s$. 
@@ -168,7 +168,7 @@ in the sense that if we remove them from $x$, then the operator will add at leas
 
 
 
-\subsection{Approximation Fixpoint Theory}
+\paragraph{Approximation Fixpoint Theory}
 
 
 Given a lattice $L$, approximation fixpoint theory (AFT) uses the bilattice 
