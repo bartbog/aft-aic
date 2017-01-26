@@ -6,13 +6,14 @@ Recall that in this paper, we only consider normal AICs.
 % For such a rule, we define $\nup(r) = \l_2\land \dots \land l_n$. The intuition is that $\nup(r)$ is the non-updatable part of the body of $r$. 
 % As soon as $\nup(r)$ holds, so should $l_1^D$. Indeed, if $l_1$ holds, then $\alpha$ dictates to change its value; if $l_1$ does not hold, the integrity constraint is satisfied. 
 
-Given a fixed database $\db$.
-The sets of update actions $\UU$ that are of interest to us are those such that \textbf{(i)} \UU is consistent and \textbf{(ii)} each action in \UU modifies \db. As argued by  \citet{iclp/Cruz-Filipe16}, the set of such sets is isomorphic to $2^{\atoms}$. Hence, from now on, we identify such a set with a subset of $\atoms$ (the atoms whose value is changed by \UU). 
+Given a fixed database $\db$,
+the sets of update actions $\UU$ that are of interest to us are those such that \textbf{(i)} \UU is consistent and \textbf{(ii)} each action in \UU modifies \db. As argued by  \citet{iclp/Cruz-Filipe16}, the set of such sets is isomorphic to $2^{\atoms}$. Hence, from now on, we identify such a set with a subset of $\atoms$ (the atoms whose value is changed by \UU). 
 If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\not\in \db$ and $\remove a$ if $a \in \db$. 
 Thus, in the above identification, a set  of atoms $\overline\UU\subseteq \atoms$ is identified with the set 
 \[\UU = \{\change a\mid a \in \overline \UU \}\]
 of update actions.
-Usually, we omit the bar, and simply write $\UU$ for the subset of \atoms as well. Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline \UU$. 
+Usually, we omit the bar, and simply write $\UU$ for the subset of \atoms as well.
+\longpaper{Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline \UU$.}
 % In some technical parts of the paper, we often switch between 
 
 Following the principle of minimality of change \cite{Winslett90,ai/EiterG92}, we prefer smaller sets of updates. % over lager sets.
@@ -84,6 +85,7 @@ Given a partial database \tdb, a set of AICs \aics and an update action $u$,  we
 \end{align*}
 where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38}.
 \end{definition}
+\luis{$\leq_t$ was not defined}
 
 Using this notion of support, we define two additional values. 
 
@@ -201,7 +203,7 @@ In all other cases, we derive nothing about $a$ being in the update or not.
 % \leqp-monotonicity of \Ap follows from the fact that Kleene-valuation is \leqp-monotone and 
 % \end{proof}
 \longpaper{\begin{proof}
-First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. Then, it holds that $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
+First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. Then  $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
 \begin{compactitem}
 \item If $\UUU(a)=\lfalse$, then $\UUU'(a)=\lfalse$ since $\UUU'\geqp\UUU$. In this case $\Ap(\UUU')(a) = \suppin_{\UUU'}(a) \geqp \suppin_{\UUU}(a) =  \Ap(\UUU)(a)$. 
 \item The case where $\UUU(a)=\ltrue$ is similar.
@@ -417,7 +419,7 @@ Since \Ap is defined entirely in terms of these sets, the result follows.
 \begin{proof}
 Let $\left(\UUU_i\right)_{i\leq k}$ be a well-founded induction of \Ap. 
 For each $i$, define $\UU_i$ as $\{a \in \atoms \mid \UUU_i=\ltrue\}$. 
-We will prove the following claim by induction on the length $k$ of the well-founded induction (note that we restrict to finite well-founded inductions here since we assumed $\atoms$ is a finite set in the first place). 
+We will prove the following claim by induction on the length $k$ of the well-founded induction (note that we restrict to finite well-founded inductions here, since we assume $\atoms$ to be finite). 
 
 There exists a sequence $\alpha_1,\dots,\alpha_n$ such that $\UU_k=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $\{\alpha_1,\dots,\alpha_{i-1}\}(\db) \models \body (r_i)$ and $\alpha_i = \head(r_i)$.
 
@@ -452,10 +454,9 @@ not hold. Consider for instance the following set $\aics$ of AICs
  \end{align*}
  and $\db=\{a,b,c\}$.
  In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be removed no matter what. The second rule then becomes void (there is never a reason to remove $b$) and the last rule dictates that also $c$ must be removed. 
- However, also $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is a well-founded repair, obtained by first applying the second rule and then the first one.
- %(according to \citet{iclp/Cruz-Filipe16}). 
- %LCF: it's so simple to explain...
+ However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also a well-founded repair, obtained by first applying the second rule and then the first one.
 \end{example}
+\luis{We might say that this example is from \cite{iclp/Cruz-Filipe16}; otherwise it looks weird that $DB\neq\emptyset$ as in all other examples.}
 
 % \todo{check the link between ``justified repair'' and ``stable repair''. My feeling is that they should be very closely related. For instance in Example 20 in the GF and AIC paper, this is a case where stable coincides with justified. However, there is also a notion of ultimate stable repair (which coincides here with grounded). This is similar to logic programming, where 
 % \begin{align*}
@@ -473,30 +474,30 @@ not hold. Consider for instance the following set $\aics$ of AICs
 \begin{proposition}\label{prop:stable_is_justified}
 If \UU is a \Ap-stable repair, then \UU is a justified repair. 
 \end{proposition}
-\todo{Throughout the paper, I sometimes use the symbol $a$ for an action, sometimes for an atom. That must be confusing. However, due to the identification of a set of update actions with a subset of \atoms this mixup I'm doing is not so strainge. It might be better to streamline it a bit more} 
-\luis{the ``standard'' practice is to use $\alpha$ for actions}
-\bart{Hmmm... We should streamline this. I think I'm also using $u$ sometimes}
+%\todo{Throughout the paper, I sometimes use the symbol $a$ for an action, sometimes for an atom. That must be confusing. However, due to the identification of a set of update actions with a subset of \atoms this mixup I'm doing is not so strainge. It might be better to streamline it a bit more} 
+%\luis{the ``standard'' practice is to use $\alpha$ for actions}
+%\bart{Hmmm... We should streamline this. I think I'm also using $u$ sometimes}
 \longpaper{\begin{proof}
-We can safely assume that \UU is a repair of \db (otherwise, it is neither a justified repair, nor a $\Ap$-stable repair.
-
+We can safely assume that \UU is a repair of \db (otherwise, it is not a $\Ap$-stable repair.
 
  Before starting the actual proof, we introduce a couple of auxiliary operators. 
  For each set of update actions $\VV$, let $\ext(\VV)$ denote $\VV\cup \neff_\UU(\db)$.
- Notice that even if $\VV$ is consistent, $\ext(\VV)$ can be inconsistent. 
- However, whenever $\VV \subseteq \UU$, $\ext(\VV)$ is consistent. 
- For each set of update actions $\VV$, let $\closure(\VV)$ denote \[\closure(\VV)= \VV\cup \{head(r) \mid \actof(\nup(r)) \subseteq \VV\}.\] 
+ %Notice that even if $\VV$ is consistent, $\ext(\VV)$ can be inconsistent. 
+ %However, whenever $\VV \subseteq \UU$, $\ext(\VV)$ is consistent. 
+ Note that $\ext(\VV)$ is consistent whenever $\VV\subseteq\UU$.
+ For each set of update actions $\VV$, let $\closure(\VV)$ denote \[\closure(\VV)= \VV\cup \{\head(r) \mid \actof(\nup(r)) \subseteq \VV\}.\] 
 %  \todo{maybe closure should be defined differently: probably we need to drop teh \VV}
  Now, we define the operator (on sets of update actions):
 \[O: \VV \mapsto \closure(\ext(\VV)) \setminus \neff_\UU(\db).\]
-Below, we will prove the following claims:
+Below, we prove the following claims:
 \begin{compactdesc}
  \item \textbf{Claim 1}: \UU is a minimal prefixpoint of $O$ if and only if $\UU$ is a justified repair of \fulldb. 
  \item \textbf{Claim 2}: For any literal $l$, $\actof(l)\in \ext(\db)$ if and only if $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue$. 
- \item \textbf{Claim 3}: For any update action $u$, $u\in \closure(\ext(\VV))$ if and only if  $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(u) = \ltrue$. 
+ \item \textbf{Claim 3}: For any update action $\alpha$, $\alpha\in \closure(\ext(\VV))$ if and only if  $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\alpha) = \ltrue$. 
  \item \textbf{Claim 4}: For every set of update actions $\VV\subseteq \UU$: 
  \[\Ap(\overline\VV,\overline\UU)_1\subseteq \overline{O(\VV)}.\] 
 \end{compactdesc}
-Now, assume $\UU$ is a $\Ap$-stable repair. It is clear that $O$ is a monotone operator, hence it has a unique minimal prefixpoint, which is also its least fixpoint. Since $\UU$ is a repair, it is a fixpoint of $O$, we should show that it is minimal. Assume $\UU'\subseteq \UU$ is a prefixpoint of $O$ as well. This means $O(\UU')\subseteq \UU'$ 
+Now, assume $\UU$ is a $\Ap$-stable repair. It is clear that $O$ is a monotone operator, hence it has a unique minimal prefixpoint, which is also its least fixpoint. Since $\UU$ is a repair, it is a fixpoint of $O$; we need to show that it is minimal. Assume $\UU'\subseteq \UU$ is a prefixpoint of $O$ as well. This means $O(\UU')\subseteq \UU'$ 
 and hence 
 \[\Ap(\overline{\UU'},\overline\UU)_1 \subseteq \overline{(O(\UU'))}\subseteq \overline{\UU'},\]
 i.e., $\overline{\UU'}$ is a prefixpoint of $\Ap(\cdot,\overline\UU)_1$. 
@@ -511,6 +512,7 @@ Since $\overline\UU$ is an $\Ap$-stable repair, $\overline\UU$ is the least pref
 
 \textbf{Claim 1} This follows immediately from the definition of justified repair. Prefixpoints of the \closure operator are sets of update actions closed under \aics. Hence $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a minimal set of update actions that contains $\neff_{\UU}(\db)$ and is closed under $\aics$. 
 
+\luis{Actually, this only proofs that $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a justified \emph{weak} repair. Although we assume $\UU$ is a repair to start with, this looks weird.}
 
 
 
@@ -530,8 +532,8 @@ $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue = (l^\db)^{-1}$. Hence it must
 
 
 \textbf{Claim 3} 
-Let $u$ be an update action. 
-It holds that  $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(u) = \ltrue$ if and only if there is some rule $r$ with $\head(r)=u$ and $\nup(r)^{ (\overline\VV, \overline\UU)(\db)} = \ltrue$. This means that for each literal $l'\in \nup(r)$, $l'^{(\overline\VV, \overline\UU)(\db)} = \ltrue$. From Claim 2 it then follows that this is equivalent with the condition that each literal $l'\in\nup(r)$ is an element of   $\ext(\VV)$, i.e., with  the condition that $u \in \closure(\ext(\VV))$. 
+Let $\alpha$ be an update action. 
+It holds that  $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\alpha) = \ltrue$ if and only if there is some rule $r$ with $\head(r)=\alpha$ and $\nup(r)^{ (\overline\VV, \overline\UU)(\db)} = \ltrue$. This means that for each literal $l'\in \nup(r)$, $l'^{(\overline\VV, \overline\UU)(\db)} = \ltrue$. From Claim 2 it then follows that this is equivalent with the condition that each literal $l'\in\nup(r)$ is an element of   $\ext(\VV)$, i.e., with  the condition that $\alpha \in \closure(\ext(\VV))$. 
 
 
 \textbf{Claim 4}
@@ -586,7 +588,7 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
 %  To see this, notice that NEFF = the stuff you don't change. In our representation of three-valued update sets, this EXACTLY corresponds to the upper bound}
 %  
 \end{proof}
-\luis{this one I still need to read closely}}
+}
 
 
 
@@ -633,7 +635,7 @@ If \aics is unipolar, then each justified repair of \fulldb is \Ap-stable.
  It then follows easily that $\UU$ is a minimal fixpoint of $O$ iff $\bar\UU$ is a minimal fixpoint of $\Ap(\overline\VV,\overline\UU)_1$ and the result follows from \textbf{Claim 1} in the proof of Proposition \ref{prop:stable_is_justified} and the definition of \Ap-stable fixpoint. 
  
 \textbf{Claim 4'}
-One direction of this claim has been proven as \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}; we show that the other inclusion also holds.. 
+One direction of this claim has been proven as \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}; we show that the other inclusion also holds.
  Take an atom $a$ and a set $\VV\subseteq\UU$ of update actions such that $a\in \overline{O(\VV)}$; we show that $a\in\Ap(\overline\VV,\overline\UU)_1$. Since $a\in\overline{O(\VV)}$, it holds that $\change a\in \closure(\ext(\VV))$ and thus (by \textbf{Claim 3}) that $\suppin_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\ltrue$. This means that there is at least one rule $r\in\aics$ with $\head(r)=\change a$. Since \aics is unipolar, there can be no rules $r'\in\aics$ with $\head(r') = (\change a)^D$ hence, it holds that $\suppout_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\lfalse$. From the definition of $\Ap$, we then find that $\Ap(\overline\VV,\overline\UU)(a)=\ltrue$ and thus that  $a\in \Ap(\overline\VV,\overline\UU)_1$, which we needed to prove. 
 \qedhere
 \end{proof}}
