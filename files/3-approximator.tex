@@ -619,7 +619,7 @@ While the converse of Proposition \ref{prop:stable_is_justified} does not hold i
  A set of AICs \aics is called \emph{unipolar} if there are no rules $r,r'\in\aics$ with $\head(r)=\head(r')^D$. 
 \end{definition}
 
-
+Unipolar AICs make sense in practice, for example if there are tables from which removing data is never an option.
 
 
 \begin{proposition}\label{prop:justified_is_stable_sometimes}
@@ -651,8 +651,6 @@ From the following existing result, we easily find how justified repairs and the
 \begin{corollary}
  The AFT-well-founded repair (and hence also the Kripke-Kleene repair) approximates all justified repairs. 
 \end{corollary}
-\luis{I have to think about this unipolar stuff. Does it make sense in the database world?}
-\bart{I guess it would. You might never want to throw away information, only add things. Or in certain tables, only add, in other tables, only remove while repairing?}
 
 %%% Local Variables:
 %%% mode: latex
