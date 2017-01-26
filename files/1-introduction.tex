@@ -26,12 +26,12 @@ These repairs can be computed directly by means of tree algorithms~\cite{tase/Cr
 %% lcf: not sure what to include from this list of references
 %% Defining a natural semantics for such AICs has been a topic of intensive research \cite{iclp/CaropreseGSZ06,sebd/MolinaroGC06,iclp/CaropreseTZ07,dasfaa/CaropreseGM07,iclp/CaropreseT08,tkde/CaropreseGZ09,tplp/CaropreseT11,iclp/Cruz-Filipe16}. 
 
-It is striking that many of the intuitions underlying about what ``good'' repairs are, such as minimality of change, are very similar to intuitions that have appeared in other domains of non-monotonic reasoning, such as for instance logic programming \mycite{LP} and default logic \mycite{DL}. 
+It is striking that many intuitions about what ``good'' repairs are, such as minimality of change, are very similar to intuitions that surfaced in other domains of non-monotonic reasoning, such as logic programming \mycite{LP} and default logic \mycite{DL}. 
 % For instance \todo{minimality} of change \cite{}, ... 
-Still, it has been hard to find a set of satisfying set of semantics for AICs.
+Still, it has been hard to find a satisfying set of semantics for AICs.
 %\todo{list some problems.}
-As shown in~\cite{tase/Cruz-FilipeEGN13}, the intuitive semantics of founded repairs~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia, while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs in some cases.
-That work proposed an alternative operational semantics of well-founded repairs, which however is not modular~\cite{foiks/Cruz-Filipe14} and therefore is severely restricted in its practical applicability.
+As shown by~\citet{tase/Cruz-FilipeEGN13}, the semantics of founded repairs~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia, while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs in some cases.
+That work proposed the operational semantics of well-founded repairs, which however is not modular~\cite{foiks/Cruz-Filipe14} and therefore severely restricted in its practical applicability.
 
 % Essentially, fixing similar problems as in other NMR domains... 
 
@@ -41,13 +41,18 @@ To this end, we define a new class of semantics for AICs that are natural counte
 To be precise, we define semantics for AICs based on approximation fixpoint theory \cite{\refto{AFT}}, an abstract algebraic framework that unifies semantics of logic programming, default logic, autoepistemic logic \mycite{AEL}, abstract argumentation frameworks \cite{\refto{AF}} and abstract dialectical frameworks \mycite{ADF}, as shown by Denecker, Marek and Truszczy{\'n}ski [\citeyear{DeneckerMT00,DeneckerMT03}] and \citet{journals/ai/Strass13}. 
 In order to do so, we continue the work of \citet{iclp/Cruz-Filipe16}, who defined a semantic operator for AICs and used it to study the grounded fixpoint semantics \mycite{GroundedFixpoints} for AICs. 
 In this paper, we define an approximating operator of Cruz-Filipe's semantic operator. 
-When this operator is defined, approximation fixpoint theory immediately provides us with \begin{inparaenum} \item a supported fixpoint semantics, \item a well-founded fixpoint semantics, \item a (partial) stable fixpoint semantics, \item a Kripke-Kleene fixpoint semantics, and \item a (partial) grounded fixpoint semantics. \end{inparaenum} 
+When this operator is defined, approximation fixpoint theory immediately provides us with \begin{inparaenum} 
+\item a supported fixpoint semantics, 
+\item a well-founded fixpoint semantics, 
+\item a (partial) stable fixpoint semantics, 
+\item a Kripke-Kleene fixpoint semantics, and 
+\item a (partial) grounded fixpoint semantics. \bart{drop? non-classical} \end{inparaenum} 
 We study properties of these new semantics and study how they compare to existing semantics. 
 Furthermore, we argue that, from a practical point of view, the AFT-style well-founded semantics is very valuable. 
 Indeed, we show that this semantics can be computed in polynomial time, and that, on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
 
 Besides defining a class new class of interesting semantics, our work provides solid foundations for transferring a rich body of work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
-Following results from \citet{tplp/CaropreseT11}, our work also opens the way to applying AFT to revision programming. 
+Following results from \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming. 
 % To establish this relationship, we define a family of new semantics for AICs with some desirable properties:
 % \begin{compactitem}
 %  \item Each of our semantics satisfies the so-called \emph{shifting property} \cite{tcs/MarekT98}. 
