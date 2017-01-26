@@ -1,4 +1,4 @@
-\subsection{A Semantic Operator for AICs}
+\paragraph{A Semantic Operator for AICs}
 Recall that in this paper, we only consider normal AICs.
 % , i.e., expressions $r$ of the form 
 % \[ l_1\land \ldots \land l_n \aicrule \alpha\]
@@ -26,7 +26,7 @@ Now consider a set of (normal) AICs \aics.
 \begin{align*}\Op: &2^{\atoms}\to  2^{\atoms}: \UU \mapsto  \\ &\UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\end{align*}
 
 Cruz-Filipe argued that a semantics for AICs based on grounded fixpoints of \Op coincides with the intuitions on a large set of natural examples and that it solves problems with several previously existing semantics. 
-In the following subsection, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs. 
+In the following paragraph, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs. 
 
 
 % Now, with these definitions, we can rephrase the definition of the operator \Op.
@@ -58,7 +58,7 @@ In the following subsection, we define an approximator for \Op and hence, obtain
 % \label{fig:KT}
 % \end{figure}
 
-\subsection{An Approximator for \Op}
+\paragraph{An Approximator for \Op}
 
 A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$. A partial action set \UUU is \emph{two-valued} if $\UUU(\atoms)\subseteq\{\ltrue,\lfalse\}$; in this case, we identify $\UUU$ with the action set $\{\change a\mid \UUU(a)=\ltrue\}$. 
 The intended reading of such a mapping is that $\UUU(a)$ is true if $a$ is changed by $\UUU$, it is false if $a$ is not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
@@ -383,7 +383,7 @@ It can also be verified that there are no other $\Ap$-stable fixpoints. Due to m
 
 \longpaper{Hence, in the above example, \Ap-stable repairs capture the intended semantics. }
 
-\subsection{Properties of AFT-Style Semantics}
+\paragraph{Properties of AFT-Style Semantics}
 % \todo{start new section here?}
 \luis{If we have results about justified repairs, it might make sense to include remarks on whether they hold in the non-normal case. If we do that, we need to revise this sentence (refers to some sentence in intro).}
 \bart{The problem is that the AFT semantics are not defined for non-deterministic operators, so we won't be able to derive much useful stuff from there I'm affraid}
@@ -640,16 +640,16 @@ One direction of this claim has been proven as \textbf{Claim 4} in the proof of 
 \qedhere
 \end{proof}}
 
-From the following existing result, we easily find how justified repairs and the AFT-well-founded repair relate. 
+Using Lemma 19 of \citet{iclp/Cruz-Filipe16}, which stats that all justified repairs are grounded, we easily find how justified repairs and the AFT-well-founded repair relate. 
 
-\begin{proposition}[Lemma 19 of \citet{iclp/Cruz-Filipe16}]
- All justified repairs are grounded.
-\end{proposition}
+% \begin{proposition}[Lemma 19 of \citet{iclp/Cruz-Filipe16}]
+%  All justified repairs are grounded.
+% \end{proposition}
 
 
 
 \begin{corollary}
- The AFT-well-founded repair (and hence also the Kripke-Kleene repair) approximates all justified repairs. 
+ The AFT-well-founded repair and the Kripke-Kleene repair approximate all justified repairs. 
 \end{corollary}
 
 %%% Local Variables:
