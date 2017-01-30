@@ -79,9 +79,9 @@ If $\UUU$ is a partial action set and \db is a (regular) database, then we defin
 
 
 \begin{definition}\label{def:support}
-Given a partial database \tdb, a set of AICs \aics and an update action $u$,  we define the \emph{support} of $u$ with respect to $\langle \tdb, \aics\rangle$ as 
+Given a partial database \tdb, a set of AICs \aics and an update action $\alpha$,  we define the \emph{support} of $\alpha$ with respect to $\langle \tdb, \aics\rangle$ as 
 \begin{align*}
- \supp_{\tdb,\aics}(u) &= \max_{\leq_t}\{\nup(r)^{\tdb}\mid r\in \aics \land \head(r) = u\},
+ \supp_{\tdb,\aics}(\alpha) &= \max_{\leq_t}\{\nup(r)^{\tdb}\mid r\in \aics \land \head(r) = \alpha\},
 \end{align*}
 where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38}.
 \end{definition}
