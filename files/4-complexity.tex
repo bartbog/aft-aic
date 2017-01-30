@@ -1,21 +1,57 @@
-\todo{Some complexity results.
-Probably: well-founded/KK: polynomially computable (data complexity), stable fixpoints: NP-complete, ... Copy results from logic programming basically. Similarly, complexity increases if we start using ultimate approximators}
+%% \todo{Some complexity results.
+%% Probably: well-founded/KK: polynomially computable (data complexity), stable fixpoints: NP-complete, ... Copy results from logic programming basically. Similarly, complexity increases if we start using ultimate approximators}
 
-To establish lower bounds for the complexity of computing the different semantics of AICs, we use a reduction from simple logic programs to AICs, as defined in~\cite{tplp/CaropreseT11}.
-A simple logic program is one where rules are not trivial tautologies, i.e., they do not contain contradictory atoms in their bodies and they do not include their head in their body.
+We begin this section by stating an observation about the complexity of computing \Ap.
+\begin{proposition}
+  \label{prop:At-poly}
+  \Ap is computable in polynomial time on the size of $\eta$ and $\At$.
+\end{proposition}
+\longpaper{\begin{proof}
+    The definition of \Ap only requires evaluating $\UUU(a)$, $\suppin_{\UUU}(a)$ and $\suppout_{\UUU}(a)$ for each $a\in\At$.
+    In turn, the two last computations can be done in polynomial time: they require evaluating each literal in the body of each rule from $\eta$ with head $+a$ or $-a$ and computing its truth value under the database updated by $\UUU$.
+\end{proof}}
 
-The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
-Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
-Those authors then prove that the answer set semantics for $P$ coincides with the justified repair semantics for $\aicop(P)$ (with respect to the empty database).
+As a consequence, we get the following complexity results.
+\begin{proposition}
+  The Kripke-Kleene semantics for $\fulldb$ is computable in polynomial time.
+  \label{prop:KK-poly}
+\end{proposition}
+\longpaper{\begin{proof}
+  The Kripke-Kleene repair of $\fulldb$ can be computed by iterating $\Ap$ until a fixpoint is reached.
+  Since $\Ap$ is monotonic, the maximum number of iterations is the size of $\At$; since each iteration can be computed in polynomial time (Proposition~\ref{prop:At-poly}), so can this fixpoint.
+\end{proof}}
 
-More generally, with this definition it is immediate that the operator $\threeap_{\langle\emptyset,\aicop(P)\rangle}$ coincides with the corresponding operator $T_P$, used to define AFT semantics for logic programs.
-\luis{I'm a bit uncertain about the notation here, so I'm using $T_P$ as a placeholder for something with the right font.  Does it suffice to say that $\Ap$ coincides with $\Psi_P$?}
-This immediately implies that each semantics for AIC defined from $\Apfull$ has at least the same complexity as the corresponding semantics for logic programs.
+\begin{proposition}
+  The ATF-well-founded semantics for $\fulldb$ is computable in polynomial time.
+\end{proposition}
+\longpaper{\begin{proof}
+  \luis{not sure about this one: Bart writes ``a well-founded induction runs in polytime in the height of the lattice if computing $A(x,y)$ can be done in polytime''.  So it should follow from Proposition~\ref{prop:At-poly}, but I'm missing the argument (I only get NP).}
+\end{proof}}
 
-\bart{Lower bound for stable: every normal logic program can be seen  as an AIC. Should have te same stable smeantics (note: our transformation in theprevious section adds rules 
-\[a\lrule a\] but these do not change stable models. 
+\begin{proposition}
+  The stable semantics for $\fulldb$ is computable in non-deterministic polynomial time.
+\end{proposition}
+\longpaper{\begin{proof}
+  \emph{(Inclusion)} Given a candidate repair, checking that it is stable can be done in polynomial time, as it amounts to verifying that it is a repair (two-valued) and that it is a least fixpoint of the operators $\Ap(\cdot,y)_1$ and $\Ap(x,\cdot)_2$.
+  The latter can be done in polynomial time, as in the proof of Proposition~\ref{prop:KK-poly}.
 
-Lower bounds for KK well-founded. Well...polytime upper bound is al that needs to be sshown?}
+  \emph{(Completeness)} For completeness, we use a reduction from simple logic programs to AICs, as defined in~\cite{tplp/CaropreseT11}.
+  A simple logic program is one where rules are not trivial tautologies, i.e., they do not contain contradictory atoms in their bodies and they do not include their head in their body.
+  The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
+  Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
+
+  This operator preserves stable semantics, and therefore allows us to compute stable models of simple logic programs by first translating them (in linear time) to sets of AICs.
+  Since the stable semantics for logic programs is NP-complete, we conclude that the stable semantics for AICs must be NP-hard.
+  Note that every logic program can be transformed in a simple logic program by removing the offending rules without changing its stable semantics.
+\end{proof}}
+
+
+%% \bart{Lower bound for stable: every normal logic program can be seen  as an AIC. Should have te same stable smeantics (note: our transformation in theprevious section adds rules 
+%% \[a\lrule a\] but these do not change stable models. 
+
+%% Lower bounds for KK well-founded. Well...polytime upper bound is al that needs to be sshown?}
+
+
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "../AFT-semantics-AIC.tex"
