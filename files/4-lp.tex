@@ -5,19 +5,22 @@
 
 \bart{I don't know how valuable the following result is. }
 \begin{proposition}\label{prop:lplink}
- If $\db=\emptyset$, and the only update actions in \aics are of the form $\add a$, then, consider the following logic program: 
+  Suppose that $\db=\emptyset$ and that the only update actions in \aics are of the form $\add a$.
+  If $\PP$ is the following logic program
  \begin{align*}
   \PP =& \{a \lrule \nup(r)\mid r\in \aics, \head(r)= \add a\}\\
   &\cup \{a \lrule a\mid a \in \atoms\}
  \end{align*}
-then $\Ap = \Psi_\PP$. 
+ then $\Ap = \Psi_\PP$. 
 
 Hence, all AFT semantics for \fulldb coincide in this case with the equally-named semantics for the logic program \PP. 
 \end{proposition}
 \begin{proof}
- \todo{case analysis on the definition of \Ap. 
- The condition on \fulldb guarantees that $\suppout$ is always false.}
+  By case analysis on the definition of \Ap.
+  The condition on \fulldb guarantees that $\suppout$ is always false.
+  The inclusion of the rules of the form $a\lrule a$ is necessary to mimic the common-sense law of inertia, which is embodied in the semantics for AICs but not in that of logic programs.
 \end{proof}
+\luis{Proof has been done by hand.}
 
 \begin{example}
  Proposition \ref{prop:lplink} does not hold in general, not even for unipolar \aics. 
