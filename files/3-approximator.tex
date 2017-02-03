@@ -7,7 +7,12 @@ Recall that in this paper, we only consider normal AICs.
 % As soon as $\nup(r)$ holds, so should $l_1^D$. Indeed, if $l_1$ holds, then $\alpha$ dictates to change its value; if $l_1$ does not hold, the integrity constraint is satisfied. 
 
 Given a fixed database $\db$,
-the sets of update actions $\UU$ that are of interest to us are those such that \textbf{(i)} \UU is consistent and \textbf{(ii)} each action in \UU modifies \db. As argued by  \citet{iclp/Cruz-Filipe16}, the set of such sets is isomorphic to $2^{\atoms}$. Hence, from now on, we identify such a set with a subset of $\atoms$ (the atoms whose value is changed by \UU). 
+the sets of update actions $\UU$ that are of interest to us are those such that 
+\begin{inparaenum}
+\item \UU is consistent and 
+\item each action in \UU modifies \db.
+\end{inparaenum}
+As argued by  \citet{iclp/Cruz-Filipe16}, the set of such sets is isomorphic to $2^{\atoms}$. Hence, from now on, we identify such a set with a subset of $\atoms$ (the atoms whose value is changed by \UU). 
 If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\not\in \db$ and $\remove a$ if $a \in \db$. 
 Thus, in the above identification, a set  of atoms $\overline\UU\subseteq \atoms$ is identified with the set 
 \[\UU = \{\change a\mid a \in \overline \UU \}\]
@@ -26,7 +31,7 @@ Now consider a set of (normal) AICs \aics.
 \begin{align*}\Op: &2^{\atoms}\to  2^{\atoms}: \UU \mapsto  \\ &\UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\end{align*}
 
 Cruz-Filipe argued that a semantics for AICs based on grounded fixpoints of \Op coincides with the intuitions on a large set of natural examples and that it solves problems with several previously existing semantics. 
-In the following paragraph, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs. 
+In the following paragraph, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs, based on similar intuitions. 
 
 
 % Now, with these definitions, we can rephrase the definition of the operator \Op.
@@ -64,6 +69,7 @@ A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunk
 The intended reading of such a mapping is that $\UUU(a)$ is true if $a$ is changed by $\UUU$, it is false if $a$ is not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
 Alternatively, a partial action set is identified with an element of $(2^\atoms)^C$ (as standard). 
 The set of all partial action sets is denoted $P$.
+The truth order $\leqt$ on three-valued truth values is defined by $\lfalse\leqt\lunkn\leqt\ltrue$.
 
 A partial database is a mapping $\tdb: \atoms \to \{\ltrue,\lfalse,\lunkn\}$.
 The intended reading is that $\tdb(a)$ is true if $a$ is in the database, $\tdb(a)$ is false if $a$ is not in the database and $\tdb(a)$ is unknown otherwise. 
@@ -85,9 +91,9 @@ Given a partial database \tdb, a set of AICs \aics and an update action $\alpha$
 \end{align*}
 where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38}.
 \end{definition}
-\luis{$\leq_t$ was not defined}
+% \luis{$\leq_t$ was not defined}
 
-Using this notion of support, we define two additional values. 
+Using this notion, we define two additional values. 
 
 \begin{definition}
 If $a\in \atoms$, $\UUU$ is a partial set of update actions and $\langle \db, \aics\rangle$ as before, we define 
@@ -234,11 +240,12 @@ Since \Ap is an approximator, it defines a family of semantics for AICs.
   \item The \emph{AFT-well-founded repair} of \fulldb is the $\Ap$-well-founded fixpoint (in general, this is a partial update set). 
   \item The \emph{Kripke-Kleene repair} of \fulldb is the $\Ap$-Kripke-Kleene fixpoint (in general, this is a partial update set). 
 %   \item A \emph{supported 
-  \item A \emph{partial grounded repair} of \fulldb is a partial update set \UUU such that \UUU is a partial $\Ap$-grounded fixpoint. A \emph{grounded repair} is a partial grounded repair that is two-valued. 
+  \item A \emph{partial grounded repair} of \fulldb is a partial update set \UUU such that \UUU is a partial $\Ap$-grounded fixpoint \mycite{PartialGroundedFixpoints}. A \emph{grounded repair} is a partial grounded repair that is two-valued. 
  \end{compactitem}
 \end{definition}
 
-The terminology in the above definition uses ``repairs'' for certain classes of fixpoints of a semantic operator. It follows easily that  all two-valued (non-partial) update sets that are called ``repair'' in the the above definition, indeed are repairs according to AIC terminology. 
+The terminology in the above definition uses ``repairs'' for certain classes of fixpoints of a semantic operator. It follows easily that  all two-valued update sets that are called ``repair'' in the the above definition, indeed are repairs according to AIC terminology. 
+This paper is the first work that studies partial (non-two-valued) repairs. 
 % Indeed, this follows from the fact that 
  
 % \todo{state somewhere: it follwos easily that each of these repairs, if they are two-valued, they are indeed ``minimal weak repairs'' (i.e., repairs according to AIC terminology). }
@@ -252,12 +259,9 @@ We now illustrate these semantics by means of some examples.
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}
- \lnot a \aicrule \add a\\
- a \land \lnot b \aicrule \add b\\
- \lnot a \land \lnot b \land \lnot c \aicrule \add c\\
- a \land c \land b \aicrule \remove b
-\end{align*} with $\db = \emptyset$.
-\longpaper{
+ \lnot a &\aicrule \add a &\lnot a \land \lnot b \land \lnot c &\aicrule \add c\\
+ a \land \lnot b &\aicrule \add b & a \land c \land b &\aicrule \remove b
+\end{align*} with $\db = \emptyset$.\longpaper{
 Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
 \[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
 Here, we see that 
@@ -279,10 +283,9 @@ This follows easily from the fact that
 \[\UUU_3 = \Ap(\UUU_2)= a\mapsto \ltrue, b\mapsto \ltrue, c\mapsto\lfalse.\]
 Hence $\UUU_3$ is an application refinement of $\UUU_2$. Since this is an exact point, it is the \Ap-well-founded fixpoint of \Op. It is clearly the intended repair in this example.
 
-Note that in this example, unfoundedness refinements take care of minimisations of repairs.  
+Note that in this example, unfoundedness refinements take care of minimizations of repairs.  
 }
-\shortpaper{
-The \Ap-well-founded fixpoint can be computed as the limit of the following well-founded induction: 
+\shortpaper{The \Ap-well-founded fixpoint can be computed as the limit of the following well-founded induction: 
 \begin{align*}
 \UUU_0&: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\\
 \UUU_1 = \Ap(\UUU_0)&: a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lunkn\\
@@ -300,12 +303,12 @@ Note that unfoundedness refinements serve to minimize repairs.
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}
- a \land \lnot b&\aicrule \add b\\
+ a \land \lnot b&\aicrule \add b &
  \lnot a \land b &\aicrule \add a \\
  \lnot a \land \lnot b \land \lnot c &\aicrule \add c
  \end{align*} with $\db = \emptyset$. Intuitively, we expect $\add c$ to be an element of ``good'' repairs, and (following the minimality of change principle), no other actions to be in ``good'' repairs. 
 
- \longpaper{
+ \longpaper{%
 Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
 \[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
 Here, we see that 
@@ -320,13 +323,14 @@ A well-founded induction can continue with unfoundedness refinements. Indeed, co
 Since 
 \[\Ap(\UUU_1) = a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue,\] it holds that $\UUU_1$ is an unfoundedness refinement of $\UUU_1$. 
 Finally, we can conclude that $\UUU_2:=\Ap(\UUU_1)$ is the \Ap-well-founded fixpoint. This corresponds to the intended repair. }
-\shortpaper{
+\shortpaper{%
 The \Ap-well-founded fixpoint can be computed as the limit of the following well-founded induction:
 \begin{align*}
  \UUU_0&: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\\
 \UUU_1 &: a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto\lunkn.\\
 \UUU_2 = \Ap(\UUU_1) &:  a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue. 
 \end{align*}
+Here, the first refinement is an unfoundedness refinement. In can be verified that $\UUU_0$ is a fixpoint of $\Ap$ and hence is the Kripke-Kleene repair. 
 Again, the AFT-well-founded repair is two-valued and corresponds to the intuitions.
 }
 \end{example}
@@ -336,12 +340,12 @@ As can be expected, not every set of AICs has a two-valued well-founded repair. 
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}
- \lnot a \land \lnot b&\aicrule \add a\\
+ \lnot a \land \lnot b&\aicrule \add a &
  \lnot a \land \lnot b&\aicrule \add b\\
  a \land \lnot c &\aicrule \add c 
  \end{align*} with $\db = \emptyset$.
- 
- Intuitively, \aics has two ``good'' repairs. The first two rules state that either $a$ or $b$ should be added in order to ``fix'' the violated constraint $\lnot (\lnot a \land \lnot b)$. 
+%  
+ Intuitively, \aics has two ``good'' repairs. The first two rules state that $a$ or $b$ should be added in order to ``fix'' the violated constraint $\lnot (\lnot a \land \lnot b)$. 
  Depending on that choice, the last rule determines whether or not $c$ should be repaired.  The two intended repairs are thus $\{\add a,\add c\}$ and $\{\add b\}$. 
  \longpaper{Let us investigate what the different AFT-style semantics give in this case. 
  
@@ -383,12 +387,13 @@ It can also be verified that there are no other $\Ap$-stable fixpoints. Due to m
 
 \longpaper{Hence, in the above example, \Ap-stable repairs capture the intended semantics. }
 
-\paragraph{Properties of AFT-Style Semantics}
+\paragraph{Properties of AFT-Style Semantics}%
 % \todo{start new section here?}
+\longpaper{
 \luis{If we have results about justified repairs, it might make sense to include remarks on whether they hold in the non-normal case. If we do that, we need to revise this sentence (refers to some sentence in intro).}
-\bart{The problem is that the AFT semantics are not defined for non-deterministic operators, so we won't be able to derive much useful stuff from there I'm affraid}
+\bart{The problem is that the AFT semantics are not defined for non-deterministic operators, so we won't be able to derive much useful stuff from there I'm afraid}
 \luis{We can always define stuff in general via normalization. Since justified repairs don't work well with normalization, this means that the relationships need to be analyzed again. For example, does Proposition 3.13 hold if we start with non-normal AICs, and consider stable repairs after normalization vs justified repairs without normalizing?}
-\bart{Hmmm... I Don't immediately have the answer to that one... Don't have any intuitions either. }
+\bart{Hmmm... I Don't immediately have the answer to that one... Don't have any intuitions either. }}
 
 
 We now show that all of these semantics are nicely invariant under shifting. 
@@ -445,18 +450,23 @@ To see this, note that from the definition of $\Ap$, it follows that for each $j
 %  
 \end{proof}
 }
+% \shortpaper{
+% \begin{proof}
+%  
+% \end{proof}
+% }
 \begin{example}\label{ex:wf:wf}The converse of Proposition \ref{prop:wf-wf} does
-not hold. Consider for instance the following set $\aics$ of AICs
+not hold. Consider for instance the following set $\aics$ of AICs (based on Example 18 of \citet{iclp/Cruz-Filipe16})
    \begin{align*}
-  a &\aicrule \remove a\\
-  a\land b &\aicrule \remove b\\
-  b \land c &\aicrule \remove  c
+  \lnot a &\aicrule \add a &
+  \lnot a\land \lnot b &\aicrule \add b\\
+  \lnot b \land \lnot c &\aicrule \add  c
  \end{align*}
- and $\db=\{a,b,c\}$.
- In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be removed no matter what. The second rule then becomes void (there is never a reason to remove $b$) and the last rule dictates that also $c$ must be removed. 
+ and $\db=\emptyset$.
+ In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be changed (here: added) no matter what. The second rule then becomes void (there is never a reason to add $b$) and the last rule dictates that also $c$ must be added. 
  However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also a well-founded repair, obtained by first applying the second rule and then the first one.
 \end{example}
-\luis{We might say that this example is from \cite{iclp/Cruz-Filipe16}; otherwise it looks weird that $DB\neq\emptyset$ as in all other examples.}
+% \luis{We might say that this example is from \cite{iclp/Cruz-Filipe16}; otherwise it looks weird that $DB\neq\emptyset$ as in all other examples.}
 
 % \todo{check the link between ``justified repair'' and ``stable repair''. My feeling is that they should be very closely related. For instance in Example 20 in the GF and AIC paper, this is a case where stable coincides with justified. However, there is also a notion of ultimate stable repair (which coincides here with grounded). This is similar to logic programming, where 
 % \begin{align*}
@@ -472,7 +482,7 @@ not hold. Consider for instance the following set $\aics$ of AICs
 % }
 
 \begin{proposition}\label{prop:stable_is_justified}
-If \UU is a \Ap-stable repair, then \UU is a justified repair. 
+All \Ap-stable repairs are justified. 
 \end{proposition}
 %\todo{Throughout the paper, I sometimes use the symbol $a$ for an action, sometimes for an atom. That must be confusing. However, due to the identification of a set of update actions with a subset of \atoms this mixup I'm doing is not so strainge. It might be better to streamline it a bit more} 
 %\luis{the ``standard'' practice is to use $\alpha$ for actions}
@@ -595,9 +605,9 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
 \begin{example}\label{ex:justified_not_stable}
  The converse of Proposition \ref{prop:stable_is_justified} does not hold. Consider the following set \aics of AICs. 
  \begin{align*}
-  \lnot a \aicrule \add a\\
-  a\land \lnot b \aicrule \add b\\
-  a \land \lnot b \aicrule \remove a
+  \lnot a &\aicrule \add a &
+  a\land \lnot b &\aicrule \add b\\
+  a \land \lnot b &\aicrule \remove a
  \end{align*}
  with $\db=\emptyset$. 
  In this case $\{\add a,\add b\}$ is a justified repair of \fulldb, but not a stable repair. 

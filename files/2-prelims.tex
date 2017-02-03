@@ -5,14 +5,17 @@
 % \bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
 
 \paragraph{Active Integrity Constraints}
-We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A literal is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
+We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
 The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$.
 
 An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
-Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$ from a database. Formally $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
+Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$. Formally $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
 A set of update actions $\UU$ is \emph{consistent} if it does not contain an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
 Following \citet{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
-\[\UU_1 \biguplus \UU_2 = (\UU_1 \cup \{\alpha \in \UU_2 \mid \alpha^D\not \in \UU_1) \setminus \{\alpha\in \UU_1 \mid \alpha^D\in \UU_2\}.\]
+\begin{align*}
+\UU_1 \biguplus \UU_2 &= (\UU_1 \cup \{\alpha \in \UU_2 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\not \in \UU_1) \setminus \{\alpha\in \UU_1 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\in \UU_2\}\\
+&= \UU_1\cup \UU_2 \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}.
+  \end{align*}
 This operation has the property that: if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
 \[\left(\UU_1\biguplus \UU_2\right)(\db) = \UU_2(\UU_1(\db)).\]
 
@@ -37,7 +40,7 @@ A set of AICs represents constraints a database should adhere to and, in additio
 
 An AIC is \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
 \[\{l_1\land \dots\land l_n\aicrule \alpha_i\mid 1\leq i\leq k\}.\]
-It is clear from the informal explanation above that the expectation is that normalization preserves semantics. Indeed, this is the case for most semantics of AICs (the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which pose several other problems~\cite{tase/Cruz-FilipeEGN13}).
+It is clear from the informal explanation above that the expectation is that normalization preserves semantics. Indeed, this is the case for most semantics of AICs (the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which poses several other problems~\cite{tase/Cruz-FilipeEGN13}).
 %However, not for all semantics defined for AICs this is the case (see, e.g., \cite{}).
 In the current paper, we assume \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed.
 
@@ -67,19 +70,20 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 
 \begin{definition}
- A (weak) repair \UU for \fulldb is \emph{well-founded} iff there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
+ A (weak) repair \UU for \fulldb is \emph{well-founded} if there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
 \end{definition}
 
 \begin{definition}
   Let \UU be a set of update actions and \fulldb a database. 
   \begin{compactitem}
-   \item The \emph{no-effect actions} wrt \db and \UU are the actions that affect neither \db, nor $\UU(\db)$: 
-   \begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\,.\end{align*}
+   \item The \emph{no-effect actions} with respect to \db and \UU are the actions that affect neither \db, nor $\UU(\db)$: 
+   \begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\\
+	=&\{\alpha \mid \alpha(\db) = \db \\&\qquad\land \alpha(\UU(\db))=\UU(\db)\}\,.\end{align*}
    \item The set of \emph{non-updatable literals} of an AIC $r$ are all body literals of $r$ that do not occur in the head of $r$
    \[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]
    \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$.
    \item \UU is a \emph{justified action set} if it is a minimal superset of $\neff_\db(\UU)$ closed under \aics.
-   \item \UU is a \emph{justfied (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
+   \item \UU is a \emph{justified (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
   \end{compactitem}
 
 %  \todo{something else releated to this definition. THe notion of ``closed'' as defined in the original paper and also the grounded fixpoints paper is quite surprising. I am in particular surprised by the fact that this does not take \db into account. Consider for instance the following \aics:
@@ -89,7 +93,7 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 Although the notion of closed set of actions does not take the database into account, its role in the definition of justified weak repairs is as part of the definition of justified action set -- where all actions that do not change the database are included.
 
-\citet{tplp/CaropreseT11} includes an example showing that a justified weak repair may not be a repair.
+\citet{tplp/CaropreseT11} showed that a justified weak repair may not be a repair.
 
 %\bart{all justified weak repairs are justified repairs, right?}
 
@@ -106,7 +110,7 @@ Although the notion of closed set of actions does not take the database into acc
 %   \item $\aics_1$ \emph{precedes} $\aics_2$, $\aics_1 \prec \aics_2$, if, for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_2))$ and $\body(r_1)$ contain no common or dual literals, but not conversely. 
 %  \end{compactitem}
 % \end{definition}
-% \bart{the ``but not conversely'' in this definition makes it a strict relation. That is somewhat unnatural to me. I would give the non-strict definition. All results remain to hold and precedence becomes a generalisation of ``independent''. This is only a minor point.}
+% \bart{the ``but not conversely'' in this definition makes it a strict relation. That is somewhat unnatural to me. I would give the non-strict definition. All results remain to hold and precedence becomes a generalization of ``independent''. This is only a minor point.}
 % \luis{What we use is the strict relation, but we can treat the non-strict as primitive. I have to look on the original work to see exactly if there are any unexpected problems.}
 
 
@@ -133,17 +137,17 @@ If $S$ has a least upper bound (resp.\ a greatest lower bound) we denote it $\lu
 As is custom, we sometimes call a greatest lower bound a \emph{meet}, and a least upper bound a \emph{join} and use the related notations $\bigand S = \glb(S)$, $x\land y=\glb(\{x,y\})$, $\bigor S = \lub(S)$ and $x\lor y=\lub(\{x,y\})$.
 % The relation $\leq$ is a \emph{total order} if for every $x,y\in L$, $x\leq y$ or $y\leq x$. 
 % A \emph{chain} is a subset $S$ of $L$ such that $\leq$ is a total order in $S$. We call $\langle L,\leq\rangle$ \emph{chain complete} if each of its chains has a least upper bound and a greatest lower bound. 
- We call $\langle L,\leq\rangle$ a \emph{bounded lattice}  if every finite subset of $L$ has a least upper bound and a greatest lower bound. 
+%  We call $\langle L,\leq\rangle$ a \emph{bounded lattice}  if every finite subset of $L$ has a least upper bound and a greatest lower bound. 
  We call $\langle L,\leq\rangle$ a \emph{complete lattice}  if every subset of $L$ has a least upper bound and a greatest lower bound. 
 %  A complete lattice is always chain complete.
 % A chain complete poset has a least element $\bot$. 
 A complete lattice has both a least element $\bot$ and a greatest element $\top$. 
 
-Since we apply our results to (finite) databases, for the sake of simplicity we assume $L$ to be a \emph{finite} set in this text. All presented results easily generalize to the infinite setting as well. 
+Since we apply our results to (finite) databases, for the sake of simplicity we assume $L$ to be \emph{finite} in this text. All presented results easily generalize to the infinite setting as well. 
 
-A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other. A bounded lattice is \emph{complemented} if every element $x\in L$ has a \emph{complement}: an element $\lnot x \in L$ satisfying $x\land \lnot x  = \bot$ and $x\lor \lnot x =\top$.
-A \emph{Boolean lattice} is a distributive complemented lattice. 
-In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x\land \lnot y)$.
+% A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other. A bounded lattice is \emph{complemented} if every element $x\in L$ has a \emph{complement}: an element $\lnot x \in L$ satisfying $x\land \lnot x  = \bot$ and $x\lor \lnot x =\top$.
+% A \emph{Boolean lattice} is a distributive complemented lattice. 
+% In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x\land \lnot y)$.
 
 
 
@@ -157,7 +161,7 @@ complete lattice has a least fixpoint, denoted $\lfp(O)$, which is also $O$'s le
 % \end{compactitem}
 
 
-\mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if, for each $v\in L$ such that $O(v\land x)\leq v$, it holds that $x\leq v$.
+\mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if, for each $v\in L$ such that $O(v\land x)\leq v$, it holds that $x\leq v$. Later, they generalized this notion to \emph{partial} grounded fixpoints \mycite{PartialGroundedFixpoints}. 
 %   They called a point $x\in L$ \emph{strictly grounded} for $O$ if there is no $v\in L$ such that $v<x$ and $O(v)\land x \leq v$.
 They explained the intuition underlying these concepts under the assumption that the elements of $L$ are sets of ``facts'' of some kind and the $\leq$ relation is the subset relation between such sets:
 in this case, a point $x$ is grounded if it contains only facts that are sanctioned by the operator $O$, 
@@ -210,7 +214,7 @@ AFT studies fixpoints of $O$ using fixpoints of $A$.
 % DEFINITIE VAN 4-WAARDIGE STABLE AND DE WELL-FOUNDED FIXPOINT? Pairs $(x,y)$ such that $x=\lfp(A(\cdot,y)_1$ and $y=\lfp(A(x,\cdot)_2$. The $A$-well-founded fixpoint is the least precise 4-valued $A$-stable fixpoint. 
 % 
 The $A$-Kripke-Kleene fixpoint of $O$ can be constructed as the limit of any monotone induction of $A$. 
-For the $A$-well-founded fixpoint, a similar constructive characterisation has been worked out by \citet{lpnmr/DeneckerV07}:
+For the $A$-well-founded fixpoint, a similar constructive characterization has been worked out by \citet{lpnmr/DeneckerV07}:
 % This concept is based on the following intuitions.
 %  A well-founded induction of $A$ is a process that uses $A$ to derive more and more information (i.e., to grow in \leqp). 
 %  At the same time, a well-founded induction tries to minimise the upper bounds $(x,y)_2$: if making the upper bound smaller can be done while guaranteeing that 
@@ -243,7 +247,7 @@ with $n\in\nat$ such that
 A well-founded induction is \emph{terminal} if its limit $(x_n,y_n)$ has no strict $A$-refinements.
 % \marc{als je in sectie over fixpoints het leastfixpoint in een licthjes andere notatie geeft= $x_i\leq x_{i+1}\leq O(x_i)$, dan kan je hier gewoon zeggen: een well-founded induction is een monotone induction van de juiste operator (de vierwaardige stable operator)}\bart{precies zo geen fan van. De standaard def van leastfixpoint kent iedereen...}
 \end{definition}
-A well-founded induction is an algebraical generalisation of the well-founded model construction defined in \cite{GelderRS91}. 
+A well-founded induction is an algebraical generalization of the well-founded model construction defined by \citet{GelderRS91}. 
 The first type of refinement corresponds to making a partial structure more precise by applying Fitting's immediate consequence operator; the second type of refinement corresponds to making a structure more precise by eliminating an unfounded set. 
 
 For a given approximator $A$, there are many different terminal well-founded inductions of $A$.

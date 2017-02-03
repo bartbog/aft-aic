@@ -2,34 +2,51 @@
 %% Probably: well-founded/KK: polynomially computable (data complexity), stable fixpoints: NP-complete, ... Copy results from logic programming basically. Similarly, complexity increases if we start using ultimate approximators}
 
 We begin this section by stating an observation about the complexity of computing \Ap.
+All complexity results are in terms of the size of $\eta$ and $\atoms$.
+% In the entire section, we assume $\aics$ and \atoms are finite. 
 \begin{proposition}
   \label{prop:At-poly}
-  \Ap is computable in polynomial time on the size of $\eta$ and $\At$.
+  \Ap is computable in polynomial time. % on the size of 
 \end{proposition}
-\longpaper{\begin{proof}
-    The definition of \Ap only requires evaluating $\UUU(a)$, $\suppin_{\UUU}(a)$ and $\suppout_{\UUU}(a)$ for each $a\in\At$.
-    In turn, the two last computations can be done in polynomial time: they require evaluating each literal in the body of each rule from $\eta$ with head $+a$ or $-a$ and computing its truth value under the database updated by $\UUU$.
-\end{proof}}
+\longpaper{
+\begin{proof}
+    The definition of \Ap only requires evaluating $\UUU(a)$, $\suppin_{\UUU}(a)$ and $\suppout_{\UUU}(a)$ for each $a\in\atoms$.
+    In turn, the two last computations can be done in polynomial time: they require evaluating each literal in the body of each rule from $\eta$ with head $\add a$ or $\remove a$ and computing its truth value under the database updated by $\UUU$.
+\end{proof}
+}
 
 As a consequence, we get the following complexity results.
 \begin{proposition}
-  The Kripke-Kleene semantics for $\fulldb$ is computable in polynomial time.
+  The Kripke-Kleene repair for $\fulldb$ is computable in polynomial time.
   \label{prop:KK-poly}
 \end{proposition}
 \longpaper{\begin{proof}
   The Kripke-Kleene repair of $\fulldb$ can be computed by iterating $\Ap$ until a fixpoint is reached.
-  Since $\Ap$ is monotonic, the maximum number of iterations is the size of $\At$; since each iteration can be computed in polynomial time (Proposition~\ref{prop:At-poly}), so can this fixpoint.
+  Since $\Ap$ is monotonic, the maximum number of iterations is the size of $\atoms$; since each iteration can be computed in polynomial time (Proposition~\ref{prop:At-poly}), so can this fixpoint.
 \end{proof}}
 
-\begin{proposition}
-  The ATF-well-founded semantics for $\fulldb$ is computable in polynomial time.
+\begin{proposition}\label{prop:compl:wf}
+  The ATF-well-founded repair for $\fulldb$ is computable in polynomial time.
 \end{proposition}
-\longpaper{\begin{proof}
-  \luis{not sure about this one: Bart writes ``a well-founded induction runs in polytime in the height of the lattice if computing $A(x,y)$ can be done in polytime''.  So it should follow from Proposition~\ref{prop:At-poly}, but I'm missing the argument (I only get NP).}
+\longpaper{The proof makes use of the following proposition. 
+\begin{proposition}[\citeauthor{lpnmr/DeneckerV07},~\citeyear{lpnmr/DeneckerV07}]\label{prop:biggestufs}
+Let $A$ be an approximator of $O$ and $(x,y)\in L^2$. 
+Let $S_A^x$ be the operator on $L$ that maps every $y'$ to $A(x,y')_2$.
+This operator is monotone. 
+The smallest $y'$ such that $(x,y')$ is an unfoundedness refinement of $(x,y)$ is given by 
+$y'=\lfp (S_A^x)$.
+ \end{proposition}
+ \begin{proof}[Proof of Proposition \ref{prop:compl:wf}]
+ To compute the \Ap-well-founded fixpoint, we can construct a well-founded induction with only strict refinements. 
+ Since such a well-founded is $\leqp$-increasing, it can consist of at most of $|\atoms|$ steps. 
+ Computing if there exists a strict application refinement of a given partial repair set \UUU
+can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} shows that the most precise unfoundedness refinement can also be computed as the least fixpoint of a derived operator on $2^\atoms$. Such a fixpoint can again be computed in polynomial time. Hence, it follows that we can compute a terminal well-founded induction, and thus the well-founded fixpoint, in polynomial time. 
+%  
+%   \luis{not sure about this one: Bart writes ``a well-founded induction runs in polytime in the height of the lattice if computing $A(x,y)$ can be done in polytime''.  So it should follow from Proposition~\ref{prop:At-poly}, but I'm missing the argument (I only get NP).}
 \end{proof}}
 
 \begin{proposition}
-  The stable semantics for $\fulldb$ is computable in non-deterministic polynomial time.
+  The task of verifying if a proposed repair is a stable repair $\fulldb$ is NP-complete.
 \end{proposition}
 \longpaper{\begin{proof}
   \emph{(Inclusion)} Given a candidate repair, checking that it is stable can be done in polynomial time, as it amounts to verifying that it is a repair (two-valued) and that it is a least fixpoint of the operators $\Ap(\cdot,y)_1$ and $\Ap(x,\cdot)_2$.
@@ -40,10 +57,13 @@ As a consequence, we get the following complexity results.
   The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
   Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
 
-  This operator preserves stable semantics, and therefore allows us to compute stable models of simple logic programs by first translating them (in linear time) to sets of AICs.
+  This operator preserves stable semantics \bart{Why? It does not preserve the operator.}, and therefore allows us to compute stable models of simple logic programs by first translating them (in linear time) to sets of AICs.
   Since the stable semantics for logic programs is NP-complete, we conclude that the stable semantics for AICs must be NP-hard.
   Note that every logic program can be transformed in a simple logic program by removing the offending rules without changing its stable semantics.
 \end{proof}}
+
+For each of our semantics, complexity is the same as the complexity of its counterpart in (normal) logic programming. 
+This illustrates that the added expressivity (essentially, allowing AICs that are not unipolar) does not result in added complexity. 
 
 
 %% \bart{Lower bound for stable: every normal logic program can be seen  as an AIC. Should have te same stable smeantics (note: our transformation in theprevious section adds rules 

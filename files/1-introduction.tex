@@ -7,11 +7,11 @@ Indeed, there are typically several ways to fix an inconsistent database, and se
 Among the most widely accepted criteria are minimality of change~\cite{Winslett90,ai/EiterG92} -- change as little as possible -- and the common-sense law of inertia~\cite{PrzymusinskiT97} -- do not change anything unless there is a reason to do it.
 
 A typical implementation of integrity constraints in database systems is by means of event-condition-action rules~\cite{TenienteO95,WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
-However, these rules do not have a declarative semantics, making their joint behaviour hard to understand.
+However, these rules do not have a declarative semantics, making their joint behavior hard to understand.
 
-The formalism of active integrity constraints (AICs,~\cite{ppdp/FlescaGZ04}) was inspired by a similar idea.
+The formalism of active integrity constraints (AICs) \cite{ppdp/FlescaGZ04} was inspired by a similar idea.
 AICs express database dependencies through logic programming-style rules that include update actions in their heads.
-They come with a declarative semantics~\cite{tplp/CaropreseT11} that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair.
+They come with a set of declarative semantics~\cite{tplp/CaropreseT11} that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair.
 These repairs can be computed directly by means of tree algorithms~\cite{tase/Cruz-FilipeEGN13}, which have been implemented as a prototype~\cite{CFHLNS15}.
 
 %% Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
@@ -38,7 +38,7 @@ That work proposed the operational semantics of well-founded repairs, which howe
 
 In this paper, we transfer existing work from the field of non-monotonic reasoning to AICs. 
 To this end, we define a new class of semantics for AICs that are natural counterparts of existing semantics in various non-monotonic reasoning domains. 
-To be precise, we define semantics for AICs based on approximation fixpoint theory \cite{\refto{AFT}}, an abstract algebraic framework that unifies semantics of logic programming, default logic, autoepistemic logic \mycite{AEL}, abstract argumentation frameworks \cite{\refto{AF}} and abstract dialectical frameworks \mycite{ADF}, as shown by Denecker, Marek and Truszczy{\'n}ski [\citeyear{DeneckerMT00,DeneckerMT03}] and \citet{journals/ai/Strass13}. 
+To be precise, we define semantics for AICs based on approximation fixpoint theory \cite{\refto{AFT}}, an abstract algebraic framework that unifies semantics of logic programming, default logic, autoepistemic logic \mycite{AEL}, abstract argumentation frameworks \cite{\refto{AF}} and abstract dialectical frameworks \mycite{ADF}, as shown by Denecker, Marek and Truszczy\'nski [\citeyear{DeneckerMT00,DeneckerMT03}] and \citet{journals/ai/Strass13}. 
 In order to do so, we continue the work of \citet{iclp/Cruz-Filipe16}, who defined a semantic operator for AICs and used it to study the grounded fixpoint semantics \mycite{GroundedFixpoints} for AICs. 
 In this paper, we define an approximating operator of Cruz-Filipe's semantic operator. 
 When this operator is defined, approximation fixpoint theory immediately provides us with \begin{inparaenum} 
@@ -46,7 +46,8 @@ When this operator is defined, approximation fixpoint theory immediately provide
 \item a well-founded fixpoint semantics, 
 \item a (partial) stable fixpoint semantics, 
 \item a Kripke-Kleene fixpoint semantics, and 
-\item a (partial) grounded fixpoint semantics. \bart{drop? non-classical} \end{inparaenum} 
+\item a (partial) grounded fixpoint semantics. %\bart{drop? non-classical} 
+\end{inparaenum} 
 We study properties of these new semantics and study how they compare to existing semantics. 
 Furthermore, we argue that, from a practical point of view, the AFT-style well-founded semantics is very valuable. 
 Indeed, we show that this semantics can be computed in polynomial time, and that, on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).

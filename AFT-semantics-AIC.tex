@@ -13,8 +13,11 @@
 
 \input{files/0-commands}
 
-\setboolean{shortpaper}{false}
-\setboolean{nocomments}{false}
+\setboolean{shortpaper}{true}
+\setboolean{nocomments}{true}
+
+\setdefaultenum{\bfseries(i)}{}{}{}
+
 
 \title{Semantics for Active Integrity Constraints Using Approximation Fixpoint Theory%
 \longpaper{\thanks{Bart Bogaerts is a postdoctoral fellow of the Research Foundation -- Flanders (FWO). 	}}
@@ -60,10 +63,14 @@ Campusvej 55, Odense, Denmark}
 \section{Conclusion}
 \input{files/5-conclusion}
 
-\todo{Page limit: Six pages for the main text of the paper (including all figures but excluding references), and one additional page for references}
 \newpage \small
+% \setlength\parskip{0pt}
 \bibliographystyle{named}
 \bibliography{idp-latex/krrlib.bib,extra-refs}
+
+\newpage
+\todo{Page limit: Six pages for the main text of the paper (including all figures but excluding references), and one additional page for references}
+
 
 \end{document}
 
