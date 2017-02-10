@@ -1,26 +1,154 @@
-\subsection{Preliminaries: Logic Programming}
+\subsection{Preliminaries: Logic Programming (and AFT)}
+\renewcommand\voc\atoms
+% Let \voc be an alphabet, i.e., a collection of symbols which are called \emph{atoms}. A \emph{literal} is an atom $p$ or the negation $\lnot q$ of an atom $q$.  
+A logic program $\mathcal{P}$ is a set of \emph{rules} $r$ of the form 
+$h\lrule \varphi$, where
+$h$ is an atom called the \emph{head} of $r$, denoted $head(r)$, and $\varphi$ is a propositional formula called  the \emph{body} of $r$, denoted $body(r)$.
+% An interpretation $\struct$ of the alphabet \voc is an element of $2^\voc$, i.e., a subset of $\voc$.  
+The set of interpretations $2^\voc$ forms a lattice equipped with the order $\subseteq$. 
+The truth value (\ltrue or \lfalse) of a propositional formula $\varphi$ in a structure $\struct$, denoted $\varphi^\struct$ is defined as usual.
+With a logic program \PP, we associate an immediate consequence operator \cite{jacm/EmdenK76} $T_\PP$ that maps a structure $\struct$ to 
+	\[T_\PP(\struct) = \{p\mid \exists r \in \PP: head(r)=p\land body(r)^\struct=\ltrue\}.\] 
+	
+	
+	In the context of logic programming, elements of the bilattice $\left(2^\voc\right)^2$ are four-valued interpretations, pairs $\pstruct= (\struct_1,\struct_2)$ of interpretations.
+The pair $(\struct_1,\struct_2)$ approximates all interpretations $\struct'$ with $\struct_1\subseteq \struct'\subseteq \struct_2$.
+We often identify an interpretation $I$ with the four-valued interpretation $(I,I)$.
+% If $\pstruct=(I_1,I_2)$ is a (four-valued) interpretation, and $U\subseteq \voc$, we write $\pstruct[U:\lfalse]$ for the (four-valued) interpretation that equals $\pstruct$ on all elements not in $U$ and that interprets all elements in $U$ as $\lfalse$, i.e., the interpretation $(I_1\setminus U, I_2\setminus U)$. 
+We are mostly concerned with consistent (also called partial or three-valued) interpretations: tuples $\pstruct=(\struct_1,\struct_2)$ with $\struct_1\subseteq\struct_2$. 
+For such an interpretation, the atoms in $\struct_1$ are \emph{true} (\ltrue) in $\pstruct$, the atoms in $\struct_2\setminus\struct_1$ are \emph{unknown} (\lunkn) in $\pstruct$ and the other atoms are \emph{false} (\lfalse) in $\pstruct$. 
+If $\pstruct$ is a three-valued interpretation, and $\varphi$ a formula, we write $\varphi^\pstruct$ for the standard three-valued valuation based on the Kleene truth tables (see Figure \ref{fig:KT}). 
+
+\begin{figure}
+	\centering
+\begin{minipage}{0.3\linewidth}
+	\begin{tabular}{|cc"c|c|c|}
+\cline{1-5}
+\multicolumn{2}{|c"}{\multirow{2}{*}{{ $A\land B$} }}&\multicolumn{3}{c|}{B}\\
+% \cline{3-5}
+
+\multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
+\thickhline
+\multirow{3}{*}{A}&\ltrue &	\ltrue & \lfalse & \lunkn	\\
+\cline{2-5}
+&\lfalse	& \lfalse & \lfalse & \lfalse		\\
+\cline{2-5}
+&\lunkn 	& \lunkn& \lfalse & \lunkn 		\\
+\cline{1-5}
+	\end{tabular}
+\end{minipage}
+\begin{minipage}{0.3\linewidth}
+	\begin{tabular}{|cc"c|c|c|}
+\cline{1-5}
+\multicolumn{2}{|c"}{\multirow{2}{*}{{ $A\lor B$} }}&\multicolumn{3}{c|}{B}\\
+% \cline{3-5}
+
+\multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
+\thickhline
+\multirow{3}{*}{A}&\ltrue &	\ltrue & \ltrue & \ltrue	\\
+\cline{2-5}
+&\lfalse	& \ltrue & \lfalse & \lunkn		\\
+\cline{2-5}
+&\lunkn 	& \ltrue& \lunkn & \lunkn 		\\
+\cline{1-5}
+	\end{tabular}
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+	\begin{tabular}{|cc"c|}
+\cline{1-3}
+&&{{{ $ \lnot A$} }}\\
+% \cline{3-5}
+
+% \multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
+\thickhline
+\multirow{3}{*}{A}&\ltrue &	\lfalse\\
+\cline{2-3}
+&\lfalse	& \ltrue	\\
+\cline{2-3}
+&\lunkn 	& \lunkn 		\\
+\cline{1-3}
+	\end{tabular}
+\end{minipage}
+\caption{The Kleene truth tables \cite{Kleene38}.}
+\label{fig:KT}
+
+
+\end{figure}
+
+
+Several approximators have been defined for logic programs. The most common is Fitting's immediate consequence operator $\Psi_\PP$ \cite{tcs/Fitting02}, a direct
+generalization of $T_\PP$ to partial interpretations:
+  \begin{align*}
+    \Psi_\PP(\pstruct)_1 &=\{a\in \voc\mid body(r)^\pstruct=\ltrue \text{ for some rule $r\in \PP$ with }head(r)=a\},\\
+    \Psi_\PP(\pstruct)_2 &=\{a\in \voc\mid body(r)^\pstruct\neq \lfalse \text{ for some rule $r\in \PP$ with }head(r)=a\}.
+   \end{align*}
+\citet{DeneckerMT00} showed that $\Psi_\PP$ is an approximator of $T_\PP$, that  the well-founded fixpoint of $\Psi_\PP$ is the well-founded model of $\PP$ as defined by \citeauthor{GelderRS91} and that $\Psi_\PP$-stable fixpoints are exactly the stable models of $\PP$ as defined by \citeauthor{iclp/GelfondL88}. In this case, 
+the operator $\Psi_\PP(\cdot,y)_1$ coincides with the immediate consequence operator of the Gelfond-Lifschitz reduct \cite{iclp/GelfondL88}. 
+
+
 
 
 \subsection{AIC and Logic Programs}
+\citet{tplp/CaropreseT11} defined a translation from logic programs to AICs as follows. 
+\begin{definition}
+ Let $r$ be a normal logic programming rule, 
+ \[a\leftarrow \lit_1,\dots,\lit_n.\]
+ We define the active integrity constraint $\aicop r$ as 
+ \[\lit_1\wedge\ldots\wedge\lit_n\wedge\neg a \aicrule \add a.\]
+ Furthermore, if \PP is a normal logic program, we define 
+ \[\aicop(\PP)=\bigcup\{\aicop(r)\mid r\in \PP\}.\]
+\end{definition}
 
-\bart{I don't know how valuable the following result is. }
+\citet{tplp/CaropreseT11} showed that an interpretation $I$ is a stable model of \PP if and only if $I$ (viewed as an update set) is a justified repair of $\aicop(\PP)$. Since $\aicop(\PP)$ is unipolar, from our earlier results (Propositions \ref{prop:stable_is_justified} and \ref{prop:justified_is_stable_sometimes}) it follows that this is also equivalent with the condition that $I$ is a $\threeap_{\aicop(\PP)}$-stable repair. 
+The same result is also a corollary of the following stronger theorem. 
+\begin{theorem}\label{thm:partialstable-LP}
+ Let $\PP$ be a normal logic program and $\pstruct$ a partial interpretation. It holds that $\pstruct$ is a partial stable model of \PP if and only if $\pstruct$ is a partial stable repair of $\langle \aicop(\PP),\emptyset\rangle$. 
+\end{theorem}
+The proof of this theorem follows later, since it makes use of proposition \ref{prop:lplink}. 
+
+\begin{corollary}
+ Let $\PP$ be a normal logic program. The well-founded model of \PP coincides with the AFT-well-founded repair of $\langle \aicop(\PP),\emptyset\rangle$. 
+\end{corollary}
+
+
+
 \begin{proposition}\label{prop:lplink}
   Suppose that $\db=\emptyset$ and that the only update actions in \aics are of the form $\add a$.
-  If $\PP$ is the following logic program
+  Let $\lpop(\aics)$ denote the following logic program:  program
  \begin{align*}
-  \PP =& \{a \lrule \nup(r)\mid r\in \aics, \head(r)= \add a\}\\
+  \lpop(\aics)=& \{a \lrule \nup(r)\mid r\in \aics, \head(r)= \add a\}\\
   &\cup \{a \lrule a\mid a \in \atoms\}
  \end{align*}
- then $\Ap = \Psi_\PP$. 
+ then $\Ap = \Psi_{\lpop(\aics)}$. 
 
-Hence, all AFT semantics for \fulldb coincide in this case with the equally-named semantics for the logic program \PP. 
+Hence, all AFT semantics for \fulldb coincide in this case with the equally-named semantics for the logic program $\lpop(\aics)$. 
 \end{proposition}
 \begin{proof}
+  \luis{Proof has been done by hand. To be added.}
   By case analysis on the definition of \Ap.
   The condition on \fulldb guarantees that $\suppout$ is always false.
   The inclusion of the rules of the form $a\lrule a$ is necessary to mimic the common-sense law of inertia, which is embodied in the semantics for AICs but not in that of logic programs.
 \end{proof}
-\luis{Proof has been done by hand.}
+
+
+
+\begin{proof}[Proof of Theorem \ref{thm:partialstable-LP}]
+ For each logic program \PP, let $\triv(\PP)$ denote the logic program 
+ \[
+  \triv(\PP) = \PP \cup \{p\lrule p\mid p\in \atoms\}.
+ \]
+ It is well-known\footnote{For completeness, we give the argument. Let $I$ be an interpretation; from the definition of partial stable fixpoint, it suffices to show that 
+ $\lfp(\Psi_\PP(\cdot,I)_1)= \lfp(\Psi_{\triv(\PP)}(\cdot,I)_1)$ and that 
+  $\lfp(\Psi_\PP(I,\cdot)_2)= \lfp(\Psi_{\triv(\PP)}(I,\cdot)_2)$. Since we are working with symmetric operators, it suffices to prove the first of the two equalities. 
+  Now, it is easy to see that $\Psi_{\triv(\PP)}(\cdot,I)_1$ is the inflationary operator of $\Psi_\PP(\cdot,I)_1$, i.e., that $\Psi_{\triv(\PP)}(\cdot,I)_1(J) = \Psi_\PP(\cdot,I)_1(J)\cup J$. Hence, these two monotone operators have the same prefixpoints and thus also the same least prefixpoint, which equals their least prefixpoint. 
+  }
+ that the partial stable models of $\PP$ and those of $\triv(\PP)$ are the same. 
+ Now, the result easily follows from the facts that 
+ \[\lpop(\aicop(\PP)) = \triv(\PP)\]
+ and that $\triv$ and $\lpop$ preserve partial stable models. 
+% 
+\end{proof}
+
 
 \begin{example}
  Proposition \ref{prop:lplink} does not hold in general, not even for unipolar \aics. 
@@ -28,7 +156,7 @@ Hence, all AFT semantics for \fulldb coincide in this case with the equally-name
  \begin{align*}\eta_1 &= \left\{\begin{array}{ll}
                     a &\aicrule \remove a\\
                     b & \aicrule \remove b
-                   \end{array}\right.\\
+                   \end{array}\right\}\\
                    \eta_2 &=\emptyset.
 \end{align*}
 These two are not equivalent under all AFT semantics. 
@@ -36,6 +164,8 @@ For the first one, the KK-repair is $\{a\mapsto\lunkn,b\mapsto\lunkn\}$, while f
 %                    
 % 
 \end{example}
+
+The reason why the equivalence does not hold in the previous example is because rules with $\remove a$ in the head are ignored, while in the context of AICs such rules can make a semantic difference. 
 
 %%% Local Variables:
 %%% mode: latex

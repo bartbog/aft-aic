@@ -29,6 +29,22 @@
 \newcommand\fulldb{\m{\langle DB,\aics\rangle}}
 \newcommand\tdb{\m{\mathfrak{DB}}}
 \newcommand\aicop{\m{\mathsf{aic}}}
+\newcommand\pstruct{\m{\mathcal{I}}}
+\newcommand\triv{\m{\mathsf{triv}}}
+\newcommand\lpop{\m{\mathsf{lp}}}
+
+
+\usepackage{multirow}
+\usepackage{array}
+
+\makeatletter
+\newcommand{\thickhline}{%
+    \noalign {\ifnum 0=`}\fi \hrule height 1pt
+    \futurelet \reserved@a \@xhline
+}
+\newcolumntype{"}{@{\hskip\tabcolsep\vrule width 1pt\hskip\tabcolsep}}
+\makeatother
+
 
 \newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
 \def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
