@@ -110,6 +110,48 @@ The proof of this theorem follows later, since it makes use of proposition \ref{
  Let $\PP$ be a normal logic program. The well-founded model of \PP coincides with the AFT-well-founded repair of $\langle \aicop(\PP),\emptyset\rangle$. 
 \end{corollary}
 
+ While the operation $\aicop$ preserves (partial) stable, well-founded  fixpoints, it does not preserve grounded fixpoints or the Kripke-Kleene fixpoint (as the following two examples illustrate. In both cases, it is the intuition of \emph{inertia}, present in AICs but not in logic programs, that is responsible for the difference. 
+
+ 
+\begin{example}\label{ex:grounded}
+%   While the operation $\aicop$ preserves various types of AFT fixpoints, it does not preserve grounded fixpoint. 
+  Consider the logic program 
+  \[\PP_g = \left\{p\lrule \lnot p \right\}.\]
+  This program has no fixpoints, hence definitely no grounded fixpoints. 
+  In this case, 
+  \[\aicop(\PP_g) = \left\{\lnot p \aicrule \add p\right\}.\]
+  Now, $\langle \aicop(\PP_g),\emptyset\rangle$ has one grounded repair, namely $\{\add p\}$. 
+\end{example}
+
+\begin{example}
+ Consider the logic program
+ \[\PP_{kk}=\left\{ b\lrule a\right\}.\]
+ The Kripke-Kleene model of this program maps both $a$ and $b$ to $\lfalse$. 
+ The corresponding AIC 
+ \[\aicop(\PP_{kk}) = \{\lnot b \land a \aicrule \add b\}\] 
+ has a Kripke-Kleene repair that maps $a$ and $b$ to $\lunkn$, i.e., it is unknown if these need to be changed. 
+\end{example}
+
+
+It can be seen from the previous example that for AICs, the Kripke-Kleene semantics is very bad at deriving that something does \emph{not} need to be changed. The well-founded semantics is much stronger with that respect. 
+In a certain sense, one might say that the intuition of ``inertia'' underlying AICs lies at the foundation of this discrepancy. 
+Now, in logic programming, the Kripke-Kleene semantics exhibits similar behavior. Consider for instance the empty logic program 
+\[ \PP_\emptyset = \{ \}.\]
+This program has a Kripke-Kleene model in which each atom is false, as is to be expect. 
+However, adding a trivial rule
+\[p\lrule p\]
+ that ``simulates'' inertia results in a program with a Kripke-Kleene model in which $p$ is unknown.
+ 
+ Inertia is also responsible for the discrepancy in Example \ref{ex:grounded}. 
+ Intuitively, $\aicop(\PP_g)$ from that example corresponds more to the logic program
+  \[\PP_g' = \left\{\begin{array}{l}p\lrule \lnot p \\ p\lrule p  \end{array}\right\}.\]
+  Indeed $\aicop(\PP_g)$ states that if $p$ is not present in the database, add it, and once we add it, by inertia, it stays unless there is a reason to remove it again (which there is not). 
+  $\PP'$ and $\PP_g$ only differ from each other in the rule $p\lrule p$, which simulates inertia.
+ 
+ 
+ The above discussion provides intuitions on what a transformation that preserves all AFT semantics should look like. In the following proposition, this is formalized. 
+
+  
 
 
 \begin{proposition}\label{prop:lplink}
@@ -151,16 +193,16 @@ Hence, all AFT semantics for \fulldb coincide in this case with the equally-name
 
 
 \begin{example}
- Proposition \ref{prop:lplink} does not hold in general, not even for unipolar \aics. 
- Consider for instance the following sets of \aics. 
- \begin{align*}\eta_1 &= \left\{\begin{array}{ll}
-                    a &\aicrule \remove a\\
-                    b & \aicrule \remove b
+ Proposition \ref{prop:lplink} does not hold in general, not even for unipolar AICs. 
+ Consider for instance the following sets of AICs. 
+ \begin{align*}\eta_1 &= \left\{\begin{array}{l}
+                    a \aicrule \remove a\\
+                     b  \aicrule \remove b
                    \end{array}\right\}\\
                    \eta_2 &=\emptyset.
 \end{align*}
 These two are not equivalent under all AFT semantics. 
-For the first one, the KK-repair is $\{a\mapsto\lunkn,b\mapsto\lunkn\}$, while for the latter, the KK-repair is $\{a\mapsto\lfalse,b\mapsto\lfalse\}$. However, they have the same translation to logic programs.          
+For the first one, the KK-repair is $\{a\mapsto\lfalse,b\mapsto\lfalse\}$, while for the latter, the KK-repair is $\{a\mapsto\lunkn,b\mapsto\lunkn\}$. However, they have the same translation to logic programs (since there are no rules with positive actions in the head).          
 %                    
 % 
 \end{example}

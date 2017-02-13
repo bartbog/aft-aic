@@ -46,7 +46,7 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
 \end{proof}}
 
 \begin{proposition}
-  The task of verifying if a proposed repair is a stable repair $\fulldb$ is NP-complete.
+  The task of checking if a database $\fulldb$ has a stable repair is NP-complete.
 \end{proposition}
 \longpaper{\begin{proof}
   \emph{(Inclusion)} Given a candidate repair, checking that it is stable can be done in polynomial time, as it amounts to verifying that it is a repair (two-valued) and that it is a least fixpoint of the operators $\Ap(\cdot,y)_1$ and $\Ap(x,\cdot)_2$.
@@ -57,8 +57,8 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
   The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
   Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
 
-  This operator preserves stable semantics \bart{Why? It does not preserve the operator.}, and therefore allows us to compute stable models of simple logic programs by first translating them (in linear time) to sets of AICs.
-  Since the stable semantics for logic programs is NP-complete, we conclude that the stable semantics for AICs must be NP-hard.
+  This operator preserves stable semantics by Theorem \ref{thm:partialstable-LP}, and therefore allows us to compute stable models of simple logic programs by first translating them (in linear time) to sets of AICs.
+  Since checking whether a logic program has a stable model is NP-complete, we conclude that the stable semantics for AICs must be NP-hard.
   Note that every logic program can be transformed in a simple logic program by removing the offending rules without changing its stable semantics.
 \end{proof}}
 
