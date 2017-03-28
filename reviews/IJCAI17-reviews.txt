@@ -1,0 +1,91 @@
+This paper further examines the application of Approximation Fixpoint Theory to Active Integrity Constraints. This idea is not novel, but instead builds on previous work. However, the results in this paper constitute, in my opinion, a signification extension of the previous work, so I believe this work to be signification, even though it is perhaps not especially innovative.
+
+The main contribution of this paper is that it extends the two-valued approach to applying AFT to AIC to a three-valued approach, by introducing a three-valued approximator of the two-valued operator that was used in previous work. This allows a number of interesting AFT semantics to be applied to AIC, including the well-founded semantics on which the authors focus in this paper. Based on the examples in the paper, I have the impression that this semantics indeed provides intuitive results (contrary to some existing semantics), while being computationally cheaper than the grounded semantics (which is based on the two-valued operator and therefore typically requires "reasoning by cases").
+
+The work in this paper is mainly theoretical, but I believe that the AFT approach and the AFT well-founded semantics have the potential to eventually also lead to practical advancements in the AIC domain. I therefore think that this is a relevant paper, though perhaps more of interest to a niche audience than to AI researchers in general. 
+
+I found the paper to be very well written. Despite the abstract nature of its topic, I think that the authors are able to present a very clear and coherent study, which is built on solid mathematical foundations. Overall, I believe that this is a high-quality paper that would not be out of place at the conference, even though it might not be among the most innovative paper or of the most general interest. 
+
+Some detailed comments:
+
+On p2, left column, the formula defined the \uplus operator is missing a "}"
+
+Preceding Def. 2.6, it is not clear to me what precisely the word "isomorphic" means in this context.
+
+In Def. 2.6: you seem to be applying the ^D operator to a literal, whereas it was defined on actions.
+
+On p4, right column: "the formula nup(r)" -> nup(r) was defined as a set of literals, not a formula.
+
+On p6, left columns, "stats" should be "states"
+
+
+*********************
+
+
+The paper deals with the problem of defining a semantics for active integrity constraints in the field of database theory. The present paper employs the framework of approximation theory for that purpose. In that framework, semantics are defined by defining operators and studying their fixpoints. In the present submission, the authors define an approximator for an operator introduced by Cruz-Filipe (2016) and study the induced semantics and some of their properties.
+
+The main contribution of the paper is the introduction of an approximator for an operator previously introduced by Cruz-Filipe (2016). This is non-trivial since in general there might be different candidates for such approximators, each possibly leading to different semantics. The one defined in the paper is well-motivated and seems to be soundly defined. AFT then does the rest of the work (Def. 3.5). In terms of proportions, almost half of the paper contains previous work and background, while only one column is dedicated to an analysis of the new semantics. This part should be much more prominent in the paper, and also should be much more detailed and more accessible. In particular, Section 4 is just a sequence of propositions with no explanations. The presentation in the first part of the paper (existing work) must be condensed in order to improve the second part (contributions of this work).
+
+Technically, the paper is mostly well developed, but there are several inconsistencies: For one, why is stable-repair verification NP-complete? Can you provide a proof sketch or intuitive explanation? I assume that "stable repair" means "I_\eta-stable repair"; and if the Kripke-Kleene repair can be computed in polynomial time, why is stable-repair verification harder than that? What has to be done essentially is computing the least fixpoint of an operator that is similar to the one for computing the Kripke-Kleene repair (cf. the definition of A-stable fixpoint). Please comment and clarify in the rebuttal phase.
+Furthermore in the beginning of Section 4, it is said that "all complexity results are in terms of the size of \eta and At", while in the conclusion, "the AFT-well-founded repair can be computed in time polynomial in the size of the database." This seems contradictory and should be clarified in the rebuttal.
+
+There are several typos and unintroduced notations, which should be fixed in the next version:
+
+"a class new class"
+Either of the two lines in the definition of \biguplus is optional and could be removed to make way for more details in the last sections.
+Is the condition "if every action in U_1 changes DB and every action in U_2 changes U_1(DB)" really necessary for the stated property to hold?
+Again, the definition of neff_DB(U) contains redundancy that could be removed to improve the paper with additional material elsewhere.
+The notion "^D" is undefined for literals (only defined for actions), but being aplied to those in Def. 2.6.
+Definition 2.7 does not quantify over S; I am assuming that the shifting property must hold for all possible S.
+The definition of "approximator" differs from the definition given in, e.g., (Denecker et al., 2004).
+What is the meaning of "^C" in "(2^At)^C"? (Section 3, "An Approximator for T_\eta")
+For a database DB and an atom a, what does "DB(a)" stand for? I assume "t" iff "DB\models a", but this is not clearly defined in the paper.
+The notation "^{-1}" is used as inverse mapping in Section 2, but then seems to be used as meta-level negation on truth values right before Definition 3.1 and in Definition 3.3. The notation should be differentiated or at least explained.
+"nup(r)" is stated as being a "formula" after Def. 3.1, but defined as a set of literals earlier.
+In Example 3.14, the operator I_\eta is applied to a pair of sets of atoms, although it is earlier defined for partial action sets.
+"does holds" -> "does hold"
+"which stats that" -> "which states that"
+"approximator for active integrity constraints" this is technically incorrect, as the approximator is "for" an operator on updates and not for constraints.
+
+
+*********************
+
+The authors applied AFT to the field of AICs. Since the theoretical foundation of AFT is rather complete, a new family
+
+ of semantics of AICs can be introduced. The authors also studied the proerties of the new semantics. The paper is complete and clearly written.
+
+I have a question here.  By the authors, the AFT-well-founded semantics differs from the  existing weli-founded semantics for AICs. And an example is given in example 3.12 to show the difference. But it seems that,  by example 3.12, it is the application sequence of the rules which leads to the difference of the two semantics. If it is so, It is a little bit strange here.
+
+Anyway, in my opinion, the claims in this paper are well-supported by theoretical analysis.
+
+
+*********************
+
+The paper studies the semantics of what are called Active Integrity Constraints (AIGs), which are rules that specify updates to a DB if some conditions are satisfied. The main contribution of the paper is a casting of the semantics problems as various types of fixpoints under Approximation Fixpoint Theory (AFT), which result in semantics similar to logic programming, in particular, the well-founded semantics and stable semantics. 
+
+The problem of database repair has been around for a long time. AIGs is one of the approaches based on a logic programming style rules. The formalism itself is interesting, but has limited impact so far. The main issue addressed in this paper is the semantics of AIGs, as it seems that the issues has not been settled by early proposals. For this, the paper applies AFT to AIGs, by formulating an approximator, which gives various semantics based on various kinds of fixpoints. The main technical contribution of the paper is to introduce three valued evaluation of AIGs by the notion of partial (update) action sets, which leads to the notions of "changing" and "keeping" from which an approximator is defined. The paper also studied some properties of the resulting semantics and commented on their complexities.
+
+The paper presents an interesting, non-trivial application of AFT to AIGs. To me, the resulting semantics are interesting, which are formulated elegantly. The paper argues that these semantics capture intuitions, which I don't argue against. The technical work is very careful, and seems to be sound. 
+
+The paper is hard to follow, in general, perhaps due to lack of examples illustrating notations. Examples illustrating the resulting semantics are provided when all the definitions are in place. 
+
+I think the paper is acceptable. It is a novel application of a good theory in the field to an interesting problem. One concern is its significance. The approach of AIGs has not seen many followup works. One can define a notion of unfounded sets of actions to get the well-founded and stable semantics without relying on AFT. Also, I wish to see a sketch of proof of Proposition 3.4 - almost all results collapse if it does not hold. 
+
+- p2 (top of right column): Can an allowed fix execute multiple actions in the head?
+
+- p2 before Def 2.2: If a semantics requires minimal repairs, normalization may not work, right?
+
+- p3 (top of left column):  The notation, ua = lit^-. Is the result a literal or an action, or a set of them. Here in defining the notion of closed, it denotes a set of actions. 
+
+- p4 (right column): The notation (a^{At})^C (as standard). Does it refer to L^c (where c is in lower case)? 
+
+- The {\cal T}_\eta operator on p4: When applying AIGs generates update actions that are in conflict with the input update set, the big Union+ operator simply takes conflicting actions out, which seems a bit ad hoc. For example, one can also consider that the generated actions dominate. In general, are we in a situation in which repairs need to be repaired? 
+
+-How is $\alpha$ in Def 3.1 switched to "ch a" for the "keep" definition? Do you mean (ch a)^D in Def 3.2 replaces \alpha in head(r) in Def 3.1 literally?  An example would help. 
+
+-Proposition 3.4 is probably the most important claim, a sketch of proof is desired. 
+
+
+
+
+

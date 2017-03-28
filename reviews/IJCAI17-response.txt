@@ -1,0 +1,76 @@
+Thanks for the suggestions for improvement. We did not see any flaws or questions in your review. 
+
+
+*********************
+
+Thanks for the detailed feedback.
+
+---
+
+As you correctly noticed, a bug got into Proposition 4.4.
+This proposition should read
+* The task of verifying if a proposed repair is stable is polynomial
+* The task of checking if a database has a stable repair is NP-complete
+(these are the properties we actually proved, only the phrasing of the proposition was bugged).
+Sketch of the proof of hardness for the second claim: 
+The same task is NP-complete for normal logic programs. Take your favorite logic program P to illustrate hardness.
+Add rules 
+p<-p
+to this program (this preserves stable models). Call the resulting program P'
+Transform logic program P into AIC rules where a rule
+p :- a_1,...a_m,not b_1,...,not b_m
+becomes 
+a_1,...a_m,not b_1,...,not b_m, not p => +p
+
+Our claim is that P' and the resulting AIC program have the same approximators, hence also the same stable models. 
+Since P and P' also have the same stable models, QED. 
+
+---
+
+Regarding complexity result. The database consists of eta and a subset of At. So being polynomial "in terms of eta and At" or "in terms of the size of the database" are very closely related. We will make this more clear. 
+
+--- 
+
+We will implement your suggestion to condense the first part for the final version.
+
+
+
+*********************
+
+Thanks for the review.
+
+Regarding your question: the constructive view on the AFT-well-founded semantics (Definition 2.9.) allows us to also view the AFT-well-founded model as obtained by iterated rule applications. 
+The difference with the standard well-founded semantics is indeed which rules can be applied when. In the standard well-founded semantics, any rule whose body is satisfied can be applied at any moment. The AFT-well-founded construction works more refined: intuitively, it only allows a rule to be applied if the relevant part of its body (nup(r)) will not be changed by applications of other rules. 
+
+Thus, it is more selective about which rules can apply at which point. 
+This is also what happens in Example 3.12 where (for standard well-founded semantics) the rule
+not a & not b => +b
+"fires"
+while the rule 
+not a => +a 
+will resolve the constraint not a & not b => +b anyway (making the fix of +b unneccesary)
+
+
+*********************
+
+Thank you for the review. 
+
+The second reviewer suggested to shorten our earlier sections in order to make more room to illustrate the notations etcetera we introduce ourselves. We take this suggestion seriously and think it will also help fix your criticism regarding a "lack of examples". 
+
+Regarding Proposition 3.4. The complete proof (and of the corrected Proposition 4.4) can be found on https://www.dropbox.com/s/m2plllsezz9neo9/AFT-semantics-AIC.pdf?dl=0
+A sketch follows. 
+
+To see \leq_p-monotonicity, notice that 
+ Kleene-valuation is \leq_p monotone
+ hence, also supp^{ch} and supp^{keep} are monotonic functions in the sense: for a fixed a, they give more precise results when subscripted with more precise structure
+ From this fact, we can prove monotonicity of the approximator (T_eta(U')(a) \geq_p T_eta(U)(a) if U'\geq_p U) by a case analysis. 
+  For instance (one case is worked out in this sketch)
+   CASE U(a) = false
+    then also U'(a) = false (since U' \geq_p U)
+    then T_eta(U')(a) = supp^{ch}_{U'}(a) \geq_p supp^{ch}_{U}(a) = T_eta(U)(a) QED. 
+
+To see that the approximator agrees with the normal operator on two-valued interpretations can be checked with a similar case analysis.
+
+
+
+
