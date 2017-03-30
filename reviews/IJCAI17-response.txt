@@ -1,4 +1,4 @@
-Thanks for the suggestions for improvement. We did not see any flaws or questions in your review. 
+Thanks for the suggestions for improvement we will gladly implement. We did not see any flaws or questions in your review. 
 
 
 *********************
@@ -11,13 +11,13 @@ As you correctly noticed, a bug got into Proposition 4.4.
 This proposition should read
 * The task of verifying if a proposed repair is stable is polynomial
 * The task of checking if a database has a stable repair is NP-complete
-(these are the properties we actually proved, only the phrasing of the proposition was bugged).
+(these are the properties we actually proved; only the phrasing of the proposition was bugged).
 Sketch of the proof of hardness for the second claim: 
 The same task is NP-complete for normal logic programs. Take your favorite logic program P to illustrate hardness.
 Add rules 
 p<-p
 to this program (this preserves stable models). Call the resulting program P'
-Transform logic program P into AIC rules where a rule
+Transform the logic program P into AIC rules where a rule
 p :- a_1,...a_m,not b_1,...,not b_m
 becomes 
 a_1,...a_m,not b_1,...,not b_m, not p => +p
