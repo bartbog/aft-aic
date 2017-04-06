@@ -1,3 +1,4 @@
+\todo{REVIEWER 2: SHORTEN THIS SECTION!}
 % \todo{The well-founded semantics for AICs seems to assume a \emph{FINITE} database is given. However, using ordinals, the definition easily extends to the infinite context as well. We should choose, do we want this infintie context or not?}
 % 
 % \luis{Although the mathematical side of my brain would love that generalization, I think we shouldn't discuss it.  Databases are by definition finite, and I'm afraid referees might kill us.}
@@ -5,21 +6,21 @@
 % \bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
 
 \paragraph{Active Integrity Constraints}
-We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. 
-The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$.
+We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. We say $\lnot a$ is the \emph{dual} literal of $a$ and vice versa and denote the dual of a literal $l$ by $l^D$. 
+The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$. 
 
 An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
 Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$. Formally $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
 A set of update actions $\UU$ is \emph{consistent} if it does not contain an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
 Following \citet{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
 \begin{align*}
-\UU_1 \biguplus \UU_2 &= (\UU_1 \cup \{\alpha \in \UU_2 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\not \in \UU_1) \setminus \{\alpha\in \UU_1 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\in \UU_2\}\\
-&= \UU_1\cup \UU_2 \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}.
+\UU_1 \biguplus \UU_2 &= (\UU_1 \cup \{\alpha \in \UU_2 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\not \in \UU_1 \}) \setminus \{\alpha\in \UU_1 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\in \UU_2\}\longpaper{\\
+&= \UU_1\cup \UU_2 \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}}.
   \end{align*}
 This operation has the property that: if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
 \[\left(\UU_1\biguplus \UU_2\right)(\db) = \UU_2(\UU_1(\db)).\]
 
-Literals and update actions are related by mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a$ and $\actof = \litof^{-1}$.
+Literals and update actions are related by mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a$ and $\actof$ is the inverse of $\litof$.
 %, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  
 These mappings naturally extend to sets of literals/actions. 
 
@@ -34,7 +35,7 @@ These mappings naturally extend to sets of literals/actions.
 % \luis{I wouldn't use $\lor$, because actions are not logical formulas.}
 %BART: OK
 
-The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one of the $\alpha_i$.''
+The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one or more of the $\alpha_i$.''
 A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms can only be changed if there is some rule that allows it. 
 
 
@@ -77,8 +78,8 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
   Let \UU be a set of update actions and \fulldb a database. 
   \begin{compactitem}
    \item The \emph{no-effect actions} with respect to \db and \UU are the actions that affect neither \db, nor $\UU(\db)$: 
-   \begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\\
-	=&\{\alpha \mid \alpha(\db) = \db \\&\qquad\land \alpha(\UU(\db))=\UU(\db)\}\,.\end{align*}
+   \begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\longpaper{\\
+	=&\{\alpha \mid \alpha(\db) = \db \\&\qquad\land \alpha(\UU(\db))=\UU(\db)\}}\,.\end{align*}
    \item The set of \emph{non-updatable literals} of an AIC $r$ are all body literals of $r$ that do not occur in the head of $r$
    \[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]
    \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$.
@@ -116,6 +117,7 @@ Although the notion of closed set of actions does not take the database into acc
 
 \citet{tcs/MarekT98} defined in the context of revision programming \emph{the shifting property}; this property was later transferred to active integrity constraints \cite{tplp/CaropreseT11}. 
 Intuitively, a semantics for AICs possesses the shifting property if transforming a database into an isomorphic one preserves the semantics at hand. 
+\todo{RVWR1: Preceding Def. 2.6, it is not clear to me what precisely the word "isomorphic" means in this context.}
 
 \begin{definition}
  Let $S\subseteq\atoms$ be a set of atoms and $l$ a literal. The \emph{shift of $l$} with respect to $S$ is defined as 
@@ -124,7 +126,7 @@ Intuitively, a semantics for AICs possesses the shifting property if transformin
 \end{definition}
 
 \begin{definition}
- We say that a semantics for AICs \emph{has the shifting property} if: for all \fulldb, \UU is a repair of \fulldb accepted by the semantics if and only if $\shift_S(\UU)$ is a repair of $\langle\shift_S(\db),\shift_S(\aics)\rangle$ accepted by the semantics.
+ We say that a semantics for AICs \emph{has the shifting property} if: for all \fulldb and all $S\subseteq \atoms$, \UU is a repair of \fulldb accepted by the semantics if and only if $\shift_S(\UU)$ is a repair of $\langle\shift_S(\db),\shift_S(\aics)\rangle$ accepted by the semantics.
 \end{definition}
 
 If a semantics satisfies the shifting property, then we can reduce any situation to the case $\db=\emptyset$ by taking $S=\db$. 

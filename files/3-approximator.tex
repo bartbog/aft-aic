@@ -67,9 +67,9 @@ In the following paragraph, we define an approximator for \Op and hence, obtain 
 
 A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$. A partial action set \UUU is \emph{two-valued} if $\UUU(\atoms)\subseteq\{\ltrue,\lfalse\}$; in this case, we identify $\UUU$ with the action set $\{\change a\mid \UUU(a)=\ltrue\}$. 
 The intended reading of such a mapping is that $\UUU(a)$ is true if $a$ is changed by $\UUU$, it is false if $a$ is not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
-Alternatively, a partial action set is identified with an element of $(2^\atoms)^C$ (as standard). 
+Alternatively, a partial action set is identified with an element of $(2^\atoms)^c$ (as standard). 
 The set of all partial action sets is denoted $P$.
-The truth order $\leqt$ on three-valued truth values is defined by $\lfalse\leqt\lunkn\leqt\ltrue$.
+The truth order $\leqt$ on three-valued truth values is defined by $\lfalse\leqt\lunkn\leqt\ltrue$. The inverse of a truth value is $\lfalse^{-1}=\ltrue, \ltrue^{-1}=\lfalse, \lunkn^{-1}=\lunkn$.
 
 A partial database is a mapping $\tdb: \atoms \to \{\ltrue,\lfalse,\lunkn\}$.
 The intended reading is that $\tdb(a)$ is true if $a$ is in the database, $\tdb(a)$ is false if $a$ is not in the database and $\tdb(a)$ is unknown otherwise. 
@@ -78,9 +78,10 @@ If $\UUU$ is a partial action set and \db is a (regular) database, then we defin
 \[ \UUU(\db): a \mapsto \left \{\begin{array}{ll}
                                  \db(a) & \text{if }\UUU(a) = \lfalse\\
                                  \db(a)^{-1} & \text{if }\UUU(a) = \ltrue\\
-                                 \lunkn & \text{otherwise.}
+                                 \lunkn & \text{otherwise,}
                                 \end{array}\right.
                                 \]
+where $\db(a) = \ltrue$ if $a\in \db$ and $\db(a)=\lfalse$ otherwise. 
 
 
 
@@ -89,7 +90,7 @@ Given a partial database \tdb, a set of AICs \aics and an update action $\alpha$
 \begin{align*}
  \supp_{\tdb,\aics}(\alpha) &= \max_{\leq_t}\{\nup(r)^{\tdb}\mid r\in \aics \land \head(r) = \alpha\},
 \end{align*}
-where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38}.
+where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula\footnote{Technically, $\nup(r)$ is a set of literal; we identify it with its conjunction here.} $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38}.
 \end{definition}
 % \luis{$\leq_t$ was not defined}
 
@@ -109,7 +110,7 @@ $\suppin_{\UUU}(a)$ is unknown if it is not true and there is at least one rule 
 otherwise $\suppin_{\UUU}(a)$ is false. 
 Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as it is in the database (hence the name choice). 
 
-
+\todo{REVIEWER 4: example please}
 
 
 
@@ -623,7 +624,7 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
 To see that it is a justified repair, note that $\{\add a,\add b\}$ is the least set closed under \aics. 
 \end{example}
 
-While the converse of Proposition \ref{prop:stable_is_justified} does not hold in general, for a broad class of active integrity constraints, it does holds. We first define this class and then prove that this is indeed the case. 
+While the converse of Proposition \ref{prop:stable_is_justified} does not hold in general, for a broad class of active integrity constraints, it does hold. We first define this class and then prove that this is indeed the case. 
 
 \begin{definition}
  A set of AICs \aics is called \emph{unipolar} if there are no rules $r,r'\in\aics$ with $\head(r)=\head(r')^D$. 
@@ -650,7 +651,7 @@ One direction of this claim has been proven as \textbf{Claim 4} in the proof of 
 \qedhere
 \end{proof}}
 
-Using Lemma 19 of \citet{iclp/Cruz-Filipe16}, which stats that all justified repairs are grounded, we easily find how justified repairs and the AFT-well-founded repair relate. 
+Using Lemma 19 of \citet{iclp/Cruz-Filipe16}, which states that all justified repairs are grounded, we easily find how justified repairs and the AFT-well-founded repair relate. 
 
 % \begin{proposition}[Lemma 19 of \citet{iclp/Cruz-Filipe16}]
 %  All justified repairs are grounded.
