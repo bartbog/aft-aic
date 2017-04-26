@@ -115,7 +115,7 @@ Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as 
 
 
 
-\begin{definition}
+\begin{definition} \label{def:apfull}
 % \overlinet{truth tables are not so nice. Actually, a case split should be easier}
 Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
 
@@ -186,7 +186,7 @@ When $\db$ is clear from the context, we write \Ap for \Apfull.
  
 \end{definition}
 
-The above definition is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
+Definition \ref{def:apfull} is motivated as follows. Assume $\UUU$ is a partial update set containing \longpaper{some }information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
 In the case where $\UUU(a)=\lfalse$, $a$ is not an element of the (partial) update set at hand. The only way to add $a$ to the update is if some rule supports changing $a$, which is captured by $\suppin$. 
 The case for $\UUU(a)=\ltrue$ is completely symmetrical, in this case the only reason for removing $a$ from the update at hand is if there is some rule that supports keeping $a$.
 In the last case, where $\UUU(a)=\lunkn$, we have no information what the update does to $a$ yet. In this case, we can derive that $a$ \emph{must} be in the update if we already have support for $\change a$ and we are sure that there is no support for keeping $a$ (for $\change a^D$). Similarly, we can derive that $a$ \emph{must not} be in the update if we have support for $\change a^D$ but not for $\change a$. 
@@ -256,7 +256,7 @@ The well-founded semantics induced by AFT can in general differ from the existin
 Grounded repairs were defined previously by \citet{iclp/Cruz-Filipe16}. All other classes of repairs defined in Definition \ref{def:semantics} are newly introduced semantics by the current paper. 
 We now illustrate these semantics by means of some examples. 
 
-
+\longpaper{\todo{examples of (partial) grounded fixpoint}}
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}

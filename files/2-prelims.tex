@@ -6,11 +6,12 @@
 % \bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
 
 \paragraph{Active Integrity Constraints}
-We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$; the former are called \emph{positive}, the latter \emph{negative} literals. We say $\lnot a$ is the \emph{dual} literal of $a$ and vice versa and denote the dual of a literal $l$ by $l^D$. 
+We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
+We say $\lnot a$ \longpaper{is the \emph{dual} literal of $a$ and vice versa }\shortpaper{and $a$ are dual literals }and denote the dual of a literal $l$ by $l^D$. 
 The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$. 
 
 An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
-Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$. Formally $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
+\longpaper{Intuitively, u}\shortpaper{U}pdate actions represent changes to the database: \longpaper{$\add a$ adds $a$, while $\remove a$ removes $a$. Formally} $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
 A set of update actions $\UU$ is \emph{consistent} if it does not contain an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
 Following \citet{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
 \begin{align*}
@@ -41,7 +42,7 @@ A set of AICs represents constraints a database should adhere to and, in additio
 
 An AIC is \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
 \[\{l_1\land \dots\land l_n\aicrule \alpha_i\mid 1\leq i\leq k\}.\]
-It is clear from the informal explanation above that the expectation is that normalization preserves semantics. Indeed, this is the case for most semantics of AICs (the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which poses several other problems~\cite{tase/Cruz-FilipeEGN13}).
+It follows from the informal explanation above that we expect normalization to preserve semantics. \shortpaper{T}{\longpaper{Indeed, t}his is the case for most semantics of AICs (the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which poses several other problems~\cite{tase/Cruz-FilipeEGN13}).
 %However, not for all semantics defined for AICs this is the case (see, e.g., \cite{}).
 In the current paper, we assume \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed.
 
@@ -54,7 +55,7 @@ In the current paper, we assume \emph{all AICs are normal}. Extensions of the se
 A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 
-(Weak) repairs do not take the head of AICs into account, and thus allow arbitrary changes to the database. We now summarize several other semantics for AICs that have been defined with the intention to allow only changes explicitly described by one of the AICs: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, and grounded repairs \cite{iclp/Cruz-Filipe16}.
+(Weak) repairs do not take the head of AICs into account, and thus allow arbitrary changes to the database. We now review \longpaper{several other }semantics for AICs that have been defined with the intention to allow only changes  \longpaper{explicitly }allowed by one of the AICs\longpaper{: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, and grounded repairs \cite{iclp/Cruz-Filipe16}}.\longpaper{\todo{Define grounded repairs directly}}
 
 % \begin{example}
 %  \bart{The definition of (weak) repairs is strange:}
@@ -66,15 +67,15 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 % \end{example}
 
 
-\begin{definition}
+\begin{definition}[\cite{iclp/CaropreseGSZ06}]
  A set of update actions \UU is \emph{founded} with respect to $\fulldb$ if, for each $\alpha \in \UU$, there is a rule  $r\in \aics$ with $\alpha\in\head(r)$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus\{\alpha\}$. A \emph{founded (weak) repair} is a (weak) repair that is founded.
 \end{definition}
 
-\begin{definition}
+\begin{definition}[\cite{tase/Cruz-FilipeEGN13}]
  A (weak) repair \UU for \fulldb is \emph{well-founded} if there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
 \end{definition}
 
-\begin{definition}
+\begin{definition}[\cite{tplp/CaropreseT11}]
   Let \UU be a set of update actions and \fulldb a database. 
   \begin{compactitem}
    \item The \emph{no-effect actions} with respect to \db and \UU are the actions that affect neither \db, nor $\UU(\db)$: 
@@ -129,7 +130,7 @@ Intuitively, a semantics for AICs possesses the shifting property if transformin
  We say that a semantics for AICs \emph{has the shifting property} if: for all \fulldb and all $S\subseteq \atoms$, \UU is a repair of \fulldb accepted by the semantics if and only if $\shift_S(\UU)$ is a repair of $\langle\shift_S(\db),\shift_S(\aics)\rangle$ accepted by the semantics.
 \end{definition}
 
-If a semantics satisfies the shifting property, then we can reduce any situation to the case $\db=\emptyset$ by taking $S=\db$. 
+If a semantics has the shifting property, then we can reduce any situation to the case $\db=\emptyset$ by taking $S=\db$. 
 \paragraph{Lattices, Operators and Fixpoints}
 A \emph{partially ordered set (poset)} $\langle L,\leq\rangle$ is a set $L$ equipped with a partial order $\leq$, i.e., a reflexive, antisymmetric, transitive relation. 
 As usual, we write $x<y$ as abbreviation for $x\leq y \land x\neq y$.
@@ -153,9 +154,20 @@ Since we apply our results to (finite) databases, for the sake of simplicity we 
 
 
 
-An operator $O:L\to L$ is \emph{monotone} if $x\leq y$ implies that $O(x)\leq O(y)$ and \emph{anti-monotone} if $x\leq y$ implies that $O(y)\leq O(x)$. An element $x\in L$ is a \emph{prefixpoint}, a \emph{fixpoint}, a \emph{postfixpoint} of $O$ if $O(x)\leq x$, respectively $O(x)=x$, $x\leq O(x)$. 
+An operator $O:L\to L$ is \emph{monotone} if $x\leq y$ implies that $O(x)\leq O(y)$.
+%and \emph{anti-monotone} if $x\leq y$ implies that $O(y)\leq O(x)$. 
+An element $x\in L$ is 
+%a \emph{prefixpoint}, 
+a \emph{fixpoint}
+%, a \emph{postfixpoint} 
+of $O$ 
+%if $O(x)\leq x$, respectively 
+$O(x)=x$.
+%, $x\leq O(x)$. 
 Every monotone operator $O$ in a %chain complete poset 
-complete lattice has a least fixpoint, denoted $\lfp(O)$, which is also $O$'s least prefixpoint and the limit (the least upper bound) of the increasing sequence $(x_i)_{i \in \nat}$ defined by $x_0=\bot$ and $x_{i+1} = O(x_i)$. 
+complete lattice has a least fixpoint, denoted $\lfp(O)$, which is 
+% also $O$'s least prefixpoint and 
+the limit (the least upper bound) of the increasing sequence $(x_i)_{i \in \nat}$ defined by $x_0=\bot$ and $x_{i+1} = O(x_i)$. 
 % \begin{compactitem}
 % 	\item $x_0=\bot$,
 % 	\item $x_{i+1}=O(x_i)$, for successor ordinals $i+1$,
