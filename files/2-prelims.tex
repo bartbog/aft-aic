@@ -78,11 +78,11 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \begin{definition}[\cite{tplp/CaropreseT11}]
   Let \UU be a set of update actions and \fulldb a database. 
   \begin{compactitem}
-   \item The \emph{no-effect actions} with respect to \db and \UU are the actions that affect neither \db, nor $\UU(\db)$: 
-   \begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\longpaper{\\
-	=&\{\alpha \mid \alpha(\db) = \db \\&\qquad\land \alpha(\UU(\db))=\UU(\db)\}}\,.\end{align*}
-   \item The set of \emph{non-updatable literals} of an AIC $r$ are all body literals of $r$ that do not occur in the head of $r$
-   \[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]
+   \item The \emph{no-effect actions} with respect to \db and \UU, \shortpaper{$\neff_\db(\UU)$, }are the actions that affect neither \db, nor $\UU(\db)$.
+     \longpaper{\begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\longpaper{\\
+	=&\{\alpha \mid \alpha(\db) = \db \\&\qquad\land \alpha(\UU(\db))=\UU(\db)\}}\,.\end{align*}}
+   \item The set of \emph{non-updatable literals} of an AIC $r$, \shortpaper{$\nup(r)$, }contains all body literals of $r$ that do not occur in the head of $r$.
+     \longpaper{\[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]}
    \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$.
    \item \UU is a \emph{justified action set} if it is a minimal superset of $\neff_\db(\UU)$ closed under \aics.
    \item \UU is a \emph{justified (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
@@ -117,8 +117,10 @@ Although the notion of closed set of actions does not take the database into acc
 
 
 \citet{tcs/MarekT98} defined in the context of revision programming \emph{the shifting property}; this property was later transferred to active integrity constraints \cite{tplp/CaropreseT11}. 
-Intuitively, a semantics for AICs possesses the shifting property if transforming a database into an isomorphic one preserves the semantics at hand. 
-\todo{RVWR1: Preceding Def. 2.6, it is not clear to me what precisely the word "isomorphic" means in this context.}
+Intuitively, a semantics for AICs possesses the shifting property if uniformly replacing some literals with their duals
+%transforming a database into an isomorphic one
+preserves the semantics at hand. 
+%\todo{RVWR1: Preceding Def. 2.6, it is not clear to me what precisely the word "isomorphic" means in this context.}
 
 \begin{definition}
  Let $S\subseteq\atoms$ be a set of atoms and $l$ a literal. The \emph{shift of $l$} with respect to $S$ is defined as 

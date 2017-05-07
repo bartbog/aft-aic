@@ -28,7 +28,9 @@ The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$,
 Now consider a set of (normal) AICs \aics. 
 \citet{iclp/Cruz-Filipe16} associated with such a set a semantic operator
 % \footnote{Technically, his definition slightly differs from ours in the sense that $\nup$ is replaced by \body in his definition. However, it is not hard to see that the definitions are equivalent. The current definition satisifies our purpose better.} 
-\begin{align*}\Op: &2^{\atoms}\to  2^{\atoms}: \UU \mapsto  \\ &\UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\end{align*}
+%\begin{align*}\Op: &2^{\atoms}\to  2^{\atoms}: \UU \mapsto  \\ &\UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\end{align*}
+$\Op: 2^{\atoms}\to  2^{\atoms}$ such that
+\[\Op(\UU) = \UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\]
 
 Cruz-Filipe argued that a semantics for AICs based on grounded fixpoints of \Op coincides with the intuitions on a large set of natural examples and that it solves problems with several previously existing semantics. 
 In the following paragraph, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs, based on similar intuitions. 
@@ -209,8 +211,9 @@ In all other cases, we derive nothing about $a$ being in the update or not.
 % \begin{proof}[Sketch of the proof]
 % \leqp-monotonicity of \Ap follows from the fact that Kleene-valuation is \leqp-monotone and 
 % \end{proof}
-\longpaper{\begin{proof}
-First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. Then  $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
+\begin{proof}
+\shortpaper{The first step is to show that $\Ap$ is $\leqp$-monotone. Since Kleene-valuation is $\leqp$-monotone, the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ for each $a\in\atoms$ are also $\leqp$-monotone. Monotonicity of $\Ap$ then follows from case analysis on the definition of $\Ap(\UUU)(a)$.}
+\longpaper{First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. Then  $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
 \begin{compactitem}
 \item If $\UUU(a)=\lfalse$, then $\UUU'(a)=\lfalse$ since $\UUU'\geqp\UUU$. In this case $\Ap(\UUU')(a) = \suppin_{\UUU'}(a) \geqp \suppin_{\UUU}(a) =  \Ap(\UUU)(a)$. 
 \item The case where $\UUU(a)=\ltrue$ is similar.
@@ -221,16 +224,17 @@ First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Klee
 \item In all other cases, $\Ap(\UUU)(a)=\lunkn$, hence $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ is trivially satisfied.
 \end{compactitem}
 
-\end{compactitem}
+\end{compactitem}}
 
-Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $a \in \atoms$, we again prove this claim by a case analysis on the definition of of $\Ap(\UU)(a)$. 
+\shortpaper{The second step is to show that $\Op$ and $\Ap$ coincide on two-valued sets, which again can be established by case analysis on the definition of $\Ap(\UU)(a)$.}
+\longpaper{Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $a \in \atoms$, we again prove this claim by a case analysis on the definition of of $\Ap(\UU)(a)$. 
 \begin{compactitem}
  \item If $\UU(a)=\lfalse$, then $\Op(\UUU)(a)= \ltrue$ if and only if there is some rule $r\in \eta$ with $\UU(\db) \models \body(r)$ and $\head(r)=\change a$. I.e., $\Op(\UU)(a)$ is true if and only if $\suppin_{\UU}(a) = \ltrue$, if and only if $\Ap(\UU)(a)=\ltrue$. 
  \item The case for $\UU(a)=\lfalse$ is similar. 
  \item The case where $\UU(a)= \lunkn$ cannot occur, since $\UU$ is two-valued. \qedhere
 \end{compactitem}
-
-\end{proof}}
+}
+\end{proof}
 
 Since \Ap is an approximator, it defines a family of semantics for AICs. 
 
