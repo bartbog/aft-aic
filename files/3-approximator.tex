@@ -25,14 +25,14 @@ Following the principle of minimality of change \cite{Winslett90,ai/EiterG92}, w
 The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$, where  smaller elements correspond to ``better'' repairs. 
 
 
-Now consider a set of (normal) AICs \aics. 
-\citet{iclp/Cruz-Filipe16} associated with such a set a semantic operator
+Now consider a set of\longpaper{ (normal)} AICs \aics. 
+\longpaper{\citet{iclp/Cruz-Filipe16}}\shortpaper{Cruz-Filipe} associated with such a set a semantic operator
 % \footnote{Technically, his definition slightly differs from ours in the sense that $\nup$ is replaced by \body in his definition. However, it is not hard to see that the definitions are equivalent. The current definition satisifies our purpose better.} 
 %\begin{align*}\Op: &2^{\atoms}\to  2^{\atoms}: \UU \mapsto  \\ &\UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\end{align*}
 $\Op: 2^{\atoms}\to  2^{\atoms}$ such that
 \[\Op(\UU) = \UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\]
 
-Cruz-Filipe argued that a semantics for AICs based on grounded fixpoints of \Op coincides with the intuitions on a large set of natural examples and that it solves problems with several previously existing semantics. 
+Cruz-Filipe argued that a semantics for AICs based on grounded fixpoints of \Op coincides with the intuitions on a large set of  examples and that it solves problems with several previously existing semantics. 
 In the following paragraph, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs, based on similar intuitions. 
 
 
@@ -112,7 +112,14 @@ $\suppin_{\UUU}(a)$ is unknown if it is not true and there is at least one rule 
 otherwise $\suppin_{\UUU}(a)$ is false. 
 Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as it is in the database (hence the name choice). 
 
-\todo{REVIEWER 4: example please}
+\begin{example}
+ Consider $\db=\emptyset$ and the following set $\aics$:
+ \[\lnot a\land b \aicrule \add a\qquad a \land c\land d \aicrule\remove a.\]
+ Consider $\UUU = \{a\mapsto\true,b\mapsto\ltrue, c\mapsto\ltrue, d\mapsto\lunkn\}$. 
+ Then  $\suppin_{\db,\aics,\UUU}(a)=\ltrue$ and $\suppout_{\db,\aics,\UUU}(a)=\lunkn$. 
+\end{example}
+
+% \todo{REVIEWER 4: example please}
 
 
 

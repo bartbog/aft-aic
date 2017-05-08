@@ -1,4 +1,4 @@
-\todo{REVIEWER 2: SHORTEN THIS SECTION!}
+% \todo{REVIEWER 2: SHORTEN THIS SECTION!}
 % \todo{The well-founded semantics for AICs seems to assume a \emph{FINITE} database is given. However, using ordinals, the definition easily extends to the infinite context as well. We should choose, do we want this infintie context or not?}
 % 
 % \luis{Although the mathematical side of my brain would love that generalization, I think we shouldn't discuss it.  Databases are by definition finite, and I'm afraid referees might kill us.}
@@ -78,7 +78,7 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \begin{definition}[\cite{tplp/CaropreseT11}]
   Let \UU be a set of update actions and \fulldb a database. 
   \begin{compactitem}
-   \item The \emph{no-effect actions} with respect to \db and \UU, \shortpaper{$\neff_\db(\UU)$, }are the actions that affect neither \db, nor $\UU(\db)$.
+   \item The \emph{no-effect actions} with respect to \db and \UU, \shortpaper{$\neff_\db(\UU)$, }are the actions that change neither \db, nor $\UU(\db)$.
      \longpaper{\begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\longpaper{\\
 	=&\{\alpha \mid \alpha(\db) = \db \\&\qquad\land \alpha(\UU(\db))=\UU(\db)\}}\,.\end{align*}}
    \item The set of \emph{non-updatable literals} of an AIC $r$, \shortpaper{$\nup(r)$, }contains all body literals of $r$ that do not occur in the head of $r$.
@@ -96,6 +96,7 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 Although the notion of closed set of actions does not take the database into account, its role in the definition of justified weak repairs is as part of the definition of justified action set -- where all actions that do not change the database are included.
 
 \citet{tplp/CaropreseT11} showed that a justified weak repair may not be a repair.
+\bart{Also for normalized?}
 
 %\bart{all justified weak repairs are justified repairs, right?}
 
@@ -119,7 +120,7 @@ Although the notion of closed set of actions does not take the database into acc
 \citet{tcs/MarekT98} defined in the context of revision programming \emph{the shifting property}; this property was later transferred to active integrity constraints \cite{tplp/CaropreseT11}. 
 Intuitively, a semantics for AICs possesses the shifting property if uniformly replacing some literals with their duals
 %transforming a database into an isomorphic one
-preserves the semantics at hand. 
+preserves the semantics at hand\longpaper{, i.e., if the semantics treats truth and falsity of elements in the database symmetrically}. 
 %\todo{RVWR1: Preceding Def. 2.6, it is not clear to me what precisely the word "isomorphic" means in this context.}
 
 \begin{definition}
@@ -265,9 +266,10 @@ A well-founded induction is \emph{terminal} if its limit $(x_n,y_n)$ has no stri
 \end{definition}
 A well-founded induction is an algebraical generalization of the well-founded model construction defined by \citet{GelderRS91}. 
 The first type of refinement corresponds to making a partial structure more precise by applying Fitting's immediate consequence operator; the second type of refinement corresponds to making a structure more precise by eliminating an unfounded set. 
-
+\longpaper{
 For a given approximator $A$, there are many different terminal well-founded inductions of $A$.
-\citet{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, then the $A$-well-founded fixpoint of $O$ (in fact, every tuple in a well-founded induction of $A$) is consistent. 
+\citet{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, then the $A$-well-founded fixpoint of $O$ (in fact, every tuple in a well-founded induction of $A$) is consistent.}
+\shortpaper{All terminal well-founded inductions of $A$ have the $A$-well-founded fixpoint as limit \cite{lpnmr/DeneckerV07}.}
 % Well-founded inductions that only use the first sort of refinement converge to the $A$-Kripke-Kleene fixpoint. 
 
 % \todo{Drop section on ultimate approximators, unless we use it.}
