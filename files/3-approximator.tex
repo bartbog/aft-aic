@@ -115,7 +115,7 @@ Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as 
 \begin{example}
  Consider $\db=\emptyset$ and the following set $\aics$:
  \[\lnot a\land b \aicrule \add a\qquad a \land c\land d \aicrule\remove a.\]
- Consider $\UUU = \{a\mapsto\true,b\mapsto\ltrue, c\mapsto\ltrue, d\mapsto\lunkn\}$. 
+ Consider $\UUU = \{a\mapsto\ltrue,b\mapsto\ltrue, c\mapsto\ltrue, d\mapsto\lunkn\}$. 
  Then  $\suppin_{\db,\aics,\UUU}(a)=\ltrue$ and $\suppout_{\db,\aics,\UUU}(a)=\lunkn$. 
 \end{example}
 
@@ -218,7 +218,7 @@ In all other cases, we derive nothing about $a$ being in the update or not.
 % \begin{proof}[Sketch of the proof]
 % \leqp-monotonicity of \Ap follows from the fact that Kleene-valuation is \leqp-monotone and 
 % \end{proof}
-\begin{proof}
+\begin{proof}\shortpaper{(Sketch)}
 \shortpaper{The first step is to show that $\Ap$ is $\leqp$-monotone. Since Kleene-valuation is $\leqp$-monotone, the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ for each $a\in\atoms$ are also $\leqp$-monotone. Monotonicity of $\Ap$ then follows from case analysis on the definition of $\Ap(\UUU)(a)$.}
 \longpaper{First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. Then  $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
 \begin{compactitem}
@@ -623,7 +623,7 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
  \end{align*}
  with $\db=\emptyset$. 
  In this case $\{\add a,\add b\}$ is a justified repair of \fulldb, but not a stable repair. 
- To see that it is not a stable repair, it suffices to note that 
+ To see that it is not a stable repair, recall that we identify a partial action set with an element of $(2^{\atoms})^c$, e.g., $\{a\mapsto\lunkn,b\mapsto\lunkn\}$ is identified with $(\emptyset,\{a,b\})$. It now suffices to note that 
  \longpaper{\[}\shortpaper{$}
  \Ap(\emptyset,\{a,b\}) = (\emptyset,\{a,b\})
  \shortpaper{$}\longpaper{\]}

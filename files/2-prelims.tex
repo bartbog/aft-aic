@@ -95,8 +95,8 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 Although the notion of closed set of actions does not take the database into account, its role in the definition of justified weak repairs is as part of the definition of justified action set -- where all actions that do not change the database are included.
 
-\citet{tplp/CaropreseT11} showed that a justified weak repair may not be a repair.
-\bart{Also for normalized?}
+% \citet{tplp/CaropreseT11} showed that a justified weak repair may not be a repair.
+% \bart{Also for normalized?}
 
 %\bart{all justified weak repairs are justified repairs, right?}
 
@@ -192,7 +192,7 @@ in the sense that if we remove them from $x$, then the operator will add at leas
 \paragraph{Approximation Fixpoint Theory}
 
 
-Given a lattice $L$, approximation fixpoint theory (AFT) uses the bilattice 
+Given a lattice $L$, approximation fixpoint theory (AFT) \cite{DeneckerMT00} uses the bilattice 
 $L^2$.  We define two \emph{projection} functions for pairs as usual:
 $(x,y)_1=x$ and $(x,y)_2=y$.  Pairs $(x,y)\in L^2$ are used to
 approximate elements in the interval $[x,y] = \{z\mid x\leq
@@ -212,10 +212,10 @@ $\langle L^2,\leqp\rangle$ is also a complete lattice.
 
 
 AFT studies fixpoints of lattice operators $O:L\ra L$ through operators approximating $O$.
- An operator $A: L^2\to L^2$  is an \emph{approximator} of $O$ if it is \leqp-monotone,  and has the property that $O(x)\in A(x,x)$ for all $x$. %[x',y']$, where $(x',y')=A{x,x}$.
+ An operator $A: L^2\to L^2$  is an \emph{approximator} of $O$ if it is \leqp-monotone,  and has the property that $A(x,x) = (O(x),O(x))$ for all $x$. %[x',y']$, where $(x',y')=A{x,x}$.
 Approximators are
 internal in $L^c$ (i.e., map $L^c$ into $L^c$).
-As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that, for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$. %  DMT \citeyear{DeneckerMT00}\cite{lpnmr/DeneckerV07}.
+As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that, for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$.%\cite{lpnmr/DeneckerV07}.
 \citet{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
 
 AFT studies fixpoints of $O$ using fixpoints of $A$. 
