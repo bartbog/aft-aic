@@ -1,0 +1,185 @@
+Area Editor: Eiter, Thomas
+Comments to the Author:
+The reviewers have identified major weaknesses of the paper which preclude it from publication in TPLP. However, a novel paper that is written in the light of the review comments and addresses the issues that have been raised thoroughly could be submitted in the future.
+
+Reviewer: 1
+
+Comments to the Author
+This paper studies the notion of grounded fixpoint in the context of Active Integrity Constraints. The main technical contributions are:
+* Defining an "immediate consequence" operator for AICs
+* Extending the theory of grounded fixpoints to non-deterministic operators
+* Studying the relationship with existing semantics for AICs.
+The paper is technically sounds and reads pleasantly. I believe it might lay important foundations for bringing AICs closer to other logics with a fixpoint semantics. Hence, I reccommend acceptance. Some suggestions for improvement follow.
+
+General remarks:
+
+The preliminary material is quite long. In fact, the main technical contribution of the paper only starts at page 13. If possible, I would postpone some of the preliminaries (or of the related) work to the point where it really becomes relevant. For instance, the preliminaries on parallelization could be given in section 5.
+
+In Section 5, I get why you want to find an algebraic generalisation of parralelism. However, I think the actual generalisation you find is a bit too complex. Currently, it takes to 3.5 pages to work out all the details of the algebraic version. In this section, now concepts such as (u,v) operator and independence are introduced. This algebraic characterisation requires Boolean lattices.
+My feeling is that the generalisation could also be achieved by working with product lattices and using concepts such as a stratifiable operator (see eg http://dl.acm.org/citation.cfm?doid=1183278.1183284). I'm not entirely sure it will work (didnt check the details), but if it works, it would make the presentation simpler, more standard, and more general (no Boolean lattices will be required).
+
+Some minor remarks:
+
+p1. In the abstract, you claim that "rule-based syntax [...] proivdes algorithms". Since a syntax is only a set of rules for constructing expressions, this is a bit of a weird claim. A syntax does not provie semantics, let alone algorithms for computing something related to the semantics.
+p2. In related work, you state "[...] that are dictated by its semantics". I don't get what "its semantics" refers to here (semantics of what? Of the logical language to express database constraints?). I would simply drop that part of the sentence.
+p2. "We develop the theory of grounded repairs for AICs that are normal: every [...]" -> "We first develop the theory of grounded repairs for \emph{normal} AICs: i.e., AICs such that every [...]"?
+p2. In organization, I think it goes without saying that the prelims you will give are "relevant". So I'ld drop that adjective
+p3. "[...] is common namely in the [...]" -> "[...] is common in the [...]"
+p3. "[...] based on the concept of [...]" -> "[...] based on the concepts of [...]"
+p5. missing closing bracket in "(or minimal"
+p5. "we are consider" -> "we consider"
+p6. After formula (1) I would make it explicit that all l_i are literals and all alphpa_i update actions
+p6. In Example 1, the way the example is phrased (in natural language) made me expect a different set of rules, namely:
+a, b, not c => +c
+a, b, not d => +d
+It is hard to pinpoint exactly why I was expecting this but I think the structure of the sentence "if a and b both hold, then [condition on c and d]" suggests that a and bs value is fixed (assumed to be true) and in this case we have a constraint on c and d. To me it is more natural that the constraint on c and d would then be fixed by applying update actions to c and d.
+p6. Missing closing quotes in footnote. However, since you assume At to be fixed, I don't think you really need this footnote?
+p7. End of Ex1. "[...] that DB should include" -> "[...] that the repair of DB should include", since it is already known what DB includes or not.
+p7. In Example 2. The two items in the itemize could be replaced by "+c does not occur in the head of any rule in eta" (I think that would be more readable).
+p9. In Example 6. Strictly following the definitions, the wf repair tree has no duplicate child nodes, so it should in this example be a linear tree.
+p11. I am quite surprised that an "operational" semantics can explain the intended interpretation (the informal semantics) of a set of AICs. Rather I would say that the word "should" in the sentence before this claim is wrong and should be replaced by "can".
+p13. "w[h]ere analyzed in"
+p13. "The intuitive reading of [...]". If you ask me hte intuitive reading of an AIC r would suggest an operator that adds *one element of head(r) to U", not the entire head(r). Thye reason is that the intuitive reading explicitlhy mentions that one of the fixes needs to be applied, not all of them. Of course this yields no operator (but you do not restrict to the normal case yet in Section 4.1). So this should be clarified. Still, this sentence mainly serves to introduce the unionplus notation, which remains a valid point.
+p13. at the bottom you have "+a,-a^D\in V". Drop the dual.
+p14. (and further) whence sounds a bit archaic to me
+p15. "[...] we propose the following notion of T_eta": drop the "of T_eta".
+p16. In Example 12, you switch between U and U_1
+p16. In Example 12, I would repeat the AICs from example 3 since it is quite a number of pages back.
+p16. In Example 12 (and also in some other places) the \cap seems to stick quite close to related symbols. My suspicion is that on of the commands you use have a bit too many curly brackets. See for instance the difference in LaTeX between $\{c\}\cap U$ and $\{c\} {\cap} U$.
+p17. On a couple of location in the paper (among which the top of this page), you claim that you are the first to prove that justified repairs avoid ciruclarity of support. In order for this to be a formal prove, one would require to formalise exactly what is meant by "no ciruclarity of support". Here, you seem to assume that "grounedness" is the same as "no circularity of support", which is quite a strong assumption.
+p17. "[...] is also stricter" -> drop "also"
+p17. "[...] it is the three rules in the second row that make" -> drop "it is" and "that" or fix singular-plural error
+p17. "ground repairs" -> "grounded repairs"
+p18. I find figure 1 from the introduction more clear than the diagram here. I would point back to that figure;
+p18. In the proof of Theorem 1, you use the Caroprese Truszczynski translation, but you never show taht this translation preserves the operator. This is quite essential for the proof to be correct.
+p18. "we go one step further" -> than what?
+p19. In the proof of Lemma 12.
+   - T_{eta_2}(U_2)=U_2, not emptyset
+   - on the next line: "which contracdicts U being strictly grounded" -> please explain why.
+p20. In Lemma 13. Replace "x = x \wedge u" by "x \leq y"
+p23. "Both U_1 and U_2 are fixpoints of T_1 and T_2" _> " U_1 and U_2 are fixpoints of T_1 and T_2, respectively"
+p24. powerset lattices -> Boolean lattices?
+p26. What are these conditions you talk of?
+p27. I don't expect your theory to yield new results in the context of logic programming (results that are not yet captured by existing splitting theorems)
+p27. "over Boolean lattices" -> drop this, your operators are defined over arbitrary lattices. The Boolean conditions is only needed to show they coincide.
+
+
+
+
+Reviewer: 2
+
+Comments to the Author
+This paper addresses Active Integrity Constraints (AIC), a framework to specify repair policies in relational databases. In particular, it uses algebraic fixed-point theory to assign a novel semantics to AIC, arguably better than those found in the literature on the topic.
+
+Whereas the new so-called grounded semantics for AICs can be somehow relevant, the paper doesn't rise up to the level required for publication.
+
+First, the paper is rather confusing. Right from the onset, the Introduction seems to have been written for someone already knowing the content of the paper or previous papers on the topic. It discusses many concepts, their relations and limitations, without any care whatsoever for introducing them, even if only intuitively. For example, even before letting the reader know what "founded repairs" and "justified repairs" are (actually, the reader isn't even told what a "repair" is), the author is already claiming that they exhibit counter-intuitive behaviours which lead to the introduction of "well founded repairs" which, again, the reader is left wondering what they are. Since, as it turns out, all these concepts are central to the paper, they should be introduced with a level of detail/intuition that allows the reader to begin constructing an adequate mental map. Another example of lack of detail occurs when the author mentions that the grounded repairs he is going to introduce in this paper solve the "circularity issues found in founded repairs", again leaving the reader clueless about what this actually means. Also in the introduction, there are things that simply seem a bit odd: the author introduces a figure which seems to contain a Venn Diagram where the set J is a sub-set of the set G, which in turn are subsets of F and WF. However, it turns out that this is not the case, and these sets are to be interpreted in the exact opposite way. Why would you not use Venn diagrams for this? By the end of the Introduction, when we get to the paragraph that summarises the contribution, things don't become clearer. On the one hand the author seems to claim that he is going to introduce the theory for grounded repairs of normal AICs. But then it is claimed that there is a transformation from non-normal AICs into normal AICs that preserves the grounded repairs. But how can it preserve the grounded repairs if they are not defined for non-normal AICs? What is preserved then? It is all quite confusing.
+
+Then, and this is a key problem, the paper lacks appropriate justification for many claims made. Too often the author refers to unintuitive behaviours of several semantics, illustrated by some examples, but never really gets to the essence of it. We are never really confronted with some formal properties that capture the desired/undesired behaviours, so everything looks just too casuistic. It may well be that the semantics proposed by the author is indeed better than the previously existing ones, but it should be up to the author to demonstrate it, which he doesn't up to some acceptable standard. It is notable that the intuitions behind AIC's are never really clarified: on the one hand they are presented as preferences over possible repairs, which turns out not to be reflected by the semantics because some repairs (in the sense that no AIC's body is true) may not be achieved by the actions in the AICs i.e. they are really treated not as preferences over possible repairs but rather as recipes for repairs.
+
+Other issues with the paper include its relation to the existing literature. First, it seems somehow odd that a paper on repairing databases via some LP like language doesn't mention the work of Bertossi et al. on repairing Databases. Also, it is absolutely unavoidable to think about the connection between the interpretation assigned to AICs by the author and Active Rules in Production Systems, which should be discussed. Btw, the common-sense law of inertia should obviously not be attributed to Przymusinski and Turner. Perhaps it dates back to McCarthy and Hayes - I am not sure - but certainly not to Przymusinski and Turner 1997.
+
+All in all, the contribution seems rather thin - technically not very deep - and lacking support, given that this is not a conference paper but rather a journal submission. Perhaps the author should think about collecting his previous conference papers on the topic of AICs and develop a sound, well motivated and formally supported view on AICs that, if not better, at least presents itself as a viable alternative to the other existing ones. As it is, it is simply too preliminary to be acceptable for publication by TPLP.
+
+
+Reviewer: 3
+
+Comments to the Author
+This work has to put the research problems and results in
+perspective. It fails to do so, and it does not convey the
+relevance of problems and results. This is a context-independent
+paper. All the relevant research in the literature is fully
+ignored.
+
+All this should already be stated clearly in the introduction. It
+is not.
+
+First of all, most of the introduction talks about repairs (as
+opposed to active rules). So, I can safely assume that one has a
+ database at some point, and one applies a set of active rules. At
+ that point the active rules detect inconsistencies and apply local
+ repair mechanism in some way, leading to a certain class of
+ repairs. Independently from how those repairs are called (or the
+ class thereof), they should be compared with the notions of repair
+ that are already available in the literature.
+
+ If the ICs encoded in active rules are denial constraints, then
+ the usual approach consists in deleting database tuples (also
+ changes of attribute values have been explored). The set of
+ deletions are subset-minimal, or minimum in cardinality, etc. The
+ author misses completely the vast literature on database repairs
+ (unbelievable!).
+
+ [  For a survey, see L. Bertossi. "Database Repairing and Consistent
+ Query Answering". Synthesis Lectures in Data Management. Morgan &
+ Claypool, 2011.
+
+In case the rules produce more sophisticated forms of repairs,
+there are several papers on preferred repairs, by Chomicki,
+Staworko, Kimelfeld, etc. ]
+
+ So, the question is how does the class of repairs obtained via
+ active rules (and the author's semantics) differ from the
+ established classes of repairs?
+
+ Answering this question early on is a must. Why should a potential reader be
+ interested otherwise?
+
+ Even if no new class is obtained, there could be the question
+ about the methodology for computing repairs. Is there anything new
+ here?
+
+ I is also extremely surprising not to see any reference to
+ algorithms for computing repairs, some ad hoc for denial
+ constraints, and others based on answer set programming, which are
+ particularly relevant for this work given the underlying fixpoints
+ in them.
+
+ [  Marcelo Arenas, Leopoldo E. Bertossi, Jan Chomicki:
+Answer sets for consistent query answering in inconsistent
+databases. TPLP 3(4-5): 393-424 (2003)
+
+Gianluigi Greco, Sergio Greco, Ester Zumpano: A Logical Framework
+for Querying and Repairing Inconsistent Databases. IEEE Trans.
+Knowl. Data Eng. 15(6): 1389-1408 (2003)
+
+Mónica Caniupán Marileo, Leopoldo E. Bertossi: The consistency
+extractor system: Answer set programs for consistent query
+answering in databases. Data Knowl. Eng. 69(6): 545-572 (2010)
+
+Thomas Eiter, Michael Fink, Gianluigi Greco, Domenico Lembo: Repair
+localization for query answering from inconsistent databases. ACM
+Trans. Database Syst. 33(2): 10:1-10:51 (2008) ]
+
+The lack of context is even more crucial in this paper considering
+that the work on active integrity constraints have not been widely
+adopted, neither by the DB community nor by the KR community;
+actually and sadly, far from that. As the paper is presented it
+could be of interest only for the few who are familiar with active
+integrity constraints.
+
+If the author really wants to have some impact, this work not only
+has to be put in the context of database repairs, but also in the
+context of active rules and triggers in databases. The main work
+that comes to my mind is that by Ceri and Widom, from the mid 90s,
+where they define active rules with compensating actions (for IC
+maintenance). (Having a only a reference to their book in the
+related work section, at the very end and without any details, does
+not make up for this omission.)
+
+Independently from all above, the introduction should make precise
+claims about the research problems attacked in the paper, and the
+results obtained. The introduction fails to do so. In particular it
+does not say anything useful about the algebraic fixpoint theory.
+What does it do for us? What is new in the end?
+
+In particular, it is not clear if the repairs are in the end
+procedurally defined or model-theoretically defined (or
+alternatively characterized).
+
+What I read in the end is: We can improve active integrity
+constrains by using algebraic fixpoint theory. Not very convincing
+or appealing.
+
+I think this paper should be rewritten (or re-conceived) at the
+light of the comments above, and resubmitted.
