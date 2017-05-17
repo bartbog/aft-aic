@@ -1,10 +1,3 @@
-% \todo{REVIEWER 2: SHORTEN THIS SECTION!}
-% \todo{The well-founded semantics for AICs seems to assume a \emph{FINITE} database is given. However, using ordinals, the definition easily extends to the infinite context as well. We should choose, do we want this infintie context or not?}
-% 
-% \luis{Although the mathematical side of my brain would love that generalization, I think we shouldn't discuss it.  Databases are by definition finite, and I'm afraid referees might kill us.}
-% 
-% \bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
-
 \paragraph{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
 We say $\lnot a$ \longpaper{is the \emph{dual} literal of $a$ and vice versa }\shortpaper{and $a$ are dual literals }and denote the dual of a literal $l$ by $l^D$. 
@@ -13,13 +6,6 @@ The satisfaction relation between databases \db and literals is defined as usual
 An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
 \longpaper{Intuitively, u}\shortpaper{U}pdate actions represent changes to the database: \longpaper{$\add a$ adds $a$, while $\remove a$ removes $a$. Formally} $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
 A set of update actions $\UU$ is \emph{consistent} if it does not contain an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
-Following \citet{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
-\begin{align*}
-\UU_1 \biguplus \UU_2 &= (\UU_1 \cup \{\alpha \in \UU_2 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\not \in \UU_1 \}) \setminus \{\alpha\in \UU_1 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\in \UU_2\}\longpaper{\\
-&= \UU_1\cup \UU_2 \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}}.
-  \end{align*}
-This operation has the property that: if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
-\[\left(\UU_1\biguplus \UU_2\right)(\db) = \UU_2(\UU_1(\db)).\]
 
 Literals and update actions are related by mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a$ and $\actof$ is the inverse of $\litof$.
 %, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  
@@ -33,8 +19,6 @@ These mappings naturally extend to sets of literals/actions.
 %  
   We call $l_1\land \dots \land l_n$ the \emph{body} of $r$, denoted $\body(r)$, and $\alpha_1\mid\dots \mid \alpha_k$ the head of $r$, denoted $\head (r)$.
 \end{definition}
-% \luis{I wouldn't use $\lor$, because actions are not logical formulas.}
-%BART: OK
 
 The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one or more of the $\alpha_i$.''
 A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms can only be changed if there is some rule that allows it. 
@@ -42,8 +26,7 @@ A set of AICs represents constraints a database should adhere to and, in additio
 
 An AIC is \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
 \[\{l_1\land \dots\land l_n\aicrule \alpha_i\mid 1\leq i\leq k\}.\]
-It follows from the informal explanation above that we expect normalization to preserve semantics. \shortpaper{T}{\longpaper{Indeed, t}his is the case for most semantics of AICs (the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which poses several other problems~\cite{tase/Cruz-FilipeEGN13}).
-%However, not for all semantics defined for AICs this is the case (see, e.g., \cite{}).
+It follows from the informal explanation above that we expect normalization to preserve semantics. Indeed, this is the case for most semantics of AICs (the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which poses several other problems~\cite{tase/Cruz-FilipeEGN13}).
 In the current paper, we assume \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed.
 
 \begin{definition}
@@ -55,17 +38,7 @@ In the current paper, we assume \emph{all AICs are normal}. Extensions of the se
 A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 
-(Weak) repairs do not take the head of AICs into account, and thus allow arbitrary changes to the database. We now review \longpaper{several other }semantics for AICs that have been defined with the intention to allow only changes  \longpaper{explicitly }allowed by one of the AICs\longpaper{: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, and grounded repairs \cite{iclp/Cruz-Filipe16}}.\longpaper{\todo{Define grounded repairs directly}}
-
-% \begin{example}
-%  \bart{The definition of (weak) repairs is strange:}
-%  Consider $\db=\emptyset$ and $\eta = \{\lnot a\land \lnot b\aicrule \add a\}$. 
-%  In that case, both $U_1=\{\add a\}$ and $U_2=\{\add b\}$ are repairs of \db. 
-%  I.e., (weak) repairs only consider the ``constraint'' part of an AIC, not the ``active'' part.
-%  
-%  NOTE: that is exactly what founded/justified/well-founded/grounded/... repairs serve for. 
-% \end{example}
-
+(Weak) repairs do not take the head of AICs into account, and thus allow arbitrary changes to the database. We now review \longpaper{several other }semantics for AICs that have been defined with the intention to allow only changes explicitly allowed by one of the AICs: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, and grounded repairs \cite{iclp/Cruz-Filipe16}.
 
 \begin{definition}[\cite{iclp/CaropreseGSZ06}]
  A set of update actions \UU is \emph{founded} with respect to $\fulldb$ if, for each $\alpha \in \UU$, there is a rule  $r\in \aics$ with $\alpha\in\head(r)$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus\{\alpha\}$. A \emph{founded (weak) repair} is a (weak) repair that is founded.
@@ -95,33 +68,10 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 Although the notion of closed set of actions does not take the database into account, its role in the definition of justified weak repairs is as part of the definition of justified action set -- where all actions that do not change the database are included.
 
-% \citet{tplp/CaropreseT11} showed that a justified weak repair may not be a repair.
-% \bart{Also for normalized?}
-
-%\bart{all justified weak repairs are justified repairs, right?}
-
-%\luis{no: they actually have an example in their 2011 paper. That was actually one of the first things that sent my alarm bells off.}
-
-
-% \bart{Next one needed?}
-% \luis{Depends on what we want to do}
-% \begin{definition}
-%  Let $\aics_1$ and $\aics_2$ be two sets of AICs over \atoms. We say that 
-%  \begin{compactitem}
-%   \item $\aics_1$ and $\aics_2$ are \emph{strongly independent}, $\aics_1 \strongind \aics_2$, if for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\body(r_1)$ and $\body(r_2)$ contain no common or dual literals. 
-%   \item $\aics_1$ and $\aics_2$ are \emph{independent}, $\aics_1 \ind \aics_2$, if for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_i))$ and $\body(r_{3-i})$ contain no common or dual literals for $i=1,2$. 
-%   \item $\aics_1$ \emph{precedes} $\aics_2$, $\aics_1 \prec \aics_2$, if, for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_2))$ and $\body(r_1)$ contain no common or dual literals, but not conversely. 
-%  \end{compactitem}
-% \end{definition}
-% \bart{the ``but not conversely'' in this definition makes it a strict relation. That is somewhat unnatural to me. I would give the non-strict definition. All results remain to hold and precedence becomes a generalization of ``independent''. This is only a minor point.}
-% \luis{What we use is the strict relation, but we can treat the non-strict as primitive. I have to look on the original work to see exactly if there are any unexpected problems.}
-
 
 \citet{tcs/MarekT98} defined in the context of revision programming \emph{the shifting property}; this property was later transferred to active integrity constraints \cite{tplp/CaropreseT11}. 
 Intuitively, a semantics for AICs possesses the shifting property if uniformly replacing some literals with their duals
-%transforming a database into an isomorphic one
 preserves the semantics at hand\longpaper{, i.e., if the semantics treats truth and falsity of elements in the database symmetrically}. 
-%\todo{RVWR1: Preceding Def. 2.6, it is not clear to me what precisely the word "isomorphic" means in this context.}
 
 \begin{definition}
  Let $S\subseteq\atoms$ be a set of atoms and $l$ a literal. The \emph{shift of $l$} with respect to $S$ is defined as 
@@ -156,7 +106,6 @@ Since we apply our results to (finite) databases, for the sake of simplicity we 
 % In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x\land \lnot y)$.
 
 
-
 An operator $O:L\to L$ is \emph{monotone} if $x\leq y$ implies that $O(x)\leq O(y)$.
 %and \emph{anti-monotone} if $x\leq y$ implies that $O(y)\leq O(x)$. 
 An element $x\in L$ is 
@@ -187,6 +136,7 @@ in the sense that if we remove them from $x$, then the operator will add at leas
 % They showed that for Boolean lattices, the notions of \emph{groundedness} and \emph{strict groundedness} coincide. 
 % In this text, we are only concerned with Boolean lattices and hence freely switch between the two definitions. 
 
+\luis{do we want to talk about strictly grounded and grounded and that they coincide in our context? I'm not sure I don't use both characterizations in the ICLP stuff -- will still check}
 
 
 \paragraph{Approximation Fixpoint Theory}
@@ -213,8 +163,7 @@ $\langle L^2,\leqp\rangle$ is also a complete lattice.
 
 AFT studies fixpoints of lattice operators $O:L\ra L$ through operators approximating $O$.
  An operator $A: L^2\to L^2$  is an \emph{approximator} of $O$ if it is \leqp-monotone,  and has the property that $A(x,x) = (O(x),O(x))$ for all $x$. %[x',y']$, where $(x',y')=A{x,x}$.
-Approximators are
-internal in $L^c$ (i.e., map $L^c$ into $L^c$).
+Approximators are internal in $L^c$ (i.e., map $L^c$ into $L^c$).
 As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that, for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$.%\cite{lpnmr/DeneckerV07}.
 \citet{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
 
@@ -226,16 +175,8 @@ AFT studies fixpoints of $O$ using fixpoints of $A$.
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
  \end{compactitem}
 
-% % 
-% 
-% DEFINITIE VAN 4-WAARDIGE STABLE AND DE WELL-FOUNDED FIXPOINT? Pairs $(x,y)$ such that $x=\lfp(A(\cdot,y)_1$ and $y=\lfp(A(x,\cdot)_2$. The $A$-well-founded fixpoint is the least precise 4-valued $A$-stable fixpoint. 
-% 
 The $A$-Kripke-Kleene fixpoint of $O$ can be constructed as the limit of any monotone induction of $A$. 
 For the $A$-well-founded fixpoint, a similar constructive characterization has been worked out by \citet{lpnmr/DeneckerV07}:
-% This concept is based on the following intuitions.
-%  A well-founded induction of $A$ is a process that uses $A$ to derive more and more information (i.e., to grow in \leqp). 
-%  At the same time, a well-founded induction tries to minimise the upper bounds $(x,y)_2$: if making the upper bound smaller can be done while guaranteeing that 
- 
 
 \begin{definition}\label{002:def:refinement}
 An \emph{$A$-refinement} of $(x,y)$ is a pair $(x',y')\in L^2$ satisfying one of the following two conditions:
@@ -262,17 +203,14 @@ with $n\in\nat$ such that
 % 	      for each limit ordinal $\lambda\leq\beta$.
 \end{compactitem}
 A well-founded induction is \emph{terminal} if its limit $(x_n,y_n)$ has no strict $A$-refinements.
-% \marc{als je in sectie over fixpoints het leastfixpoint in een licthjes andere notatie geeft= $x_i\leq x_{i+1}\leq O(x_i)$, dan kan je hier gewoon zeggen: een well-founded induction is een monotone induction van de juiste operator (de vierwaardige stable operator)}\bart{precies zo geen fan van. De standaard def van leastfixpoint kent iedereen...}
 \end{definition}
 A well-founded induction is an algebraical generalization of the well-founded model construction defined by \citet{GelderRS91}. 
 The first type of refinement corresponds to making a partial structure more precise by applying Fitting's immediate consequence operator; the second type of refinement corresponds to making a structure more precise by eliminating an unfounded set. 
-\longpaper{
 For a given approximator $A$, there are many different terminal well-founded inductions of $A$.
-\citet{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, then the $A$-well-founded fixpoint of $O$ (in fact, every tuple in a well-founded induction of $A$) is consistent.}
-\shortpaper{All terminal well-founded inductions of $A$ have the $A$-well-founded fixpoint as limit \cite{lpnmr/DeneckerV07}.}
+\citet{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, then the $A$-well-founded fixpoint of $O$ (in fact, every tuple in a well-founded induction of $A$) is consistent.
 % Well-founded inductions that only use the first sort of refinement converge to the $A$-Kripke-Kleene fixpoint. 
 
-% \todo{Drop section on ultimate approximators, unless we use it.}
+\todo{Include section on ultimate approximators?}
 % The precision order can be pointwise extended to the family of approximators of $O$. It then follows that more precise approximators have a more precise well-founded fixpoint and that they have more stable fixpoints. 
 % \cite{DeneckerMT04} showed that there exists a most precise approximator, $U_O$, called the ultimate approximator of $O$. 
 % This operator is defined by \[U_O: L^c\to L^c: (x,y)\mapsto (\bigand O([x,y]), \bigor O([x,y])).\]
@@ -285,12 +223,6 @@ For a given approximator $A$, there are many different terminal well-founded ind
 % % In this paper, we will focus only on ultimate approximations. More specifically, we will show that for auto-epistemic logic, 
 % % whose semantics is defined in terms of Approximation Fixpoint Theory, the ultimate approximator is not precise enough!
 % % We will develop an alternative fixpoint theory that is more precise than the current one, and show that with this theory, we obtain several desirable properties in logics with a fixpoint semantics.
-
-%\todo{Say something about partial grounded fixpoints?}
-
-% \luis{It might be good to point out that we will include examples of all these constructions in the next section.}
-% 
-% \bart{Agree}
 
 When we introduce semantics for AIC based on AFT in the next section, we provide examples of the different constructions considered here. 
 

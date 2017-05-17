@@ -1,13 +1,14 @@
 One of the key components of modern-day databases are integrity constraints: logical formulas that specify semantic relationships between the data being modeled that have to be satisfied at all times.
 When the database is changed (typically by updating), it is necessary to check if its integrity constraints still hold; in the negative case, it must be repaired.
 
-\longpaper{The problem of database repair has}\shortpaper{Database repairs have} been an important topic of research for \longpaper{more than thirty}\shortpaper{many} years~\cite{icdt/Abiteboul88}.
+The problem of database repair has been an important topic of research for more than thirty years~\cite{icdt/Abiteboul88}.
 There are two major problems when deciding how to repair an inconsistent database: \emph{finding} possible repairs and \emph{choosing} which one to apply.
 Indeed, there are typically several ways to fix an inconsistent database, and several criteria to choose the ``best'' one have been proposed over the years.
-Among the most widely accepted criteria are minimality of change~\cite{Winslett90,ai/EiterG92} -- change as little as possible -- and the common-sense law of inertia~\cite{PrzymusinskiT97} -- do not change anything \longpaper{unless there is a reason to do it.}\shortpaper{without a reason to do it.}
+Among the most widely accepted criteria are minimality of change~\cite{Winslett90,ai/EiterG92} -- change as little as possible -- and the common-sense law of inertia~\cite[discussed in, e.g.,][]{PrzymusinskiT97} -- do not change anything \longpaper{unless there is a reason to do it.}\shortpaper{without a reason to do it.}
 
 A typical implementation of integrity constraints in database systems is by means of event-condition-action rules~\cite{TenienteO95,WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
 However, these rules do not have a declarative semantics, making their joint behavior hard to understand.
+\luis{add more detail here}
 
 The formalism of \emph{active integrity constraints (AICs)} \cite{ppdp/FlescaGZ04} was inspired by a similar idea.
 AICs express database dependencies through logic programming-style rules that include update actions in their heads.
@@ -39,9 +40,10 @@ That work proposed the operational semantics of well-founded repairs, which howe
 In this paper\longpaper{\footnote{A previous version of this text has been published as \cite{}. This work extends the previous with proofs of all results, extra examples and an in-depth comparison with logic programming.}},\longpaper{ we transfer \longpaper{existing }work from\longpaper{ the field of} non-monotonic reasoning to AICs. 
 To this end,} we define a new class of semantics for AICs that are natural counterparts of existing semantics in various non-monotonic reasoning domains. 
 To be precise, we define semantics for AICs based on \emph{approximation fixpoint theory (AFT)} \cite{\refto{AFT}}, an abstract algebraic framework that unifies semantics of logic programming, default logic, autoepistemic logic \mycite{AEL}, abstract argumentation frameworks \cite{\refto{AF}} and abstract dialectical frameworks \mycite{ADF}, as shown by Denecker, Marek and Truszczy\'nski [\citeyear{DeneckerMT00,DeneckerMT03}] and \citet{journals/ai/Strass13}. 
-In order to do so, we continue the work of \citet{iclp/Cruz-Filipe16}, who defined a semantic operator for AICs and used it to study the grounded fixpoint semantics \mycite{GroundedFixpoints} of AICs. 
-In this paper, we define an approximating operator of Cruz-Filipe's semantic operator. 
-From this \longpaper{approximating }operator, approximation fixpoint theory immediately provides us with \begin{inparaenum} 
+In order to do so, we first define a semantic operator for AICs that we can use to characterize the different existing semantics for AICs, and use it to study the grounded fixpoint semantics \mycite{GroundedFixpoints} of AICs. 
+Afterwards, we define an approximating operator of this semantic operator.
+From this approximating operator, approximation fixpoint theory immediately provides us with
+\begin{inparaenum} 
 \item a supported fixpoint semantics, 
 \item a well-founded fixpoint semantics, 
 \item a (partial) stable fixpoint semantics, 
@@ -49,11 +51,28 @@ From this \longpaper{approximating }operator, approximation fixpoint theory imme
 \item a (partial) grounded fixpoint semantics. %\bart{drop? non-classical} 
 \end{inparaenum} 
 We study properties of these new semantics and study how they compare to existing semantics. 
-\longpaper{Furthermore, we}\shortpaper{We} argue that\longpaper{, from a practical point of view,} the AFT-style well-founded semantics is \longpaper{very }valuable. 
-Indeed, we show that this semantics can be computed in polynomial time, and that, on\longpaper{ a broad set of} practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
+Furthermore, we argue that, from a practical point of view, the AFT-style well-founded semantics is very valuable. 
+Indeed, we show that this semantics can be computed in polynomial time, and that, on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
 
-Besides defining a new class of interesting semantics, our work provides solid foundations for transferring \longpaper{a rich body of }work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
+Besides defining a new class of interesting semantics, our work provides solid foundations for transferring a rich body of work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
 Following \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming. 
+
+\luis{I once refereed a paper that included paragraphs with titles ``contribution'' and ``publication history'', and thought it was a really good idea, so I now usually include them in journal submissions.}
+
+\paragraph{Contribution}
+The main contribution of this work is a family of new semantics for AICs, based on a semantic operator for AICs, inspired by the classical consequence operator for logic programns, and its approximator.
+We argue that these semantics more intuitively capture the intended semantics of AICs, and include results on the complexity of computing them.
+
+Our work also opens the way to applying a rich algebraic theory to AICs, namely generalizing the stratification and modularity results from~\cite{foiks/Cruz-Filipe14,iclp/Cruz-Filipe16} to the approximators introduced herein, following~\cite{tocl/VennekensGD06,tocl/BogaertsVD16}, and applying predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}.
+In view of the results from \citet{tplp/CaropreseT11}, our work also opens the way to applying AFT to revision programming.
+
+
+\paragraph{Publication history}
+The semantic operator for grounded AICs and the resulting semantics of grounded repairs were originally proposed in~\cite{iclp/Cruz-Filipe16}.
+The approximator for this operator and its properties were first discussed in~\cite{icalp/Bogaerts17}.
+Both those conference papers did not include the proofs of the properties stated for these operators, which we include here for the first time.
+Furthermore, our discussion on the connection between the approximation semantics for AICs and logic programming has not been described before.
+
 % To establish this relationship, we define a family of new semantics for AICs with some desirable properties:
 % \begin{compactitem}
 %  \item Each of our semantics satisfies the so-called \emph{shifting property} \cite{tcs/MarekT98}. 
@@ -82,3 +101,8 @@ Following \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT
 %\luis{Despite all the information in the background, I guess one can only understand this if one already knows something about AFT. We should state it explicitly in the beginning.}
 %\bart{You mean in the beginning of the example or of the paper?}
 %\luis{I guess in the beginning of the paper... just prepare people psychologically so that they won't be scared off too easily :-)}
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../AFT-semantics-AIC"
+%%% End: 

@@ -1,6 +1,5 @@
-\documentclass{article}
-% The file ijcai17.sty is the style file for IJCAI-17 (same as ijcai07.sty).
-\usepackage{ijcai17}
+\documentclass[3p,number,authoryear]{elsarticle}
+% Elsevier style file, one of
 
 % Use the postscript times font!
 \usepackage{times}
@@ -12,33 +11,30 @@
 \input{idp-latex/idp-latex}
 
 \input{files/0-commands}
-\setboolean{shortpaper}{true}
+\setboolean{shortpaper}{false}
 \setboolean{nocomments}{false}
 
 \setdefaultenum{\bfseries(i)}{}{}{}
 
 
-\title{Semantics for Active Integrity Constraints Using Approximation Fixpoint Theory%
+\title{Fixpoint Semantics for Active Integrity Constraints%
 \thanks{Bart Bogaerts is a postdoctoral fellow of the Research Foundation -- Flanders (FWO).
 Lu\'\i s Cruz-Filipe was partially supported by the Danish Council for Independent Research, Natural Sciences, grant DFF-1323-00247.}
 }
-\author{
-Bart Bogaerts$^\dagger$ \and Lu\'\i s Cruz-Filipe$^\ddagger$  \\
-$\dagger$ KU Leuven, Department of Computer Science\\ Celestijnenlaan 200A, Leuven, Belgium \\
-% \And 
-% Lu\'\i s Cruz-Filipe\\
-$\ddagger$ University of Southern Denmark, Department of Mathematics and Computer Science\\
-Campusvej 55, Odense, Denmark}
 
+\author[kul]{Bart Bogaerts\corref{cor1}} \ead{bart.bogaerts@cs.kuleuven.be}
+\author[sdu]{Lu\'\i s Cruz-Filipe} \ead{lcfilipe@gmail.com}
 
+\cortext[cor1]{Corresponding author; tel.\ +, fax +}
 
+\address[kul]{KU Leuven, Department of Computer Science\\ Celestijnenlaan 200A, Leuven, Belgium}
+\address[sdu]{University of Southern Denmark, Department of Mathematics and Computer Science\\ Campusvej 55, Odense, Denmark}
 
 \begin{document}
 
-\maketitle
-
 \input{files/0-abstract.tex}
 
+\maketitle
 
 \section{Introduction}
 \input{files/1-introduction.tex}
@@ -47,12 +43,13 @@ Campusvej 55, Odense, Denmark}
 \input{files/2-prelims.tex}
 
 \section{AFT-style semantics for AICs}
+\input{files/3-operator.tex}
+
+\section{AFT-style semantics for AICs}
 \input{files/3-approximator.tex}
 
-
-\longpaper{
 \section{Relationship With Logic Programming}
-\input{files/4-lp}}
+\input{files/4-lp}
 
 \section{Complexity analysis}
 \input{files/4-complexity}
@@ -61,14 +58,11 @@ Campusvej 55, Odense, Denmark}
 \section{Conclusion}
 \input{files/5-conclusion}
 
-\newpage \small
+\newpage
+\section*{References}
 % \setlength\parskip{0pt}
-\bibliographystyle{named}
+\bibliographystyle{elsarticle-harv}
 \bibliography{idp-latex/krrlib.bib,extra-refs}
-
-% \newpage
-% \todo{Page limit: Six pages for the main text of the paper (including all figures but excluding references), and one additional page for references}
-
 
 \end{document}
 

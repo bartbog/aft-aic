@@ -52,7 +52,8 @@
 \newcommand\ind{\perp}
 % \newcommand\normalize[1]{\mathit{norm}(#1)}
 
-\newcommand\citet[1]{\citeauthor{#1} [\citeyear{#1}]}
+%\newcommand\citet[1]{\citeauthor{#1} [\citeyear{#1}]}
+\renewcommand\cite\citep
 
 \setboolean{commentmargin}{false}
 \newcommand{\luis}[1]{\namedcomment{#1}{lcf}{OliveGreen}}
@@ -65,18 +66,18 @@
 
 
 
-% fix the mistakes in ijcai17
-% http://tex.stackexchange.com/questions/340281/thmtools-cite-paper-in-head-of-theorem
-\makeatletter
-\DeclareRobustCommand\cite{%
-  \def\citeauthoryear##1##2{\def\@thisauthor{##1}%
-  \ifx \@lastauthor \@thisauthor \relax \else##1, \fi ##2}%        
-  \@icite 
-}
-\DeclareRobustCommand\shortcite{\def\citeauthoryear##1##2{##2}\@icite}
-\DeclareRobustCommand\citeauthor{\def\citeauthoryear##1##2{##1}\@nbcite}
-\DeclareRobustCommand\citeyear{\def\citeauthoryear##1##2{##2}\@nbcite}
-\makeatother
+%% % fix the mistakes in ijcai17
+%% % http://tex.stackexchange.com/questions/340281/thmtools-cite-paper-in-head-of-theorem
+%% \makeatletter
+%% \DeclareRobustCommand\cite{%
+%%   \def\citeauthoryear##1##2{\def\@thisauthor{##1}%
+%%   \ifx \@lastauthor \@thisauthor \relax \else##1, \fi ##2}%        
+%%   \@icite 
+%% }
+%% \DeclareRobustCommand\shortcite{\def\citeauthoryear##1##2{##2}\@icite}
+%% \DeclareRobustCommand\citeauthor{\def\citeauthoryear##1##2{##1}\@nbcite}
+%% \DeclareRobustCommand\citeyear{\def\citeauthoryear##1##2{##2}\@nbcite}
+%% \makeatother
 
 
 \newboolean{shortpaper}

@@ -1,0 +1,50 @@
+\luis{need to rewrite this whole section -- include the relevant stuff from the ICLP paper}
+
+Following \citet{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
+\[
+\UU_1 \biguplus \UU_2 = (\UU_1 \cup \{\alpha \in \UU_2 \mid \alpha^D\not \in \UU_1 \}) \setminus \{\alpha\in \UU_1 \shortpaper{{\mid}}\mid \alpha^D\in \UU_2\}
+\]
+This operation has the property that: if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
+\[\left(\UU_1\biguplus \UU_2\right)(\db) = \UU_2(\UU_1(\db))
+= \UU_1\cup \UU_2 \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}.\]
+
+\paragraph{A Semantic Operator for AICs}
+Recall that in this paper, we only consider normal AICs.
+% , i.e., expressions $r$ of the form 
+% \[ l_1\land \ldots \land l_n \aicrule \alpha\]
+% where $\alpha = \actof(l_1)^D$ (after renumbering the $l_i$).
+% For such a rule, we define $\nup(r) = \l_2\land \dots \land l_n$. The intuition is that $\nup(r)$ is the non-updatable part of the body of $r$. 
+% As soon as $\nup(r)$ holds, so should $l_1^D$. Indeed, if $l_1$ holds, then $\alpha$ dictates to change its value; if $l_1$ does not hold, the integrity constraint is satisfied. 
+
+Given a fixed database $\db$,
+the sets of update actions $\UU$ that are of interest to us are those such that 
+\begin{inparaenum}
+\item \UU is consistent and 
+\item each action in \UU modifies \db.
+\end{inparaenum}
+As argued by  \citet{iclp/Cruz-Filipe16}, the set of such sets is isomorphic to $2^{\atoms}$. Hence, from now on, we identify such a set with a subset of $\atoms$ (the atoms whose value is changed by \UU). 
+If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\not\in \db$ and $\remove a$ if $a \in \db$. 
+Thus, in the above identification, a set  of atoms $\overline\UU\subseteq \atoms$ is identified with the set 
+\[\UU = \{\change a\mid a \in \overline \UU \}\]
+of update actions.
+Usually, we omit the bar, and simply write $\UU$ for the subset of \atoms as well.
+Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline \UU$.
+
+Following the principle of minimality of change \cite{Winslett90,ai/EiterG92}, we prefer smaller sets of updates. % over lager sets.
+The lattice we are interested in is thus $\langle 2^{\atoms}, \subseteq\rangle$, where  smaller elements correspond to ``better'' repairs. 
+
+
+Now consider a set of (normal) AICs \aics. 
+\citet{iclp/Cruz-Filipe16} associated with such a set a semantic operator
+% \footnote{Technically, his definition slightly differs from ours in the sense that $\nup$ is replaced by \body in his definition. However, it is not hard to see that the definitions are equivalent. The current definition satisifies our purpose better.} 
+%\begin{align*}\Op: &2^{\atoms}\to  2^{\atoms}: \UU \mapsto  \\ &\UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\end{align*}
+$\Op: 2^{\atoms}\to  2^{\atoms}$ such that
+\[\Op(\UU) = \UU \biguplus \{\head(r) \mid r\in\aics \land  \UU(\db)\models \body(r)\}.\]
+
+Cruz-Filipe argued that a semantics for AICs based on grounded fixpoints of \Op coincides with the intuitions on a large set of  examples and that it solves problems with several previously existing semantics. 
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../AFT-semantics-AIC.tex"
+%%% End:
