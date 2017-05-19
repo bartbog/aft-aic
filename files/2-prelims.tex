@@ -1,3 +1,5 @@
+\luis{todo: add examples from my ICLP paper to this section}
+
 \paragraph{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
 We say $\lnot a$ \longpaper{is the \emph{dual} literal of $a$ and vice versa }\shortpaper{and $a$ are dual literals }and denote the dual of a literal $l$ by $l^D$. 
@@ -52,10 +54,11 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
   Let \UU be a set of update actions and \fulldb a database. 
   \begin{compactitem}
    \item The \emph{no-effect actions} with respect to \db and \UU, \shortpaper{$\neff_\db(\UU)$, }are the actions that change neither \db, nor $\UU(\db)$.
-     \longpaper{\begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\longpaper{\\
-	=&\{\alpha \mid \alpha(\db) = \db \\&\qquad\land \alpha(\UU(\db))=\UU(\db)\}}\,.\end{align*}}
-   \item The set of \emph{non-updatable literals} of an AIC $r$, \shortpaper{$\nup(r)$, }contains all body literals of $r$ that do not occur in the head of $r$.
-     \longpaper{\[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]}
+     \begin{align*}\neff_\db(\UU) &= \{\add a\mid a \in \db \cap \UU(\db)\} \cup \{\remove a \mid a \not\in \db \cup \UU(\db)\}\\
+       &=\{\alpha \mid \alpha(\db) = \db \land \alpha(\UU(\db))=\UU(\db)\}\,.
+     \end{align*}
+   \item The set of \emph{non-updatable literals} of an AIC $r$, $\nup(r)$, contains all body literals of $r$ that do not occur in the head of $r$.
+     \[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]
    \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$.
    \item \UU is a \emph{justified action set} if it is a minimal superset of $\neff_\db(\UU)$ closed under \aics.
    \item \UU is a \emph{justified (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
