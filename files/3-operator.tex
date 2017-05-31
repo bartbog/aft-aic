@@ -3,10 +3,10 @@ In this section we show how a set of normal AICs induces an operator on a suitab
 \subsection{The operator $\Op$}
 
 Given a fixed database $\db$, we are interested in the sets of update actions $\UU$ such that:
-\begin{inparaenum}
+\begin{enumerate}
 \item \UU is consistent and 
 \item each action in \UU modifies \db.
-\end{inparaenum}
+\end{enumerate}
 If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\not\in \db$ and $\remove a$ if $a \in \db$.
 This establishes a bijection between the sets of update actions satisfying the above two conditions and subsets of $\atoms$, where a set of atoms $\overline\UU\subseteq\atoms$ is identified with the set 
 \[\UU = \{\change a\mid a \in \overline \UU \}\]

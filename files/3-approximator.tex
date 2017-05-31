@@ -145,17 +145,17 @@ Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
 % &\lfalse 	& \lfalse& \lunkn & \lunkn 		\\
 % \cline{1-5}
 % 	\end{tabular}
-\begin{compactitem}
+\begin{itemize}
  \item If $\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a) = \suppin_\UUU(a).$
  \item If $\UUU(a)=\ltrue$, then $\Apfull(\UUU)(a) = \suppout_\UUU(a)^{-1}.$
  \item Otherwise (i.e., if $\UUU(a) = \lunkn$):
-  \begin{compactitem}
+  \begin{itemize}
     \item if $\suppin_\UUU(a) = \ltrue$ and $\suppout_\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a)=\ltrue$;
     \item if $\suppout_\UUU(a) = \ltrue$ and $\suppin_\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a)=\lfalse$;
     \item otherwise, $\Apfull(\UUU)(a)=\lunkn$.
-\end{compactitem}
+\end{itemize}
 
-\end{compactitem}
+\end{itemize}
 When $\db$ is clear from the context, we write \Ap for \Apfull.
  
 \end{definition}
@@ -185,37 +185,37 @@ In all other cases, we derive nothing about $a$ being in the update or not.
 % \end{proof}
 \begin{proof}
 First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. Then  $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
-\begin{compactitem}
+\begin{itemize}
 \item If $\UUU(a)=\lfalse$, then $\UUU'(a)=\lfalse$ since $\UUU'\geqp\UUU$. In this case $\Ap(\UUU')(a) = \suppin_{\UUU'}(a) \geqp \suppin_{\UUU}(a) =  \Ap(\UUU)(a)$. 
 \item The case where $\UUU(a)=\ltrue$ is similar.
 \item Assume $\UUU(a) = \lunkn$. 
-\begin{compactitem}
+\begin{itemize}
 \item If $\suppin_\UUU(a) = \ltrue$ and $\suppout_\UUU(a)=\lfalse$, then $\Ap(\UUU)(a)=\ltrue$ and also $\suppin_{\UUU'}(a) = \ltrue$ and $\suppout_{\UUU'}(a)=\lfalse$. Hence if $\UUU'(a)=\lunkn$, this is trivially proven. In case $\UUU'(a)=\ltrue$, $\Ap(\UUU')(a) = \suppout_{\UUU'}(a)^{-1}=\ltrue$ and in case $\UUU'(a)=\lfalse$, $\Ap(\UUU')(a)= \suppin_{\UUU'}(a)= \ltrue$. Hence, in all cases $\Ap(\UUU)(a) = \Ap(\UUU')(a)$ and the claim follows.
 \item The case where $\suppout_\UUU(a)=\ltrue$ and $\suppin_\UUU(a) = \lfalse$ is similar to the previous.
 \item In all other cases, $\Ap(\UUU)(a)=\lunkn$, hence $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ is trivially satisfied.
-\end{compactitem}
+\end{itemize}
 
-\end{compactitem}
+\end{itemize}
 
 Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $a \in \atoms$, we again prove this claim by a case analysis on the definition of of $\Ap(\UU)(a)$.
-\begin{compactitem}
+\begin{itemize}
  \item If $\UU(a)=\lfalse$, then $\Op(\UUU)(a)= \ltrue$ if and only if there is some rule $r\in \eta$ with $\UU(\db) \models \body(r)$ and $\head(r)=\change a$. I.e., $\Op(\UU)(a)$ is true if and only if $\suppin_{\UU}(a) = \ltrue$, if and only if $\Ap(\UU)(a)=\ltrue$. 
  \item The case for $\UU(a)=\lfalse$ is similar. 
  \item The case where $\UU(a)= \lunkn$ cannot occur, since $\UU$ is two-valued. \qedhere
-\end{compactitem}
+\end{itemize}
 \end{proof}
 
 Since \Ap is an approximator, it defines a family of semantics for AICs. 
 
 \begin{definition}\label{def:semantics}
  Let $\fulldb$ be a database. 
- \begin{compactitem}
+ \begin{itemize}
   \item A \emph{partial stable repair} of \fulldb is a partial update set \UUU such that \UUU is a partial $\Ap$-stable fixpoint. A \emph{stable repair} is a partial stable repair that is two-valued. 
   \item The \emph{AFT-well-founded repair} of \fulldb is the $\Ap$-well-founded fixpoint (in general, this is a partial update set). 
   \item The \emph{Kripke-Kleene repair} of \fulldb is the $\Ap$-Kripke-Kleene fixpoint (in general, this is a partial update set). 
 %   \item A \emph{supported 
   \item A \emph{partial grounded repair} of \fulldb is a partial update set \UUU such that \UUU is a partial $\Ap$-grounded fixpoint \mycite{PartialGroundedFixpoints}. A \emph{grounded repair} is a partial grounded repair that is two-valued. 
- \end{compactitem}
+ \end{itemize}
 \end{definition}
 
 The terminology in the above definition uses ``repairs'' for certain classes of fixpoints of a semantic operator. It follows easily that  all two-valued update sets that are called ``repair'' in the the above definition, indeed are repairs according to AIC terminology. 
@@ -470,10 +470,10 @@ Since $\overline\UU$ is an $\Ap$-stable repair, $\overline\UU$ is the least pref
 
 First assume that $\actof(l)\in\ext(\VV)=\VV\cup\neff_\UU(\db)$. We show that $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue$. 
  We consider two cases:
-\begin{compactitem}
+\begin{itemize}
  \item If $\actof(l)\in \neff_\UU(\db)$, then $l^\db = \ltrue$ and $\UU$ does not change the value of $l$, hence $a\not\in\overline\UU$. Thus $(\overline \VV,\overline \UU)(a)=\lfalse$ and in this case $l^{(\overline \VV,\overline \UU)(\db)} = l^\db = \ltrue$. 
  \item If $\actof(l)\not\in \neff_\UU(\db)$, then it must hold that $\actof(l) \in \VV\subseteq \UU$. Since $\actof(l)\in \UU$ and every action in \UU changes \db, it must hold that $\lit^\db=\lfalse$. Now, since $\lit \in \VV$, $a\in \overline \VV$ and $(\overline \VV, \overline \UU) (a) = \ltrue$. Thus $\lit^{(\overline\VV,\overline\UU)(\db)} = (l^\db)^{-1} = \ltrue$ in this case. 
-\end{compactitem}
+\end{itemize}
 For the other direction, assume that $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue$. We need to show that $\actof(l)\in\ext(\VV)=\VV\cup\neff_\UU(\db)$. Assume that $\actof(l)\not\in \neff_\UU(\db)$, we show that $\actof(l)\in \VV$. 
 Since $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue$ and $\overline\UU\geqp (\overline\VV,\overline\UU)$, also $l^\UU=\ltrue$. Since $l\not\in \neff_\UU(\db)$, this means that $l^\db=\lfalse$.
 Now,
@@ -487,10 +487,10 @@ It holds that  $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\alpha) = \ltrue$
 
 \textbf{Claim 4}
 Take an atom $a$ and a set $\VV$ of update actions. It holds that $a\in \Ap(\overline\VV,\overline\UU)_1$ if and only if one of the following holds:
-\begin{compactitem}
+\begin{itemize}
  \item $(\overline \VV,\overline \UU)(a) = \lfalse$ and $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue$
  \item $(\overline \VV,\overline \UU)(a) = \lunkn$, $ \supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue$, and $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a^D) = \lfalse$.
-\end{compactitem}
+\end{itemize}
 In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue$, hence by Claim 3, $\change a\in \closure(\ext(\VV))$. Now if $\VV\subseteq \UU$, then $a\in\Ap(\overline\VV,\overline\UU)_1$ entails $a\in \overline\UU$, hence also $\change a \in \UU$ and thus $\change a \in \closure(\ext(\VV)) \cap \UU = O(\UU)$, which we needed to prove. \qedhere
 
 

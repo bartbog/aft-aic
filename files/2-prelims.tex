@@ -31,10 +31,10 @@ In the current paper, we assume that \emph{all AICs are normal}. Extensions of t
 
 \begin{definition}
  A set of update actions \UU is a \emph{weak repair} for \db and a set \aics of AICs (shortly, for $\fulldb$) if:
- \begin{compactitem}
+ \begin{itemize}
   \item every action in \UU changes \db, and 
   \item $\UU(\db)\not\models \body(r)$ for each $r\in\aics$.
- \end{compactitem}
+ \end{itemize}
 A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 
@@ -65,12 +65,11 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
     a\land b\land\neg d &\supset{-b}
   \end{align*}
   It is immediate to check that everything discussed above with respect to the original set of AICs also applies to its normalized counterpart.
-  \qed
 \end{example}
 
  We now review several other semantics for AICs that have been defined with the intention to allow only changes explicitly allowed by one of the AICs: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, and grounded repairs \cite{iclp/Cruz-Filipe16}.
 
-\begin{definition}[\cite{iclp/CaropreseGSZ06}]
+\begin{definition}[\citenb{iclp/CaropreseGSZ06}]
  A set of update actions \UU is \emph{founded} with respect to $\fulldb$ if, for each $\alpha \in \UU$, there is a rule  $r\in \aics$ with $\alpha\in\head(r)$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus\{\alpha\}$. A \emph{founded (weak) repair} is a (weak) repair that is founded.
 \end{definition}
 
@@ -123,7 +122,7 @@ In order to avoid this unwanted characteristic, \citet{tplp/CaropreseT11} propos
 
 \begin{definition}[\cite{tplp/CaropreseT11}]
   Let \UU be a set of update actions and \fulldb a database. 
-  \begin{compactitem}
+  \begin{itemize}
    \item The \emph{no-effect actions} with respect to \db and \UU, $\neff_\db(\UU)$, are the actions that change neither \db, nor $\UU(\db)$.
      \begin{align*}\neff_\db(\UU) &= \{\add a\mid a \in \db \cap \UU(\db)\} \cup \{\remove a \mid a \not\in \db \cup \UU(\db)\}\\
        &=\{\alpha \mid \alpha(\db) = \db \land \alpha(\UU(\db))=\UU(\db)\}\,.
@@ -133,7 +132,7 @@ In order to avoid this unwanted characteristic, \citet{tplp/CaropreseT11} propos
    \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$.
    \item \UU is a \emph{justified action set} if it is a minimal superset of $\neff_\db(\UU)$ closed under \aics.
    \item \UU is a \emph{justified (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
-  \end{compactitem}
+  \end{itemize}
 
 %  \todo{something else releated to this definition. THe notion of ``closed'' as defined in the original paper and also the grounded fixpoints paper is quite surprising. I am in particular surprised by the fact that this does not take \db into account. Consider for instance the following \aics:
 %  \[a\aicrule \remove a\]
@@ -276,11 +275,11 @@ Every monotone operator $O$ in a %chain complete poset
 complete lattice has a least fixpoint, denoted $\lfp(O)$, which is 
 % also $O$'s least prefixpoint and 
 the limit (the least upper bound) of the increasing sequence $(x_i)_{i \in \nat}$ defined by $x_0=\bot$ and $x_{i+1} = O(x_i)$. 
-% \begin{compactitem}
+% \begin{itemize}
 % 	\item $x_0=\bot$,
 % 	\item $x_{i+1}=O(x_i)$, for successor ordinals $i+1$,
 % 	\item $x_\lambda=\lub(\{x_i\mid i<\lambda\})$, for limit ordinals $\lambda$.
-% \end{compactitem}
+% \end{itemize}
 
 
 \mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if, for each $v\in L$ such that $O(v\land x)\leq v$, it holds that $x\leq v$. Later, they generalized this notion to \emph{partial} grounded fixpoints \mycite{PartialGroundedFixpoints}. 
@@ -324,12 +323,12 @@ As usual, we often restrict our attention to \emph{symmetric} approximators: app
 \citet{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
 
 AFT studies fixpoints of $O$ using fixpoints of $A$. 
- \begin{compactitem}
+ \begin{itemize}
   \item The \emph{$A$-Kripke-Kleene fixpoint} is the $\leqp$-least fixpoint of $A$, and it approximates all fixpoints of $O$. 
 \item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:x\mapsto A(x,y)_1$ and analogously for $A(x,\cdot)_2$. 
 \item The \emph{$A$-well-founded fixpoint} is the least precise partial $A$-stable fixpoint. 
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
- \end{compactitem}
+ \end{itemize}
 
 The $A$-Kripke-Kleene fixpoint of $O$ can be constructed as the limit of any monotone induction of $A$. 
 For the $A$-well-founded fixpoint, a similar constructive characterization has been worked out by \citet{lpnmr/DeneckerV07}:
@@ -352,12 +351,12 @@ We call the first type (\ref{first}.) of refinements \emph{application refinemen
  A \emph{well-founded induction} of $A$  is a sequence 
 $(x_i,y_i)_{i\leq n}$
 with $n\in\nat$ such that 
-\begin{compactitem}
+\begin{itemize}
 	\item $(x_0,y_0) = (\bot,\top)$;
 	\item $(x_{i+1},y_{i+1})$ is an A-refinement of $(x_{i},y_{i})$, for  all $i<n$.
 % 	\item $(x_{\lambda},y_{\lambda})= \lub_{\leqp} \{(x_i,y_i)\mid i<\lambda\}$
 % 	      for each limit ordinal $\lambda\leq\beta$.
-\end{compactitem}
+\end{itemize}
 A well-founded induction is \emph{terminal} if its limit $(x_n,y_n)$ has no strict $A$-refinements.
 \end{definition}
 A well-founded induction is an algebraical generalization of the well-founded model construction defined by \citet{GelderRS91}. 
