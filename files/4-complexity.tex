@@ -8,27 +8,26 @@ All complexity results are in terms of the size of the database, \fulldb.
   \label{prop:At-poly}
   \Ap is computable in polynomial time. % on the size of 
 \end{proposition}
-\longpaper{
 \begin{proof}
     The definition of \Ap only requires evaluating $\UUU(a)$, $\suppin_{\UUU}(a)$ and $\suppout_{\UUU}(a)$ for each $a\in\atoms$.
     In turn, the two last computations can be done in polynomial time: they require evaluating each literal in the body of each rule from $\eta$ with head $\add a$ or $\remove a$ and computing its truth value under the database updated by $\UUU$.
 \end{proof}
-}
 
 As a consequence, we get the following complexity results.
 \begin{proposition}
   The Kripke-Kleene repair for $\fulldb$ is computable in polynomial time.
   \label{prop:KK-poly}
 \end{proposition}
-\longpaper{\begin{proof}
+\begin{proof}
   The Kripke-Kleene repair of $\fulldb$ can be computed by iterating $\Ap$ until a fixpoint is reached.
   Since $\Ap$ is monotonic, the maximum number of iterations is the size of $\atoms$; since each iteration can be computed in polynomial time (Proposition~\ref{prop:At-poly}), so can this fixpoint.
-\end{proof}}
+\end{proof}
 
 \begin{proposition}\label{prop:compl:wf}
   The ATF-well-founded repair for $\fulldb$ is computable in polynomial time.
 \end{proposition}
-\longpaper{The proof makes use of the following proposition. 
+
+The proof makes use of the following proposition. 
 \begin{proposition}[\citeauthor{lpnmr/DeneckerV07},~\citeyear{lpnmr/DeneckerV07}]\label{prop:biggestufs}
 Let $A$ be an approximator of $O$ and $(x,y)\in L^2$. 
 Let $S_A^x$ be the operator on $L$ that maps every $y'$ to $A(x,y')_2$.
@@ -43,12 +42,12 @@ $y'=\lfp (S_A^x)$.
 can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} shows that the most precise unfoundedness refinement can also be computed as the least fixpoint of a derived operator on $2^\atoms$. Such a fixpoint can again be computed in polynomial time. Hence, it follows that we can compute a terminal well-founded induction, and thus the well-founded fixpoint, in polynomial time. 
 %  
 %   \luis{not sure about this one: Bart writes ``a well-founded induction runs in polytime in the height of the lattice if computing $A(x,y)$ can be done in polytime''.  So it should follow from Proposition~\ref{prop:At-poly}, but I'm missing the argument (I only get NP).}
-\end{proof}}
+\end{proof}
 
 \begin{proposition}
   The task of checking if a database $\fulldb$ has a stable repair is NP-complete.
 \end{proposition}
-\longpaper{\begin{proof}
+\begin{proof}
   \emph{(Inclusion)} Given a candidate repair, checking that it is stable can be done in polynomial time, as it amounts to verifying that it is a repair (two-valued) and that it is a least fixpoint of the operators $\Ap(\cdot,y)_1$ and $\Ap(x,\cdot)_2$.
   The latter can be done in polynomial time, as in the proof of Proposition~\ref{prop:KK-poly}.
 
@@ -60,10 +59,10 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
   This operator preserves stable semantics by Theorem \ref{thm:partialstable-LP}, and therefore allows us to compute stable models of simple logic programs by first translating them (in linear time) to sets of AICs.
   Since checking whether a logic program has a stable model is NP-complete, we conclude that the stable semantics for AICs must be NP-hard.
   Note that every logic program can be transformed in a simple logic program by removing the offending rules without changing its stable semantics.
-\end{proof}}
+\end{proof}
 
 For each of our semantics, complexity is the same as the complexity of its counterpart in (normal) logic programming. 
-This illustrates that the added expressivity (\longpaper{essentially, }allowing AICs that are not unipolar) does not result in added complexity. 
+This illustrates that the added expressivity (essentially, allowing AICs that are not unipolar) does not result in added complexity. 
 
 
 %% \bart{Lower bound for stable: every normal logic program can be seen  as an AIC. Should have te same stable smeantics (note: our transformation in theprevious section adds rules 

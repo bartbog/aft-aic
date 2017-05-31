@@ -1,25 +1,11 @@
-% \todo{REVIEWER 2: SHORTEN THIS SECTION!}
-% \todo{The well-founded semantics for AICs seems to assume a \emph{FINITE} database is given. However, using ordinals, the definition easily extends to the infinite context as well. We should choose, do we want this infintie context or not?}
-% 
-% \luis{Although the mathematical side of my brain would love that generalization, I think we shouldn't discuss it.  Databases are by definition finite, and I'm afraid referees might kill us.}
-% 
-% \bart{Agree: then we can also simplify the AFT presentation: get rid of ordinals}
-
 \paragraph{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
-We say $\lnot a$ \longpaper{is the \emph{dual} literal of $a$ and vice versa }\shortpaper{and $a$ are dual literals }and denote the dual of a literal $l$ by $l^D$. 
+We say that $\lnot a$ is the \emph{dual} literal of $a$ and vice versa, and denote the dual of a literal $l$ by $l^D$. 
 The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$. 
 
 An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
-\longpaper{Intuitively, u}\shortpaper{U}pdate actions represent changes to the database: \longpaper{$\add a$ adds $a$, while $\remove a$ removes $a$. Formally} $\add a$ transforms $\db$ to $\db\cup\{a\}$ and $\remove a $ transforms $\db$ to $\db\setminus\{a\}$. 
+Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$. Formally, $\add a$ transforms $\db$ into $\db\cup\{a\}$, and $\remove a $ transforms $\db$ into $\db\setminus\{a\}$.
 A set of update actions $\UU$ is \emph{consistent} if it does not contain an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
-Following \citet{iclp/Cruz-Filipe16}, we define an operation $\biguplus$ on consistent sets of update actions: 
-\begin{align*}
-\UU_1 \biguplus \UU_2 &= (\UU_1 \cup \{\alpha \in \UU_2 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\not \in \UU_1 \}) \setminus \{\alpha\in \UU_1 \shortpaper{{\mid}}\longpaper{\mid} \alpha^D\in \UU_2\}\longpaper{\\
-&= \UU_1\cup \UU_2 \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}}.
-  \end{align*}
-This operation has the property that: if every action in $\UU_1$ changes \db and every action in $\UU_2$ changes $\UU_1(\db)$, then 
-\[\left(\UU_1\biguplus \UU_2\right)(\db) = \UU_2(\UU_1(\db)).\]
 
 Literals and update actions are related by mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a$ and $\actof$ is the inverse of $\litof$.
 %, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  
@@ -33,18 +19,15 @@ These mappings naturally extend to sets of literals/actions.
 %  
   We call $l_1\land \dots \land l_n$ the \emph{body} of $r$, denoted $\body(r)$, and $\alpha_1\mid\dots \mid \alpha_k$ the head of $r$, denoted $\head (r)$.
 \end{definition}
-% \luis{I wouldn't use $\lor$, because actions are not logical formulas.}
-%BART: OK
 
 The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one or more of the $\alpha_i$.''
-A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms can only be changed if there is some rule that allows it. 
+A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms should only be changed if there is some rule that allows it. 
 
 
-An AIC is \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
+An AIC is called \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
 \[\{l_1\land \dots\land l_n\aicrule \alpha_i\mid 1\leq i\leq k\}.\]
-It follows from the informal explanation above that we expect normalization to preserve semantics. \shortpaper{T}{\longpaper{Indeed, t}his is the case for most semantics of AICs (the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which poses several other problems~\cite{tase/Cruz-FilipeEGN13}).
-%However, not for all semantics defined for AICs this is the case (see, e.g., \cite{}).
-In the current paper, we assume \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed.
+It follows from the informal explanation above that we expect normalization to preserve semantics. Indeed, this is the case for most semantics of AICs -- the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which poses several other problems~\cite{tase/Cruz-FilipeEGN13}.
+In the current paper, we assume that \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed.
 
 \begin{definition}
  A set of update actions \UU is a \emph{weak repair} for \db and a set \aics of AICs (shortly, for $\fulldb$) if:
@@ -55,34 +38,98 @@ In the current paper, we assume \emph{all AICs are normal}. Extensions of the se
 A $\subseteq$-minimal weak repair is called a \emph{repair}.
 \end{definition}
 
-(Weak) repairs do not take the head of AICs into account, and thus allow arbitrary changes to the database. We now review \longpaper{several other }semantics for AICs that have been defined with the intention to allow only changes  \longpaper{explicitly }allowed by one of the AICs\longpaper{: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, and grounded repairs \cite{iclp/Cruz-Filipe16}}.\longpaper{\todo{Define grounded repairs directly}}
+(Weak) repairs do not take the head of AICs into account, and thus allow arbitrary changes to the database.
 
-% \begin{example}
-%  \bart{The definition of (weak) repairs is strange:}
-%  Consider $\db=\emptyset$ and $\eta = \{\lnot a\land \lnot b\aicrule \add a\}$. 
-%  In that case, both $U_1=\{\add a\}$ and $U_2=\{\add b\}$ are repairs of \db. 
-%  I.e., (weak) repairs only consider the ``constraint'' part of an AIC, not the ``active'' part.
-%  
-%  NOTE: that is exactly what founded/justified/well-founded/grounded/... repairs serve for. 
-% \end{example}
+\begin{example}
+  \label{ex:repairs}
+  Consider the restriction that ``if $a$ and $b$ both hold, then $c$ and $d$ should also hold''.
+  Since the syntax of AICs does not allow disjunction, we need two clauses to write this constraint.
+  The following set of AICs expresses these constraints, only allowing repair actions of the form ``remove $a$'' or ``remove $b$''.
+  \begin{align*}
+    a\land b\land\neg c &\supset{-a}\mid{-b}
+    &\qquad
+    a\land b\land\neg d &\supset{-a}\mid{-b}
+  \end{align*}
+  Despite the inclusion of explicit repair actions in the heads of these rules, the notions of weak repair and repair do not take them into account.
+  Suppose the current database is $\db=\{a,b\}$.
+  Then both $\{{-a}\}$, $\{{-b}\}$ and $\{{+c},{+d}\}$ are repairs; furthermore, sets such as $\{{-a},{-b}\}$ or $\{{-b},{+c}\}$ are weak repairs: in all cases, all actions change $\db$, and the result always negates at least one literal in the body of both $r_1$ and $r_2$.
 
+  Sets such as $\{{-a},{-c}\}$ and $\{{+a},{+c},{+d}\}$ also solve the inconsistency, but they include actions that do not change the database, and therefore are not considered weak repairs.
+  Sets such as $\{{+a},{-a}\}$ are inconsistent, as it is not clear whether they state that $\db$ should include $a$ or not.
+
+  Applying normalization yields the following set of AICs.
+  \begin{align*}
+    a\land b\land\neg c &\supset{-a} &\qquad
+    a\land b\land\neg d &\supset{-a} &\qquad
+    a\land b\land\neg c &\supset{-b} &\qquad
+    a\land b\land\neg d &\supset{-b}
+  \end{align*}
+  It is immediate to check that everything discussed above with respect to the original set of AICs also applies to its normalized counterpart.
+  \qed
+\end{example}
+
+ We now review several other semantics for AICs that have been defined with the intention to allow only changes explicitly allowed by one of the AICs: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}, and grounded repairs \cite{iclp/Cruz-Filipe16}.
 
 \begin{definition}[\cite{iclp/CaropreseGSZ06}]
  A set of update actions \UU is \emph{founded} with respect to $\fulldb$ if, for each $\alpha \in \UU$, there is a rule  $r\in \aics$ with $\alpha\in\head(r)$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus\{\alpha\}$. A \emph{founded (weak) repair} is a (weak) repair that is founded.
 \end{definition}
 
-\begin{definition}[\cite{tase/Cruz-FilipeEGN13}]
- A (weak) repair \UU for \fulldb is \emph{well-founded} if there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
-\end{definition}
+\begin{example}
+  Consider again the database $\db=\emptyset$ together with the set $\eta$ of normalized AICs from the previous example.
+  \begin{align*}
+    a\land b\land\neg c &\supset{-a} \qquad(r_1) &
+    a\land b\land\neg d &\supset{-a} \qquad(r_2) \\
+    a\land b\land\neg c &\supset{-b} \qquad(r_3) &
+    a\land b\land\neg d &\supset{-b} \qquad(r_4)
+  \end{align*}
+
+  The set $\{{-a}\}$ is founded with respect to $\fulldb$: if its only action is removed, then rule $r_1$ is applicable, and ${-a}$ occurs in $\head(r_1)$.
+  Likewise, the set $\{{-b}\}$ is also a founded repair for $\fulldb$.
+
+  However, $\UU=\{{+c},{+d}\}$ is not founded.
+  If we remove e.g.~${+c}$ from $\UU$, obtaining $\UU'={+d}$, then $\UU'(\db)=\{a,b,d\}$, and:
+  \begin{itemize}
+  \item $\UU'(\db)\models\body(r_1)$, but ${+c}\not\in\head(r_1)$, and likewise for $(r_3)$;
+  \item $\UU'(\db)\not\models\body(r_2)$ and $\UU'(\db)\not\models\body(r_4)$,
+  \end{itemize}
+  and thus there is no support for ${+c}$ in $\UU$.
+  In this case, there is also no support for ${+d}$.
+\end{example}
+
+However, \citet{tplp/CaropreseT11} discovered that there can be founded repairs exhibiting \emph{circularity of support}.
+The following example is due to~\cite{tase/Cruz-FilipeEGN13}.
+
+\begin{example}
+  \label{ex:founded}
+  Consider the following set of AICs $\eta$, expressing that $a$ and $b$ are equivalent (and if this is not the case, then they should both become false) and that $c$ should be true whenever $a$ or $b$ is true.
+  \begin{align*}
+    a\land\neg b &\supset{-a} \qquad(r_5)&
+    a\land\neg c &\supset{+c} \qquad(r_7)\\
+    \neg a\land b &\supset{-b} \qquad(r_6)&
+    b\land\neg c &\supset{+c} \qquad(r_8)
+  \end{align*}
+  Suppose that the database is $\db=\{a,b\}$.
+  There are two repairs for $\fulldb$: $\UU_1=\{{-a},{-b}\}$ and $\UU_2=\{{+c}\}$.
+  Intuitively, the rules suggest that $\UU_2$ should be the preferred repair, since it includes the action suggested by the only AICs that are not satisfied, and indeed $\UU_2$ is founded (removing its only element yields $\emptyset$, and as we observed both $r_7$ and $r_8$ provide support for ${+c}$ given the state of $\db$).
+
+  However, $\UU_1$ is also a founded repair.
+  If we remove ${-a}$ from $\UU_1$, we obtain $\UU'=\{{-b}\}$, and $\UU'(\db)=\{a\}$, where $r_5$ is applicable and ${-a}\in\head(r_5)$.
+  Dually, if we remove ${-b}$ we obtain $\UU''=\{{-a}\}$, and $\UU''(\db)=\{b\}$; now $r_6$ is applicable, and ${-b}\in\head(r_6)$.
+  Thus both actions in $\UU_1$ are founded, hence this is a founded repair.
+\end{example}
+
+The problem in this example is that the property of being a founded repair only excludes \emph{individual} actions that are not supported by the remaining ones, rather than \emph{sets} of actions with this characteristic.
+In order to avoid this unwanted characteristic, \citet{tplp/CaropreseT11} proposed considering justified repairs, which we now define.\footnote{The authors never formally sustain their claim that justified repairs avoid circularity of support.  To the best of our knowledge, the first proof of this result is given as Lemma~\ref{lem:justified} below.}
 
 \begin{definition}[\cite{tplp/CaropreseT11}]
   Let \UU be a set of update actions and \fulldb a database. 
   \begin{compactitem}
-   \item The \emph{no-effect actions} with respect to \db and \UU, \shortpaper{$\neff_\db(\UU)$, }are the actions that change neither \db, nor $\UU(\db)$.
-     \longpaper{\begin{align*}\neff_\db(\UU) =& \{\add a\mid a \in \db \cap \UU(\db)\} \\ &\cup \{\remove a \mid a \not\in \db \cup \UU(\db)\longpaper{\\
-	=&\{\alpha \mid \alpha(\db) = \db \\&\qquad\land \alpha(\UU(\db))=\UU(\db)\}}\,.\end{align*}}
-   \item The set of \emph{non-updatable literals} of an AIC $r$, \shortpaper{$\nup(r)$, }contains all body literals of $r$ that do not occur in the head of $r$.
-     \longpaper{\[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]}
+   \item The \emph{no-effect actions} with respect to \db and \UU, $\neff_\db(\UU)$, are the actions that change neither \db, nor $\UU(\db)$.
+     \begin{align*}\neff_\db(\UU) &= \{\add a\mid a \in \db \cap \UU(\db)\} \cup \{\remove a \mid a \not\in \db \cup \UU(\db)\}\\
+       &=\{\alpha \mid \alpha(\db) = \db \land \alpha(\UU(\db))=\UU(\db)\}\,.
+     \end{align*}
+   \item The set of \emph{non-updatable literals} of an AIC $r$, $\nup(r)$, contains all body literals of $r$ that do not occur in the head of $r$.
+     \[\nup(r) = \body(r) \setminus \litof\left(\head(r)^D\right)\,.\]
    \item $\UU$ is closed under \aics if for each $r\in \aics$, $\actof(\nup(r))\subseteq \UU$ implies $\head(r)\cap \UU\neq \emptyset$.
    \item \UU is a \emph{justified action set} if it is a minimal superset of $\neff_\db(\UU)$ closed under \aics.
    \item \UU is a \emph{justified (weak) repair} if it is a (weak) repair and $\UU\cup \neff_{\db}(\UU)$ is a justified action set. 
@@ -94,34 +141,93 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 %  It makes sense, though. And this insight might make some proofs easier later in the paper (sorry, I'm just using this paper as well to record my thoughts)}
 \end{definition}
 Although the notion of closed set of actions does not take the database into account, its role in the definition of justified weak repairs is as part of the definition of justified action set -- where all actions that do not change the database are included.
+In the normalized case that we considered, all justified weak repairs are minimal with respect to set inclusion, i.e.~they are justified repairs.
 
-% \citet{tplp/CaropreseT11} showed that a justified weak repair may not be a repair.
-% \bart{Also for normalized?}
+\begin{example}
+  In the setting of Example~\ref{ex:founded}, the sets of non-updateable literals are as follows.
+  \begin{align*}
+    \nup(r_5) &= \{\neg b\} &
+    \nup(r_6) &= \{\neg a\} &
+    \nup(r_7) &= \{a\} &
+    \nup(r_8) &= \{b\}
+  \end{align*}
+  The founded repair $\UU_1$ is not justified.
+  First, observe that $\neff(\UU_1)=\{{-c}\}$ (assuming that $a$, $b$ and $c$ are the only atomic formulas in the language).
+  Consider $\UU'=\emptyset\subseteq\UU_1$; then $\UU'\cup\neff(\UU_1)=\{{-c}\}$, and $\actof(\nup(r))\not\subseteq(\UU'\cup\neff(\UU_1))$ for every $r\in\eta$; therefore $\UU'\cup\neff(\UU_1)$ is a subset of $\UU_1\cup\neff(\UU_1)$ containing $\neff(\UU_1)$ that is (trivially) closed under $\eta$.
 
-%\bart{all justified weak repairs are justified repairs, right?}
+  In contrast, the repair $\UU_2$ is justified.
+  In this case, we have $\neff(\UU_2)=\{{+a},{+b}\}$; the only proper subset of $\UU_2$ is again $\UU'=\emptyset$.
+  Then both $r_7$ and $r_8$ satisfy $\actof(\nup(r))\subseteq(\UU'\cup\neff(\UU_2))=\{{+a},{+b}\}$, and in both cases $\head(r)=\{{+c}\}$.
+  Since $\head(r)\cap\{{+a},{+b}\}=\emptyset$, we conclude that $\UU'\cup\neff(\UU_2)$ is not closed under $\eta$.
+\end{example}
 
-%\luis{no: they actually have an example in their 2011 paper. That was actually one of the first things that sent my alarm bells off.}
+The relation between founded and justified weak repairs was established by \citet{tplp/CaropreseT11}.
+\begin{lemma}
+  \label{lem:justified-founded}
+  Let $\db$ be a database, $\eta$ be a set of AICs over $\db$ and $\UU$ be a set of update actions over $\db$.
+  If $\UU$ is a justified weak repair for $\fulldb$, then $\UU$ is a founded weak repair for $\fulldb$.
+\end{lemma}
+
+One of the main issues with the notion of justified repair is that it is too restrictive.
+Interestingly, this can already be seen by the original example given by~\citet{tplp/CaropreseT11}, which we reproduce below.
+
+\begin{example}
+  \label{ex:justified}
+  Consider the following set of AICs $\eta$.
+  \begin{align*}
+  a\land b &\supset{-a} \qquad (r_9) \qquad &
+  a\land\neg b &\supset{-a} \qquad (r_{10}) \qquad &
+  \neg a\land b &\supset{-b} \qquad (r_{11})
+  \end{align*}
+  Consider the same database $\db=\{a,b\}$ as before.
+  This database is inconsistent (it does not satisfy $r_9$), and the only possible repair is $\UU=\{{-a},{-b}\}$.
+  Furthermore, this repair is intuitively compatible with $\eta$, since rule $r_9$ requires us to remove $a$ from $\db$, which triggers $r_{11}$ and forces us also to remove $b$.
+
+  The repair $\UU$ is founded, but for a different reason: if we remove ${-a}$ from $\UU$, then $r_{10}$ is applicable, and its head includes $-a$, while removing ${-b}$ from $\UU$ makes $r_{11}$ applicable, and its head includes $-b$.
+  \citet{tplp/CaropreseT11} considered this as another instance of circularity of support (see~\cite{tase/Cruz-FilipeEGN13} for a discussion).
+  Repair $\UU$ is not justified: $\neff(\UU)=\emptyset$, and taking $\UU'=\emptyset$ we have that $\UU'\cup\neff(\UU)=\emptyset$ is again trivially closed under $\eta$ (every rule has non-updateable literals in its body).
+\end{example}
+
+A different attempt to resolve the problems of circularity posed by founded repairs, while avoiding the over-restrictiveness of justified repairs, was the introduction of well-founded repairs by~\citet{tase/Cruz-FilipeEGN13} -- a third kind of repairs, motivated by an operational approach directly inspired by the syntax of AICs.
 
 
-% \bart{Next one needed?}
-% \luis{Depends on what we want to do}
-% \begin{definition}
-%  Let $\aics_1$ and $\aics_2$ be two sets of AICs over \atoms. We say that 
-%  \begin{compactitem}
-%   \item $\aics_1$ and $\aics_2$ are \emph{strongly independent}, $\aics_1 \strongind \aics_2$, if for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\body(r_1)$ and $\body(r_2)$ contain no common or dual literals. 
-%   \item $\aics_1$ and $\aics_2$ are \emph{independent}, $\aics_1 \ind \aics_2$, if for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_i))$ and $\body(r_{3-i})$ contain no common or dual literals for $i=1,2$. 
-%   \item $\aics_1$ \emph{precedes} $\aics_2$, $\aics_1 \prec \aics_2$, if, for each pair of rules $r_1\in\aics_1, r_2\in \aics_2$, $\litof(\head(r_2))$ and $\body(r_1)$ contain no common or dual literals, but not conversely. 
-%  \end{compactitem}
-% \end{definition}
-% \bart{the ``but not conversely'' in this definition makes it a strict relation. That is somewhat unnatural to me. I would give the non-strict definition. All results remain to hold and precedence becomes a generalization of ``independent''. This is only a minor point.}
-% \luis{What we use is the strict relation, but we can treat the non-strict as primitive. I have to look on the original work to see exactly if there are any unexpected problems.}
+\begin{definition}[\cite{tase/Cruz-FilipeEGN13}]
+ A (weak) repair \UU for \fulldb is \emph{well-founded} if there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
+\end{definition}
 
+\begin{example}
+  In the setting of Example~\ref{ex:founded}, the only well-founded repair for $\fulldb$ is $\{{+c}\}$, as $r_7$ is the only rule applicable to $\db$.
+
+  Likewise, the repair $\UU$ in Example~\ref{ex:justified} is well-founded, as it can be constructed by applying first $r_9$ (introducing ${-a}$) and afterwards $r_{11}$.
+\end{example}
+
+However, well-founded repairs also can behave unexpectedly.
+\begin{example}
+  \label{ex:well-founded}
+  Let $\eta$ be the set of AICs containing
+  \begin{align*}
+  a\land\neg b\land\neg c &\supset{+c} \qquad (r_{12}) \qquad &
+  \neg a\land\neg b &\supset{+b} \qquad (r_{13}) \qquad &
+  \neg a &\supset{+a} \qquad (r_{14})
+  \end{align*}
+  and consider $\db=\emptyset$.
+  There are two well-founded repairs for $\fulldb$: $\UU_1=\{{+b},{+a}\}$, obtained by applying first $r_{13}$ and then $r_{14}$, and $\UU_2=\{{+a},{+c}\}$, obtained by applying first $r_{14}$ and then $r_{12}$.
+  It is arguable that $\UU_2$ is preferable, as it is not reasonable to apply $r_{13}$ when $r_{14}$ is also applicable, since any action that solves the inconsistency detected by $r_{14}$ also repairs $r_{13}$, but not conversely.
+  However, the well-founded semantics for AICs cannot infer this restriction.
+\end{example}
+In this example, it is interesting to note that $\UU_2$ is a founded repair ($r_{14}$ supports ${+a}$ also after $c$ has been added to $\db$, and $r_{12}$ supports ${+c}$), but $\UU_1$ is not (the action ${+b}$ is not supported, as $r_{13}$ is not applicable once $a$ as been added to $\db$).
+
+The examples above show that there exist both founded weak repairs that are not well-founded, and well-founded weak repairs that are not founded.
+These relations were established by~\cite{tase/Cruz-FilipeEGN13}, together with the connection to justified weak repairs.
+\begin{lemma}
+  \label{lem:justified-wf}
+  Let $\db$ be a database, $\eta$ be a set of AICs over $\db$ and $\UU$ be a set of update actions over $\db$.
+  If $\UU$ is a justified weak repair for $\fulldb$, then $\UU$ is a well-founded weak repair for $\fulldb$.
+\end{lemma}
 
 \citet{tcs/MarekT98} defined in the context of revision programming \emph{the shifting property}; this property was later transferred to active integrity constraints \cite{tplp/CaropreseT11}. 
 Intuitively, a semantics for AICs possesses the shifting property if uniformly replacing some literals with their duals
-%transforming a database into an isomorphic one
-preserves the semantics at hand\longpaper{, i.e., if the semantics treats truth and falsity of elements in the database symmetrically}. 
-%\todo{RVWR1: Preceding Def. 2.6, it is not clear to me what precisely the word "isomorphic" means in this context.}
+preserves the semantics at hand, i.e., if the semantics treats truth and falsity of elements in the database symmetrically.
 
 \begin{definition}
  Let $S\subseteq\atoms$ be a set of atoms and $l$ a literal. The \emph{shift of $l$} with respect to $S$ is defined as 
@@ -156,7 +262,6 @@ Since we apply our results to (finite) databases, for the sake of simplicity we 
 % In a Boolean lattice, for every $x,y \in L$, it holds that $x=(x\land y) \lor (x\land \lnot y)$.
 
 
-
 An operator $O:L\to L$ is \emph{monotone} if $x\leq y$ implies that $O(x)\leq O(y)$.
 %and \emph{anti-monotone} if $x\leq y$ implies that $O(y)\leq O(x)$. 
 An element $x\in L$ is 
@@ -187,6 +292,7 @@ in the sense that if we remove them from $x$, then the operator will add at leas
 % They showed that for Boolean lattices, the notions of \emph{groundedness} and \emph{strict groundedness} coincide. 
 % In this text, we are only concerned with Boolean lattices and hence freely switch between the two definitions. 
 
+\luis{do we want to talk about strictly grounded and grounded and that they coincide in our context? I used both characterizations in the ICLP stuff, so it's probably better}
 
 
 \paragraph{Approximation Fixpoint Theory}
@@ -213,8 +319,7 @@ $\langle L^2,\leqp\rangle$ is also a complete lattice.
 
 AFT studies fixpoints of lattice operators $O:L\ra L$ through operators approximating $O$.
  An operator $A: L^2\to L^2$  is an \emph{approximator} of $O$ if it is \leqp-monotone,  and has the property that $A(x,x) = (O(x),O(x))$ for all $x$. %[x',y']$, where $(x',y')=A{x,x}$.
-Approximators are
-internal in $L^c$ (i.e., map $L^c$ into $L^c$).
+Approximators are internal in $L^c$ (i.e., map $L^c$ into $L^c$).
 As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that, for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$.%\cite{lpnmr/DeneckerV07}.
 \citet{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
 
@@ -226,16 +331,8 @@ AFT studies fixpoints of $O$ using fixpoints of $A$.
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
  \end{compactitem}
 
-% % 
-% 
-% DEFINITIE VAN 4-WAARDIGE STABLE AND DE WELL-FOUNDED FIXPOINT? Pairs $(x,y)$ such that $x=\lfp(A(\cdot,y)_1$ and $y=\lfp(A(x,\cdot)_2$. The $A$-well-founded fixpoint is the least precise 4-valued $A$-stable fixpoint. 
-% 
 The $A$-Kripke-Kleene fixpoint of $O$ can be constructed as the limit of any monotone induction of $A$. 
 For the $A$-well-founded fixpoint, a similar constructive characterization has been worked out by \citet{lpnmr/DeneckerV07}:
-% This concept is based on the following intuitions.
-%  A well-founded induction of $A$ is a process that uses $A$ to derive more and more information (i.e., to grow in \leqp). 
-%  At the same time, a well-founded induction tries to minimise the upper bounds $(x,y)_2$: if making the upper bound smaller can be done while guaranteeing that 
- 
 
 \begin{definition}\label{002:def:refinement}
 An \emph{$A$-refinement} of $(x,y)$ is a pair $(x',y')\in L^2$ satisfying one of the following two conditions:
@@ -262,17 +359,14 @@ with $n\in\nat$ such that
 % 	      for each limit ordinal $\lambda\leq\beta$.
 \end{compactitem}
 A well-founded induction is \emph{terminal} if its limit $(x_n,y_n)$ has no strict $A$-refinements.
-% \marc{als je in sectie over fixpoints het leastfixpoint in een licthjes andere notatie geeft= $x_i\leq x_{i+1}\leq O(x_i)$, dan kan je hier gewoon zeggen: een well-founded induction is een monotone induction van de juiste operator (de vierwaardige stable operator)}\bart{precies zo geen fan van. De standaard def van leastfixpoint kent iedereen...}
 \end{definition}
 A well-founded induction is an algebraical generalization of the well-founded model construction defined by \citet{GelderRS91}. 
 The first type of refinement corresponds to making a partial structure more precise by applying Fitting's immediate consequence operator; the second type of refinement corresponds to making a structure more precise by eliminating an unfounded set. 
-\longpaper{
 For a given approximator $A$, there are many different terminal well-founded inductions of $A$.
-\citet{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, then the $A$-well-founded fixpoint of $O$ (in fact, every tuple in a well-founded induction of $A$) is consistent.}
-\shortpaper{All terminal well-founded inductions of $A$ have the $A$-well-founded fixpoint as limit \cite{lpnmr/DeneckerV07}.}
+\citet{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, then the $A$-well-founded fixpoint of $O$ (in fact, every tuple in a well-founded induction of $A$) is consistent.
 % Well-founded inductions that only use the first sort of refinement converge to the $A$-Kripke-Kleene fixpoint. 
 
-% \todo{Drop section on ultimate approximators, unless we use it.}
+\todo{Include section on ultimate approximators?}
 % The precision order can be pointwise extended to the family of approximators of $O$. It then follows that more precise approximators have a more precise well-founded fixpoint and that they have more stable fixpoints. 
 % \cite{DeneckerMT04} showed that there exists a most precise approximator, $U_O$, called the ultimate approximator of $O$. 
 % This operator is defined by \[U_O: L^c\to L^c: (x,y)\mapsto (\bigand O([x,y]), \bigor O([x,y])).\]
@@ -285,12 +379,6 @@ For a given approximator $A$, there are many different terminal well-founded ind
 % % In this paper, we will focus only on ultimate approximations. More specifically, we will show that for auto-epistemic logic, 
 % % whose semantics is defined in terms of Approximation Fixpoint Theory, the ultimate approximator is not precise enough!
 % % We will develop an alternative fixpoint theory that is more precise than the current one, and show that with this theory, we obtain several desirable properties in logics with a fixpoint semantics.
-
-%\todo{Say something about partial grounded fixpoints?}
-
-% \luis{It might be good to point out that we will include examples of all these constructions in the next section.}
-% 
-% \bart{Agree}
 
 When we introduce semantics for AIC based on AFT in the next section, we provide examples of the different constructions considered here. 
 

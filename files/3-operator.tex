@@ -1,0 +1,254 @@
+In this section we show how a set of normal AICs induces an operator on a suitably defined lattice.
+
+\subsection{The operator $\Op$}
+
+Given a fixed database $\db$, we are interested in the sets of update actions $\UU$ such that:
+\begin{inparaenum}
+\item \UU is consistent and 
+\item each action in \UU modifies \db.
+\end{inparaenum}
+If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\not\in \db$ and $\remove a$ if $a \in \db$.
+This establishes a bijection between the sets of update actions satisfying the above two conditions and subsets of $\atoms$, where a set of atoms $\overline\UU\subseteq\atoms$ is identified with the set 
+\[\UU = \{\change a\mid a \in \overline \UU \}\]
+of update actions.
+When no ambiguity arises, we omit the bar, and simply write $\UU$ for the subset of \atoms as well.
+Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline\UU$.
+
+Following the principle of minimality of change~\cite{Winslett90,ai/EiterG92}, we also typically prefer smaller sets of updates over larger sets.
+Therefore, we are interested in the lattice $\langle 2^{\atoms},\subseteq\rangle$, where smaller elements correspond to better repairs according to this principle.
+
+The intuitive reading of an AIC $r$ naturally suggests an operator over this lattice, defined as ``if $\UU(\db)\models\body(r)$ holds, then add $\head(r)$ to $\UU$''.
+However, this definition quickly leads to inconsistent sets of update actions upon iteration, which we want to avoid.
+We therefore propose a slight variant of this intuition, using the following concept.
+
+\begin{definition}
+  Let $\UU_1$ and $\UU_2$ be consistent sets of update actions over a set of atoms $\atoms$.
+  The set $\UU_1\uplus\UU_2$ is defined as
+  \[\UU_1\uplus\UU_2 = (\UU_1\cup\{\alpha\in\UU_2\mid\alpha^D\not\in\UU_1\})\setminus\{\alpha\in\UU_1\mid\alpha^D\in\UU_2\}\,.\]
+\end{definition}
+This operation models sequential composition of repairs in the following sense: given a database $\db$, if every action in $\UU_1$ changes $\db$ and every action in $\UU_2$ changes $\UU_1(\db)$, then $(\UU_1\uplus\UU_2)(\db)=\UU_2(\UU_1(\db))$.
+In this case, we also have the relation
+\[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
+Furthermore, if $\UU_1$ and $\UU_2$ are both consistent, then so is $\UU_1\uplus\UU_2$.
+
+\begin{definition}
+  Let $\db$ be a database and $\eta$ be a set of AICs over $\db$.
+  The operator $\Op^\db:2^\atoms\to 2^\atoms$ is defined as follows:
+  \[
+    \Op^\db(\UU) = \UU\uplus\{\head(r)\mid \UU(\db)\models\body(r)\}
+  \]
+\end{definition}
+In other words, $\Op^\db(\UU)$ is obtained by updating $\UU$ with the heads of all AICs whose bodies are satisfied by $\UU(\db)$.
+The resulting set may contain less update actions than the number of such rules, since different AICs may include the same action in their heads.
+
+\luis{There was a comment about defining this with $\nup(r)$ instead. I'm not sure this is correct.}
+
+\luis{add example here}
+%% \begin{example}
+%%   Consider again the set of AICs $\eta$ from Example~\ref{ex:repairs}, where
+%%   $\DB=\{a,b\}$.
+%%   Then $\TT(\emptyset)=\{\{{-a}\},\{{-b}\},\{{-a},{-b}\}\}$: the bodies of both rules are
+%%   satisfied in $\DB$, and we can choose $-a$ from the heads of both, $-b$ from the heads
+%%   of both, or $-a$ from one and $-b$ from the other.
+%% \end{example}
+
+The syntactic restrictions on AICs guarantee that the set $\Op^\db(\UU)$ is always consistent: if $\{+a,-a\}\subseteq\Op^\db(\UU)$, then there are rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible.
+In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
+
+The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded and well-founded sets of update actions.
+
+\begin{lemma}
+  \label{lem:weak-repair}
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a set of update actions.
+  Then $\UU$ is a weak repair for $\fulldb$ iff $\UU$ is a fixpoint of $\Op$.
+\end{lemma}
+\begin{proof}
+  If $\UU$ is a weak repair for $\fulldb$, then $\UU(\db)\not\models\body(r)$ for all $r\in\eta$, whence $\Op(\UU)=\UU$.
+  If $\UU$ is not a weak repair for $\fulldb$, then $\UU(\db)\models\body(r)$ for some $r\in\eta$, and $\Op(\UU)$ differs from $\UU$ by (at least) $\head(r)$.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:repair}
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a set of update actions.
+  Then $\UU$ is a repair for $\fulldb$ iff $\UU$ is a minimal fixpoint of $\Op$.
+\end{lemma}
+\begin{proof}
+  Direct from Lemma~\ref{lem:weak-repair} and the definition of repair.
+\end{proof}
+
+\begin{lemma}
+  \label{lem:founded-char}
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a consistent set of update actions.
+  Then $\UU$ is founded with respect to $\fulldb$ iff, for all $\alpha\in\UU$, it is the case that $\alpha\in\Op(\UU\setminus\{\alpha\})$.
+\end{lemma}
+\begin{proof}
+  An action $\alpha\in\UU$ is founded iff there is a rule $r\in\eta$ such that $\UU(\db)\models\body(r)\setminus\{\alpha^D\}$.
+  This is equivalent to saying that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$.
+  But, by definition of $\Op$, we have $\alpha\in\Op(\UU\setminus\{\alpha\})$ iff there is a rule $r\in\eta$ such that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$, which concludes the proof.
+
+  Consistency of $\UU$ is needed for the direct implication, as $\alpha$ is only added to $\UU\setminus\{\alpha\}$ by $\Op$ if that set does not already contain $\alpha^D$.
+\end{proof} 
+
+This result also gives some intuition regarding why founded repairs allow for circular dependencies: the definition of founded repair only checks that each individual action is supported by the remaining ones, but it allows for dependency cycles.
+
+\begin{lemma}
+  \label{lem:wf}
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a weak repair for $\fulldb$.
+  Then $\UU$ is well-founded iff there is an ordering $\alpha_1,\ldots,\alpha_n$ of the elements of $\UU$ such that $\alpha_i\in\Op(\{\alpha_1,\ldots,\alpha_{i-1}\})$ for each $i=1,\ldots,n$.
+\end{lemma}
+\begin{proof}
+  If $\UU$ is well-founded, then the ordering is given by the sequence of actions introduced at each node in the path, in the well-founded repair tree for $\fulldb$, going from the root to the node with label $\UU$.
+  Conversely, if $\UU$ can be obtained in the manner described, then it defines a valid path in that same tree ending at a leaf.
+\end{proof}
+
+The correspondence between justified repairs and answer sets for particular logic programs~\cite{Caroprese2011} shows that justified repairs can also be characterized in a related manner.
+However, since answer sets of a logic program are models of its Gelfond--Lifschitz transform, the corresponding characterization in terms would be as fixpoints of the corresponding operator for a similarly derived set of AICs, rather than of $\Op$.
+
+\subsection{Grounded fixpoints of $\Op$}
+
+Founded, well-founded and justified repairs were all introduced with the purpose of characterizing a class of repairs whose actions are supported (there is a reason for having them in the set), and that support is not circular; in particular, these repairs should be constructible ``from the ground up'', which was the motivation for defining well-founded repairs.
+However, all notions exhibit unsatisfactory examples: there exist founded repairs with circular support~\cite{Caroprese2011} and repairs with no circular support that are not justified~\cite{CEGN13}; well-founded repairs, on the other hand, are not stratifiable~\cite{lcf:14}, which impacts their computation in practice.
+
+Following the intuition in~\mycite{GroundedFixpoints} that grounded fixpoints capture the idea of building fixpoints ``from the ground up'', we propose the following notion of $\Op$.
+
+\begin{definition}
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$.
+  A repair $\UU$ for $\fulldb$ is \emph{grounded} if $\UU$ is a grounded fixpoint of $\Op$.
+\end{definition}
+
+Since we are working within a powerset lattice, the notions of grounded and strictly grounded fixpoints coincide.
+\luis{check that we talk about these}
+As it turns out, the latter notion is most convenient for the proofs of our results.
+We thus characterize grounded repairs as repairs $\UU$ such that: if $\UU'\subsetneq\UU$, then $\Op(\UU')\cap\UU\not\subseteq\UU'$.
+Equivalently: if $\UU'\subsetneq\UU$, then $\Op(\UU')\cap(\UU\setminus\UU')\neq\emptyset$.
+
+Since all grounded fixpoints are minimal, it makes no sense to define grounded weak repairs.
+The notion of grounded fixpoint therefore intrinsically embodies the principle of minimality of change, unlike other kinds of weak repairs previously defined.
+Furthermore, grounded repairs also embody the notion of ``support'' previously defined.
+
+\begin{lemma}
+  \label{lem:founded}
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a grounded repair for $\fulldb$.
+  Then $\UU$ is both founded and well-founded.
+\end{lemma}
+\begin{proof}
+  Assume that $\UU$ is a grounded repair for $\fulldb$.
+  For each $\alpha\in\UU$, necessarily $\Op(\UU\setminus\{\alpha\})\cap\UU\subsetneq(\UU\setminus\{\alpha\})$, which implies that $\alpha\in\Op(\UU\setminus\{\alpha\})$.
+  By Lemma~\ref{lem:founded-char}, this implies that $\UU$ is founded.
+
+  Now construct the sequence for well-founded repairs always choosing $u_i\in\UU$ until this is no longer possible.
+  Letting $\UU'$ be the last constructed set, by construction both $\UU'\subseteq\UU$ and $\Op(\UU')\cap\UU\subseteq\UU'$ (otherwise we could proceed).
+  Since $\UU$ is grounded, it cannot be the case that $\UU'\subsetneq\UU$, so $\UU=\UU'$ and it is thus a well-founded repair.
+\end{proof}
+
+\luis{check example, add new one here}
+However, the notion of grounded repair is strictly stronger than both of these: Example~\ref{ex:founded}, presented earlier, also shows that some forms of circular justifications are avoided by grounded repairs.
+%% \begin{example}
+%%   \label{ex:founded-gr}
+%%   Recall the set of AICs from Example~\ref{ex:founded}, together with $\db=\{a,b\}$.
+%%   The repair $\UU_1=\{-a,-b\}$ is a founded repair that is not grounded: $\UU'=\emptyset$ satisfies $\Op(\UU')\cap\UU_1=\{+c\}\cap\UU_1=\emptyset\subseteq\UU'$.
+%%   The more natural repair $\UU_2=\{+c\}$ is also founded, and it is immediate to verify that it is also grounded.
+%% \end{example}
+
+Likewise, all well-founded repairs are grounded, but not conversely.
+\luis{check example}
+%% \begin{example}
+%%   Consider again $\eta$ from Example~\ref{ex:well-founded}, with $\db=\emptyset$.
+%%   As shown earlier, the two well-founded repairs for $\fulldb$ are $\UU_1=\{{+b},{+a}\}$ and $\UU_2=\{{+a},{+c}\}$.
+%%   We already observed that $\UU_2$ is not founded, so it cannot be grounded; indeed, $\UU'=\{{+a}\}$ is a strict subset of $\UU_2$, and $\Op(\UU')\cap\UU_2=\{{+a},{+b}\}\cap\UU_2=\emptyset\subseteq\UU'$.
+%% \end{example}
+
+We now investigate the relation to justified repairs, and find that all justified repairs are grounded, but not conversely -- confirming our earlier claim that the notion of justified repair is too strong.
+
+\begin{lemma}
+  \label{lem:justified}
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a justified repair for $\fulldb$.
+  Then $\UU$ is grounded.
+\end{lemma}
+\begin{proof}
+  Let $\UU$ be a justified repair for $\fulldb$ and assume that $\UU'\subsetneq\UU$.
+  Then $\UU'\cup\neff(\UU)$ is not closed under $\eta$, whence there is a rule $r\in\eta$ such that $\actof(\nup(r))\subseteq\UU'\cup\neff(\UU)$ and $\head(r)\not\in\UU'\cup\neff(\UU)$.
+
+  Since $\UU'\subseteq\UU$, also $\actof(\nup(r))\subseteq\UU\cup\neff(\UU)$, whence $\head(r)\in\UU\cup\neff(\UU)$ as $\UU$ is closed under $\eta$.
+  But $\head(r)\not\in\UU'\cup\neff(\UU)$, so $\head(r)\in\UU\setminus\UU'$.
+
+  Then $\UU'\models\body(r)$: on the one hand, $\actof(\nup(r))\subseteq\UU'\cup\neff(\UU)$ implies that $\UU'(\db)\models\nup(r)$, as $\neff(\UU)\subseteq\neff(\UU')$; on the other hand, from $\head(r)\in\UU$ we know that $\litof(\head(r))^D\in\db$ (all actions in $\UU$ change $\db$), whence $\UU'(\db)\models\litof(\head(r)^D)$ since $\head(r)\not\in\UU'$.
+  As $r$ is normal, there are no more literals in $\body(r)$, so $\UU'(\db)\models\body(r)$ and therefore $\head(r)\in\Op(\UU')$.
+
+  We thus conclude that $\Op(\UU')\cap\UU\not\subseteq\UU'$.
+  By arbitrariness of $\UU'$, it follows that $\UU$ is grounded.
+\end{proof}
+This proof may look suspicious, as it does not use the hypothesis that $\UU$ is a repair.
+Indeed, Theorem~4 of~\cite{Caroprese2011} shows that all justified weak repairs are minimal when $\eta$ contains only normal AICs.
+
+This result is not very surprising: justified weak repairs are answer sets of a particular logic program (Theorem 6 in~\cite{Caroprese2011}), and in turn answer sets of logic programs are grounded fixpoints of the consequence operator (see remark at the top of Section~5 in~\mycite{GroundedFixpoints}).
+However, the translation defined in~\cite{Caroprese2011} is from logic programs to databases with AICs (rather than the other way around), so Lemma~\ref{lem:justified} is \emph{not} a direct consequence of those results.
+Also, since grounded repairs can be built from the ground up, this result also establishes that justified repairs avoid circularity of support (a property that was claimed in~\cite{Caroprese2011}, but never formally discussed).
+
+Recall Example~\ref{ex:justified}, which was used in~\cite{CEGN13} to point out that justified repairs sometimes eliminate ``natural'' repairs.
+This example also shows that the notion of justified repair is also stricter than that of grounded repair.
+\luis{check example}
+%% \begin{example}
+%%   Recall the set $\eta$ from Example~\ref{ex:justified}, with $\db=\{a,b\}$.
+%%   Although the repair $\UU=\{-a,-b\}$ for $\fulldb$ is not justified, it is grounded: if ${-a}\in\UU'\subsetneq\UU$, then $\Op(\UU')\cap\UU$ contains ${-b}\in\UU\setminus\UU'$, else $\Op(\UU')\cap\UU$ contains ${-a}\in\UU\setminus\UU'$.
+%% \end{example}
+%% As discussed earlier, in this case the first rule clearly motivates the action $-a$, and the last rule then requires $-b$.
+%% This is in contrast to Example~\ref{ex:founded}, where there was no clear reason to include either $-a$ or $-b$ in a repair.
+%% So grounded repairs avoid this type of unreasonable circularities, without being as restrictive as justified repairs.
+
+We thus have that grounded repairs are always founded and well-founded; the next example shows that they do not correspond to the intersection of those classes.
+
+\begin{example}
+  Consider the following set of AICs $\eta$.
+  \begin{align*}
+    \neg a,\neg b&\supset{+a} \qquad (r_{13}) \qquad &
+    a,\neg b&\supset{+b} \qquad (r_{14}) \qquad &
+    \neg a,b&\supset{-b} \qquad (r_{15}) \\
+    a,b,\neg c&\supset{+c} \qquad (r_{16}) \qquad &
+    a,\neg b,c&\supset{+b} \qquad (r_{17}) \qquad &
+    \neg a,b,c&\supset{+a}\qquad (r_{18})
+  \end{align*}
+  Let $\db=\emptyset$.
+  Then $\UU=\{{+a},{+b},{+c}\}$ is a repair for $\fulldb$: the first row of constraints requires ${+a}$ and ${+b}$ to be included in the database, and the second row states that no $2$-element subset of $\UU$ can be a repair.
+  Furthermore, $\UU$ is founded (the rules in the second row ensure that) and well-founded (starting with $\emptyset$, we are forced to apply rules $r_{13}$, $r_{14}$ and $r_{16}$, in that order).
+
+  However, $\UU$ is not strictly grounded for $\Op$: if $\UU'=\{{+b}\}$, then $\UU'\subsetneq\UU$, but $\Op(\UU')\cap\UU=\emptyset\cap\UU=\emptyset\subseteq\UU'$.
+\end{example}
+In this situation, $\UU$ actually seems reasonable; however, observe that the support for its actions \emph{is} circular: it is the three rules in the second row that make $\UU$ founded, and none of them is applicable to $\db$.
+Also note that $\UU'(\db)$ is a database for which the given set $\eta$ behaves very awkwardly: the only applicable AIC tells us to remove $b$, but the only possible repair is actually $\{{+a},{+c}\}$.
+
+We do not feel that this example weakens the case for studying ground repairs, though: the consensual approach to different notions of repair is that they express \emph{preferences}.
+In this case, where $\fulldb$ admits no grounded repair, it is sensible to allow a repair in a larger class -- and a repair that is both founded and well-founded is a good candidate.
+The discussion in Section~8 of~\cite{Caroprese2011} already proposes such a ``methodology'': choose a repair from the most restrictive category (justified, founded, or any).
+We advocate a similar approach, but dropping justified repairs in favor of grounded repairs, and preferring well-founded to founded repairs.
+
+We summarize the relations between the different types of repairs in the following diagram.
+%% \[\xymatrix@R-1em@C+2em{%
+%%   \mathcal F \ar@{-}[dd]|{\neq} \ar@{-}[dr]|{\subsetneq} \\
+%%   & \mathcal G \ar@{-}[r]|{\subsetneq} & \mathcal J \\
+%%   \mathcal{WF} \ar@{-}[ur]|{\subsetneq}
+%% }
+%% \]
+\luis{referee suggested Venn chart, I have one somewhere}
+
+We conclude this section with a note on complexity.
+
+\begin{theorem}
+  \label{thm:grounded-complexity}
+  Let $\db$ be a database and $\eta$ be a set of normal AICs over $\db$.
+  The problem of deciding whether there exist grounded repairs for $\fulldb$ is $\Sigma^P_2$-complete.
+\end{theorem}
+\begin{proof}
+  For membership, we need to show that we can decide the problem with a non-deterministic Turing machine with an NP oracle.
+  Given a set of update actions $\UU$, checking that it is a fixpoint of $\Op$ can be done in polynomial time on the size of $\db$ and $\eta$; the NP-oracle can then answer whether there exists $\UU'\subsetneq\UU$ with $\Op(\UU')\cap\UU\subseteq\UU'$, thereby establishing whether $\UU$ is grounded.
+
+  For hardness, we invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of~\cite{Caroprese2011}.
+  Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of~\mycite{GroundedFixpoints}.
+\end{proof}
+
+This result still holds if we allow a truly first-order syntax for AICs, where the atoms can include variables that are implictly universally quantified.
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "../AFT-semantics-AIC.tex"
+%%% End:
