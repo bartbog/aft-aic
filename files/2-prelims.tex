@@ -1,7 +1,16 @@
 \paragraph{Active Integrity Constraints}
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
 We say that $\lnot a$ is the \emph{dual} literal of $a$ and vice versa, and denote the dual of a literal $l$ by $l^D$. 
-The satisfaction relation between databases \db and literals is defined as usual: $\db \models a$ if $a\in\db$ and $\db \models \lnot a$ if $\db\not\models a$. 
+Propositional formulas are defined as usual: atoms are formulas, the negation of a formula is a formula, conjunction and disjunctions of formulas are formulas. 
+The satisfaction relation between databases \db and literals is defined as usual: 
+\begin{itemize}
+ \item $\db \models a$ if $a\in\db$,
+ \item $\db \models \lnot \varphi$ if $\db\not\models \varphi$,
+ \item $\db \models \varphi\lor\psi$ if $\db\models \varphi$ or $\db \models \psi$,
+ \item $\db \models \varphi\land\psi$ if $\db\models \varphi$ and $\db \models \psi$
+\end{itemize}
+for all atoms $a$ and all formulas $\varphi$ and $\psi$.
+
 
 An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
 Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$. Formally, $\add a$ transforms $\db$ into $\db\cup\{a\}$, and $\remove a $ transforms $\db$ into $\db\setminus\{a\}$.
@@ -20,14 +29,15 @@ These mappings naturally extend to sets of literals/actions.
   We call $l_1\land \dots \land l_n$ the \emph{body} of $r$, denoted $\body(r)$, and $\alpha_1\mid\dots \mid \alpha_k$ the head of $r$, denoted $\head (r)$.
 \end{definition}
 
-The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. An allowed fix is to execute one or more of the $\alpha_i$.''
+The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. 
+It is allowed to repair this inconsistency by executing execute one or more of the $\alpha_i$.''
 A set of AICs represents constraints a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms should only be changed if there is some rule that allows it. 
 
 
 An AIC is called \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
 \[\{l_1\land \dots\land l_n\aicrule \alpha_i\mid 1\leq i\leq k\}.\]
-It follows from the informal explanation above that we expect normalization to preserve semantics. Indeed, this is the case for most semantics of AICs -- the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which poses several other problems~\cite{tase/Cruz-FilipeEGN13}.
-In the current paper, we assume that \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can then be obtained through normalization, if needed.
+It follows from the informal explanation above that we expect normalization to preserve semantics. Indeed, this is the case for most semantics of AICs -- the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which also poses several other problems~\cite{tase/Cruz-FilipeEGN13}.
+In the current paper, we assume that \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can be obtained through normalization, if needed.
 
 \begin{definition}
  A set of update actions \UU is a \emph{weak repair} for \db and a set \aics of AICs (shortly, for $\fulldb$) if:

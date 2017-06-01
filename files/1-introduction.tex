@@ -77,7 +77,7 @@ As such, the merits of this paper are not just that we define new semantics for 
 By integrating active integrity constraints in AFT, we provide  solid foundations for applying a rich algebraic theory to AICs.
 For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16}. It remains to be researched how these algebraic modularity results relate to existing modularity results for AICs \cite{foiks/Cruz-Filipe14,iclp/Cruz-Filipe16}. 
 Similarly, AFT provides us with predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
-In view of the results from \citet{tplp/CaropreseT11}, our work also opens the way to applying AFT to revision programming.
+In view of the results from \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming.
 
 
 
@@ -86,18 +86,25 @@ In view of the results from \citet{tplp/CaropreseT11}, our work also opens the w
 % Following \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming. 
 
 % \luis{I once refereed a paper that included paragraphs with titles ``contribution'' and ``publication history'', and thought it was a really good idea, so I now usually include them in journal submissions.} BART: OK
-\bart{I would drop the contributions paragarph but keep the history paragraph. 
-I find that the header ``contribution'' breaks the flow of the story a little bit. and everything that``s in this paragraph is now also in the one above}
-\paragraph{Contributions}
-The main contribution of this work is a family of new semantics for AICs, based on a semantic operator for AICs, inspired by the immediate consequence operator for logic programs, and its three valued variant (Fitting's operator).
-We argue that these semantics more intuitively capture the intended semantics of AICs, and include results on the complexity of computing them.
-The results from this paper also shed a new light on the connection between active integrity constraints and logic programming. 
+% \bart{I would drop the contributions paragarph but keep the history paragraph. 
+% I find that the header ``contribution'' breaks the flow of the story a little bit. and everything that``s in this paragraph is now also in the one above}
+% \paragraph{Contributions}
+% The main contribution of this work is a family of new semantics for AICs, based on a semantic operator for AICs, inspired by the immediate consequence operator for logic programs, and its three valued variant (Fitting's operator).
+% We argue that these semantics more intuitively capture the intended semantics of AICs, and include results on the complexity of computing them.
+% The results from this paper also shed a new light on the connection between active integrity constraints and logic programming. 
+% 
+% 
+% Besides defining a new class of interesting semantics, our work provides solid foundations for applying a rich algebraic theory to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16}. It remains to be researched how these algebraic modularity results relate to existing modularity results for AICs \cite{foiks/Cruz-Filipe14,iclp/Cruz-Filipe16}. 
+% Similarly, AFT provides us with predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
+% In view of the results from \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming.
 
-
-Besides defining a new class of interesting semantics, our work provides solid foundations for applying a rich algebraic theory to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16}. It remains to be researched how these algebraic modularity results relate to existing modularity results for AICs \cite{foiks/Cruz-Filipe14,iclp/Cruz-Filipe16}. 
-Similarly, AFT provides us with predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
-In view of the results from \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming.
-
+The rest of this paper is structured as follows. In Section \ref{sec:prelims}, we provide preliminaries related to active integrity constraints. 
+In Section \ref{sec:grounded} we discuss the semantics of grounded repairs. While our definitions are derived from approximation fixpoint theory, their semantics can also be given without this machinery, hence we start with a direct definition. 
+Next, in Section \ref{sec:aft}, we give background on approximation fixpoint theory. 
+In Section \ref{sec:operator}, we define a semantic operator for AICs and show that its grounded fixpoints indeed correspond to grounded repairs, as defined in Section \ref{sec:grounded}.
+Next, we define an approximator of our operator in Section \ref{sec:approximator} and use it to derive more AFT-style semantics for AICs; we study how these semantics relate to existing semantics. 
+Afterwards, in Section \ref{sec:lp}, we discuss the relationship between our newly defined semantics and the equally-named semantics for logic programming. 
+In Section \ref{sec:complexity}, we study complexity of various tasks related to our newly defined semantics. We conclude in Section \ref{sec:concl}
 
 
 \paragraph{Publication history}
