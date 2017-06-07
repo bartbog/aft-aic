@@ -19,61 +19,7 @@ We are mostly concerned with consistent (also called partial or three-valued) in
 For such an interpretation, the atoms in $\struct_1$ are \emph{true} (\ltrue) in $\pstruct$, the atoms in $\struct_2\setminus\struct_1$ are \emph{unknown} (\lunkn) in $\pstruct$ and the other atoms are \emph{false} (\lfalse) in $\pstruct$. 
 If $\pstruct$ is a three-valued interpretation, and $\varphi$ a formula, we write $\varphi^\pstruct$ for the standard three-valued valuation based on the Kleene truth tables (see Figure \ref{fig:KT}). 
 
-\begin{figure}
-	\centering
-\begin{minipage}{0.3\linewidth}
-	\begin{tabular}{|cc"c|c|c|}
-\cline{1-5}
-\multicolumn{2}{|c"}{\multirow{2}{*}{{ $A\land B$} }}&\multicolumn{3}{c|}{B}\\
-% \cline{3-5}
 
-\multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
-\thickhline
-\multirow{3}{*}{A}&\ltrue &	\ltrue & \lfalse & \lunkn	\\
-\cline{2-5}
-&\lfalse	& \lfalse & \lfalse & \lfalse		\\
-\cline{2-5}
-&\lunkn 	& \lunkn& \lfalse & \lunkn 		\\
-\cline{1-5}
-	\end{tabular}
-\end{minipage}
-\begin{minipage}{0.3\linewidth}
-	\begin{tabular}{|cc"c|c|c|}
-\cline{1-5}
-\multicolumn{2}{|c"}{\multirow{2}{*}{{ $A\lor B$} }}&\multicolumn{3}{c|}{B}\\
-% \cline{3-5}
-
-\multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
-\thickhline
-\multirow{3}{*}{A}&\ltrue &	\ltrue & \ltrue & \ltrue	\\
-\cline{2-5}
-&\lfalse	& \ltrue & \lfalse & \lunkn		\\
-\cline{2-5}
-&\lunkn 	& \ltrue& \lunkn & \lunkn 		\\
-\cline{1-5}
-	\end{tabular}
-\end{minipage}
-\begin{minipage}{0.2\linewidth}
-	\begin{tabular}{|cc"c|}
-\cline{1-3}
-&&{{{ $ \lnot A$} }}\\
-% \cline{3-5}
-
-% \multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
-\thickhline
-\multirow{3}{*}{A}&\ltrue &	\lfalse\\
-\cline{2-3}
-&\lfalse	& \ltrue	\\
-\cline{2-3}
-&\lunkn 	& \lunkn 		\\
-\cline{1-3}
-	\end{tabular}
-\end{minipage}
-\caption{The Kleene truth tables \cite{Kleene38}.}
-\label{fig:KT}
-
-
-\end{figure}
 
 
 Several approximators have been defined for logic programs. The most common is Fitting's immediate consequence operator $\Psi_\PP$ \cite{tcs/Fitting02}, a direct
@@ -110,7 +56,7 @@ The proof of this theorem follows later, since it makes use of proposition \ref{
  Let $\PP$ be a normal logic program. The well-founded model of \PP coincides with the AFT-well-founded repair of $\langle \aicop(\PP),\emptyset\rangle$. 
 \end{corollary}
 
- While the operation $\aicop$ preserves (partial) stable, well-founded  fixpoints, it does not preserve grounded fixpoints or the Kripke-Kleene fixpoint (as the following two examples illustrate. In both cases, it is the intuition of \emph{inertia}, present in AICs but not in logic programs, that is responsible for the difference. 
+ While the operation $\aicop$ preserves (partial) stable, well-founded  fixpoints, it does not preserve grounded fixpoints or the Kripke-Kleene fixpoint (as the following two examples illustrate). In both cases, it is the intuition of \emph{inertia}, present in AICs but not in logic programs, that is responsible for the difference. 
 
  
 \begin{example}\label{ex:grounded}
@@ -156,7 +102,7 @@ However, adding a trivial rule
 
 \begin{proposition}\label{prop:lplink}
   Suppose that $\db=\emptyset$ and that the only update actions in \aics are of the form $\add a$.
-  Let $\lpop(\aics)$ denote the following logic program:  program
+  Let $\lpop(\aics)$ denote the following logic program:  
  \begin{align*}
   \lpop(\aics)=& \{a \lrule \nup(r)\mid r\in \aics, \head(r)= \add a\}\\
   &\cup \{a \lrule a\mid a \in \atoms\}

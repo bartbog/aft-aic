@@ -1,4 +1,4 @@
-In the following paragraph, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs, based on similar intuitions. 
+In this section, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs, based on similar intuitions. 
 
 
 % Now, with these definitions, we can rephrase the definition of the operator \Op.
@@ -30,7 +30,7 @@ In the following paragraph, we define an approximator for \Op and hence, obtain 
 % \label{fig:KT}
 % \end{figure}
 
-\paragraph{An Approximator for \Op}
+% \paragraph{An Approximator for \Op}
 
 A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$. A partial action set \UUU is \emph{two-valued} if $\UUU(\atoms)\subseteq\{\ltrue,\lfalse\}$; in this case, we identify $\UUU$ with the action set $\{\change a\mid \UUU(a)=\ltrue\}$. 
 The intended reading of such a mapping is that $\UUU(a)$ is true if $a$ is changed by $\UUU$, it is false if $a$ is not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
@@ -57,9 +57,66 @@ Given a partial database \tdb, a set of AICs \aics and an update action $\alpha$
 \begin{align*}
  \supp_{\tdb,\aics}(\alpha) &= \max_{\leq_t}\{\nup(r)^{\tdb}\mid r\in \aics \land \head(r) = \alpha\},
 \end{align*}
-where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula\footnote{Technically, $\nup(r)$ is a set of literal; we identify it with its conjunction here.} $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38}.
+where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula\footnote{Technically, $\nup(r)$ is a set of literal; we identify it with its conjunction here.} $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38} (see Figure~\ref{fig:KT}).
 \end{definition}
 % \luis{$\leq_t$ was not defined}
+
+\begin{figure}
+	\centering
+\begin{minipage}{0.3\linewidth}
+	\begin{tabular}{|cc"c|c|c|}
+\cline{1-5}
+\multicolumn{2}{|c"}{\multirow{2}{*}{{ $A\land B$} }}&\multicolumn{3}{c|}{B}\\
+% \cline{3-5}
+
+\multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
+\thickhline
+\multirow{3}{*}{A}&\ltrue &	\ltrue & \lfalse & \lunkn	\\
+\cline{2-5}
+&\lfalse	& \lfalse & \lfalse & \lfalse		\\
+\cline{2-5}
+&\lunkn 	& \lunkn& \lfalse & \lunkn 		\\
+\cline{1-5}
+	\end{tabular}
+\end{minipage}
+\begin{minipage}{0.3\linewidth}
+	\begin{tabular}{|cc"c|c|c|}
+\cline{1-5}
+\multicolumn{2}{|c"}{\multirow{2}{*}{{ $A\lor B$} }}&\multicolumn{3}{c|}{B}\\
+% \cline{3-5}
+
+\multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
+\thickhline
+\multirow{3}{*}{A}&\ltrue &	\ltrue & \ltrue & \ltrue	\\
+\cline{2-5}
+&\lfalse	& \ltrue & \lfalse & \lunkn		\\
+\cline{2-5}
+&\lunkn 	& \ltrue& \lunkn & \lunkn 		\\
+\cline{1-5}
+	\end{tabular}
+\end{minipage}
+\begin{minipage}{0.2\linewidth}
+	\begin{tabular}{|cc"c|}
+\cline{1-3}
+&&{{{ $ \lnot A$} }}\\
+% \cline{3-5}
+
+% \multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
+\thickhline
+\multirow{3}{*}{A}&\ltrue &	\lfalse\\
+\cline{2-3}
+&\lfalse	& \ltrue	\\
+\cline{2-3}
+&\lunkn 	& \lunkn 		\\
+\cline{1-3}
+	\end{tabular}
+\end{minipage}
+\caption{The Kleene truth tables \cite{Kleene38}.}
+\label{fig:KT}
+
+
+\end{figure}
+
 
 Using this notion, we define two additional values. 
 
@@ -79,7 +136,7 @@ Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as 
 
 \begin{example}
  Consider $\db=\emptyset$ and the following set $\aics$:
- \[\lnot a\land b \aicrule \add a\qquad a \land c\land d \aicrule\remove a.\]
+ \[\lnot a\land b \aicrule \add a\\  a \land c\land d \aicrule\remove a.\]
  Consider $\UUU = \{a\mapsto\ltrue,b\mapsto\ltrue, c\mapsto\ltrue, d\mapsto\lunkn\}$. 
  Then  $\suppin_{\db,\aics,\UUU}(a)=\ltrue$ and $\suppout_{\db,\aics,\UUU}(a)=\lunkn$. 
 \end{example}
@@ -233,8 +290,10 @@ We now illustrate these semantics by means of some examples.
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}
- \lnot a &\aicrule \add a &\lnot a \land \lnot b \land \lnot c &\aicrule \add c\\
- a \land \lnot b &\aicrule \add b & a \land c \land b &\aicrule \remove b
+ \lnot a &\aicrule \add a \\ 
+ \lnot a \land \lnot b \land \lnot c &\aicrule \add c\\
+ a \land \lnot b &\aicrule \add b \\
+ a \land c \land b &\aicrule \remove b
 \end{align*} with $\db = \emptyset$.
 Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
 \[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
@@ -265,7 +324,7 @@ Note that in this example, unfoundedness refinements take care of minimizations 
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}
- a \land \lnot b&\aicrule \add b &
+ a \land \lnot b&\aicrule \add b \\
  \lnot a \land b &\aicrule \add a \\
  \lnot a \land \lnot b \land \lnot c &\aicrule \add c
  \end{align*} with $\db = \emptyset$. Intuitively, we expect $\add c$ to be an element of ``good'' repairs, and (following the minimality of change principle), no other actions to be in ``good'' repairs. 
@@ -291,7 +350,7 @@ As can be expected, not every set of AICs has a two-valued well-founded repair. 
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}
- \lnot a \land \lnot b&\aicrule \add a &
+ \lnot a \land \lnot b&\aicrule \add a \\
  \lnot a \land \lnot b&\aicrule \add b\\
  a \land \lnot c &\aicrule \add c 
  \end{align*} with $\db = \emptyset$.
@@ -400,7 +459,7 @@ To see this, note that from the definition of $\Ap$, it follows that for each $j
 \begin{example}\label{ex:wf:wf}The converse of Proposition \ref{prop:wf-wf} does
 not hold. Consider for instance the following set $\aics$ of AICs (based on Example 18 of \citet{iclp/Cruz-Filipe16})
    \begin{align*}
-  \lnot a &\aicrule \add a &
+  \lnot a &\aicrule \add a \\
   \lnot a\land \lnot b &\aicrule \add b\\
   \lnot b \land \lnot c &\aicrule \add  c
  \end{align*}
@@ -541,7 +600,7 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
 \begin{example}\label{ex:justified_not_stable}
  The converse of Proposition \ref{prop:stable_is_justified} does not hold. Consider the following set \aics of AICs. 
  \begin{align*}
-  \lnot a &\aicrule \add a &
+  \lnot a &\aicrule \add a \\
   a\land \lnot b &\aicrule \add b\\
   a \land \lnot b &\aicrule \remove a
  \end{align*}

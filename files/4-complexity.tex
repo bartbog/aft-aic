@@ -5,43 +5,44 @@
 \todo{streamline section}
 
 
-
-\begin{theorem}
-  \label{thm:grounded-complexity}
-  Let $\db$ be a database and $\eta$ be a set of normal AICs over $\db$.
-  The problem of deciding whether there exist grounded repairs for $\fulldb$ is $\Sigma^P_2$-complete.
-\end{theorem}
-\begin{proof}
-  For membership, we need to show that we can decide the problem with a non-deterministic Turing machine with an NP oracle.
-  Given a set of update actions $\UU$, checking that it is a fixpoint of $\Op$ can be done in polynomial time on the size of $\db$ and $\eta$; the NP-oracle can then answer whether there exists $\UU'\subsetneq\UU$ with $\Op(\UU')\cap\UU\subseteq\UU'$, thereby establishing whether $\UU$ is grounded.
-
-  For hardness, we invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of~\cite{tplp/CaropreseT11}.
-  Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of~\mycite{GroundedFixpoints}.
-\end{proof}
-
-This result still holds if we allow a truly first-order syntax for AICs, where the atoms can include variables that are implictly universally quantified.
-\bart{vague...}
-
-
-
-
-
-
-
-
 We begin this section by stating an observation about the complexity of computing \Ap.
 All complexity results are in terms of the size of the database, \fulldb.
 % In the entire section, we assume $\aics$ and \atoms are finite. 
 \begin{proposition}
   \label{prop:At-poly}
-  \Ap is computable in polynomial time. % on the size of 
+  Given a partial action set \UUU, 
+  $\Ap(\UUU)$ is computable in polynomial time. % on the size of 
 \end{proposition}
 \begin{proof}
     The definition of \Ap only requires evaluating $\UUU(a)$, $\suppin_{\UUU}(a)$ and $\suppout_{\UUU}(a)$ for each $a\in\atoms$.
     In turn, the two last computations can be done in polynomial time: they require evaluating each literal in the body of each rule from $\eta$ with head $\add a$ or $\remove a$ and computing its truth value under the database updated by $\UUU$.
 \end{proof}
 
-As a consequence, we get the following complexity results.
+
+\begin{proposition}
+  \label{prop:grounded-complexity}
+  Let $\db$ be a database and $\eta$ be a set of normal AICs over $\db$.
+  The problem of deciding whether there exist grounded repairs for $\fulldb$ is $\Sigma^P_2$-complete.
+\end{proposition}
+\begin{proof}
+  For membership, we need to show that we can decide the problem with a non-deterministic Turing machine with an NP oracle.
+  Given a set of update actions $\UU$, checking that it is a fixpoint of $\Op$ can be done in polynomial time on the size of $\db$ and $\eta$; the NP-oracle can then answer whether there exists $\UU'\subsetneq\UU$ with $\Op(\UU')\cap\UU\subseteq\UU'$, thereby establishing whether $\UU$ is grounded.
+
+  For hardness, we invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of~\cite{tplp/CaropreseT11}.
+  Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of~\mycite{GroundedFixpoints}. \bart{We should prove (not just claim) that these grounded repairs are equal to grounded models. Should be doable with what we have from the previous section·}
+\end{proof}
+
+This result still holds if we allow a truly first-order syntax for AICs, where the atoms can include variables that are implictly universally quantified.
+\bart{vague... What do you mean here? }
+
+
+
+
+
+
+
+
+% As a consequence, we get the following complexity results.
 \begin{proposition}
   The Kripke-Kleene repair for $\fulldb$ is computable in polynomial time.
   \label{prop:KK-poly}

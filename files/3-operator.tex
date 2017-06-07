@@ -110,7 +110,14 @@ This result also gives some intuition regarding why founded repairs allow for ci
  On the other hand, assume $\UU$ is a grounded fixpoint of \Op and let $A$ be any subset of $\UU$ such that no rule $r$ with $\head(r)\in A$ has $\body(r)$ satisfied in $\UU'=\UU\setminus A$. We should show that $A=\emptyset$. Now, from the definition of $\Op$, it follows that $\Op(\UU')\cap A=\emptyset$ and thus that $\Op(\UU') \cap \UU \subseteq \UU'$. Since groundedness and strict groundedness coincide, $\UU$ is strictly grounded and thus, $\UU'=\UU$ and $A=\emptyset$ indeed. 
 \end{proof}
 
+The previous lemma illustrates that Lemma \ref{lem:justified} is not a coincidence at all. 
+Indeed, \mycitet{GroundedFixpoints} have already shown that all stable fixpoints of a given approximator are grounded and 
+\citet[Theorem~6]{tplp/CaropreseT11} showed that justified repairs are stable models of a given derived logic program. 
+In the following sections, we explore this relationship further: first, we define an approximator for \Op and as such obtain also a notion of stable repair. 
+Next, we will study the relationship between logic programs and AICs in depth. 
 
+
+\ignore{
 
 
 
@@ -278,3 +285,4 @@ This result still holds if we allow a truly first-order syntax for AICs, where t
 %%% mode: latex
 %%% TeX-master: "../AFT-semantics-AIC.tex"
 %%% End:
+}
