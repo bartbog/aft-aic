@@ -1,0 +1,156 @@
+Founded, well-founded and justified repairs were all introduced with the purpose of characterizing a class of repairs whose actions are supported (there is a reason for having them in the set), and that support is not circular; in particular, these repairs should be constructible ``from the ground up'', which was the motivation for defining well-founded repairs.
+However, all notions exhibit unsatisfactory examples: there exist founded repairs with circular support (see, e.g., Example \ref{ex:founded}) and repairs with no circular support that are not justified~\cite{CEGN13}. %; well-founded repairs, on the other hand, are not stratifiable~\cite{lcf:14}, which impacts their computation in practice.
+In this section, we introduce a new semantics, grounded repairs, aimed at directly tackling this issue. 
+
+Grounded repairs are motivated by Example \ref{ex:founded}, where we noticed that the definition of founded repairs does not manage to capture groups of self-supporting arguments. 
+Indeed, there the repair $\UU_1$ is founded. It consists of two actions, $\remove a$ and $\remove b$ such that whenever one of them is removed from $\UU_1$, there is an AIC whose body is violated and whose head is the action in question. 
+However, if we remove both of them simultaneously, we notice that no rule no longer applies. As such, we might conclude that these actions are ``self-supporting'': the only reason to have one of the two actions in the repair of our choice is because the other action is also in there. 
+Our definition of grounded (weak) repair is aimed directly at avoiding this kind of situations. 
+
+\begin{definition}\label{def:grounded}
+ A set of update actions \UU is \emph{grounded} with respect to $\fulldb$ if, for each $A \subseteq  \UU$, there is a rule  $r\in \aics$ with $\head(r)\in A$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus A$. A \emph{grounded (weak) repair} is a (weak) repair that is grounded.
+ \end{definition}
+  
+As can be seen, our definition of groundedness is a slight variant of the notion of foundedness: instead of only considering what happens if \emph{one} action is dropped from a proposed set of update actions, we consider arbitrary removals. 
+A first observation with respect to groundedness is that grounded weak repairs are always minimal, i.e., that each grounded weak repair is a repair. 
+\begin{lemma}
+ All grounded weak repairs of \fulldb are minimal. 
+\end{lemma}
+\begin{proof}
+ Suppose $\UU$ is a grounded weak repair and $\UU$ is not minimal, i.e., that there exists a $\VV\subsetneq \UU$ that is also a weak repair. 
+ Now, take $A = \UU\setminus \VV$ in the definition of grounded. Then $\VV = \UU\setminus A$. Since $\UU$ is grounded, there must exist a rule whose body is satisfied in $\UU$. However, this contradicts the fact  that $\VV$ is a weak repair. 
+\end{proof}
+Thus, the notion of grounded repair intrinsically embodies the principle of minimality of change, unlike other kinds of weak repairs previously defined.
+Furthermore, grounded repairs also embody the notion of ``support'' previously defined.
+
+
+
+\begin{lemma}
+  \label{lem:founded}
+  Let $\db$ be a database, $\eta$ be a set of AICs over $\db$ and $\UU$ be a grounded repair for $\fulldb$.
+  Then $\UU$ is both founded and well-founded.
+\end{lemma}
+\begin{proof}
+  Assume that $\UU$ is a grounded repair for $\fulldb$.
+  The fact that $\UU$ is founded follows immediately from the definitions of founded and grounded repairs. 
+  
+%   
+%   For each $\alpha\in\UU$, necessarily 
+%   
+%   
+%   $\Op(\UU\setminus\{\alpha\})\cap\UU\subsetneq(\UU\setminus\{\alpha\})$, which implies that $\alpha\in\Op(\UU\setminus\{\alpha\})$.
+%   By Lemma~\ref{lem:founded-char}, this implies that $\UU$ is founded.
+
+  Now, we show how to construct a sequence that illustrates that $\UU$ is well-founded. 
+  For this sequence, we start from $\UU_0=\emptyset$ and always set one $\UU_i = \UU_{i_1}\cup \{u_i\}$, where $u_i\in \UU$ is an arbitrary update action such that there is a rule $r\in \fulldb$ with $\head(r) = u_i$ and $\UU_{i-1}(\db)\models \body(r)$. By the definition of groundedness (taking $A=\UU\setminus \UU_{i-1}$) such $u_i$ always exists as long as $\UU_{i-1} \subsetneq \UU$. Hence, this sequence converges towards $\UU$ and indeed, $\UU$ is a well-founded repair. 
+%   
+%   
+%   until this is no longer possible.
+%   Letting $\UU'$ be the last constructed set, by construction both $\UU'\subseteq\UU$ and $\Op(\UU')\cap\UU\subseteq\UU'$ (otherwise we could proceed).
+%   Since $\UU$ is grounded, it cannot be the case that $\UU'\subsetneq\UU$, so $\UU=\UU'$ and it is thus a well-founded repair.
+\end{proof}
+
+
+\luis{check example, add new one here}
+However, the notion of grounded repair is strictly stronger than both of these: Example~\ref{ex:founded}, presented earlier, also shows that some forms of circular justifications are avoided by grounded repairs.
+\begin{example}[Example \ref{ex:founded} continued]
+  \label{ex:founded-gr}
+%   Recall the set of AICs from Example~\ref{ex:founded}, together with $\db=\{a,b\}$.
+  The repair $\UU_1=\{-a,-b\}$ is a founded repair that is not grounded: taking $A = \UU$ and thus $\UU'=\emptyset$, we notice that no rule with $\remove a$ or $\add a $ in the head has a body satisfied in $\UU'$. %satisfies $\Op(\UU')\cap\UU_1=\{+c\}\cap\UU_1=\emptyset\subseteq\UU'$.
+  The more natural repair $\UU_2=\{+c\}$ is also founded, and it is immediate to verify that it is also grounded.
+\end{example}
+
+
+Likewise, not all well-founded repairs are grounded. %, but not conversely.
+% \luis{check example}
+\begin{example}[Example \ref{ex:well-founded} continued]
+  Consider again $\eta$ from Example~\ref{ex:well-founded}, with $\db=\emptyset$.
+  As shown earlier, the two well-founded repairs for $\fulldb$ are $\UU_1=\{{+b},{+a}\}$ and $\UU_2=\{{+a},{+c}\}$.
+  We already observed that $\UU_2$ is not founded, so it cannot be grounded; indeed, taking $A = \{\add c\}, \UU'=\UU\setminus A = \{{+a}\}$ is a set of update actions such that no rule $r$ with $\head(r)\in A$ has its body satisfied in $\UU'$. %$\Op(\UU')\cap\UU_2=\{{+a},{+b}\}\cap\UU_2=\emptyset\subseteq\UU'$.
+\end{example}
+
+
+
+We thus have that grounded repairs are always founded and well-founded; the next example shows that they do not correspond to the intersection of those classes.
+
+\begin{example}\label{ex:founded:well-founded}
+  Consider the following set of AICs $\eta$.
+  \begin{align}
+    \neg a,\neg b&\supset{+a} \label{rfwf13}) \\
+    a,\neg b&\supset{+b} \label{rfwf14}) \\
+    \neg a,b&\supset{-b} \label{rfwf15}) \\
+    a,b,\neg c&\supset{+c} \label{rfwf16}) \\
+    a,\neg b,c&\supset{+b} \label{rfwf17}) \\
+    \neg a,b,c&\supset{+a}\label{rfwf18})
+  \end{align}
+  Let $\db=\emptyset$.
+  Then $\UU=\{{+a},{+b},{+c}\}$ is a repair for $\fulldb$: the first row of constraints requires ${+a}$ and ${+b}$ to be included in the database, and the second row states that no $2$-element subset of $\UU$ can be a repair.
+  Furthermore, $\UU$ is founded (the rules in the second row ensure that) and well-founded (starting with $\emptyset$, we are forced to apply rules \ref{rfwf13}, \ref{rfwf14} and \ref{rfwf16}, in that order).
+
+  However, $\UU$ is not grounded for $\Op$: if $\UU'=\{{+b}\}$, then $\UU'\subsetneq\UU$, but there is no rule $r$ with $\head(r)\in\{\add a, \add c\} $ whose body is satisfied in $\UU'$. %-$\Op(\UU')\cap\UU=\emptyset\cap\UU=\emptyset\subseteq\UU'$.
+\end{example}
+In this situation, $\UU$ might seem reasonable; however, observe that the support for its actions \emph{is} circular: it is the three rules in the second row that make $\UU$ founded, and none of them is applicable to $\db$.
+Also note that $\UU'(\db)$ is a database for which the given set $\eta$ behaves very awkwardly: the only applicable AIC tells us to remove $b$, but the only possible repair is actually $\{{+a},{+c}\}$.
+
+We do not feel that this example weakens the case for studying ground repairs, though: the consensual approach to different notions of repair is that they express \emph{preferences}.
+In this case, where $\fulldb$ admits no grounded repair, it is sensible to allow a repair in a larger class -- and a repair that is both founded and well-founded is a good candidate.
+The discussion in Section~8 of~\cite{tplp/CaropreseT11} already proposes such a ``methodology'': choose a repair from the most restrictive category (justified, founded, or any).
+We advocate a similar approach, but dropping justified repairs in favor of grounded repairs, and preferring well-founded to founded repairs.
+\bart{quite strong preferences expressed here... I would prefer to not be so explicit about which ones to prefer. Also, I find well-founded repairs very counterintuititve... }
+
+
+We now investigate the relation to justified repairs, and find that all justified repairs are grounded, but not conversely -- confirming our earlier claim that the notion of justified repair is too strong.
+
+\begin{lemma}
+  \label{lem:justified}
+  Let $\db$ be a database, and let $\eta$ be a set of normal AICs over $\db$. If $\UU$ is a justified repair for $\fulldb$, then $\UU$ is grounded.
+\end{lemma}
+\begin{proof}
+ Assume $\UU$ is a justified repair.. 
+  Take an arbitrary $A \subsetneq \UU$ and let $\UU'=\UU\setminus A$. 
+%   Let $\UU$ be a justified repair for $\fulldb$ and assume that $\UU'\subsetneq\UU$.
+  Then $\UU'\cup\neff(\UU)$ is not closed under $\eta$, whence there is a rule $r\in\eta$ such that $\actof(\nup(r))\subseteq\UU'\cup\neff(\UU)$ and $\head(r)\not\in\UU'\cup\neff(\UU)$.
+
+  Since $\UU'\subseteq\UU$, also $\actof(\nup(r))\subseteq\UU\cup\neff(\UU)$, whence $\head(r)\in\UU\cup\neff(\UU)$ as $\UU$ is closed under $\eta$.
+  But $\head(r)\not\in\UU'\cup\neff(\UU)$, so $\head(r)\in\UU\setminus\UU' = A $.
+
+  We need to show that also $\UU'\models\body(r)$. On the one hand, $\actof(\nup(r))\subseteq\UU'\cup\neff(\UU)$ implies that $\UU'(\db)\models\nup(r)$, as $\neff(\UU)\subseteq\neff(\UU')$; on the other hand, from $\head(r)\in\UU$ we know that $\litof(\head(r))^D\in\db$ (all actions in $\UU$ change $\db$), whence $\UU'(\db)\models\litof(\head(r)^D)$ since $\head(r)\not\in\UU'$.
+  As $r$ is normal, there are no more literals in $\body(r)$, so $\UU'(\db)\models\body(r)$. 
+  Hence, we have found a rule $r$ with $\head(r)\in A$, and $\UU'\models \body(r)$ which we needed in order to show that $\UU$ is grounded. %and therefore $\head(r)\in\Op(\UU')$.
+% 
+%   We thus conclude that $\Op(\UU')\cap\UU\not\subseteq\UU'$.
+%   By arbitrariness of $\UU'$, it follows that $\UU$ is grounded.
+\end{proof}
+This proof may look suspicious, as it does not use the hypothesis that $\UU$ is a repair.
+However, this is due to the fact that we only consider \emph{normal} AICs in this paper. Indeed, Theorem~4 of~\cite{tplp/CaropreseT11} shows that all justified weak repairs are minimal when $\eta$ contains only normal AICs.
+
+%%%%%%%%%%%%%%%%%%%%%%%%ùù
+
+
+
+Recall Example~\ref{ex:justified}, which was used by \citet{tase/Cruz-FilipeEGN13} to point out that justified repairs sometimes eliminate ``natural'' repairs.
+This example also shows that the notion of justified repair is also stricter than that of grounded repair.
+\begin{example}[Example~\ref{ex:justified} continued]
+%   Recall the set $\eta$ from Example~\ref{ex:justified}, with $\db=\{a,b\}$.
+  Although the repair $\UU=\{-a,-b\}$ for $\fulldb$ is not justified, it is grounded: if ${-a}\in\UU'\subsetneq\UU$, then there is a rule that derives $\remove b$; otherwise, there is a rule that derives $\remove a$. %$\Op(\UU')\cap\UU$ contains ${-b}\in\UU\setminus\UU'$, else $\Op(\UU')\cap\UU$ contains ${-a}\in\UU\setminus\UU'$.
+\end{example}
+As discussed earlier, in this case the first rule clearly motivates the action $-a$, and the last rule then requires $-b$.
+This is in contrast to Example~\ref{ex:founded}, where there was no clear reason to include either $-a$ or $-b$ in a repair.
+Hence grounded repairs avoid this type of unreasonable circularities, without being as restrictive as justified repairs.
+
+We summarize the relations between the different types of repairs in the following diagram.
+\[\xymatrix@R-1em@C+2em{%
+  \mathcal F \ar@{-}[dd]|{\neq} \ar@{-}[dr]|{\subsetneq} \\
+  & \mathcal G \ar@{-}[r]|{\subsetneq} & \mathcal J \\
+  \mathcal{WF} \ar@{-}[ur]|{\subsetneq}
+}
+\]
+\luis{referee suggested Venn chart, I have one somewhere}
+\bart{Add venn chart or legend}
+
+
+
+
+
+
+

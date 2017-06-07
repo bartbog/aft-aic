@@ -1,6 +1,34 @@
 %% \todo{Some complexity results.
 %% Probably: well-founded/KK: polynomially computable (data complexity), stable fixpoints: NP-complete, ... Copy results from logic programming basically. Similarly, complexity increases if we start using ultimate approximators}
 
+
+\todo{streamline section}
+
+
+
+\begin{theorem}
+  \label{thm:grounded-complexity}
+  Let $\db$ be a database and $\eta$ be a set of normal AICs over $\db$.
+  The problem of deciding whether there exist grounded repairs for $\fulldb$ is $\Sigma^P_2$-complete.
+\end{theorem}
+\begin{proof}
+  For membership, we need to show that we can decide the problem with a non-deterministic Turing machine with an NP oracle.
+  Given a set of update actions $\UU$, checking that it is a fixpoint of $\Op$ can be done in polynomial time on the size of $\db$ and $\eta$; the NP-oracle can then answer whether there exists $\UU'\subsetneq\UU$ with $\Op(\UU')\cap\UU\subseteq\UU'$, thereby establishing whether $\UU$ is grounded.
+
+  For hardness, we invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of~\cite{tplp/CaropreseT11}.
+  Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of~\mycite{GroundedFixpoints}.
+\end{proof}
+
+This result still holds if we allow a truly first-order syntax for AICs, where the atoms can include variables that are implictly universally quantified.
+\bart{vague...}
+
+
+
+
+
+
+
+
 We begin this section by stating an observation about the complexity of computing \Ap.
 All complexity results are in terms of the size of the database, \fulldb.
 % In the entire section, we assume $\aics$ and \atoms are finite. 

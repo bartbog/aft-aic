@@ -105,6 +105,15 @@ The correspondence between justified repairs and answer sets for particular logi
 However, since answer sets of a logic program are models of its Gelfond--Lifschitz transform, the corresponding characterization in terms would be as fixpoints of the corresponding operator for a similarly derived set of AICs, rather than of $\Op$.
 
 \subsection{Grounded fixpoints of $\Op$}
+\todo{lemma: agree}
+
+\todo{sheds new light on Lemma \ref{lem:}}:
+This result is not very surprising: justified weak repairs are answer sets of a particular logic program (Theorem 6 in~\cite{Caroprese2011}), and in turn answer sets of logic programs are grounded fixpoints of the consequence operator (see remark at the top of Section~5 in~\mycite{GroundedFixpoints}).
+However, the translation defined in~\cite{Caroprese2011} is from logic programs to databases with AICs (rather than the other way around), so Lemma~\ref{lem:justified} is \emph{not} a direct consequence of those results.
+Also, since grounded repairs can be built from the ground up, this result also establishes that justified repairs avoid circularity of support (a property that was claimed in~\cite{Caroprese2011}, but never formally discussed).
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Founded, well-founded and justified repairs were all introduced with the purpose of characterizing a class of repairs whose actions are supported (there is a reason for having them in the set), and that support is not circular; in particular, these repairs should be constructible ``from the ground up'', which was the motivation for defining well-founded repairs.
 However, all notions exhibit unsatisfactory examples: there exist founded repairs with circular support~\cite{Caroprese2011} and repairs with no circular support that are not justified~\cite{CEGN13}; well-founded repairs, on the other hand, are not stratifiable~\cite{lcf:14}, which impacts their computation in practice.

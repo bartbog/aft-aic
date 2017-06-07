@@ -3,6 +3,11 @@
 
 % Use the postscript times font!
 \usepackage{times}
+\usepackage[all]{xy}
+
+\renewcommand{\theequation}{\m{r_{\arabic{equation}}}}
+\newcommand\tref[1]{\m{\text{\ref{#1}}}}
+
 
 %OWN packages:
 \usepackage{multirow}
@@ -45,8 +50,10 @@ Lu\'\i s Cruz-Filipe was partially supported by the Danish Council for Independe
 \input{files/2-prelims.tex}
 
 \section{Grounded Repairs} \label{sec:grounded}
+\input{files/3-grounded}
 
 \section{Preliminaries: Lattices, Operators and Approximation Fixpoint Theory}\label{sec:aft}
+\input{files/3-aft}
 
 \section{AFT-style semantics for AICs}\label{sec:operator}
 \input{files/3-operator.tex}
