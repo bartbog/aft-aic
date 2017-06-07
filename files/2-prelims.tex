@@ -1,4 +1,5 @@
-\paragraph{Active Integrity Constraints}
+In this section we summarize previous work on active integrity constraints (AICs), including results developed by~\cite{ppdp/FlescaGZ04,iclp/CaropreseGSZ06,tplp/CaropreseT11,tase/Cruz-FilipeEGN13}.
+
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
 We say that $\lnot a$ is the \emph{dual} literal of $a$ and vice versa, and denote the dual of a literal $l$ by $l^D$. 
 Propositional formulas are defined as usual: atoms are formulas, the negation of a formula is a formula, conjunction and disjunctions of formulas are formulas. 
@@ -6,11 +7,11 @@ The satisfaction relation between databases \db and literals is defined as usual
 \begin{itemize}
  \item $\db \models a$ if $a\in\db$,
  \item $\db \models \lnot \varphi$ if $\db\not\models \varphi$,
- \item $\db \models \varphi\lor\psi$ if $\db\models \varphi$ or $\db \models \psi$,
+% \item $\db \models \varphi\lor\psi$ if $\db\models \varphi$ or $\db \models \psi$,
  \item $\db \models \varphi\land\psi$ if $\db\models \varphi$ and $\db \models \psi$
 \end{itemize}
 for all atoms $a$ and all formulas $\varphi$ and $\psi$.
-
+\luis{commented out disjunction: do we need it?}
 
 An \emph{update action} has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
 Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$. Formally, $\add a$ transforms $\db$ into $\db\cup\{a\}$, and $\remove a $ transforms $\db$ into $\db\setminus\{a\}$.
@@ -31,7 +32,8 @@ These mappings naturally extend to sets of literals/actions.
 
 The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. 
 It is allowed to repair this inconsistency by executing execute one or more of the $\alpha_i$.''
-An AIC represents a constraint a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms should only be changed if there is some rule that allows it. 
+An AIC represents a constraint a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms should only be changed if there is some rule that allows it.
+Furthermore, the only actions that are able to repair the inconsistency detected by the body of an AIC are those corresponding to the duals of its literals~\cite{iclp/CaropreseGSZ06}, hence we restrict the actions allowed in the head to these.
 
 
 An AIC is called \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
@@ -115,13 +117,13 @@ The following example is due to \citet{tase/Cruz-FilipeEGN13}.
   Consider the following set of AICs $\eta$, expressing that $a$ and $b$ are equivalent (and if this is not the case, then they should both become false) and that $c$ should be true whenever $a$ or $b$ is true.
   \begin{align}
     a\land\neg b &\supset{-a} \label{rf5} \\
-    a\land\neg c &\supset{+c} \label{rf7} \\
     \neg a\land b &\supset{-b} \label{rf6} \\
+    a\land\neg c &\supset{+c} \label{rf7} \\
     b\land\neg c &\supset{+c} \label{rf8} 
   \end{align}
   Suppose that the database is $\db=\{a,b\}$.
   There are two repairs for $\fulldb$: $\UU_1=\{{-a},{-b}\}$ and $\UU_2=\{{+c}\}$.
-  Intuitively, the rules suggest that $\UU_2$ should be the preferred repair, since it includes the action suggested by the only AICs that are not satisfied, and indeed $\UU_2$ is founded (removing its only element yields $\emptyset$, and as we observed both \ref{rf7} and \ref{rf8} provide support for ${+c}$ given the state of $\db$).
+  Intuitively, the rules suggest that $\UU_2$ should be the preferred repair, since it includes the action suggested by the only AICs that is not satisfied, and indeed $\UU_2$ is founded (removing its only element yields $\emptyset$, and as we observed both \ref{rf7} and \ref{rf8} provide support for ${+c}$ given the state of $\db$).
 
   However, $\UU_1$ is also a founded repair.
   If we remove ${-a}$ from $\UU_1$, we obtain $\UU'=\{{-b}\}$, and $\UU'(\db)=\{a\}$, where \ref{rf5} is applicable and ${-a}\in\head(\ref{rf5})$.
@@ -159,8 +161,8 @@ In the normalized case that we considered, all justified weak repairs are minima
   In the setting of Example~\ref{ex:founded}, the sets of non-updateable literals are as follows.
   \begin{align*}
     \nup(\ref{rf5}) &= \{\neg b\} \\
-    \nup(\ref{rf6}) &= \{\neg a\} \\
     \nup(\ref{rf7}) &= \{a\} \\
+    \nup(\ref{rf6}) &= \{\neg a\} \\
     \nup(\ref{rf8}) &= \{b\}
   \end{align*}
   The founded repair $\UU_1$ is not justified.
@@ -237,7 +239,8 @@ These relations were established by \citet{tase/Cruz-FilipeEGN13}, together with
   If $\UU$ is a justified weak repair for $\fulldb$, then $\UU$ is a well-founded weak repair for $\fulldb$.
 \end{lemma}
 
-\citet{tcs/MarekT98} defined in the context of revision programming \emph{the shifting property}; this property was later transferred to active integrity constraints \cite{tplp/CaropreseT11}. 
+We are also interested in discussing the \emph{shifting property}.
+Originally defined by \citet{tcs/MarekT98} in the context of revision programming, this property was later transferred to active integrity constraints \cite{tplp/CaropreseT11}. 
 Intuitively, a semantics for AICs possesses the shifting property if uniformly replacing some literals with their duals
 preserves the semantics at hand, i.e., if the semantics treats truth and falsity of elements in the database symmetrically.
 
@@ -252,3 +255,8 @@ preserves the semantics at hand, i.e., if the semantics treats truth and falsity
 \end{definition}
 
 If a semantics has the shifting property, then we can reduce any situation to the case $\db=\emptyset$ by taking $S=\db$. 
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "../AFT-semantics-AIC"
+%%% End: 
