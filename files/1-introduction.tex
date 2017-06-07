@@ -1,5 +1,5 @@
 One of the key components of modern-day databases are integrity constraints: logical formulas that specify semantic relationships between the data being modeled that have to be satisfied at all times.
-When the database is changed (typically by updating), it is necessary to check if its integrity constraints still hold; in the negative case, the database must be repaired.
+When the database is changed (typically due to updating), it is necessary to check if its integrity constraints still hold; in the negative case, the database must be repaired.
 
 The problem of database repair has been an important topic of research for more than thirty years~\cite{icdt/Abiteboul88}.
 There are two major problems when deciding how to repair an inconsistent database: \emph{finding} possible repairs and \emph{choosing} which one to apply.
@@ -27,43 +27,46 @@ These repairs can be computed \longpaper{directly }by means of tree algorithms\l
 %% lcf: not sure what to include from this list of references
 %% Defining a natural semantics for such AICs has been a topic of intensive research \cite{iclp/CaropreseGSZ06,sebd/MolinaroGC06,iclp/CaropreseTZ07,dasfaa/CaropreseGM07,iclp/CaropreseT08,tkde/CaropreseGZ09,tplp/CaropreseT11,iclp/Cruz-Filipe16}. 
 
-It is striking that many intuitions about \longpaper{what }``good'' repairs\longpaper{ are}, such as minimality of change, are similar to intuitions that surfaced in other domains of non-monotonic reasoning, such as logic programming \mycite{LP} and default logic \mycite{DL}. 
+It is striking that many intuitions about what ``good'' repairs are, such as minimality of change, are similar to intuitions that surfaced in other domains of non-monotonic reasoning, such as logic programming \mycite{LP} and default logic \mycite{DL}. 
 % For instance \todo{minimality} of change \cite{}, ... 
 Still, it has been hard to find satisfying semantics for AICs.
 %\todo{list some problems.}
-As shown by~\citet{tase/Cruz-FilipeEGN13}, the semantics of so-called \emph{founded repairs}~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia, while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs\longpaper{ in some cases}.
-That work proposed the operational semantics of well-founded repairs, which however is not modular~\cite{foiks/Cruz-Filipe14} and therefore \longpaper{severely }restricted in its practical applicability.
+As shown by~\citet{tase/Cruz-FilipeEGN13}, the semantics of so-called \emph{founded repairs}~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia, while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs in some cases.
+That work proposed the operational semantics of well-founded repairs, which however is not modular~\cite{foiks/Cruz-Filipe14} and is therefore severely restricted in its practical applicability.
 
 % Essentially, fixing similar problems as in other NMR domains... 
 
+In this work, we begin by defining a new class of semantics for AICs that avoids these problems: \emph{grounded repairs}.
+Grounded repairs are natural counterparts to existing semantics in various non-monotonic reasoning domains, and we discuss how they to other semantics for AICs.
+We also argue that grounded repairs match our intuitions regarding AICs on a broad set of examples. 
 
-In this work, we define a new class of semantics for AICs that are natural counterparts of existing semantics in various non-monotonic reasoning domains. 
-To achieve this, we associate with each set of AICs a semantic operator. This operator immediately induces a couple of semantics:
+We then give a more abstract characterization of the different semantics for AICs by associating with each set of AICs $\eta$ a semantic operator $\Op$.
+This operator immediately induces a couple of semantics:
 \newcounter{hereiam}
 \begin{enumerate}
- \item \emph{weak repairs}  are \emph{fixpoints} of the operator; 
- \item \emph{repairs} are \emph{minimal fixpoints} of the operator; 
- \item \emph{grounded repairs} are \emph{grounded fixpoints} \mycite{GroundedFixpoints} of the operator. 
+ \item \emph{weak repairs}  are \emph{fixpoints} of $\Op$; 
+ \item \emph{repairs} are \emph{minimal fixpoints} of $\Op$; 
+ \item \emph{grounded repairs} are \emph{grounded fixpoints} \mycite{GroundedFixpoints} of $\Op$. 
  \setcounter{hereiam}{\value{enumi}}
 \end{enumerate}
-The former two are existing semantics for AICs that are recovered here in an operator-based fashion. The latter is a new semantics. We study how this semantics relates to existing semantics and argue that it corresponds with intuitions regarding AICs on a broad set of examples. 
+The first two semantics are pre-existing semantics for AICs that we recover in an operator-based fashion.
 
-Next, we define a three-valued variant of our operator. In the terminology of \emph{approximation fixpoint theory (AFT)} \cite{\refto{AFT}} our three-valued operator is an \emph{approximator} of the original semantic operator. 
-Given such an approximator, AFT induces a couple more semantics: 
+Next, we define a three-valued variant of $\Op$. In the terminology of \emph{approximation fixpoint theory (AFT)} \cite{\refto{AFT}} our three-valued operator is an \emph{approximator} of the original semantic operator.
+Given such an approximator $\Ap$, AFT induces a couple more semantics: 
 \begin{enumerate}    \setcounter{enumi}{\value{hereiam}}
-\item the \emph{Kripke-Kleene repair} is the \emph{Kripke-Kleene fixpoint} of the approximator; 
-\item the \emph{AFT-well-founded repair} is the \emph{well-founded fixpoint} of the approximator; 
-\item  \emph{(partial) stable repairs} are \emph{(partial) stable fixpoints} of the operator;
+\item the \emph{Kripke-Kleene repair} is the \emph{Kripke-Kleene fixpoint} of $\Ap$; 
+\item the \emph{AFT-well-founded repair} is the \emph{well-founded fixpoint} of $\Ap$; 
+\item  \emph{(partial) stable repairs} are \emph{(partial) stable fixpoints} of $\Ap$;
 % \item a Kripke-Kleene fixpoint semantics, and 
-\item  \emph{partial grounded repairs} are \emph{partial grounded fixpoints} of the operator. % semantics. %\bart{drop? non-classical} 
+\item  \emph{partial grounded repairs} are \emph{partial grounded fixpoints} of $\Ap$. % semantics. %\bart{drop? non-classical} 
 \end{enumerate} 
-We study properties of these new semantics and study how they compare to existing semantics. 
+We again study properties of these new semantics and study how they compare to existing semantics. 
 Furthermore, we argue that, from a practical point of view, the AFT-style well-founded semantics is very valuable. 
 Indeed, we show that this semantics can be computed in polynomial time, and that, on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
 
-Approximation fixpoint theory, the framework we use to define our semantics, was first defined by Denecker, Marek and Truszczy\'nski (henceforth referred to as DMT) (\citeyear{DeneckerMT00}). 
+Approximation fixpoint theory, the framework we use to define our semantics, was first defined by Denecker, Marek and Truszczy\'nski, henceforth referred to as DMT (\citeyear{DeneckerMT00}).
 It is a general algebraical study of logics with a fixpoint semantics. 
-\citetDMT{DeneckerMT00} developed this theory after discovering analogies in the semantics of logic programming \mycite{LP}, AEL \cite{mo85} and  default logic (DL) \cite{ai/Reiter80}.
+\citetDMT{DeneckerMT00} developed this theory after discovering analogies in the semantics of logic programming \mycite{LP}, AEL \cite{mo85} and default logic, which we will abbreviate to DL \cite{ai/Reiter80}.
 Their theory defines different types of fixpoints for a so-called approximating operator.
 In the context of logic programming, they showed that Fitting's (three- or four-valued) immediate consequence operator is an approximator of the two-valued immediate consequence operator and that its different types of fixpoints correspond exactly with the  major, equally named, semantics of logic programs. 
 They identified  approximating operators for default logic and autoepistemic logic and showed that AFT induces all main and some new semantics in these fields \cite{DeneckerMT03}. 
@@ -71,7 +74,7 @@ Moreover, this work unified DL and AEL in a deep sense.
 They showed that Konolige's mapping from DL to AEL \cite{Konolige88} preserves the approximating operator and hence, preserves all of the types of semantics.  
 Thus, DL can (and should) be viewed as a fragment of AEL under Konolige's embedding and an old research question was resolved \cite{nonmon30/DeneckerMT11}. 
 Recently, \citet{journals/ai/Strass13} showed that also the major semantics of Dung's argumentation frameworks \mycite{AF} and abstract dialectical frameworks \mycite{ADF} can be characterized using AFT. 
-Nowadays, AFT is used for various purposes.  These purposes include defining extensions of logic programming \cite{lpnmr/AnticEF13}, defining new logics \cite{iclp/BogaertsVDV14}, integrating different formalisms \cite{RR/BiJF14}, studying complexity \cite{kr/StrassW14}, and studying modularity and predicate introduction for logics with a fixpoint semantics in a uniform way \cite{tocl/VennekensGD06,VennekensMWD07a,VennekensMWD07b}. 
+Nowadays, AFT is used for various purposes, including defining extensions of logic programming \cite{lpnmr/AnticEF13}, defining new logics \cite{iclp/BogaertsVDV14}, integrating different formalisms \cite{RR/BiJF14}, studying complexity \cite{kr/StrassW14}, and studying modularity and predicate introduction for logics with a fixpoint semantics in a uniform way \cite{tocl/VennekensGD06,VennekensMWD07a,VennekensMWD07b}. 
 
 As such, the merits of this paper are not just that we define new semantics for AICs. 
 By integrating active integrity constraints in AFT, we provide  solid foundations for applying a rich algebraic theory to AICs.
@@ -99,18 +102,19 @@ In view of the results from \citet{tplp/CaropreseT11}, our work also paves the w
 % In view of the results from \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming.
 
 The rest of this paper is structured as follows. In Section \ref{sec:prelims}, we provide preliminaries related to active integrity constraints. 
-In Section \ref{sec:grounded} we discuss the semantics of grounded repairs. While our definitions are derived from approximation fixpoint theory, their semantics can also be given without this machinery, hence we start with a direct definition. 
+In Section \ref{sec:grounded} we discuss the semantics of grounded repairs. While our definitions are motivated from approximation fixpoint theory, their semantics can also be given without this machinery, hence we start with a direct definition. 
 Next, in Section \ref{sec:aft}, we give background on approximation fixpoint theory. 
 In Section \ref{sec:operator}, we define a semantic operator for AICs and show that its grounded fixpoints indeed correspond to grounded repairs, as defined in Section \ref{sec:grounded}.
 Next, we define an approximator of our operator in Section \ref{sec:approximator} and use it to derive more AFT-style semantics for AICs; we study how these semantics relate to existing semantics. 
 Afterwards, in Section \ref{sec:lp}, we discuss the relationship between our newly defined semantics and the equally-named semantics for logic programming. 
-In Section \ref{sec:complexity}, we study complexity of various tasks related to our newly defined semantics. We conclude in Section \ref{sec:concl}
+In Section \ref{sec:complexity}, we study complexity of various tasks related to our newly defined semantics. We conclude in Section \ref{sec:concl}.
 
 
 \paragraph{Publication history}
 The semantic operator for grounded AICs and the resulting semantics of grounded repairs were originally proposed by \citet{iclp/Cruz-Filipe16}.
 The approximator for this operator and its properties were introduced by \citet{ijcai/BogaertsC17}.
 Our current work combines results from those conference papers and extends it with proofs and a detailed analysis of the connection between the approximation semantics for AICs and logic programming.
+\luis{anything else?}
 
 % To establish this relationship, we define a family of new semantics for AICs with some desirable properties:
 % \begin{compactitem}
@@ -136,10 +140,6 @@ Our current work combines results from those conference papers and extends it wi
 % \end{compactitem}
 %  
 
-
-%\luis{Despite all the information in the background, I guess one can only understand this if one already knows something about AFT. We should state it explicitly in the beginning.}
-%\bart{You mean in the beginning of the example or of the paper?}
-%\luis{I guess in the beginning of the paper... just prepare people psychologically so that they won't be scared off too easily :-)}
 
 %%% Local Variables: 
 %%% mode: latex
