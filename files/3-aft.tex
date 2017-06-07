@@ -13,6 +13,11 @@ As is custom, we sometimes call a greatest lower bound a \emph{meet}, and a leas
 % A chain complete poset has a least element $\bot$. 
 A complete lattice has both a least element $\bot$ and a greatest element $\top$. 
 
+A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other, a bounded lattice
+is \emph{complemented} if every element $x\in L$ has a complement: an element $\lnot x \in L$
+satisfying $x\land \lnot x = \bot $ and $x\lor \lnot x = \top$. A \emph{Boolean lattice} is a distributive
+complemented lattice.
+
 Since we apply our results to (finite) databases, for the sake of simplicity we assume $L$ to be \emph{finite} in this text. All presented results easily generalize to the infinite setting as well. 
 
 % A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other. A bounded lattice is \emph{complemented} if every element $x\in L$ has a \emph{complement}: an element $\lnot x \in L$ satisfying $x\land \lnot x  = \bot$ and $x\lor \lnot x =\top$.
@@ -41,17 +46,15 @@ the limit (the least upper bound) of the increasing sequence $(x_i)_{i \in \nat}
 % \end{itemize}
 
 
-\mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if, for each $v\in L$ such that $O(v\land x)\leq v$, it holds that $x\leq v$. Later, they generalized this notion to \emph{partial} grounded fixpoints \mycite{PartialGroundedFixpoints}. 
+\mycitet{GroundedFixpoints} called a point  $x\in L$ \emph{grounded} for $O$ if, for each $v\in L$ such that $O(v\land x)\leq v$, it holds that $x\leq v$. They called a point $x\in L$ \emph{strictly grounded} if there does not exist a $y$ such that $y<x$, and $O(y)\land x \leq y$. 
 %   They called a point $x\in L$ \emph{strictly grounded} for $O$ if there is no $v\in L$ such that $v<x$ and $O(v)\land x \leq v$.
 They explained the intuition underlying these concepts under the assumption that the elements of $L$ are sets of ``facts'' of some kind and the $\leq$ relation is the subset relation between such sets:
 in this case, a point $x$ is grounded if it contains only facts that are sanctioned by the operator $O$, 
 in the sense that if we remove them from $x$, then the operator will add at least one of them again. 
+\citet{phd/Bogaerts15} showed that for Boolean lattices the notions of groundedness and strict groundedness coincide. In this paper, all lattices of our application are Boolean, hence we use both notions interchangeably.
 % They also called a point $x\in L$ \emph{
 % They showed that for Boolean lattices, the notions of \emph{groundedness} and \emph{strict groundedness} coincide. 
 % In this text, we are only concerned with Boolean lattices and hence freely switch between the two definitions. 
-
-\luis{do we want to talk about strictly grounded and grounded and that they coincide in our context? I used both characterizations in the ICLP stuff, so it's probably better}
-
 
 \paragraph{Approximation Fixpoint Theory}
 
@@ -87,6 +90,7 @@ AFT studies fixpoints of $O$ using fixpoints of $A$.
 \item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:x\mapsto A(x,y)_1$ and analogously for $A(x,\cdot)_2$. 
 \item The \emph{$A$-well-founded fixpoint} is the least precise partial $A$-stable fixpoint. 
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
+\item A \emph{partial $A$-grounded fixpoint} is a consistent pair $(x,y)$ such that whenever $A(x\land v, y\land v)_2 \leq v$, also $y\leq v$. 
  \end{itemize}
 
 The $A$-Kripke-Kleene fixpoint of $O$ can be constructed as the limit of any monotone induction of $A$. 
@@ -101,7 +105,7 @@ An \emph{$A$-refinement} of $(x,y)$ is a pair $(x',y')\in L^2$ satisfying one of
 An $A$-refinement is \emph{strict} if $(x,y)\neq (x',y')$.
 \end{definition}
 
-We call the first type (\ref{first}.) of refinements \emph{application refinements} and the second type (\ref{second}.) \emph{unfoundedness refinements}. If $(x',y')$ is an $A$-refinement of $(x,y)$ and $A$ is clear from the context, we often write $(x,y)\to(x',y')$.
+We call the first type (\textbf{\ref{first}}) of refinements \emph{application refinements} and the second type (\textbf{\ref{second}}) \emph{unfoundedness refinements}. If $(x',y')$ is an $A$-refinement of $(x,y)$ and $A$ is clear from the context, we often write $(x,y)\to(x',y')$.
 %
 % \nomenclature[alp]{$\alpha,\beta$}{Ordinal numbers}
 % \nomenclature[lam]{$\lambda$}{A limit ordinal}
@@ -124,7 +128,7 @@ For a given approximator $A$, there are many different terminal well-founded ind
 \citet{lpnmr/DeneckerV07}  showed that they all have the same limit, which equals the $A$-well-founded fixpoint of $O$. Furthermore, if $A$ is symmetric, then the $A$-well-founded fixpoint of $O$ (in fact, every tuple in a well-founded induction of $A$) is consistent.
 % Well-founded inductions that only use the first sort of refinement converge to the $A$-Kripke-Kleene fixpoint. 
 
-\todo{Include section on ultimate approximators?}
+% \todo{Include section on ultimate approximators?}
 % The precision order can be pointwise extended to the family of approximators of $O$. It then follows that more precise approximators have a more precise well-founded fixpoint and that they have more stable fixpoints. 
 % \cite{DeneckerMT04} showed that there exists a most precise approximator, $U_O$, called the ultimate approximator of $O$. 
 % This operator is defined by \[U_O: L^c\to L^c: (x,y)\mapsto (\bigand O([x,y]), \bigor O([x,y])).\]
