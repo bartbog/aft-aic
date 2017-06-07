@@ -1,6 +1,6 @@
 In this section we show how a set of normal AICs induces an operator on a suitably defined lattice.
 
-\subsection{The operator $\Op$}
+% \subsection{The opera	tor $\Op$}
 
 Given a fixed database $\db$, we are interested in the sets of update actions $\UU$ such that:
 \begin{enumerate}
@@ -44,23 +44,21 @@ The resulting set may contain less update actions than the number of such rules,
 \luis{There was a comment about defining this with $\nup(r)$ instead. I'm not sure this is correct.}
 
 \luis{add example here}
-%% \begin{example}
-%%   Consider again the set of AICs $\eta$ from Example~\ref{ex:repairs}, where
-%%   $\DB=\{a,b\}$.
-%%   Then $\TT(\emptyset)=\{\{{-a}\},\{{-b}\},\{{-a},{-b}\}\}$: the bodies of both rules are
-%%   satisfied in $\DB$, and we can choose $-a$ from the heads of both, $-b$ from the heads
-%%   of both, or $-a$ from one and $-b$ from the other.
-%% \end{example}
+\begin{example}[Example \ref{ex:repairs} continued]
+  Consider again the set of AICs $\eta$ from Example~\ref{ex:repairs}, where
+  $\db=\{a,b\}$.
+  Then $\Op(\emptyset)=\{\remove a, \remove b\}$. Indeed, the bodies of all rules are satisfied; hence all heads are ``added'' to $\emptyset$. 
+\end{example}
 
 The syntactic restrictions on AICs guarantee that the set $\Op^\db(\UU)$ is always consistent: if $\{+a,-a\}\subseteq\Op^\db(\UU)$, then there are rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible.
 In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
 
-The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded and well-founded sets of update actions.
+The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded, well-founded and grounded sets of update actions.
 
 \begin{lemma}
   \label{lem:weak-repair}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a set of update actions.
-  Then $\UU$ is a weak repair for $\fulldb$ iff $\UU$ is a fixpoint of $\Op$.
+  Then $\UU$ is a weak repair for $\fulldb$ if and only if $\UU$ is a fixpoint of $\Op$.
 \end{lemma}
 \begin{proof}
   If $\UU$ is a weak repair for $\fulldb$, then $\UU(\db)\not\models\body(r)$ for all $r\in\eta$, whence $\Op(\UU)=\UU$.
@@ -70,21 +68,21 @@ The operator $\Op$ provides alternative characterizations of the notions of weak
 \begin{lemma}
   \label{lem:repair}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a set of update actions.
-  Then $\UU$ is a repair for $\fulldb$ iff $\UU$ is a minimal fixpoint of $\Op$.
+  Then $\UU$ is a repair for $\fulldb$ if and only if $\UU$ is a minimal fixpoint of $\Op$.
 \end{lemma}
 \begin{proof}
-  Direct from Lemma~\ref{lem:weak-repair} and the definition of repair.
+  Follows directly from Lemma~\ref{lem:weak-repair} and the definition of repair.
 \end{proof}
 
 \begin{lemma}
   \label{lem:founded-char}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a consistent set of update actions.
-  Then $\UU$ is founded with respect to $\fulldb$ iff, for all $\alpha\in\UU$, it is the case that $\alpha\in\Op(\UU\setminus\{\alpha\})$.
+  Then $\UU$ is founded with respect to $\fulldb$ if and only if, for all $\alpha\in\UU$, it is the case that $\alpha\in\Op(\UU\setminus\{\alpha\})$.
 \end{lemma}
 \begin{proof}
-  An action $\alpha\in\UU$ is founded iff there is a rule $r\in\eta$ such that $\UU(\db)\models\body(r)\setminus\{\alpha^D\}$.
+  An action $\alpha\in\UU$ is founded if and only if there is a rule $r\in\eta$ such that $\UU(\db)\models\body(r)\setminus\{\alpha^D\}$.
   This is equivalent to saying that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$.
-  But, by definition of $\Op$, we have $\alpha\in\Op(\UU\setminus\{\alpha\})$ iff there is a rule $r\in\eta$ such that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$, which concludes the proof.
+  But, by definition of $\Op$, we have $\alpha\in\Op(\UU\setminus\{\alpha\})$ if and only if there is a rule $r\in\eta$ such that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$, which concludes the proof.
 
   Consistency of $\UU$ is needed for the direct implication, as $\alpha$ is only added to $\UU\setminus\{\alpha\}$ by $\Op$ if that set does not already contain $\alpha^D$.
 \end{proof} 
@@ -94,15 +92,34 @@ This result also gives some intuition regarding why founded repairs allow for ci
 \begin{lemma}
   \label{lem:wf}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a weak repair for $\fulldb$.
-  Then $\UU$ is well-founded iff there is an ordering $\alpha_1,\ldots,\alpha_n$ of the elements of $\UU$ such that $\alpha_i\in\Op(\{\alpha_1,\ldots,\alpha_{i-1}\})$ for each $i=1,\ldots,n$.
+  Then $\UU$ is well-founded if and only if there is an ordering $\alpha_1,\ldots,\alpha_n$ of the elements of $\UU$ such that $\alpha_i\in\Op(\{\alpha_1,\ldots,\alpha_{i-1}\})$ for each $i=1,\ldots,n$.
 \end{lemma}
 \begin{proof}
   If $\UU$ is well-founded, then the ordering is given by the sequence of actions introduced at each node in the path, in the well-founded repair tree for $\fulldb$, going from the root to the node with label $\UU$.
   Conversely, if $\UU$ can be obtained in the manner described, then it defines a valid path in that same tree ending at a leaf.
 \end{proof}
 
+
+
+\begin{lemma}
+ Let $\db$ be a database and $\eta$ a set of AICs over \db. A set of update actions $\UU$ is a grounded repair of \fulldb if and only if $\UU$ is a grounded fixpoint of \Op. 
+\end{lemma}
+\begin{proof}
+ First suppose \UU is a grounded repair of \fulldb. From Lemma \ref{lem:repair}, it follows that $\UU$ is a fixpoint of $\Op$. Suppose that $\UU$ is not a \emph{grounded} fixpoint of \Op. This means that there exists a set of update actions $V$ such that $\Op(\UU\cap V) \subseteq V$ and $\UU \not \subseteq V$. Taking $A=\UU\setminus V$, and $\UU'=\UU\setminus A$, we find that $\Op(\UU') \cap A = \emptyset$. This means (following the definition of \Op) that there is no rule whose body is satisfied  that derives an element of $A$ in $\UU'$. Since $\UU$ is a grounded repair, we arrive at a contradiction. 
+ 
+ On the other hand, assume $\UU$ is a grounded fixpoint of \Op and let $A$ be any subset of $\UU$ such that no rule $r$ with $\head(r)\in A$ has $\body(r)$ satisfied in $\UU'=\UU\setminus A$. We should show that $A=\emptyset$. Now, from the definition of $\Op$, it follows that $\Op(\UU')\cap A=\emptyset$ and thus that $\Op(\UU') \cap \UU \subseteq \UU'$. Since groundedness and strict groundedness coincide, $\UU$ is strictly grounded and thus, $\UU'=\UU$ and $A=\emptyset$ indeed. 
+\end{proof}
+
+
+
+
+
+
+
 The correspondence between justified repairs and answer sets for particular logic programs~\cite{Caroprese2011} shows that justified repairs can also be characterized in a related manner.
 However, since answer sets of a logic program are models of its Gelfond--Lifschitz transform, the corresponding characterization in terms would be as fixpoints of the corresponding operator for a similarly derived set of AICs, rather than of $\Op$.
+
+
 
 \subsection{Grounded fixpoints of $\Op$}
 \todo{lemma: agree}

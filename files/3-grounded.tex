@@ -8,7 +8,7 @@ However, if we remove both of them simultaneously, we notice that no rule no lon
 Our definition of grounded (weak) repair is aimed directly at avoiding this kind of situations. 
 
 \begin{definition}\label{def:grounded}
- A set of update actions \UU is \emph{grounded} with respect to $\fulldb$ if, for each $A \subseteq  \UU$, there is a rule  $r\in \aics$ with $\head(r)\in A$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus A$. A \emph{grounded (weak) repair} is a (weak) repair that is grounded.
+ A set of update actions \UU is \emph{grounded} with respect to $\fulldb$ if, for each non-empty $A \subseteq  \UU$, there is a rule  $r\in \aics$ with $\head(r)\in A$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus A$. A \emph{grounded (weak) repair} is a (weak) repair that is grounded.
  \end{definition}
   
 As can be seen, our definition of groundedness is a slight variant of the notion of foundedness: instead of only considering what happens if \emph{one} action is dropped from a proposed set of update actions, we consider arbitrary removals. 
