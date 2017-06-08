@@ -1,7 +1,7 @@
 \paragraph{Lattices, Operators and Fixpoints}
 A \emph{partially ordered set (poset)} $\langle L,\leq\rangle$ is a set $L$ equipped with a partial order $\leq$, i.e., a reflexive, antisymmetric, transitive relation. 
 As usual, we write $x<y$ as abbreviation for $x\leq y \land x\neq y$.
-If $S$ is a subset of $L$, then $x$ is an \emph{upper bound}, respectively a \emph{lower bound} of $S$ if for every $s\in S$, it holds that $s\leq x$, respectively $x\leq s$. 
+If $S$ is a subset of $L$, then $x$ is an \emph{upper bound} (respectively a \emph{lower bound}) of $S$ if for every $s\in S$, it holds that $s\leq x$ (resp.\ $x\leq s$).
 An element $x$ is a \emph{least upper bound} (respectively \emph{greatest lower bound} of $S$) if it is an upper bound that is smaller than every other upper bound (resp.\ a lower bound that is greater than every other lower bound).
 If $S$ has a least upper bound (resp.\ a greatest lower bound) we denote it $\lub(S)$ (resp.\ $\glb(S)$).
 As is custom, we sometimes call a greatest lower bound a \emph{meet}, and a least upper bound a \emph{join} and use the related notations $\bigand S = \glb(S)$, $x\land y=\glb(\{x,y\})$, $\bigor S = \lub(S)$ and $x\lor y=\lub(\{x,y\})$.
@@ -13,8 +13,8 @@ As is custom, we sometimes call a greatest lower bound a \emph{meet}, and a leas
 % A chain complete poset has a least element $\bot$. 
 A complete lattice has both a least element $\bot$ and a greatest element $\top$. 
 
-A lattice is \emph{distributive} if $\land$ and $\lor$ distribute over each other, a bounded lattice
-is \emph{complemented} if every element $x\in L$ has a complement: an element $\lnot x \in L$
+A lattice $L$ is \emph{distributive} if $\land$ and $\lor$ distribute over each other, i.e.~$x\land(y\lor z)=(x\land y)\lor(x\land z)$ and $x\lor(y\land z)=(x\lor y)\land(x\lor z)$ for all $x,y,z\in L$.
+A bounded lattice $L$ is \emph{complemented} if every element $x\in L$ has a complement: an element $\lnot x \in L$
 satisfying $x\land \lnot x = \bot $ and $x\lor \lnot x = \top$. A \emph{Boolean lattice} is a distributive
 complemented lattice.
 
@@ -31,8 +31,8 @@ An element $x\in L$ is
 %a \emph{prefixpoint}, 
 a \emph{fixpoint}
 %, a \emph{postfixpoint} 
-of $O$ 
-%if $O(x)\leq x$, respectively 
+of $O$ if
+%$O(x)\leq x$, respectively 
 $O(x)=x$.
 %, $x\leq O(x)$. 
 Every monotone operator $O$ in a %chain complete poset 
@@ -81,14 +81,15 @@ $\langle L^2,\leqp\rangle$ is also a complete lattice.
 AFT studies fixpoints of lattice operators $O:L\ra L$ through operators approximating $O$.
  An operator $A: L^2\to L^2$  is an \emph{approximator} of $O$ if it is \leqp-monotone,  and has the property that $A(x,x) = (O(x),O(x))$ for all $x$. %[x',y']$, where $(x',y')=A{x,x}$.
 Approximators are internal in $L^c$ (i.e., map $L^c$ into $L^c$).
-As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that, for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$.%\cite{lpnmr/DeneckerV07}.
+As usual, we often restrict our attention to \emph{symmetric} approximators: approximators $A$ such that, for all $x$ and $y$, $A(x,y)_1 = A(y,x)_2$.
+%\cite{lpnmr/DeneckerV07}.
 \citet{DeneckerMT04} showed that the consistent fixpoints of interest (supported, stable, well-founded) are uniquely determined by an approximator's restriction to $L^c$, hence, sometimes we only define approximators on $L^c$. 
 
 AFT studies fixpoints of $O$ using fixpoints of $A$. 
  \begin{itemize}
   \item The \emph{$A$-Kripke-Kleene fixpoint} is the $\leqp$-least fixpoint of $A$, and it approximates all fixpoints of $O$. 
 \item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:x\mapsto A(x,y)_1$ and analogously for $A(x,\cdot)_2$. 
-\item The \emph{$A$-well-founded fixpoint} is the least precise partial $A$-stable fixpoint. 
+\item The \emph{$A$-well-founded fixpoint} is the least precise partial $A$-stable fixpoint. \luis{maybe define ``least precise''? I'm guessing minimal wrt $\leqp$?}
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
 \item A \emph{partial $A$-grounded fixpoint} is a consistent pair $(x,y)$ such that whenever $A(x\land v, y\land v)_2 \leq v$, also $y\leq v$. 
  \end{itemize}
