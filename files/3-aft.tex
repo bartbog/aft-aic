@@ -96,7 +96,9 @@ AFT studies fixpoints of $O$ using fixpoints of $A$.
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
 \item A \emph{partial $A$-grounded fixpoint} is a consistent pair $(x,y)$ such that whenever $A(x\land v, y\land v)_2 \leq v$, also $y\leq v$. 
  \end{itemize}
-
+ 
+%  Several relationships exist between these fixpoints. 
+ All (partial $A$-)stable fixpoints are (partial $A$-)grounded fixpoints and the $A$-well-founded fixpoint is the least precise partial $A$-grounded fixpoint \mycite{PartialGroundedFixpoints}. 
 The $A$-Kripke-Kleene fixpoint of $O$ can be constructed as the limit of any monotone induction of $A$. 
 For the $A$-well-founded fixpoint, a similar constructive characterization has been worked out by \citet{lpnmr/DeneckerV07}:
 

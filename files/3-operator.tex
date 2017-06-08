@@ -17,7 +17,7 @@ Only in places where the distinction between the two is essential (in technical 
 Following the principle of minimality of change~\cite{Winslett90,ai/EiterG92}, we also typically prefer smaller sets of updates over larger sets.
 Therefore, we are interested in the lattice $\langle 2^{\atoms},\subseteq\rangle$, where smaller elements correspond to better repairs according to this principle.
 
-The intuitive reading of an AIC $r$ naturally suggests an operator over this lattice, defined as ``if $\UU(\db)\models\body(r)$ holds, then add $\head(r)$ to $\UU$''.
+The intuitive reading of an AIC $r$ naturally suggests an operator over this lattice, defined as ``if $\UU(\db)\models\body(r)$, then add $\head(r)$ to $\UU$''.
 However, this definition quickly leads to inconsistent sets of update actions upon iteration, which we want to avoid.
 We therefore propose a slight variant of this intuition, using the following concept.
 
@@ -29,19 +29,33 @@ We therefore propose a slight variant of this intuition, using the following con
 This operation models sequential composition of repairs in the following sense: given a database $\db$, if every action in $\UU_1$ changes $\db$ and every action in $\UU_2$ changes $\UU_1(\db)$, then $(\UU_1\uplus\UU_2)(\db)=\UU_2(\UU_1(\db))$.
 In this case, we also have the relation
 \[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
+\bart{Why does it say ``in this case, we also have the relation? Isn't it always equal (that's what was here previously)? 
+\begin{align*} 
+X \uplus Y  &:= X \cup (Y\setminus X^D) \setminus (X \cap Y^D) \\ 
+   & = (X\setminus (X \cap Y^D) ) \cup  ((Y\setminus X^D)  \setminus (X \cap Y^D)) \\ 
+   &= (X\setminus (Y^D) ) \cup  ((Y\setminus X^D)  \setminus (X \cap Y^D) ) \\ 
+   &=  (X\setminus (Y^D) ) \cup (Y\setminus X^D)
+\end{align*}
+where the last equality holds since $Y$ and $Y^D$ are  disjoint.
+
+Personally, I find the characterization 
+\[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
+more understandably: take the union and restore consistency. 
+}
+
 Furthermore, if $\UU_1$ and $\UU_2$ are both consistent, then so is $\UU_1\uplus\UU_2$.
 
 \begin{definition}
   Let $\db$ be a database and $\eta$ be a set of AICs over $\db$.
   The operator $\Op^\db:2^\atoms\to 2^\atoms$ is defined as follows:
   \[
-    \Op^\db(\UU) = \UU\uplus\{\head(r)\mid \UU(\db)\models\body(r)\}
+    \Op^\db(\UU) = \UU\uplus\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}
   \]
 \end{definition}
 In other words, $\Op^\db(\UU)$ is obtained by updating $\UU$ with the heads of all AICs whose bodies are satisfied by $\UU(\db)$.
-The resulting set may contain less update actions than the number of such rules, since different AICs may include the same action in their heads.
+% The resulting set may contain less update actions than the number of such rules, since different AICs may include the same action in their heads.
 
-\luis{There was a comment about defining this with $\nup(r)$ instead. I'm not sure this is correct.}
+% \luis{There was a comment about defining this with $\nup(r)$ instead. I'm not sure this is correct.}
 
 \begin{example}[Example \ref{ex:repairs} continued]
   Consider again the set of AICs $\eta$ from Example~\ref{ex:repairs}, where
@@ -49,7 +63,7 @@ The resulting set may contain less update actions than the number of such rules,
   Then $\Op(\emptyset)=\{\remove a, \remove b\}$. Indeed, the bodies of all rules are satisfied; hence all heads are ``added'' to $\emptyset$. 
 \end{example}
 
-The syntactic restrictions on AICs guarantee that the set $\Op^\db(\UU)$ is always consistent: if $\{+a,-a\}\subseteq\Op^\db(\UU)$, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible.
+The syntactic restrictions on AICs guarantee that the set $\Op^\db(\UU)$ is always consistent: if $\{+a,-a\}\subseteq\Op^\db(\UU)$, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
 In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
 
 The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded, well-founded and grounded sets of update actions.
@@ -79,14 +93,21 @@ The operator $\Op$ provides alternative characterizations of the notions of weak
   Then $\UU$ is founded with respect to $\fulldb$ if and only if, for all $\alpha\in\UU$, it is the case that $\alpha\in\Op(\UU\setminus\{\alpha\})$.
 \end{lemma}
 \begin{proof}
-  An action $\alpha\in\UU$ is founded if and only if there is a rule $r\in\eta$ such that $\UU(\db)\models\body(r)\setminus\{\alpha^D\}$.
-  This is equivalent to saying that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$.
-  But, by definition of $\Op$, we have $\alpha\in\Op(\UU\setminus\{\alpha\})$ if and only if there is a rule $r\in\eta$ such that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$, which concludes the proof.
-
-  Consistency of $\UU$ is needed for the direct implication, as $\alpha$ is only added to $\UU\setminus\{\alpha\}$ by $\Op$ if that set does not already contain $\alpha^D$.
+  It follows from the definition of \Op that for each action $\alpha\in \UU$, the following are equivalent:
+  \begin{enumerate}
+%    \item there is a rule $r\in\eta$ such that $\UU(\db)\models\body(r)\setminus\{\alpha^D\}$,
+   \item there is a rule $r\in\eta$ such that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$ and 
+   \item $\alpha\in\Op(\UU\setminus\{\alpha\})$.
+  \end{enumerate}
+  Now, $\UU$ is founded if and only if \textbf{(i)} holds for all actions $\alpha\in \UU$; this is indeed equivalent with the condition from this lemma, which is that \textbf{(ii)} holds for each $\alpha\in \UU$. 
+%   An action $\alpha\in\UU$ is founded if and only if there is a rule $r\in\eta$ such that $\UU(\db)\models\body(r)\setminus\{\alpha^D\}$.
+%   This is equivalent to saying that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$.
+%   But, by definition of $\Op$, we have $\alpha\in\Op(\UU\setminus\{\alpha\})$ if and only if there is a rule $r\in\eta$ such that $(\UU\setminus\{\alpha\})(\db)\models\body(r)$, which concludes the proof.
+% d
+% %   Consistency of $\UU$ is needed for the direct implication, as $\alpha$ is only added to $\UU\setminus\{\alpha\}$ by $\Op$ if that set does not already contain $\alpha^D$. BART: NO: consistency is needed for concepts such as $\Op(\UU\setminus\{\alpha\})$ to be well-defined (i.e. for this lemma to make sense in the first place
 \end{proof} 
 
-This result also gives some intuition regarding why founded repairs allow for circular dependencies: the definition of founded repair only checks that each individual action is supported by the remaining ones, but it allows for dependency cycles.
+This result also gives some intuition regarding why founded repairs allow for circular dependencies: the definition of founded repair only checks that each individual action is supported by the remaining ones, but it still allows for dependency cycles.
 
 \begin{lemma}
   \label{lem:wf}
@@ -125,7 +146,7 @@ The previous lemma illustrates that Lemma \ref{lem:justified} is not a coinciden
 Indeed, \mycitet{GroundedFixpoints} have already shown that all stable fixpoints of a given approximator are grounded, and 
 \citet[Theorem~6]{tplp/CaropreseT11} showed that justified repairs are stable models of a given derived logic program. 
 In the following sections, we explore this relationship further: first, we define an approximator for \Op and as such obtain also a notion of stable repair. 
-Next, we will study the relationship between logic programs and AICs in depth. 
+Next, in Section \ref{sec:lp}, we  study the relationship between logic programs and AICs in depth. 
 
 \luis{From the commented out stuff, I would include the sentence about avoiding circularity of support and the theorem on complexity. What do you think? I deleted the rest.}
 \bart{Complexity comes later, together with the rest of complexity stuff}
