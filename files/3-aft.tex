@@ -1,9 +1,11 @@
 \paragraph{Lattices, Operators and Fixpoints}
 A \emph{partially ordered set (poset)} $\langle L,\leq\rangle$ is a set $L$ equipped with a partial order $\leq$, i.e., a reflexive, antisymmetric, transitive relation. 
 As usual, we write $x<y$ as abbreviation for $x\leq y \land x\neq y$.
-If $S$ is a subset of $L$, then $x$ is an \emph{upper bound} (respectively a \emph{lower bound}) of $S$ if for every $s\in S$, it holds that $s\leq x$ (resp.\ $x\leq s$).
-An element $x$ is a \emph{least upper bound} (respectively \emph{greatest lower bound} of $S$) if it is an upper bound that is smaller than every other upper bound (resp.\ a lower bound that is greater than every other lower bound).
-If $S$ has a least upper bound (resp.\ a greatest lower bound) we denote it $\lub(S)$ (resp.\ $\glb(S)$).
+If $S$ is a subset of $L$, then $x$ is an \emph{upper bound} (a \emph{lower bound}) of $S$ if for every $s\in S$, it holds that $s\leq x$ ($x\leq s$, respectively).
+An element $x$ is a \emph{least upper bound} (a \emph{greatest lower bound}) of $S$ if it is an upper bound that is smaller than every other upper bound (a lower bound that is greater than every other lower bound, respectively).
+If $S$ has a least upper bound (a greatest lower bound) we denote it $\lub(S)$ ($\glb(S)$, respectively).
+%BART: is there any reason to write resp. instead of respectively? I don't like abbreviations in journal verisons :p 
+%Also: apparently always needs to be used postfix https://en.wiktionary.org/wiki/resp.
 As is custom, we sometimes call a greatest lower bound a \emph{meet}, and a least upper bound a \emph{join} and use the related notations $\bigand S = \glb(S)$, $x\land y=\glb(\{x,y\})$, $\bigor S = \lub(S)$ and $x\lor y=\lub(\{x,y\})$.
 % The relation $\leq$ is a \emph{total order} if for every $x,y\in L$, $x\leq y$ or $y\leq x$. 
 % A \emph{chain} is a subset $S$ of $L$ such that $\leq$ is a total order in $S$. We call $\langle L,\leq\rangle$ \emph{chain complete} if each of its chains has a least upper bound and a greatest lower bound. 
@@ -13,7 +15,7 @@ As is custom, we sometimes call a greatest lower bound a \emph{meet}, and a leas
 % A chain complete poset has a least element $\bot$. 
 A complete lattice has both a least element $\bot$ and a greatest element $\top$. 
 
-A lattice $L$ is \emph{distributive} if $\land$ and $\lor$ distribute over each other, i.e.~$x\land(y\lor z)=(x\land y)\lor(x\land z)$ and $x\lor(y\land z)=(x\lor y)\land(x\lor z)$ for all $x,y,z\in L$.
+A lattice $L$ is \emph{distributive} if $\land$ and $\lor$ distribute over each other, i.e., if $x\land(y\lor z)=(x\land y)\lor(x\land z)$ and $x\lor(y\land z)=(x\lor y)\land(x\lor z)$ for all $x,y,z\in L$.
 A bounded lattice $L$ is \emph{complemented} if every element $x\in L$ has a complement: an element $\lnot x \in L$
 satisfying $x\land \lnot x = \bot $ and $x\lor \lnot x = \top$. A \emph{Boolean lattice} is a distributive
 complemented lattice.
@@ -89,7 +91,8 @@ AFT studies fixpoints of $O$ using fixpoints of $A$.
  \begin{itemize}
   \item The \emph{$A$-Kripke-Kleene fixpoint} is the $\leqp$-least fixpoint of $A$, and it approximates all fixpoints of $O$. 
 \item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:x\mapsto A(x,y)_1$ and analogously for $A(x,\cdot)_2$. 
-\item The \emph{$A$-well-founded fixpoint} is the least precise partial $A$-stable fixpoint. \luis{maybe define ``least precise''? I'm guessing minimal wrt $\leqp$?}
+\item The \emph{$A$-well-founded fixpoint} is the least precise (i.e., the $\leqp$-minimal) partial $A$-stable fixpoint.
+% \luis{maybe define ``least precise''? I'm guessing minimal wrt $\leqp$?}
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
 \item A \emph{partial $A$-grounded fixpoint} is a consistent pair $(x,y)$ such that whenever $A(x\land v, y\land v)_2 \leq v$, also $y\leq v$. 
  \end{itemize}
