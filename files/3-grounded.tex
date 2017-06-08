@@ -9,7 +9,7 @@ Our definition of grounded (weak) repair is aimed directly at avoiding this kind
 
 \luis{I think the definitions look cleaner if we don't use $A$ -- I left the old ones commented out.}
 \begin{definition}\label{def:grounded}
- A set of update actions \UU is \emph{grounded} with respect to $\fulldb$ if, for each $\VV \subseteq  \UU$, there is a rule  $r\in \aics$ such that $\VV(\db)\models \body(r)$ and $\head(r)\in(\UU\setminus\VV)$. A \emph{grounded (weak) repair} is a (weak) repair that is grounded.
+ A set of update actions \UU is \emph{grounded} with respect to $\fulldb$ if, for each $\VV \subsetneq  \UU$, there is a rule  $r\in \aics$ such that $\VV(\db)\models \body(r)$ and $\head(r)\in(\UU\setminus\VV)$. A \emph{grounded (weak) repair} is a (weak) repair that is grounded.
 \end{definition}
 %% \begin{definition}\label{def:grounded}
 %%  A set of update actions \UU is \emph{grounded} with respect to $\fulldb$ if, for each $A \subseteq  \UU$, there is a rule  $r\in \aics$ such that $\UU'(\db)\models \body(r)$ and $\head(r)\in A$, where $\UU'=\UU\setminus A$. A \emph{grounded (weak) repair} is a (weak) repair that is grounded.
@@ -18,15 +18,15 @@ Our definition of grounded (weak) repair is aimed directly at avoiding this kind
 As can be seen, our definition of groundedness is a slight variant of the notion of foundedness: instead of only considering what happens if \emph{one} action is dropped from a proposed set of update actions, we consider arbitrary removals. 
 A first observation with respect to groundedness is that grounded weak repairs are always minimal, i.e., that each grounded weak repair is a repair. 
 \begin{lemma}
- All grounded weak repairs of \fulldb are minimal. 
+ All grounded weak repairs of \fulldb are $\subseteq$-minimal, i.e., are repairs. 
 \end{lemma}
 \begin{proof}
  Suppose $\UU$ is a grounded weak repair and $\UU$ is not minimal, i.e., that there exists a $\VV\subsetneq \UU$ that is also a weak repair. 
 % Now, take $A = \UU\setminus \VV$ in the definition of grounded. Then $\VV = \UU\setminus A$.
  Since $\UU$ is grounded, there must exist a rule whose body is satisfied in $\VV$, contradicting the fact  that $\VV$ is a weak repair. 
 \end{proof}
-Thus, the notion of grounded repair intrinsically embodies the principle of minimality of change, unlike other kinds of weak repairs previously defined.
-Furthermore, grounded repairs also embody the notion of ``support'' previously defined.
+Thus, the notion of groundedness intrinsically embodies the principle of minimality of change, unlike other kinds of weak repairs previously defined.
+% Furthermore, grounded repairs also embody the notion of ``support'' previously defined.
 
 
 \begin{lemma}
@@ -36,7 +36,7 @@ Furthermore, grounded repairs also embody the notion of ``support'' previously d
 \end{lemma}
 \begin{proof}
   Assume that $\UU$ is a grounded repair for $\fulldb$.
-  The fact that $\UU$ is founded follows immediately from the definition of grounded repair, by letting $A$ range over the singleton sets of actions in $\UU$.
+  The fact that $\UU$ is founded follows immediately from the definition of grounded repair, since for each action $\alpha$, $\VV=\UU\setminus\{\alpha\}$ is a strict subset of $\UU$. Hence, by groundedness of $\UU$, there must be a rule $r$ with $\head(r)\in \UU\setminus \VV=\{\alpha\}$, whose body is satisfied in $\VV$. We find that $\UU$ is founded indeed. % and for such $\VV$ the conditions of groundedness coincides with that of foundedness hence there must be a rule  $rby letting $A$ range over the singleton sets of actions in $\UU$.
   
   Now, we show how to construct a sequence of subsets of $\UU$ that illustrates that $\UU$ is well-founded. 
   For this sequence, we start from $\UU_0=\emptyset$ and construct $\UU_i=\UU_{i-1}\cup\{u_i\}$ by picking a rule $r\in \fulldb$ with $\head(r)=u_i\in\UU$ and $\UU_{i-1}(\db)\models \body(r)$.
@@ -46,7 +46,7 @@ Furthermore, grounded repairs also embody the notion of ``support'' previously d
   But $\UU$ is finite, therefore this sequence converges towards $\UU$, and thus $\UU$ is a well-founded repair.
 \end{proof}
 
-However, the notion of grounded repair is strictly stronger than both of these: Example~\ref{ex:founded}, presented earlier, also shows that some forms of circular justifications are avoided by grounded repairs.
+However, the notion of groundedness repair is strictly stronger than both of these: Example~\ref{ex:founded}, presented earlier, also shows that some forms of circular justifications are avoided by grounded repairs.
 \begin{example}[Example \ref{ex:founded} continued]
   \label{ex:founded-gr}
 %   Recall the set of AICs from Example~\ref{ex:founded}, together with $\db=\{a,b\}$.
@@ -91,14 +91,14 @@ We thus have that grounded repairs are always founded and well-founded; the next
   However, $\UU$ is not grounded: if $\VV=\{{+b}\}$, then $\VV\subsetneq\UU$, but there is no rule $r$ with $\head(r)\in\{\add a, \add c\} $ whose body is satisfied in $\VV$. %-$\Op(\UU')\cap\UU=\emptyset\cap\UU=\emptyset\subseteq\UU'$.
 \end{example}
 In this situation, $\UU$ might seem reasonable; however, observe that the support for its actions \emph{is} circular: it is the three last rules that make $\UU$ founded, and none of them is applicable to $\db$.
-Also note that $\VV(\db)$ is a database for which the given set $\eta$ behaves very awkwardly: the only applicable AIC tells us to remove $b$, while the only possible repair is actually $\{{+a},{+c}\}$.
+Also note that $\VV(\db)=\{b\}$ is a database for which the given set $\eta$ behaves very awkwardly: the only applicable AIC tells us to remove $b$, while the only repair of $\VV(\db)$ is actually $\{{+a},{+c}\}$.
 
 We do not feel that this example weakens the case for studying ground repairs, though: the consensual approach to different notions of repair is that they express \emph{preferences}.
 In this case, where $\fulldb$ admits no grounded repair, it is sensible to allow a repair in a larger class -- and a repair that is both founded and well-founded is a good candidate.
-The discussion by~\cite[Section 8]{tplp/CaropreseT11} already proposes such a ``methodology'': choose a repair from the most restrictive category (justified, founded, or any).
+The discussion by \citet[Section 8]{tplp/CaropreseT11} already proposes such a ``methodology'': choose a repair from the most restrictive category (justified, founded, or any).
 We advocate a similar approach, but including grounded repairs among the possible choices.
-\bart{quite strong preferences expressed here... I would prefer to not be so explicit about which ones to prefer. Also, I find well-founded repairs very counterintuititve... }
-\luis{better like this? :-)}
+% \bart{quite strong preferences expressed here... I would prefer to not be so explicit about which ones to prefer. Also, I find well-founded repairs very counterintuititve... }
+% \luis{better like this? :-)} OK
 
 
 We now investigate the relation between grounded and justified repairs, and find that all justified repairs are grounded, but not conversely -- in line with our earlier claim that the notion of justified repair is too strong.
@@ -131,7 +131,7 @@ We now investigate the relation between grounded and justified repairs, and find
 %%   Hence, we have found a rule $r$ with $\head(r)\in A$, and $\UU'\models \body(r)$ which we needed in order to show that $\UU$ is grounded.
 %% \end{proof}
 This proof does not use the hypothesis that $\UU$ is a repair.
-This is due to the fact (already mentioned earlier) that we only consider \emph{normal} AICs in this paper. By Theorem~4 of~\cite{tplp/CaropreseT11}, all justified weak repairs are minimal when $\eta$ contains only normal AICs.
+This is due to the fact (already mentioned earlier) that we only consider \emph{normal} AICs in this paper. By Theorem~4 of~\cite{tplp/CaropreseT11}, all justified weak repairs are minimal when $\eta$ consists of only normal AICs.
 
 %%%%%%%%%%%%%%%%%%%%%%%%
 
