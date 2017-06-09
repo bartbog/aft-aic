@@ -1,4 +1,4 @@
-In this section, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs, based on similar intuitions. 
+In this section, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs, based on intuitions similar to those underlying groundedness and various semantics from non-monotonic reasoning. 
 
 
 % Now, with these definitions, we can rephrase the definition of the operator \Op.
@@ -34,7 +34,7 @@ In this section, we define an approximator for \Op and hence, obtain a set of AF
 
 A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$. A partial action set \UUU is \emph{two-valued} if $\UUU(\atoms)\subseteq\{\ltrue,\lfalse\}$; in this case, we identify $\UUU$ with the action set $\{\change a\mid \UUU(a)=\ltrue\}$. 
 The intended reading of such a mapping is that $\UUU(a)$ is true if $a$ is changed by $\UUU$, it is false if $a$ is not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
-Alternatively, a partial action set is identified with an element of $(2^\atoms)^c$ (as standard). 
+Alternatively, a partial action set is identified with an element of $(2^\atoms)^c$, i.e., with a tuple $(\UUU_t,\UUU_{tu})$ with $\UUU_t\subseteq\UUU_{tu}$, where $\UUU_t$ contains all elements that map to $\ltrue$ and $\UUU_{tu}$ all elements that map either to $\ltrue$ or to $\lunkn$ (as standard). 
 The set of all partial action sets is denoted $P$.
 The truth order $\leqt$ on three-valued truth values is defined by $\lfalse\leqt\lunkn\leqt\ltrue$. The inverse of a truth value is $\lfalse^{-1}=\ltrue, \ltrue^{-1}=\lfalse, \lunkn^{-1}=\lunkn$.
 
@@ -57,8 +57,11 @@ Given a partial database \tdb, a set of AICs \aics and an update action $\alpha$
 \begin{align*}
  \supp_{\tdb,\aics}(\alpha) &= \max_{\leq_t}\{\nup(r)^{\tdb}\mid r\in \aics \land \head(r) = \alpha\},
 \end{align*}
-where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula\footnote{Technically, $\nup(r)$ is a set of literals; we identify it with its conjunction here.} $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38} (see Figure~\ref{fig:KT}).
+where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula\footnote{Technically, $\nup(r)$ is a set of literals; we identify it with the conjunction of those literals.} $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38} (see Figure~\ref{fig:KT}).
 \end{definition}
+Intuitively, this means that the support of an action is the highest truth value of the (non-updateable part of the) body of a rule with the action in question in the head. 
+
+
 % \luis{$\leq_t$ was not defined}
 
 \begin{figure}
@@ -131,7 +134,7 @@ As before, we often drop $\db$ and \aics from the notation if they are clear fro
 Intuitively, 
 $\suppin_{\UUU}(a)$ is true if there is support for \emph{changing} $a$ after updating the database with $\UUU$, i.e., if at least one rule $r$ with $\head(r)=\change a$ has $\nup(r)^{\UUU(\db)} = \ltrue$;  
 $\suppin_{\UUU}(a)$ is unknown if it is not true and there is at least one rule $r$ with $\head(r)=\change a$ that has $\nup(r)^{\UUU(\db)} = \lunkn$; 
-otherwise $\suppin_{\UUU}(a)$ is false. 
+otherwise, all rules $r$ with $\head(r)=\change a$ have a false (non-updateable part of their) body and thus, $\suppin_{\UUU}(a)$ is false. 
 Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as it is in the database (hence the name choice). 
 
 \begin{example}
@@ -286,7 +289,7 @@ This paper is the first work that studies partial (non-two-valued) repairs.
 The well-founded semantics induced by AFT can in general differ from the existing well-founded semantics for AICs, as we show in Example \ref{ex:wf:wf}. To distinguish the two, we use the term \emph{AFT-well-founded semantics}. % for the well-founded semantics induced by AFT. 
 
 The grounded repairs in this definition coincide with those from Definition~\ref{def:grounded}.
-\luis{should we include a proof? or is this trivial?}
+\luis{I think this is important. Should we include a proof? Or is this trivial?}
 All other classes of repairs
 %defined in Definition \ref{def:semantics} 
 are newly introduced semantics by the current paper. 
@@ -464,7 +467,7 @@ To see this, note that from the definition of $\Ap$, it follows that for each $j
 \end{proof}
 
 \begin{example}\label{ex:wf:wf}The converse of Proposition \ref{prop:wf-wf} does
-not hold. Consider for instance the following set $\aics$ of AICs (based on \citet[Example 18]{iclp/Cruz-Filipe16}).
+not hold. Consider for instance the following set $\aics$ of AICs 
    \begin{align*}
   \lnot a &\aicrule \add a \\
   \lnot a\land \lnot b &\aicrule \add b\\
@@ -528,7 +531,6 @@ Since $\overline\UU$ is an $\Ap$-stable repair, $\overline\UU$ is the least pref
 \textbf{Claim 1} This follows immediately from the definition of justified repair. Prefixpoints of the \closure operator are sets of update actions closed under \aics. Hence $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a minimal set of update actions that contains $\neff_{\UU}(\db)$ and is closed under $\aics$. 
 
 \luis{Strictly speaking, this proofs that $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a justified \emph{weak} repair. However, justified weak repairs are justified repairs when we worry about normal AICs. I think we should say this, but can't phrase it nicely.}
-
 
 
 
