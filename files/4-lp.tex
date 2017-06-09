@@ -2,8 +2,12 @@
 \renewcommand\voc\atoms
 % Let \voc be an alphabet, i.e., a collection of symbols which are called \emph{atoms}. A \emph{literal} is an atom $p$ or the negation $\lnot q$ of an atom $q$.  
 A logic program $\mathcal{P}$ is a set of \emph{rules} $r$ of the form 
-$h\lrule \varphi$, where
-$h$ is an atom called the \emph{head} of $r$, denoted $head(r)$, and $\varphi$ is a propositional formula called  the \emph{body} of $r$, denoted $body(r)$.
+\begin{equation}
+ \tag{2}h\lrule l_1\land \dots \land l_n \label{rule:lp}
+\end{equation}
+where
+$h$ is an atom called the \emph{head} of $r$, denoted $head(r)$, and each of the $l_i$ is a literal; $ l_1\land \dots \land l_n$ is called  the \emph{body} of $r$ and denoted $body(r)$.
+A rule of the form \eqref{rule:lp} is called \emph{simple} if none of the $l_i$ equals $\lnot h$ or $h$; a logic program is \emph{simple} if it consists of only simple rules.
 % An interpretation $\struct$ of the alphabet \voc is an element of $2^\voc$, i.e., a subset of $\voc$.  
 The set of interpretations $2^\voc$ forms a lattice equipped with the order $\subseteq$. 
 The truth value (\ltrue or \lfalse) of a propositional formula $\varphi$ in a structure $\struct$, denoted $\varphi^\struct$ is defined as usual.
@@ -38,19 +42,20 @@ the operator $\Psi_\PP(\cdot,y)_1$ coincides with the immediate consequence oper
 \citet{tplp/CaropreseT11} defined a translation from logic programs to AICs as follows. 
 \begin{definition}
  Let $r$ be a normal logic programming rule, 
- \[a\leftarrow \lit_1,\dots,\lit_n.\]
- We define the active integrity constraint $\aicop r$ as 
+ \[a\leftarrow \lit_1  \land \dots \land \lit_n.\]
+ We define the active integrity constraint $\aicop (r)$ as 
  \[\lit_1\wedge\ldots\wedge\lit_n\wedge\neg a \aicrule \add a.\]
  Furthermore, if \PP is a normal logic program, we define 
  \[\aicop(\PP)=\bigcup\{\aicop(r)\mid r\in \PP\}.\]
 \end{definition}
 
-\citet{tplp/CaropreseT11} showed that an interpretation $I$ is a stable model of \PP if and only if $I$ (viewed as an update set) is a justified repair of $\aicop(\PP)$. Since $\aicop(\PP)$ is unipolar, from our earlier results (Propositions \ref{prop:stable_is_justified} and \ref{prop:justified_is_stable_sometimes}) it follows that this is also equivalent with the condition that $I$ is a $\threeap_{\aicop(\PP)}$-stable repair. 
+\citet{tplp/CaropreseT11} showed that \emph{for simple programs \PP}, an interpretation $I$ is a stable model of \PP if and only if $I$ (viewed as an update set) is a justified repair of $\langle\aicop(\PP),\emptyset\rangle$. Since $\aicop(\PP)$ is unipolar, from our earlier results (Propositions \ref{prop:stable_is_justified} and \ref{prop:justified_is_stable_sometimes}) it follows that this is also equivalent with the condition that $I$ is a $\threeap_{\aicop(\PP)}$-stable repair. 
 The same result is also a corollary of the following stronger theorem. 
 \begin{theorem}\label{thm:partialstable-LP}
- Let $\PP$ be a normal logic program and $\pstruct$ a partial interpretation. It holds that $\pstruct$ is a partial stable model of \PP if and only if $\pstruct$ is a partial stable repair of $\langle \aicop(\PP),\emptyset\rangle$. 
+ Let $\PP$ be a simple normal logic program and $\pstruct$ a partial interpretation. It holds that $\pstruct$ is a partial stable model of \PP if and only if $\pstruct$ is a partial stable repair of $\langle \aicop(\PP),\emptyset\rangle$. 
 \end{theorem}
 The proof of this theorem follows later, since it makes use of proposition \ref{prop:lplink}. 
+Since the well-founded model of a logic program is the least precise partial stable model, and similar for AICs, we immediately find the following corollary. 
 
 \begin{corollary}
  Let $\PP$ be a normal logic program. The well-founded model of \PP coincides with the AFT-well-founded repair of $\langle \aicop(\PP),\emptyset\rangle$. 
@@ -62,11 +67,11 @@ The proof of this theorem follows later, since it makes use of proposition \ref{
 \begin{example}\label{ex:grounded}
 %   While the operation $\aicop$ preserves various types of AFT fixpoints, it does not preserve grounded fixpoint. 
   Consider the logic program 
-  \[\PP_g = \left\{p\lrule \lnot p \right\}.\]
-  This program has no fixpoints, hence definitely no grounded fixpoints. 
+  \[\PP_g = \left\{\begin{array}{ll}p&\lrule \lnot q\\ q&\lrule p \end{array} \right\}.\]
+  Since $\mathcal{T}_\PP$, has no fixpoints, $\PP$ has no grounded models. 
   In this case, 
-  \[\aicop(\PP_g) = \left\{\lnot p \aicrule \add p\right\}.\]
-  Now, $\langle \aicop(\PP_g),\emptyset\rangle$ has one grounded repair, namely $\{\add p\}$. 
+  \[\aicop(\PP_g) = \left\{\begin{array}{ll}\lnot p\land \lnot q &\aicrule \add p \\ p \land  \lnot q &\aicrule \add q\end{array}\right\}.\]
+  Now, $\langle \aicop(\PP_g),\emptyset\rangle$ has one grounded repair, namely $\{\add p, \add q\}$. 
 \end{example}
 \bart{WAIT!!!! I'm getting confused here. 
 In this example, isn't the AFT-well-founded repair $\{+p\}$, which is the nalso a stable repair? That would contradict Theorem \ref{thm:partialstable-LP} and also the combination of Propositions \ref{prop:stable_is_justified} and \ref{prop:justified_is_stable_sometimes}!
@@ -98,9 +103,9 @@ However, adding a trivial rule
  
  Inertia is also responsible for the discrepancy in Example \ref{ex:grounded}. 
  Intuitively, $\aicop(\PP_g)$ from that example corresponds more to the logic program
-  \[\PP_g' = \left\{\begin{array}{l}p\lrule \lnot p \\ p\lrule p  \end{array}\right\}.\]
-  Indeed $\aicop(\PP_g)$ states that if $p$ is not present in the database, add it, and once we add it, by inertia, it stays unless there is a reason to remove it again (which there is not). 
-  $\PP'$ and $\PP_g$ only differ from each other in the rule $p\lrule p$, which simulates inertia.
+  \[\PP_g' = \left\{\begin{array}{l}p\lrule \lnot q \\ p\lrule p \\ q\lrule p\\ q\lrule q  \end{array}\right\}.\]
+  Indeed $\aicop(\PP_g)$ states that if neither  $p$ nor $q$ are present in the database, add $p$, and once we add it, by inertia, it stays unless there is a reason to remove it again (which there is not), and similarly for $q$. 
+  $\PP'$ and $\PP_g$ only differ from each other in the rules $p\lrule p$ and $q\lrule q$, which simulate inertia.
  
  
  The above discussion provides intuitions on what a transformation that preserves all AFT semantics should look like. In the following proposition, this is formalized. 
@@ -140,7 +145,7 @@ Hence, all AFT semantics for \fulldb coincide in this case with the equally-name
   Now, it is easy to see that $\Psi_{\triv(\PP)}(\cdot,I)_1$ is the inflationary operator of $\Psi_\PP(\cdot,I)_1$, i.e., that $\Psi_{\triv(\PP)}(\cdot,I)_1(J) = \Psi_\PP(\cdot,I)_1(J)\cup J$. Hence, these two monotone operators have the same prefixpoints and thus also the same least prefixpoint, which equals their least prefixpoint. 
   }
  that the partial stable models of $\PP$ and those of $\triv(\PP)$ are the same. 
- Now, the result easily follows from the facts that 
+ Now, the result easily follows from the facts that if $\PP$ is simple, then
  \[\lpop(\aicop(\PP)) = \triv(\PP)\]
  and that $\triv$ and $\lpop$ preserve partial stable models. 
 % 

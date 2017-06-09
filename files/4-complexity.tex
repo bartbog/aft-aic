@@ -30,13 +30,14 @@ All complexity results are in terms of the size of the database, \fulldb.
 
   For hardness, we invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of~\cite{tplp/CaropreseT11}.
   Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of~\mycite{GroundedFixpoints}. \bart{We should prove (not just claim) that these grounded repairs are equal to grounded models. Should be doable with what we have from the previous section·}
+  \bart{In fact, we have an example that this is NOT the case, so something definitely is wrong here. Wat we  CAN do is take the logic program from the grounded fixpoints paper, introduce some auxiliary variables (a $z_i$ that is a copy of $y_i$ and a $q'$ that is a copy of $q$) to make it ``simple'' and the proof will still hold. However, not so nice. }
 \end{proof}
 
 This result still holds if we allow a truly first-order syntax for AICs, where the atoms can include variables that are implictly universally quantified.
 \bart{vague... What do you mean here? }
 \luis{In the original work, AICs are first-order things that represent the set of all their closed instances. This can give an exponential reduction in the size of $\eta$. I'm trying to say that the complexity still remains the same, because you don't need to compute that set. Maybe we can just ignore this point.}
 \bart{Ah, I didn't read that. First order things with simple bodies (no arbitrary FO formulas, but universally quantified rules I guess. We can say something about that, but need to be careful: our complexity results change to DATA complexity results than, since by blowing up the number of variables, we can get more exponential behaviour}
-
+\bart{If we say this, at the end or the beginning of the section (holds for all results of this section)}
 
 
 
