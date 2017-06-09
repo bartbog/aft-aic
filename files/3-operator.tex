@@ -19,7 +19,7 @@ Therefore, we are interested in the lattice $\langle 2^{\atoms},\subseteq\rangle
 
 The intuitive reading of an AIC $r$ naturally suggests an operator over this lattice, defined as ``if $\UU(\db)\models\body(r)$, then add $\head(r)$ to $\UU$''.
 However, this definition quickly leads to inconsistent sets of update actions upon iteration, which we want to avoid.
-We therefore propose a slight variant of this intuition, using the following concept.
+We therefore propose a slight variant of this intuition, using the following concept that consists of taking the union and restoring consistency afterwards.
 
 \begin{definition}
   Let $\UU_1$ and $\UU_2$ be consistent sets of update actions over a set of atoms $\atoms$.
@@ -30,27 +30,27 @@ We therefore propose a slight variant of this intuition, using the following con
 This operation models sequential composition of repairs in the following sense: given a database $\db$, if every action in $\UU_1$ changes $\db$ and every action in $\UU_2$ changes $\UU_1(\db)$, then $(\UU_1\uplus\UU_2)(\db)=\UU_2(\UU_1(\db))$.
 %% In this case, we also have the relation
 %% \[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
-\bart{Why does it say ``in this case, we also have the relation? Isn't it always equal (that's what was here previously)? 
-\begin{align*} 
-X \uplus Y  &:= X \cup (Y\setminus X^D) \setminus (X \cap Y^D) \\ 
-   & = (X\setminus (X \cap Y^D) ) \cup  ((Y\setminus X^D)  \setminus (X \cap Y^D)) \\ 
-   &= (X\setminus (Y^D) ) \cup  ((Y\setminus X^D)  \setminus (X \cap Y^D) ) \\ 
-   &=  (X\setminus (Y^D) ) \cup (Y\setminus X^D)
-\end{align*}
-where the last equality holds since $Y$ and $Y^D$ are  disjoint.
-
-Personally, I find the characterization 
-\[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
-more understandably: take the union and restore consistency. 
-Also: this definitions is nicely symmetrical.
-}
-
-\luis{Agh. I think I overcorrected.  The relation
-\[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\]
-always holds, but the previous property doesn't: if $\db=\emptyset$, $\UU_1=\{\remove a\}$ and $\UU_2=\{\add a\}$, then $\UU_2(\UU_1(\db))=\UU_2(\emptyset)=\{a\}\neq(\UU_1\uplus\UU_2)(\db)=\emptyset$.
-
-I now changed the whole text.  Please delete these todos after you checked that you agree :-)
-}
+% \bart{Why does it say ``in this case, we also have the relation? Isn't it always equal (that's what was here previously)? 
+% \begin{align*} 
+% X \uplus Y  &:= X \cup (Y\setminus X^D) \setminus (X \cap Y^D) \\ 
+%    & = (X\setminus (X \cap Y^D) ) \cup  ((Y\setminus X^D)  \setminus (X \cap Y^D)) \\ 
+%    &= (X\setminus (Y^D) ) \cup  ((Y\setminus X^D)  \setminus (X \cap Y^D) ) \\ 
+%    &=  (X\setminus (Y^D) ) \cup (Y\setminus X^D)
+% \end{align*}
+% where the last equality holds since $Y$ and $Y^D$ are  disjoint.
+% 
+% Personally, I find the characterization 
+% \[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
+% more understandably: take the union and restore consistency. 
+% Also: this definitions is nicely symmetrical.
+% }
+% 
+% \luis{Agh. I think I overcorrected.  The relation
+% \[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\]
+% always holds, but the previous property doesn't: if $\db=\emptyset$, $\UU_1=\{\remove a\}$ and $\UU_2=\{\add a\}$, then $\UU_2(\UU_1(\db))=\UU_2(\emptyset)=\{a\}\neq(\UU_1\uplus\UU_2)(\db)=\emptyset$.
+% 
+% I now changed the whole text.  Please delete these todos after you checked that you agree :-)
+% }
 Furthermore, $\UU_1\uplus\UU_2$ is always consistent by construction.
 %
 \begin{definition}
@@ -77,7 +77,7 @@ In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenev
 The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded, well-founded and grounded sets of update actions.
 
 \begin{proposition}
-  \label{lem:weak-repair}
+  \label{prop:weak-repair}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a set of update actions.
   Then $\UU$ is a weak repair for $\fulldb$ if and only if $\UU$ is a fixpoint of $\Op$.
 \end{proposition}
@@ -87,16 +87,16 @@ The operator $\Op$ provides alternative characterizations of the notions of weak
 \end{proof}
 
 \begin{proposition}
-  \label{lem:repair}
+  \label{prop:repair}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a set of update actions.
   Then $\UU$ is a repair for $\fulldb$ if and only if $\UU$ is a minimal fixpoint of $\Op$.
 \end{proposition}
 \begin{proof}
-  Follows directly from Proposition~\ref{lem:weak-repair} and the definition of repair.
+  Follows directly from Proposition~\ref{prop:weak-repair} and the definition of repair.
 \end{proof}
 
 \begin{proposition}
-  \label{lem:founded-char}
+  \label{prop:founded-char}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a consistent set of update actions.
   Then $\UU$ is founded with respect to $\fulldb$ if and only if, for all $\alpha\in\UU$, it is the case that $\alpha\in\Op(\UU\setminus\{\alpha\})$.
 \end{proposition}
@@ -118,7 +118,7 @@ The operator $\Op$ provides alternative characterizations of the notions of weak
 This result also gives some intuition regarding why founded repairs allow for circular dependencies: the definition of founded repair only checks that each individual action is supported by the remaining ones, but it still allows for dependency cycles.
 
 \begin{proposition}
-  \label{lem:wf}
+  \label{prop:wf}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a weak repair for $\fulldb$.
   Then $\UU$ is well-founded if and only if there is an ordering $\alpha_1,\ldots,\alpha_n$ of the elements of $\UU$ such that $\alpha_i\in\Op(\{\alpha_1,\ldots,\alpha_{i-1}\})$ for each $i=1,\ldots,n$.
 \end{proposition}
@@ -129,7 +129,7 @@ This result also gives some intuition regarding why founded repairs allow for ci
 
 
 
-\begin{proposition}
+\begin{proposition}\label{prop:grounded:ok}
  Let $\db$ be a database and $\eta$ a set of AICs over \db. A set of update actions $\UU$ is a grounded repair of \fulldb if and only if $\UU$ is a grounded fixpoint of \Op. 
 \end{proposition}
 \begin{proof}
@@ -150,7 +150,7 @@ Conversely, assume that $\UU$ is a strictly grounded fixpoint of \Op
 and let $\VV$ be any subset of $\UU$ such that there is no rule $r$ for which $\VV(\db)\models\body(r)$ and $\head(r)\in(\UU\setminus\VV)$. From the definition of $\Op$, it follows that $\Op(\VV)\cap(\UU\setminus\VV)=\emptyset$ and thus that $\Op(\VV)\cap\UU\subseteq \VV$. Since $\UU$ is strictly grounded, it follows that $\VV=\UU$. 
 \end{proof}
 
-The previous proposition illustrates that Proposition \ref{lem:justified} is not a coincidence at all. 
+The previous proposition illustrates that Proposition \ref{prop:justified} is not a coincidence at all. 
 Indeed, \mycitet{GroundedFixpoints} have already shown that all stable fixpoints of a given approximator are grounded, and 
 \citet[Theorem~6]{tplp/CaropreseT11} showed that justified repairs are stable models of a given derived logic program. 
 In the following sections, we explore this relationship further: first, we define an approximator for \Op and as such obtain also a notion of stable repair. 
@@ -162,6 +162,8 @@ Next, in Section \ref{sec:lp}, we  study the relationship between logic programs
 Our claim rests on the fact that ``no circularity of support'' would somehow coincide with ``grounded''. But this is hard to prove, given the lack of a definition of ``circularity''... }
 
 \luis{I understand your point. My frustration is that Caroprese \&\ co.\ never do, either, but they somehow get away with claiming (with no proof) that justified repairs avoid it. The reason why I'd like to have a remark in this sense is to substantiate our claim that grounded repairs solve their problem too. (We hinted at this in footnote 1 on page 5.)}
+\bart{I get your point, but to claim that we ``prove'' their claim is a bit too far for me (also in that footnote by the way). 
+We can claim that our definition is simpler, directly inspired by the idea of not having circular support (whatever we take away, something must return), etcetera, but not that we prove some claim that has never been formally stated (without definition of what ``circularity'' is). Don't know yet how to phrase this nicely}
 
 
 \ignore{
@@ -169,7 +171,7 @@ The correspondence between justified repairs and answer sets for particular logi
 However, since answer sets of a logic program are models of its Gelfond--Lifschitz transform, the corresponding characterization in terms would be as fixpoints of the corresponding operator for a similarly derived set of AICs, rather than of $\Op$.
 
 This result is not very surprising: justified weak repairs are answer sets of a particular logic program (Theorem 6 in~\cite{Caroprese2011}), and in turn answer sets of logic programs are grounded fixpoints of the consequence operator (see remark at the top of Section~5 in~\mycite{GroundedFixpoints}).
-However, the translation defined in~\cite{Caroprese2011} is from logic programs to databases with AICs (rather than the other way around), so Proposition~\ref{lem:justified} is \emph{not} a direct consequence of those results.
+However, the translation defined in~\cite{Caroprese2011} is from logic programs to databases with AICs (rather than the other way around), so Proposition~\ref{prop:justified} is \emph{not} a direct consequence of those results.
 Also, since grounded repairs can be built from the ground up, this result also establishes that justified repairs avoid circularity of support (a property that was claimed in~\cite{Caroprese2011}, but never formally discussed).
 
 
