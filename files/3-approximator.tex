@@ -139,7 +139,9 @@ Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as 
 
 \begin{example}
  Consider $\db=\emptyset$ and the following set $\aics$:
- \begin{align*}\lnot a\land b &\aicrule \add a\\  a \land c\land d &\aicrule\remove a.\end{align*}
+ \begin{align*}
+   \lnot a\land b &\aicrule \add a\\  a \land c\land d &\aicrule\remove a\,.
+ \end{align*}
  Consider $\UUU = \{a\mapsto\ltrue,b\mapsto\ltrue, c\mapsto\ltrue, d\mapsto\lunkn\}$. 
  Then  $\suppin_{\db,\aics,\UUU}(a)=\ltrue$ and $\suppout_{\db,\aics,\UUU}(a)=\lunkn$. 
 \end{example}
@@ -286,7 +288,12 @@ This paper is the first work that studies partial (non-two-valued) repairs.
 
 The well-founded semantics induced by AFT can in general differ from the existing well-founded semantics for AICs, as we show in Example \ref{ex:wf:wf}. To distinguish the two, we use the term \emph{AFT-well-founded semantics}. % for the well-founded semantics induced by AFT. 
 
-% Grounded repairs were defined previously by \citet{iclp/Cruz-Filipe16}. All other classes of repairs defined in Definition \ref{def:semantics} are newly introduced semantics by the current paper. 
+The grounded repairs in this definition coincide with those from Definition~\ref{def:grounded}.
+\luis{I think this is important. Should we include a proof? Or is this trivial?}
+All other classes of repairs
+%defined in Definition \ref{def:semantics} 
+are newly introduced semantics by the current paper. 
+
 We now illustrate these semantics by means of some examples. 
 
 \todo{examples of (partial) grounded fixpoint}
@@ -523,8 +530,7 @@ Since $\overline\UU$ is an $\Ap$-stable repair, $\overline\UU$ is the least pref
 
 \textbf{Claim 1} This follows immediately from the definition of justified repair. Prefixpoints of the \closure operator are sets of update actions closed under \aics. Hence $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a minimal set of update actions that contains $\neff_{\UU}(\db)$ and is closed under $\aics$. 
 
-% \luis{Actually, this only proofs that $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a justified \emph{weak} repair. Although we assume $\UU$ is a repair to start with, this looks weird.}
-
+\luis{Strictly speaking, this proofs that $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a justified \emph{weak} repair. However, justified weak repairs are justified repairs when we worry about normal AICs. I think we should say this, but can't phrase it nicely.}
 
 
 
