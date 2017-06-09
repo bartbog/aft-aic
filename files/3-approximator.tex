@@ -57,7 +57,7 @@ Given a partial database \tdb, a set of AICs \aics and an update action $\alpha$
 \begin{align*}
  \supp_{\tdb,\aics}(\alpha) &= \max_{\leq_t}\{\nup(r)^{\tdb}\mid r\in \aics \land \head(r) = \alpha\},
 \end{align*}
-where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula\footnote{Technically, $\nup(r)$ is a set of literal; we identify it with its conjunction here.} $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38} (see Figure~\ref{fig:KT}).
+where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula\footnote{Technically, $\nup(r)$ is a set of literals; we identify it with its conjunction here.} $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38} (see Figure~\ref{fig:KT}).
 \end{definition}
 % \luis{$\leq_t$ was not defined}
 
@@ -136,7 +136,9 @@ Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as 
 
 \begin{example}
  Consider $\db=\emptyset$ and the following set $\aics$:
- \[\lnot a\land b \aicrule \add a\\  a \land c\land d \aicrule\remove a.\]
+ \begin{align*}
+   \lnot a\land b &\aicrule \add a\\  a \land c\land d &\aicrule\remove a\,.
+ \end{align*}
  Consider $\UUU = \{a\mapsto\ltrue,b\mapsto\ltrue, c\mapsto\ltrue, d\mapsto\lunkn\}$. 
  Then  $\suppin_{\db,\aics,\UUU}(a)=\ltrue$ and $\suppout_{\db,\aics,\UUU}(a)=\lunkn$. 
 \end{example}
@@ -283,7 +285,12 @@ This paper is the first work that studies partial (non-two-valued) repairs.
 
 The well-founded semantics induced by AFT can in general differ from the existing well-founded semantics for AICs, as we show in Example \ref{ex:wf:wf}. To distinguish the two, we use the term \emph{AFT-well-founded semantics}. % for the well-founded semantics induced by AFT. 
 
-Grounded repairs were defined previously by \citet{iclp/Cruz-Filipe16}. All other classes of repairs defined in Definition \ref{def:semantics} are newly introduced semantics by the current paper. 
+The grounded repairs in this definition coincide with those from Definition~\ref{def:grounded}.
+\luis{should we include a proof? or is this trivial?}
+All other classes of repairs
+%defined in Definition \ref{def:semantics} 
+are newly introduced semantics by the current paper. 
+
 We now illustrate these semantics by means of some examples. 
 
 \todo{examples of (partial) grounded fixpoint}
@@ -457,7 +464,7 @@ To see this, note that from the definition of $\Ap$, it follows that for each $j
 \end{proof}
 
 \begin{example}\label{ex:wf:wf}The converse of Proposition \ref{prop:wf-wf} does
-not hold. Consider for instance the following set $\aics$ of AICs (based on Example 18 of \citet{iclp/Cruz-Filipe16})
+not hold. Consider for instance the following set $\aics$ of AICs (based on \citet[Example 18]{iclp/Cruz-Filipe16}).
    \begin{align*}
   \lnot a &\aicrule \add a \\
   \lnot a\land \lnot b &\aicrule \add b\\
@@ -520,7 +527,7 @@ Since $\overline\UU$ is an $\Ap$-stable repair, $\overline\UU$ is the least pref
 
 \textbf{Claim 1} This follows immediately from the definition of justified repair. Prefixpoints of the \closure operator are sets of update actions closed under \aics. Hence $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a minimal set of update actions that contains $\neff_{\UU}(\db)$ and is closed under $\aics$. 
 
-\luis{Actually, this only proofs that $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a justified \emph{weak} repair. Although we assume $\UU$ is a repair to start with, this looks weird.}
+\luis{Strictly speaking, this proofs that $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a justified \emph{weak} repair. However, justified weak repairs are justified repairs when we worry about normal AICs. I think we should say this, but can't phrase it nicely.}
 
 
 

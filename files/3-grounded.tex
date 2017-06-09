@@ -1,5 +1,3 @@
-\todo{Most ``lemmas'' in here should be propsitions I find.}
-
 Founded, well-founded and justified repairs were all introduced with the purpose of characterizing a class of repairs whose actions are supported (there is a reason for having them in the set), and that support is not circular; in particular, these repairs should be constructible ``from the ground up'', which was the motivation for defining well-founded repairs.
 However, all notions exhibit unsatisfactory examples: there exist founded repairs with circular support (see, e.g., Example \ref{ex:founded}), and repairs with no circular support that are not justified~\cite{tase/Cruz-FilipeEGN13}. %; well-founded repairs, on the other hand, are not stratifiable~\cite{lcf:14}, which impacts their computation in practice.
 In this section, we introduce a new semantics, grounded repairs, aimed at directly tackling this issue. 
@@ -19,9 +17,9 @@ Our definition of grounded (weak) repair is aimed directly at avoiding this kind
   
 As can be seen, our definition of groundedness is a slight variant of the notion of foundedness: instead of only considering what happens if \emph{one} action is dropped from a proposed set of update actions, we consider arbitrary removals. 
 A first observation with respect to groundedness is that grounded weak repairs are always minimal, i.e., that each grounded weak repair is a repair. 
-\begin{lemma}
+\begin{proposition}
  All grounded weak repairs of \fulldb are $\subseteq$-minimal, i.e., are repairs. 
-\end{lemma}
+\end{proposition}
 \begin{proof}
  Suppose $\UU$ is a grounded weak repair and $\UU$ is not minimal, i.e., that there exists a $\VV\subsetneq \UU$ that is also a weak repair. 
 % Now, take $A = \UU\setminus \VV$ in the definition of grounded. Then $\VV = \UU\setminus A$.
@@ -31,11 +29,11 @@ Thus, the notion of groundedness intrinsically embodies the principle of minimal
 % Furthermore, grounded repairs also embody the notion of ``support'' previously defined.
 
 
-\begin{lemma}
+\begin{proposition}
   \label{lem:founded}
   Let $\db$ be a database, $\eta$ be a set of AICs over $\db$ and $\UU$ be a grounded repair for $\fulldb$.
   Then $\UU$ is both founded and well-founded.
-\end{lemma}
+\end{proposition}
 \begin{proof}
   Assume that $\UU$ is a grounded repair for $\fulldb$.
   The fact that $\UU$ is founded follows immediately from the definition of grounded repair, since for each action $\alpha$, $\VV=\UU\setminus\{\alpha\}$ is a strict subset of $\UU$. Hence, by groundedness of $\UU$, there must be a rule $r$ with $\head(r)\in \UU\setminus \VV=\{\alpha\}$, whose body is satisfied in $\VV$. We find that $\UU$ is founded indeed. % and for such $\VV$ the conditions of groundedness coincides with that of foundedness hence there must be a rule  $rby letting $A$ range over the singleton sets of actions in $\UU$.
@@ -105,10 +103,10 @@ We advocate a similar approach, but including grounded repairs among the possibl
 
 We now investigate the relation between grounded and justified repairs, and find that all justified repairs are grounded, but not conversely -- in line with our earlier claim that the notion of justified repair is too strong.
 
-\begin{lemma}
+\begin{proposition}
   \label{lem:justified}
   Let $\db$ be a database, and let $\eta$ be a set of normal AICs over $\db$. If $\UU$ is a justified repair for $\fulldb$, then $\UU$ is grounded.
-\end{lemma}
+\end{proposition}
 \begin{proof}
   Let $\UU$ be a justified repair for $\fulldb$ and take $\VV\subsetneq\UU$.
   Then $\VV\cup\neff(\UU)$ is not closed under $\eta$, whence there is a rule $r\in\eta$ such that $\actof(\nup(r))\subseteq\VV\cup\neff(\UU)$ and $\head(r)\not\in\VV\cup\neff(\UU)$.
