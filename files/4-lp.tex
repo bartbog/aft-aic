@@ -68,6 +68,14 @@ The proof of this theorem follows later, since it makes use of proposition \ref{
   \[\aicop(\PP_g) = \left\{\lnot p \aicrule \add p\right\}.\]
   Now, $\langle \aicop(\PP_g),\emptyset\rangle$ has one grounded repair, namely $\{\add p\}$. 
 \end{example}
+\bart{WAIT!!!! I'm getting confused here. 
+In this example, isn't the AFT-well-founded repair $\{+p\}$, which is the nalso a stable repair? That would contradict Theorem \ref{thm:partialstable-LP} and also the combination of Propositions \ref{prop:stable_is_justified} and \ref{prop:justified_is_stable_sometimes}!
+
+7.2 surely is wrong. THe proof is simply bogus. $lp\circ aic \neq triv$ in general. Only if the logic program does not have the negation of its defined literal in the body. 
+
+Also: the claim of Caroprese and Truzczynski ONLY holds for SIMPLE logic programs (Pg is NOT simple) . To be fixed!!!! 
+
+}
 
 \begin{example}
  Consider the logic program
