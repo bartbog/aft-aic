@@ -145,9 +145,11 @@ Hence, all AFT semantics for \fulldb coincide in this case with the equally-name
   Now, it is easy to see that $\Psi_{\triv(\PP)}(\cdot,I)_1$ is the inflationary operator of $\Psi_\PP(\cdot,I)_1$, i.e., that $\Psi_{\triv(\PP)}(\cdot,I)_1(J) = \Psi_\PP(\cdot,I)_1(J)\cup J$. Hence, these two monotone operators have the same prefixpoints and thus also the same least prefixpoint, which equals their least prefixpoint. 
   }
  that the partial stable models of $\PP$ and those of $\triv(\PP)$ are the same. 
- Now, the result easily follows from the facts that if $\PP$ is simple, then
- \[\lpop(\aicop(\PP)) = \triv(\PP)\]
- and that $\triv$ and $\lpop$ preserve partial stable models. 
+ Now, the result easily follows from the facts that \textbf{(i)} if $\PP$ is simple, then
+\[
+\lpop(\aicop(\PP)) = \triv(\PP)\]
+since $\aicop$ adds a literal $\lnot a$ to the body of each rule $r$ with $\head(r) = a$ and $\lpop$ removes such literal again (since \PP is simple, there was no such literal at the start) and additionally, adds the trivial rules $\triv$ adds, and \textbf{(ii)} 
+ that $\triv$ and $\lpop$ preserve partial stable models. 
 % 
 \end{proof}
 
