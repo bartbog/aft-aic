@@ -7,6 +7,7 @@ Indeed, there the repair $\UU_1$ is founded. It consists of two actions, $\remov
 However, if we remove \emph{both} of them simultaneously, we notice that no rule no longer applies. As such, we can conclude that these actions are ``self-supporting'': the only reason to have one of the two actions in the repair of our choice is because the other action is also in there. 
 Our definition of grounded (weak) repair is aimed directly at avoiding this kind of situations. 
 
+% \luis{I think the definitions look cleaner if we don't use $A$ -- I left the old ones commented out.}
 \begin{definition}\label{def:grounded}
  A set of update actions \UU is \emph{grounded} with respect to $\fulldb$ if, for each $\VV \subsetneq  \UU$, there is a rule  $r\in \aics$ such that $\VV(\db)\models \body(r)$ and $\head(r)\in(\UU\setminus\VV)$. A \emph{grounded (weak) repair} is a (weak) repair that is grounded.
 \end{definition}
