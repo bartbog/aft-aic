@@ -2,7 +2,7 @@
 %% Probably: well-founded/KK: polynomially computable (data complexity), stable fixpoints: NP-complete, ... Copy results from logic programming basically. Similarly, complexity increases if we start using ultimate approximators}
 
 
-\todo{streamline section}
+% \todo{streamline section}
 
 
 We begin this section by stating an observation about the complexity of computing \Ap.
@@ -22,14 +22,14 @@ All complexity results are in terms of the size of the database, \fulldb.
 \begin{proposition}
   \label{prop:grounded-complexity}
   Let $\db$ be a database and $\eta$ be a set of normal AICs over $\db$.
-  The problem of deciding whether there exist grounded repairs for $\fulldb$ is $\Sigma^P_2$-complete.
+  The problem of deciding whether there exists a  grounded repair for $\fulldb$ is $\Sigma^P_2$-complete.
 \end{proposition}
 \begin{proof}
   For membership, we need to show that we can decide the problem with a non-deterministic Turing machine with an NP oracle.
   Given a set of update actions $\UU$, checking that it is a fixpoint of $\Op$ can be done in polynomial time on the size of $\db$ and $\eta$; the NP-oracle can then answer whether there exists $\UU'\subsetneq\UU$ with $\Op(\UU')\cap\UU\subseteq\UU'$, thereby establishing whether $\UU$ is grounded.
 
-  For hardness, we invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of~\cite{tplp/CaropreseT11}.
-  Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of~\mycite{GroundedFixpoints}. \bart{We should prove (not just claim) that these grounded repairs are equal to grounded models. Should be doable with what we have from the previous section·}
+  For hardness, we invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of \citet{tplp/CaropreseT11}.
+  Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of \mycitet{GroundedFixpoints}. \bart{We should prove (not just claim) that these grounded repairs are equal to grounded models. Should be doable with what we have from the previous section·}
   \bart{In fact, we have an example that this is NOT the case, so something definitely is wrong here. Wat we  CAN do is take the logic program from the grounded fixpoints paper, introduce some auxiliary variables (a $z_i$ that is a copy of $y_i$ and a $q'$ that is a copy of $q$) to make it ``simple'' and the proof will still hold. However, not so nice. }
 \end{proof}
 
@@ -92,7 +92,7 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
   Note that every logic program can be transformed in a simple logic program by removing the offending rules without changing its stable semantics.
 \end{proof}
 
-For each of our semantics, complexity is the same as the complexity of its counterpart in (normal) logic programming. 
+What we notice in this section is that complexity for inference tasks related to our semantics is always the same as the complexity of its counterpart in (normal) logic programming. 
 This illustrates that the added expressivity (essentially, allowing AICs that are not unipolar) does not result in added complexity. 
 
 
