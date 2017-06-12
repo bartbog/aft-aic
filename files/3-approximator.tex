@@ -409,12 +409,11 @@ Hence, in the above example, \Ap-stable repairs capture the intended semantics.
 
 \paragraph{Properties of AFT-Style Semantics}%
 % \todo{start new section here?}
-\luis{If we have results about justified repairs, it might make sense to include remarks on whether they hold in the non-normal case. If we do that, we need to revise this sentence (refers to some sentence in intro).}
-\bart{The problem is that the AFT semantics are not defined for non-deterministic operators, so we won't be able to derive much useful stuff from there I'm afraid}
-\luis{We can always define stuff in general via normalization. Since justified repairs don't work well with normalization, this means that the relationships need to be analyzed again. For example, does Proposition 3.13 hold if we start with non-normal AICs, and consider stable repairs after normalization vs justified repairs without normalizing?}
-\bart{Hmmm... I Don't immediately have the answer to that one... Don't have any intuitions either. }
-
-\luis{probably we'll ignore the whole discussion above}
+%% \luis{If we have results about justified repairs, it might make sense to include remarks on whether they hold in the non-normal case. If we do that, we need to revise this sentence (refers to some sentence in intro).}
+%% \bart{The problem is that the AFT semantics are not defined for non-deterministic operators, so we won't be able to derive much useful stuff from there I'm afraid}
+%% \luis{We can always define stuff in general via normalization. Since justified repairs don't work well with normalization, this means that the relationships need to be analyzed again. For example, does Proposition 3.13 hold if we start with non-normal AICs, and consider stable repairs after normalization vs justified repairs without normalizing?}
+%% \bart{Hmmm... I Don't immediately have the answer to that one... Don't have any intuitions either. }
+%% \luis{probably we'll ignore the whole discussion above}
 
 We now show that all of these semantics are nicely invariant under shifting. 
 \begin{proposition}
@@ -529,12 +528,14 @@ Since $\overline\UU$ is an $\Ap$-stable repair, $\overline\UU$ is the least pref
 % % 
 % All that remains is to prove our claims. 
 
-\textbf{Claim 1} This follows immediately from the definition of justified repair. Prefixpoints of the \closure operator are sets of update actions closed under \aics. Hence $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a minimal set of update actions that contains $\neff_{\UU}(\db)$ and is closed under $\aics$. 
+\textbf{Claim 1}
+We already showed that $\UU$ is a repair. The claim thus
+%This
+follows immediately from the definition of justified repair. Prefixpoints of the \closure operator are sets of update actions closed under \aics. Hence $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a minimal set of update actions that contains $\neff_{\UU}(\db)$ and is closed under $\aics$. 
 
-\luis{Strictly speaking, this proofs that $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a justified \emph{weak} repair. However, justified weak repairs are justified repairs when we worry about normal AICs. I think we should say this, but can't phrase it nicely.}
-\bart{\UU IS a repair. That is established in the first sentence of the proof. So we proved what we claimed, no? (our claim is only claimed for sets that are repairs in the first place)}
-
-
+%% \luis{Strictly speaking, this proves that $\UU$ is a minimal prefixpoint of $O$ iff $\ext(\UU)$ is a justified \emph{weak} repair. However, justified weak repairs are justified repairs when we worry about normal AICs. I think we should say this, but can't phrase it nicely.}
+%% \bart{\UU IS a repair. That is established in the first sentence of the proof. So we proved what we claimed, no? (our claim is only claimed for sets that are repairs in the first place)}
+%% \luis{Yes. I was referring to the sentence ``Hence\ldots''. What I'm missing is precisely the combination of that sentence with the fact that \UU is a repair, which was established previously (I was confused the first time I read the proof).}
 
 \textbf{Claim 2} Pick some literal $l$ and assume that $l=a$ or $l=\lnot a$ for some atom $a\in \atoms$.
 

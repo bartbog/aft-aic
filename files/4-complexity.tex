@@ -33,16 +33,6 @@ All complexity results are in terms of the size of the database, \fulldb.
   \bart{In fact, we have an example that this is NOT the case, so something definitely is wrong here. Wat we  CAN do is take the logic program from the grounded fixpoints paper, introduce some auxiliary variables (a $z_i$ that is a copy of $y_i$ and a $q'$ that is a copy of $q$) to make it ``simple'' and the proof will still hold. However, not so nice. }
 \end{proof}
 
-This result still holds if we allow a truly first-order syntax for AICs, where the atoms can include variables that are implictly universally quantified.
-\bart{vague... What do you mean here? }
-\luis{In the original work, AICs are first-order things that represent the set of all their closed instances. This can give an exponential reduction in the size of $\eta$. I'm trying to say that the complexity still remains the same, because you don't need to compute that set. Maybe we can just ignore this point.}
-\bart{Ah, I didn't read that. First order things with simple bodies (no arbitrary FO formulas, but universally quantified rules I guess. We can say something about that, but need to be careful: our complexity results change to DATA complexity results than, since by blowing up the number of variables, we can get more exponential behaviour}
-\bart{If we say this, at the end or the beginning of the section (holds for all results of this section)}
-
-
-
-
-
 
 % As a consequence, we get the following complexity results.
 \begin{proposition}
@@ -94,6 +84,17 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
 
 For each of our semantics, complexity is the same as the complexity of its counterpart in (normal) logic programming. 
 This illustrates that the added expressivity (essentially, allowing AICs that are not unipolar) does not result in added complexity. 
+
+\bart{vague... What do you mean here? }
+\luis{In the original work, AICs are first-order things that represent the set of all their closed instances. This can give an exponential reduction in the size of $\eta$. I'm trying to say that the complexity still remains the same, because you don't need to compute that set. Maybe we can just ignore this point.}
+\bart{Ah, I didn't read that. First order things with simple bodies (no arbitrary FO formulas, but universally quantified rules I guess. We can say something about that, but need to be careful: our complexity results change to DATA complexity results than, since by blowing up the number of variables, we can get more exponential behaviour}
+\bart{If we say this, at the end or the beginning of the section (holds for all results of this section)}
+\luis{Moved it to the end. The sentence still needs to be fixed.}
+
+These result still holds if we allow a truly first-order syntax for AICs, where the atoms can include variables that are implictly universally quantified.
+
+
+
 
 
 %% \bart{Lower bound for stable: every normal logic program can be seen  as an AIC. Should have te same stable smeantics (note: our transformation in theprevious section adds rules 
