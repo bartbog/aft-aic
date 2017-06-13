@@ -261,7 +261,8 @@ First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Klee
 
 Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $a \in \atoms$, we again prove this claim by a case analysis on the definition of of $\Ap(\UU)(a)$.
 \begin{itemize}
- \item If $\UU(a)=\lfalse$, then $\Op(\UUU)(a)= \ltrue$ if and only if there is some rule $r\in \eta$ with $\UU(\db) \models \body(r)$ and $\head(r)=\change a$. I.e., $\Op(\UU)(a)$ is true if and only if $\suppin_{\UU}(a) = \ltrue$, if and only if $\Ap(\UU)(a)=\ltrue$. 
+ \item If $\UU(a)=\lfalse$, then $\Op(\UUU)(a)= \ltrue$ if and only if there is some rule $r\in \eta$ with $\UU(\db) \models \body(r)$ and $\head(r)=\change a$. 
+   Since $\body(r)=\nup(r)\land a$, we conclude that $\Op(\UU)(a)$ is true if and only if $\suppin_{\UU}(a) = \ltrue$, if and only if $\Ap(\UU)(a)=\ltrue$. 
  \item The case for $\UU(a)=\lfalse$ is similar. 
  \item The case where $\UU(a)= \lunkn$ cannot occur, since $\UU$ is two-valued. \qedhere
 \end{itemize}
@@ -288,7 +289,7 @@ This paper is the first work that studies partial (non-two-valued) repairs.
 
 The well-founded semantics induced by AFT can in general differ from the existing well-founded semantics for AICs, as we show in Example \ref{ex:wf:wf}. To distinguish the two, we use the term \emph{AFT-well-founded semantics}. % for the well-founded semantics induced by AFT. 
 
-It follows directly from Proposition 3.2 of \citet{ijcai/BogaertsVD15} and Proposition \ref{prop:grounded:ok} that grounded repairs as defined in Definition \ref{def:semantics} coincide with  Definition~\ref{def:grounded}. 
+It follows directly from \citet[Proposition 3.2]{ijcai/BogaertsVD15} and Proposition \ref{prop:grounded:ok} that grounded repairs as defined in Definition \ref{def:semantics} coincide with  Definition~\ref{def:grounded}. 
 All other classes of repairs are new. 
 % \luis{I think this is important. Should we include a proof? Or is this trivial?}
 % All other classes of repairs
@@ -297,7 +298,6 @@ All other classes of repairs are new.
 
 We now illustrate these semantics by means of some examples. 
 
-\todo{examples of (partial) grounded fixpoint}
 \begin{example}
  Consider the following set \aics of AICs:
 \begin{align*}
@@ -317,15 +317,18 @@ Here, we see that
 Hence, 
 \[\UUU_1 = \Ap(\UUU_0): a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lunkn\]
 is a refinement of $\UUU_0$. 
-Now, it can be verified that $\UUU_1$ is a fixpoint of $\Ap$. This is the Kripke-Kleene fixpoint. It is a partial repair set and provides the information that $a$ must be repaired, but it uncertain about $b$ and $c$. 
+Now, it can be verified that $\UUU_1$ is a fixpoint of $\Ap$. This is the Kripke-Kleene fixpoint. It is a partial repair set and provides the information that $a$ must be repaired, but it is uncertain about $b$ and $c$. 
 
 A well-founded induction continues by unfoundedness refinement. 
-It can be verified that 
+%It can be verified that 
+The partial update set
 \[\UUU_2 = a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lfalse\]
 is an unfoundedness refinement of $\UUU_1$.
 This follows easily from the fact that 
 \[\UUU_3 = \Ap(\UUU_2)= a\mapsto \ltrue, b\mapsto \ltrue, c\mapsto\lfalse.\]
-Hence $\UUU_3$ is an application refinement of $\UUU_2$. Since this is an exact point, it is the \Ap-well-founded fixpoint of \Op. It is clearly the intended repair in this example.
+%Hence
+Furthermore,
+$\UUU_3$ is an application refinement of $\UUU_2$. Since this is an exact point, it is the \Ap-well-founded fixpoint of \Op. It is clearly the intended repair in this example.
 
 Note that in this example, unfoundedness refinements take care of minimizations of repairs.  
 \end{example}
@@ -352,11 +355,11 @@ Hence, $\Ap(\UUU_0)=\UUU_0$ and $\UUU_0$ is the \Ap-Kripke-Kleene fixpoint.
 A well-founded induction can continue with unfoundedness refinements. Indeed, consider 
 \[\UUU_1: a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto\lunkn.\]
 Since 
-\[\Ap(\UUU_1) = a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue,\] it holds that $\UUU_1$ is an unfoundedness refinement of $\UUU_1$. 
+\[\Ap(\UUU_1) = a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue,\] it holds that $\UUU_1$ is an unfoundedness refinement of $\UUU_0$. 
 Finally, we can conclude that $\UUU_2:=\Ap(\UUU_1)$ is the \Ap-well-founded fixpoint. This corresponds to the intended repair.
 \end{example}
 
-As can be expected, not every set of AICs has a two-valued well-founded repair. That would simply be too much to ask. It would mean that for every set of AICs we can unambiguously identify a single repair. The following example illustrates that this is indeed not always the case. It also illustrates that (for this specific example), \Ap-stable repairs provide a solution that corresponds to the intuitions. 
+As can be expected, not every set of AICs has a two-valued well-founded repair. That would simply be too much to ask, as it would mean that for every set of AICs we can unambiguously identify a single repair. The following example illustrates that this is indeed not always the case. It also illustrates that, for this specific example, \Ap-stable repairs provide a solution that corresponds to the intuitions. 
 
 \begin{example}
  Consider the following set \aics of AICs:
@@ -380,7 +383,7 @@ Here, it holds that
  \suppin_{\UUU_0}(c) &= \lunkn, & \suppout_{\UUU_0}(c) &=\lfalse 
 \end{align*}
 Hence, $\Ap(\UUU_0) = \UUU_0$ and $\UUU_0$ is the \Ap-Kripke-Kleene fixpoint. 
-Furthermore, we claim that there are no unfoundedness refinements of $\UUU_0$ and hence that $\UUU_0$ is also the \Ap-well-founded fixpoint. To see that our claim indeed holds, notice that any unfoundedness refinement of $\UUU_0$ should consist of making a subset of $U$ of $\{a,b,c\}$ false, in such a way that for each $u\in U$, $\Ap(\UUU_0[U: \lfalse])(u)=\lfalse$. 
+Furthermore, we claim that there are no unfoundedness refinements of $\UUU_0$, and hence that $\UUU_0$ is also the \Ap-well-founded fixpoint. To see that our claim indeed holds, notice that any unfoundedness refinement of $\UUU_0$ should consist of making a subset of $U$ of $\{a,b,c\}$ false, in such a way that for each $u\in U$, $\Ap(\UUU_0[U: \lfalse])(u)=\lfalse$. 
 Assume $a\in U$. In order for $\Ap(\UUU_0[U: \lfalse])(a)$ to be false $b$ must be $\ltrue$ in $\UUU_0[U: \lfalse]$ (otherwise the body of the rule defining $\add a$ is unknown or true). That is not possible, hence $a\not \in U$. From a similar argument, we find that $b\not \in U$ and $c\not \in U$. 
 Trivially, the two intended repairs are more precise than the well-founded fixpoint. 
 
@@ -396,16 +399,21 @@ and
 Similarly, 
 \[(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \lunkn.\]
 Hence 
-\[\Ap(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c \mapsto \lunkn\]
+%\[\Ap(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c \mapsto \lunkn\]
+\[\Ap(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c \mapsto \ltrue\]
+\luis{check!}
 and 
 \[\UU_2 := \Ap(\UU_1,\UU)_1 = \UU.\]
 Furthermore, $\Ap(\UU_2,\UU) = \UU_2=\UU$, hence  we find that indeed, \UU is an \Ap-stable fixpoint. 
 The case for $\{\add b\}$ is similar. 
 
-It can also be verified that there are no other $\Ap$-stable fixpoints. Due to minimality, no other could contain $b$, hence they must be subsets of $\{a,c\}$. Again, due to minimality, the only such subset is \UU.
+It can also be verified that there are no other $\Ap$-stable fixpoints. Due to minimality, no other could contain $\add b$, hence they must be subsets of $\{\add a,\add c\}$. Again, due to minimality, the only such subset is \UU.
 \end{example}
 
 Hence, in the above example, \Ap-stable repairs capture the intended semantics.
+
+We omit examples of grounded fixpoints, as we already included some in Section~\ref{sec:grounded}.
+\todo{examples of (partial) grounded fixpoint}
 
 \paragraph{Properties of AFT-Style Semantics}%
 % \todo{start new section here?}
@@ -416,7 +424,7 @@ Hence, in the above example, \Ap-stable repairs capture the intended semantics.
 % 
 % \luis{probably we'll ignore the whole discussion above}
 
-We now show that all of these semantics are nicely invariant under shifting. 
+We now show that all AFT-style semantics are nicely invariant under shifting. 
 \begin{proposition}
  \Ap, and hence also \Op, is invariant under shifting, i.e., for each set $S\subseteq \atoms$:
  \[\Apfull = \threeap_{\langle\shift_S(\db),\shift_S(\eta)\rangle}\]
@@ -453,7 +461,7 @@ Thus assume $\alpha_1,\dots,\alpha_n$ is a sequence with $\UU_{k} = \{ \alpha_1,
 If $\UUU_{k+1}$ is an unfoundedness refinement of $\UUU_k$, then $\UU_{k+1}=\UU_k$ and there is nothing to show. Hence, assume that $\UUU_k \leqp \UUU_{k+1}\leqp \Ap(\UUU_k)$. In this case, $\UU_{k+1} = \UU_k \cup \{ b_j\mid 1\leq j\leq m\}$ for some sequence of elements $b_j$ such that $\Ap(\UUU_k)(b_j) = \ltrue$. For each $j$, let $\UU'_j$ denote $\{\alpha_1,\dots,\alpha_n,\beta_1,\dots,\beta_j\}$. 
 We claim that the sequence 
 $\alpha_1,\dots,\alpha_n,\beta_1,\dots,\beta_m$ still satisfies the condition in the claim. 
-To see this, note that from the definition of $\Ap$, it follows that for each $j\in \{1,\dots, m\}$ there is a rule $r_j$ with $\nup(r)^{\UUU_k(\db)}=\ltrue$ and $\head(r_j)=b_j$. Furthermore, for each $j$ it holds that $\UU_{j-1}' \geqp \UUU_k$ hence also $\nup(r)^{\UU_{j-1}'}$. Since $b_j\not \in \UU_{j-1}$, we also see that $\body(r_j)^{\UU_{j-1}'} = \ltrue$. Hence, the claim indeed follows for $\beta+1$ as well. 
+To see this, note that from the definition of $\Ap$, it follows that for each $j\in \{1,\dots, m\}$ there is a rule $r_j$ with $\nup(r)^{\UUU_k(\db)}=\ltrue$ and $\head(r_j)=b_j$. Furthermore, for each $j$ it holds that $\UU_{j-1}' \geqp \UUU_k$, hence also $\nup(r)^{\UU_{j-1}'}=\ltrue$. Since $b_j\not \in \UU_{j-1}$, we also see that $\body(r_j)^{\UU_{j-1}'} = \ltrue$. Hence, the claim indeed follows for $\beta+1$ as well. 
 % 
 % 
 % 
@@ -478,7 +486,7 @@ not hold. Consider for instance the following set $\aics$ of AICs
  In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be changed (here: added) no matter what. The second rule then becomes void (there is never a reason to add $b$) and the last rule dictates that also $c$ must be added. 
  However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also a well-founded repair, obtained by first applying the second rule and then the first one.
 \end{example}
-% \luis{We might say that this example is from \cite{iclp/Cruz-Filipe16}; otherwise it looks weird that $DB\neq\emptyset$ as in all other examples.}
+\luis{This example is almost the same as 2.13. How about we make it the same?}
 
 % \todo{check the link between ``justified repair'' and ``stable repair''. My feeling is that they should be very closely related. For instance in Example 20 in the GF and AIC paper, this is a case where stable coincides with justified. However, there is also a notion of ultimate stable repair (which coincides here with grounded). This is similar to logic programming, where 
 % \begin{align*}
