@@ -6,9 +6,9 @@ There are two major problems when deciding how to repair an inconsistent databas
 Indeed, there are typically several ways to fix an inconsistent database, and several criteria to choose the ``best'' one have been proposed over the years.
 Among the most widely accepted criteria are minimality of change~\cite{Winslett90,ai/EiterG92} -- change as little as possible -- and the common-sense law of inertia~\cite[discussed in, e.g.,][]{PrzymusinskiT97} -- do not change anything \longpaper{unless there is a reason for the change.}\shortpaper{without a reason to do it.}
 
-A typical implementation of integrity constraints in database systems is by means of event-condition-action rules~\cite{TenienteO95,WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
-However, these rules do not have a declarative semantics, making their joint behavior hard to understand.
-\luis{add more detail here}
+A typical implementation of integrity constraints in database systems is by means of event-condition-action (ECA) rules~\cite{TenienteO95,WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
+ECA rules are widely used in practice, as they are simple to implement and their individual semantics is easy to understand.
+However, the lack of declarative semantics for ECA rules makes their interaction complex to analyze and their joint behavior hard to understand.
 
 The formalism of \emph{active integrity constraints (AICs)} \cite{ppdp/FlescaGZ04} was inspired by a similar idea.
 AICs express database dependencies through logic programming-style rules that include update actions in their heads.
@@ -64,26 +64,33 @@ We again study properties of these new semantics and study how they compare to e
 Furthermore, we argue that, from a practical point of view, the AFT-style well-founded semantics is very valuable. 
 Indeed, we show that the AFT-well-founded repair can be computed in polynomial time, and that, on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
 
-\bart{Warning: next paragarph is taken (quite literally) from my grounded fixpoints paper. Might have to be rewritten a bit to avoid self-plagiarism?}
-Approximation fixpoint theory, the framework we use to define our semantics, was first defined by Denecker, Marek and Truszczy\'nski, henceforth referred to as DMT (\citeyear{DeneckerMT00}).
-It is a general algebraical study of logics with a fixpoint semantics. 
-\citetDMT{DeneckerMT00} developed this theory after discovering analogies in the semantics of logic programming \mycite{LP}, AEL \cite{mo85} and default logic, which we will abbreviate to DL \cite{ai/Reiter80}.
-Their theory defines different types of fixpoints for a so-called approximating operator.
-In the context of logic programming, they showed that Fitting's (three- or four-valued) immediate consequence operator is an approximator of the two-valued immediate consequence operator and that its different types of fixpoints correspond exactly with the  major, equally named, semantics of logic programs. 
-They identified  approximating operators for default logic and autoepistemic logic and showed that AFT induces all main and some new semantics in these fields \cite{DeneckerMT03}. 
-Moreover, this work unified DL and AEL in a deep sense.
-They showed that Konolige's mapping from DL to AEL \cite{Konolige88} preserves the approximating operator and hence, preserves all of the types of semantics.  
-Thus, DL can (and should) be viewed as a fragment of AEL under Konolige's embedding and an old research question was resolved \cite{nonmon30/DeneckerMT11}. 
-Recently, \citet{journals/ai/Strass13} showed that also the major semantics of Dung's argumentation frameworks \mycite{AF} and abstract dialectical frameworks \mycite{ADF} can be characterized using AFT. 
-Nowadays, AFT is used for various purposes, including defining extensions of logic programming \cite{lpnmr/AnticEF13}, defining new logics \cite{iclp/BogaertsVDV14}, integrating different formalisms \cite{RR/BiJF14}, studying complexity \cite{kr/StrassW14}, and studying modularity and predicate introduction in a uniform way \cite{tocl/VennekensGD06,VennekensMWD07a,VennekensMWD07b}. 
+All our semantics are defined within the framework of approximation fixpoint theory, a general algebraic framework for studying logics with a fixpoint semantics.
+This framework was initially developed by Denecker, Marek and Truszczy\'nski, henceforth referred to as DMT (\citeyear{DeneckerMT00}), after identifying analogies in the semantics of logic programming \mycite{LP}, AEL \cite{mo85} and default logic, hereafter abbreviated to DL \cite{ai/Reiter80}.
+The theory defines different types of fixpoints for what are called \emph{approximating} operators, or \emph{approximators}.
+In the context of logic programming, DMT \citeyear{DeneckerMT00} showed that Fitting's (three- or four-valued) immediate consequence operator is an approximator of the usual (two-valued) immediate consequence operator, and that the major semantics of logic programs coincide with the (equally named) different types of fixpoints of that approximator.
+They then identified approximators for both default and autoepistemic logic, showing that AFT induces all main semantics in these fields, as well as some new ones \cite{DeneckerMT03}, thus unifying DL and AEL in a deep sense.
+%They showed that Konolige's mapping from DL to AEL \cite{Konolige88} preserves the approximating operator and hence, preserves all of the types of semantics.  
+%Thus, DL can (and should) be viewed as a fragment of AEL under Konolige's embedding and an old research question was resolved \cite{nonmon30/DeneckerMT11}. 
+More recently, \citet{journals/ai/Strass13} showed that AFT can also be used to characterize the major semantics of Dung's argumentation frameworks \mycite{AF} and abstract dialectical frameworks \mycite{ADF}.
+Other recent applications of AFT include: defining extensions of logic programming \cite{lpnmr/AnticEF13}, defining new logics \cite{iclp/BogaertsVDV14}, integrating different formalisms \cite{RR/BiJF14}, studying complexity \cite{kr/StrassW14}, and studying modularity and predicate introduction in a uniform way \cite{tocl/VennekensGD06,VennekensMWD07a,VennekensMWD07b}. 
 
-As such, the merits of this paper are not just that we define new semantics for AICs. 
-By integrating active integrity constraints in AFT, we provide  solid foundations for applying a rich algebraic theory to AICs.
+%% Approximation fixpoint theory, the framework we use to define our semantics, was first defined by Denecker, Marek and Truszczy\'nski, henceforth referred to as DMT (\citeyear{DeneckerMT00}).
+%% It is a general algebraical study of logics with a fixpoint semantics. 
+%% \citetDMT{DeneckerMT00} developed this theory after discovering analogies in the semantics of logic programming \mycite{LP}, AEL \cite{mo85} and default logic, which we will abbreviate to DL \cite{ai/Reiter80}.
+%% Their theory defines different types of fixpoints for a so-called approximating operator.
+%% In the context of logic programming, they showed that Fitting's (three- or four-valued) immediate consequence operator is an approximator of the two-valued immediate consequence operator and that its different types of fixpoints correspond exactly with the  major, equally named, semantics of logic programs. 
+%% They identified  approximating operators for default logic and autoepistemic logic and showed that AFT induces all main and some new semantics in these fields \cite{DeneckerMT03}. 
+%% Moreover, this work unified DL and AEL in a deep sense.
+%% They showed that Konolige's mapping from DL to AEL \cite{Konolige88} preserves the approximating operator and hence, preserves all of the types of semantics.  
+%% Thus, DL can (and should) be viewed as a fragment of AEL under Konolige's embedding and an old research question was resolved \cite{nonmon30/DeneckerMT11}. 
+%% Recently, \citet{journals/ai/Strass13} showed that also the major semantics of Dung's argumentation frameworks \mycite{AF} and abstract dialectical frameworks \mycite{ADF} can be characterized using AFT. 
+%% Nowadays, AFT is used for various purposes, including defining extensions of logic programming \cite{lpnmr/AnticEF13}, defining new logics \cite{iclp/BogaertsVDV14}, integrating different formalisms \cite{RR/BiJF14}, studying complexity \cite{kr/StrassW14}, and studying modularity and predicate introduction in a uniform way \cite{tocl/VennekensGD06,VennekensMWD07a,VennekensMWD07b}. 
+
+As such, the contribution of this work goes beyond the definition of new semantics for AICs. 
+By integrating active integrity constraints in AFT, we provide solid foundations for applying a rich algebraic theory to AICs.
 For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16}. It remains to be researched how these algebraic modularity results relate to existing modularity results for AICs \cite{foiks/Cruz-Filipe14,iclp/Cruz-Filipe16}. 
 Similarly, AFT provides us with predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
 Furthermore, in view of the results from \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming.
-
-
 
 
 % Besides defining a new class of interesting semantics, our work provides solid foundations for transferring a rich body of work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
