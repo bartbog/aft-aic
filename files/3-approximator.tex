@@ -401,7 +401,6 @@ Similarly,
 Hence 
 %\[\Ap(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c \mapsto \lunkn\]
 \[\Ap(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c \mapsto \ltrue\]
-\luis{check!}
 and 
 \[\UU_2 := \Ap(\UU_1,\UU)_1 = \UU.\]
 Furthermore, $\Ap(\UU_2,\UU) = \UU_2=\UU$, hence  we find that indeed, \UU is an \Ap-stable fixpoint. 
@@ -413,7 +412,7 @@ It can also be verified that there are no other $\Ap$-stable fixpoints. Due to m
 Hence, in the above example, \Ap-stable repairs capture the intended semantics.
 
 We omit examples of grounded fixpoints, as we already included some in Section~\ref{sec:grounded}.
-\todo{examples of (partial) grounded fixpoint}
+%\todo{examples of (partial) grounded fixpoint}
 
 \paragraph{Properties of AFT-Style Semantics}%
 % \todo{start new section here?}
@@ -475,18 +474,23 @@ To see this, note that from the definition of $\Ap$, it follows that for each $j
 %  
 \end{proof}
 
-\begin{example}\label{ex:wf:wf}The converse of Proposition \ref{prop:wf-wf} does
-not hold. Consider for instance the following set $\aics$ of AICs 
-   \begin{align*}
-  \lnot a &\aicrule \add a \\
-  \lnot a\land \lnot b &\aicrule \add b\\
-  \lnot b \land \lnot c &\aicrule \add  c
- \end{align*}
- and $\db=\emptyset$.
- In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be changed (here: added) no matter what. The second rule then becomes void (there is never a reason to add $b$) and the last rule dictates that also $c$ must be added. 
- However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also a well-founded repair, obtained by first applying the second rule and then the first one.
+\begin{example}\label{ex:wf:wf}
+  The converse of Proposition \ref{prop:wf-wf} does not hold, as ilustrated by Example~\ref{ex:well-founded}.
+  The intuitive repair $\UU_2: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$ (in the notation used in this section) is the AFT-well-founded repair for $\fulldb$.
+  However, there is another well-founded repair $\UU_1:a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$.
 \end{example}
-\luis{This example is almost the same as 2.13. How about we make it the same?}
+%% \begin{example}\label{ex:wf:wf}The converse of Proposition \ref{prop:wf-wf} does
+%% not hold. Consider for instance the following set $\aics$ of AICs 
+%%    \begin{align*}
+%%   \lnot a &\aicrule \add a \\
+%%   \lnot a\land \lnot b &\aicrule \add b\\
+%%   \lnot b \land \lnot c &\aicrule \add  c
+%%  \end{align*}
+%%  and $\db=\emptyset$.
+%%  In this case, the AFT-well-founded repair is $\UU_{AFT}: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$. This is clearly the intended repair. Indeed, the first rule dictates that $a$ needs to be changed (here: added) no matter what. The second rule then becomes void (there is never a reason to add $b$) and the last rule dictates that also $c$ must be added. 
+%%  However, $a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$ is also a well-founded repair, obtained by first applying the second rule and then the first one.
+%% \end{example}
+%% \luis{This example is almost the same as 2.13. How about we make it the same?}
 
 % \todo{check the link between ``justified repair'' and ``stable repair''. My feeling is that they should be very closely related. For instance in Example 20 in the GF and AIC paper, this is a case where stable coincides with justified. However, there is also a notion of ultimate stable repair (which coincides here with grounded). This is similar to logic programming, where 
 % \begin{align*}
