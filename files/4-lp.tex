@@ -73,14 +73,14 @@ Since the well-founded model of a logic program is the least precise partial sta
   \[\aicop(\PP_g) = \left\{\begin{array}{ll}\lnot p\land \lnot q &\aicrule \add p \\ p \land  \lnot q &\aicrule \add q\end{array}\right\}.\]
   Now, $\langle \aicop(\PP_g),\emptyset\rangle$ has one grounded repair, namely $\{\add p, \add q\}$. 
 \end{example}
-\bart{WAIT!!!! I'm getting confused here. 
-In this example, isn't the AFT-well-founded repair $\{+p\}$, which is the nalso a stable repair? That would contradict Theorem \ref{thm:partialstable-LP} and also the combination of Propositions \ref{prop:stable_is_justified} and \ref{prop:justified_is_stable_sometimes}!
+%% \bart{WAIT!!!! I'm getting confused here. 
+%% In this example, isn't the AFT-well-founded repair $\{+p\}$, which is the nalso a stable repair? That would contradict Theorem \ref{thm:partialstable-LP} and also the combination of Propositions \ref{prop:stable_is_justified} and \ref{prop:justified_is_stable_sometimes}!
 
-7.2 surely is wrong. THe proof is simply bogus. $lp\circ aic \neq triv$ in general. Only if the logic program does not have the negation of its defined literal in the body. 
+%% 7.2 surely is wrong. THe proof is simply bogus. $lp\circ aic \neq triv$ in general. Only if the logic program does not have the negation of its defined literal in the body. 
 
-Also: the claim of Caroprese and Truzczynski ONLY holds for SIMPLE logic programs (Pg is NOT simple) . To be fixed!!!! 
+%% Also: the claim of Caroprese and Truzczynski ONLY holds for SIMPLE logic programs (Pg is NOT simple) . To be fixed!!!! 
 
-}
+%% }
 
 \begin{example}
  Consider the logic program
@@ -124,13 +124,14 @@ However, adding a trivial rule
 
 Hence, all AFT semantics for \fulldb coincide in this case with the equally-named semantics for the logic program $\lpop(\aics)$. 
 \end{proposition}
-\begin{proof}
-  \luis{The complete proof has been done by hand. Should we add it, or is the detail given here enough?}
-  \bart{I would add the complete proof, especially given the bug I discoverd recently, in a different Theorem... }
-  By case analysis on the definition of \Ap.
-  The condition on \fulldb guarantees that $\suppout$ is always false.
-  The inclusion of the rules of the form $a\lrule a$ is necessary to mimic the common-sense law of inertia, which is embodied in the semantics for AICs but not in that of logic programs.
-\end{proof}
+%% \begin{proof}
+%%   \luis{The complete proof has been done by hand. Should we add it, or is the detail given here enough?}
+%%   \bart{I would add the complete proof, especially given the bug I discoverd recently, in a different Theorem... }
+%%   By case analysis on the definition of \Ap.
+%%   The condition on \fulldb guarantees that $\suppout$ is always false.
+%%   The inclusion of the rules of the form $a\lrule a$ is necessary to mimic the common-sense law of inertia, which is embodied in the semantics for AICs but not in that of logic programs.
+%% \end{proof}
+\luis{proof to be inserted}
 
 
 
