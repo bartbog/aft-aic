@@ -131,8 +131,38 @@ Hence, all AFT semantics for \fulldb coincide in this case with the equally-name
 %%   The condition on \fulldb guarantees that $\suppout$ is always false.
 %%   The inclusion of the rules of the form $a\lrule a$ is necessary to mimic the common-sense law of inertia, which is embodied in the semantics for AICs but not in that of logic programs.
 %% \end{proof}
-\luis{proof to be inserted}
+\begin{proof}
+  By definition,
+  \begin{align*}
+    \Psi_{\lpop(\aics)}(\pstruct)_1 &= \{a\in\atoms \mid \body(r)^\pstruct=\ltrue \mbox{ for some $r\in\lpop(\aics)$ with $\head(r)=a$}\} \\
+    &= \{a\in\atoms \mid \nup(r)^\pstruct=\ltrue \mbox{ for some $r\in\aics$ with $\head(r)=a$}\}\cup\{a\in\atoms\mid a^\pstruct=\ltrue\} \\
+    &= \{\head(r) \mid r\in\aics\land\nup(r)^\pstruct=\ltrue\}\cup\{a\in\atoms\mid a^\pstruct=\ltrue\}
+  \end{align*}
+  and
+  \begin{align*}
+    \Psi_{\lpop(\aics)}(\pstruct)_2 &= \{a\in\atoms \mid \body(r)^\pstruct\neq\lfalse { for some $r\in\lpop(\aics)$ with $\head(r)=a$}\} \\
+    &= \{a\in\atoms \mid \nup(r)^\pstruct\neq\lfalse \mbox{ for some $r\in\aics$ with $\head(r)=a$}\}\cup\{a\in\atoms\mid a^\pstruct\neq\lfalse\} \\
+    &= \{\head(r) \mid r\in\aics\land\nup(r)^\pstruct\neq\lfalse\}\cup\{a\in\atoms\mid a^\pstruct\neq\lfalse\}
+  \end{align*}
 
+  We proceed by case analysis on $a^\pstruct$.
+  \begin{itemize}
+  \item $a^\pstruct=\ltrue$: since $\aics$ cannot contain $\remove a$, we know that $\Ap(\pstruct)(a)=\ltrue=\Psi_{\lpop(\aics)}(\pstruct)(a)$.
+  \item $a^\pstruct=\lfalse$: then $\Ap(\pstruct)(a)=\suppin_{\pstruct}(a)=\max_{\leq_t}\{\nup(r)^{\pstruct}\mid r\in \aics \land \head(r) =\add a\}$.
+    If this last expression evaluates to $\ltrue$, then $a\in\Psi_{\lpop(\aics)}(\pstruct)_1$, and thus $\Psi_{\lpop(\aics)}(\pstruct)(a)=\ltrue$.
+    If it evaluates to $\lunkn$, then $a\notin\Psi_{\lpop(\aics)}(\pstruct)_1$ but $a\in\Psi_{\lpop(\aics)}(\pstruct)_2$, hence $\Psi_{\lpop(\aics)}(\pstruct)(a)=\lunkn$.
+    Finally, if it evaluates to $\lfalse$, then $a\notin\Psi_{\lpop(\aics)}(\pstruct)_2$, and hence $\Psi_{\lpop(\aics)}(\pstruct)(a)=\lfalse$.
+    In all cases, we conclude that $\Ap(\pstruct)(a)=\Psi_{\lpop(\aics)}(\pstruct)(a)$.
+  \item $a^\pstruct=\lunkn$: first observe that $\suppout_{\pstruct}(a)=\lfalse$, since $\remove a$ cannot be the head of any rule in $\aics$.
+    Thus, if $\suppin_{\pstruct}(a)=\ltrue$, then $\Ap(\pstruct)(a)=\ltrue=\Psi_{\lpop(\aics)}(\pstruct)(a)$ by a reasoning similar to the previous case.
+    Otherwise, necessarily $\Ap(\pstruct)(a)=\lunkn$, and again the previous reasoning establishes that $\Psi_{\lpop(\aics)}(\pstruct)(a)=\lunkn$.
+    We again conclude that, in all cases, $\Ap(\pstruct)(a)=\Psi_{\lpop(\aics)}(\pstruct)(a)$.
+  \end{itemize}
+
+\end{proof}
+
+%    \Psi_\PP(\pstruct)_1 &=\{a\in \voc\mid body(r)^\pstruct=\ltrue \text{ for some rule $r\in \PP$ with }head(r)=a\},\\
+%    \Psi_\PP(\pstruct)_2 &=\{a\in \voc\mid body(r)^\pstruct\neq \lfalse \text{ for some rule $r\in \PP$ with }head(r)=a\}.
 
 
 \begin{proof}[Proof of Theorem \ref{thm:partialstable-LP}]
