@@ -220,9 +220,9 @@ However, well-founded repairs can also behave unexpectedly.
   \label{ex:well-founded}
   Let $\eta$ be the set of AICs containing
   \begin{align}
-  a\land\neg b\land\neg c &\supset{+c} \label{rw12} \\
-  \neg a\land\neg b &\supset{+b} \label{rw13} \\%\qquad &
-  \neg a &\supset{+a} \qquad \label{rw14}
+  \neg a &\supset{+a} \qquad \label{rw14} \\
+  \neg a\land\neg b &\supset{+b} \label{rw13} \\
+  a\land\neg b\land\neg c &\supset{+c} \label{rw12}
   \end{align}
   and consider $\db=\emptyset$.
   There are two well-founded repairs for $\fulldb$: $\UU_1=\{{+b},{+a}\}$, obtained by applying first \ref{rw13} and then \ref{rw14}, and $\UU_2=\{{+a},{+c}\}$, obtained by applying first \ref{rw14} and then \ref{rw12}.
