@@ -77,12 +77,100 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
   Given a set of update actions $\UU$, checking that it is a fixpoint of $\Op$ can be done in polynomial time on the size of $\db$ and $\eta$; the NP-oracle can then answer whether there exists $\UU'\subsetneq\UU$ with $\Op(\UU')\cap\UU\subseteq\UU'$, thereby establishing whether $\UU$ is grounded.
 
   \emph{(Hardness)}
-  \luis{can't we just do as in the previous proof, and invoke Theorem 7.2?}
+  The proof is similar to the corresponding part of the proof of Proposition~\ref{prop:grounded-complexity}, using the fact that deciding whether a simple logic program has a grounded fixpoint is $\Sigma^P_2$-complete (Corollary~\ref{cor:simple-has-gf}).
   %% We invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of \citet{tplp/CaropreseT11}.
   %% Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of \mycitet{GroundedFixpoints}. \bart{We should prove (not just claim) that these grounded repairs are equal to grounded models. Should be doable with what we have from the previous section}
   %% \bart{In fact, we have an example that this is NOT the case, so something definitely is wrong here. Wat we  CAN do is take the logic program from the grounded fixpoints paper, introduce some auxiliary variables (a $z_i$ that is a copy of $y_i$ and a $q'$ that is a copy of $q$) to make it ``simple'' and the proof will still hold. However, not so nice. }
 \end{proof}
 
+\luis{not sure if this is whether we want the following text}
+
+We now show that deciding whether a simple logic program has a grounded fixpoint is $\Sigma^P_2$-complete by establishing a reduction from the problem for arbitrary logic programs.
+The intuition is simply to duplicate every atom $a$ as $a^b$ and $a^h$, to be used (only) in bodies or heads of rules, respectively, and add the necessary rules to ensure that they have the same interpretation in any fixpoint of the one-step consequence operator.
+
+We assume the set $\atoms$ to be fixed; for $I\subseteq\atoms$, we define sets $I^b=\{a^b\mid a\in I\}$ and $I^h=\{a^h\mid a\in I\}$.
+We extend these notations to literals in the natural way.
+
+\begin{definition}
+  Let $\PP$ be a logic program.
+  Its simple counterpart is the logic program $\PP^s$ over $\voc^h\cup\voc^b$ containing:
+  \begin{itemize}
+  %\item for each rule $a\leftarrow l_1,\ldots,l_n$ from $\PP$, the rule $a^h\leftarrow l^b_1,\ldots,l^b_n$;
+  \item for each rule $r\in\PP$, the rule $\head(r)^h\leftarrow\body(r)^b$;
+  \item rules $a^b\leftarrow a^h$ for each $a\in\voc$.
+  \end{itemize}
+\end{definition}
+
+\begin{lemma}
+  \label{lem:op-simple}
+  Let $I,J\subseteq\atoms$.
+  Then $T_{\PP^s}\left(I^h\cup J^b\right) = \left(T_\PP(J)\right)^h\cup I^b$.
+\end{lemma}
+\begin{proof}
+  \begin{align*}
+    T_{\PP^s}\left(I^h\cup J^b\right) &= \{\head(r)\mid\body(r)^{I^h\cup J^b}=\ltrue\} \\
+    &= \{\head(r)^h\mid(\body(r)^b)^{I^h\cup J^b}=\ltrue\}\cup\{a^h\mid a^b\in I^h\cup J^b\} \\
+    &= \left(T_\PP(J)\right)^h\cup I^b
+  \end{align*}
+  by unfolding the relevant definitions.
+\end{proof}
+Observe that any set in $\atoms^h\cup\atoms^b$ can be written in the form stated in the hypothesis of this lemma.
+
+\begin{proposition}
+  \label{prop:simple-fp}
+  If $I^h\cup J^b$ is a fixpoint of $T_{\PP^s}$, then $I=J$ and $I$ is a fixpoint of $T_\PP$.
+\end{proposition}
+\begin{proof}
+  If $I^h\cup J^b=T_{\PP^s}\left(I^h\cup J^b\right)=T_\PP(J)^h\cup I^b$, then necessarily $I^h=T_\PP(J)^h$ and $J^b=I^b$.
+  From the latter equality we conclude that $I=J$, whence the former yields $I=T_\PP(J)=T_\PP(I)$.
+\end{proof}
+
+\begin{proposition}
+  \label{prop:simple-gf}
+  $I$ is a grounded fixpoint of $T_\PP$ iff $I^h\cup I^b$ is a grounded fixpoint of $T_{\PP^s}$.
+\end{proposition}
+\begin{proof}
+  Since grounded and strictly grounded fixpoints coincide in this setting, we show the result for strictly grounded fixpoints.
+
+  Suppose that $I^h\cup I^b$ is a grounded fixpoint of $T_{\PP^s}$.
+  By the previous lemma, $I$ is a fixpoint of $T_\PP$.
+  Let $J\subsetneq I$ be such that $T_\PP(J)\cap I\subseteq J$.
+  Using Lemma~\ref{lem:op-simple}, we have that
+  \begin{align*}
+    T_{\PP^s}\left(J^h\cup J^b\right)\cap\left(I^h\cup I^b\right) &=
+    \left(T_\PP(J)^h\cup J^b\right)\cap\left(I^h\cup I^b\right) \\
+    &= (\underbrace{T_\PP(J)^h\cap I^h}_{\subseteq J^h})\cup(\underbrace{J^b\cap I^b}_{\subseteq J^b}) \\
+    \subseteq J^h\cup J^b
+  \end{align*}
+  contradicting the fact that $I^h\cup I^b$ is a grounded fixpoint of $T_{\PP^s}$.
+
+  Conversely, suppose that $I$ is a grounded fixpoint of $T_\PP$ and consider an arbitrary strict subset $J_1^h\cup J_2^b$ of $I^h\cup I^b$.
+  We already established that $I^h\cup I^b$ is a fixpoint of $T_{\PP^s}$.
+  Again using Lemma~\ref{lem:op-simple}, we also have that
+  \begin{align*}
+    T_{\PP^s}\left(J_1^h\cup J_2^b\right)\cap\left(I^h\cup I^b\right) &=
+    \left(T_\PP(J_2)^h\cup J_1^b\right)\cap\left(I^h\cup I^b\right) \\
+    &= (T_\PP(J_2)^h\cap I^h)\cup(J_1^b\cap I^b)
+  \end{align*}
+  If this is a subset of $J_1^h\cup J_2^b$, then we conclude that $T_\PP(J_2)^h\cap I^h\subseteq J_1^h$ and $J_1^b\cap I^b\subseteq J_2^b$, which imply that
+  $T_\PP(J_2)\cap I\subseteq J_1$ and $J_1\cap I\subseteq J_2$.
+  Then $T_\PP(J_2)\cap I\subseteq J_1\cap I\subseteq J_2$.
+  Furthermore, if $J_2=I$, then the fact that $T_\PP(I)=I$ would imply that also $J_1=I$, contradicting $J_1^h\cup J_2^b\subsetneq I^h\cup I^b$.
+  Therefore $I$ is not a grounded fixpoint of $T_\PP$.
+\end{proof}
+
+Combining Propositions~\ref{prop:simple-fp} and~\ref{prop:simple-gf}, we obtain a characterization of all grounded fixpoints of $\PP^s$.
+
+\begin{corollary}
+  $I^h\cup J^b$ is a grounded fixpoint of $T_{\PP^s}$ iff $I=J$ and $I$ is a grounded fixpoint of $T_\PP$.
+\end{corollary}
+
+Furthermore, since $\PP^s$ can be constructed from $\PP$ in polynomial time, we also obtain a complexity result.
+
+\begin{corollary}
+  \label{cor:simple-has-gf}
+  The problem of deciding whether a simple logic program has a grounded fixpoint is $\Sigma^P_2$-complete.
+\end{corollary}
 
 What we notice in this section is that complexity for inference tasks related to our semantics is always the same as the complexity of its counterpart in (normal) logic programming. 
 This illustrates that the added expressivity (essentially, allowing AICs that are not unipolar) does not result in added complexity. 
