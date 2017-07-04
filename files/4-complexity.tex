@@ -169,11 +169,10 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
   \emph{(Inclusion)} Given a candidate repair, checking that it is stable can be done in polynomial time, as it amounts to verifying that it is a repair (two-valued) and that it is a least fixpoint of the operators $\Ap(\cdot,y)_1$ and $\Ap(x,\cdot)_2$.
   The latter can be done in polynomial time, as in the proof of Proposition~\ref{prop:KK-poly}.
 
-  \emph{(Hardness)} For completeness, we use a reduction from simple logic programs to AICs, as defined in~\cite{tplp/CaropreseT11}.
-  A simple logic program is one where rules are not trivial tautologies, i.e., they do not contain contradictory atoms in their bodies and they do not include their head in their body.
-  The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
-  Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
-
+  \emph{(Hardness)} For completeness, we again use the reduction from simple logic programs to AICs from~\cite{tplp/CaropreseT11} given in Definition~\ref{defn:aic-transf}.
+  %A simple logic program is one where rules are not trivial tautologies, i.e., they do not contain contradictory atoms in their bodies and they do not include their head in their body.
+  %The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
+  %Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
   This operator preserves stable semantics by Theorem \ref{thm:partialstable-LP}, and therefore allows us to compute stable models of simple logic programs by first translating them (in linear time) to sets of AICs.
   Since checking whether a logic program has a stable model is NP-complete, we conclude that checking whether a database has a stable repair must be NP-hard.
   Note that every logic program can be transformed in a simple logic program by removing the offending rules without changing its stable semantics.
@@ -189,11 +188,31 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
   Given a set of update actions $\UU$, checking that it is a fixpoint of $\Op$ can be done in polynomial time on the size of $\db$ and $\eta$; the NP-oracle can then answer whether there exists $\UU'\subsetneq\UU$ with $\Op(\UU')\cap\UU\subseteq\UU'$, thereby establishing whether $\UU$ is grounded.
 
   \emph{(Hardness)}
-  The proof is similar to the corresponding part of the proof of Proposition~\ref{prop:stable-complexity}, using the fact that deciding whether a simple logic program has a grounded fixpoint is $\Sigma^P_2$-complete (Corollary~\ref{cor:simple-has-gf}).
-  %% We invoke the (polynomial time) translation $\mathit{aic}$ from logic programs to sets of AICs over the empty database given Section~7 of \citet{tplp/CaropreseT11}.
-  %% Given a logic program $\mathcal P$, deciding whether $\langle\emptyset,\mathit{aic}(\mathcal P)\rangle$ has a grounded repair is equivalent to deciding whether $\mathcal P$ has a grounded model, which is $\Sigma^P_2$-complete by Theorem~5.7 of \mycitet{GroundedFixpoints}. \bart{We should prove (not just claim) that these grounded repairs are equal to grounded models. Should be doable with what we have from the previous section}
-  %% \bart{In fact, we have an example that this is NOT the case, so something definitely is wrong here. Wat we  CAN do is take the logic program from the grounded fixpoints paper, introduce some auxiliary variables (a $z_i$ that is a copy of $y_i$ and a $q'$ that is a copy of $q$) to make it ``simple'' and the proof will still hold. However, not so nice. }
+  We show hardness directly by reducing another $\Sigma^P_2$-hard problem to deciding whether a particular database with a set of AICs has a grounded repair.  Our proof is a straightforward adaptation of~\citep[Theorem~5.7]{ai/BogaertsVD15}, which in turn is inspired by~\citep[Theorem 6.12]{DeneckerMT04}.
+
+  The problem we consider is: given a DNF formula $\varphi$ over propositional symbols $x_1,\ldots,x_m,y_1,\ldots,y_n$, decide whether the formula $\varphi_I$ (obtained by replacing each $x_i$ with either $\ltrue$, if $x_i\in I$, or $\lfalse$, otherwise) is a tautology.  We consider the empty database $\db$ over $\atoms=\{x_i,x'_i\mid 1\leq i\leq m\}\cup\{p,q,y_1,\ldots,y_n\}$, where we use $x'_i$ to represent the negation of $x_i$.  We write $\varphi$ for the formula obtained by uniformly replacing $\neg x_i$ with $x'_i$.  The set of AICs $\eta(\varphi)$ is defined as follows, where we assume $\varphi'=C_1\lor\ldots\lor C_k$.
+  \begin{align}
+    \neg x_i\land\neg x'_i &\aicrule \add x_i & \neg x_i\land\neg x'_i &\aicrule \add x'_i & 1\leq i\leq m & \label{rules1} \\
+    C_i\land\neg y_j &\aicrule \add y_j & C_i \land \neg p &\aicrule \add p & 1\leq i\leq k, 1\leq j\leq n & \label{rules2} \\
+    \neg p,\neg q &\aicrule \add q & \neg p,q &\aicrule \remove q & \label{rules3}
+  \end{align}
+  Due to the set of rules \ref{rules1}, every repair for $\fulldb$ must contain exactly one of $\add x_i$ or $\add x'_i$ for each $1\leq i\leq m$.
+  By the set of rules \ref{rules3}, every repair must also contain $\add p$ (otherwise one of the rules will be applicable), and by minimality it must not contain $\add q$.
+  Given an interpretation $I$, we write $\check I$ to denote the set $\{\add x_i\mid x_i\in I\}\cup\{\add x'_i\mid x_i\notin I\}$.
+  We show that $\UU=\check I\cup\{p,y_1,\ldots,y_n\}$ is a grounded repair for $\fulldb$ iff $\varphi_I$ is a tautology. Observe that this set is always a weak repair for $\fulldb$.
+  \begin{itemize}
+  \item Assume that $\UU$ is a grounded repair for $\fulldb$.
+    If $J\subseteq\{y_1,\ldots,y_n\}$ is a falsifying assignment for $\varphi_I$, then $T_{\eta(\varphi)}(\check I\cup\{\add y_i\mid y_i\in J\})\cap\UU=\{\add q\}\cap\UU=\emptyset$, contradicting the fact that $\UU$ is a grounded repair for $\fulldb$.
+    (Note that $\check I\cup\{\add y_i\mid y_i\in J\}$ is always a strict subset of $\UU$, since it does not contain $p$.)
+    Therefore $\varphi_I$ is a tautology.
+  \item Suppose that $\varphi_I$ is a tautology.
+    Let $\VV\subseteq\UU$ be such that $T_{\eta(\varphi)}(\VV)\cap\UU\subseteq\VV$.
+    If $\add x_i\in(\UU\setminus\VV)$, then $\add x_i\in T_{\eta(\varphi)}(\VV)$, and likewise for $x'_i$; therefore, $\check I\subseteq\VV$.
+    But $\varphi_I$ is a tautology, hence if $\add y_i\notin\VV$, then the corresponding rule from~\ref{rules2} ensures that $\add y_i\in T_{\eta(\varphi)}(\VV)$. Likewise, if $\add p\notin\VV$, then $\add p\in T_{\eta(\varphi)}(\VV)$.
+    We thus conclude that $\VV=\UU$, whence $\UU$ is a grounded repair for $\fulldb$.
+  \end{itemize}
 \end{proof}
+\luis{I tried to write this proof as a chain of if-and-only-ifs, but it didn't work, essentially because it is not the case that all repairs satisfy $\varphi_I$. Feel free to improve.}
 
 
 What we notice in this section is that complexity for inference tasks related to our semantics is always the same as the complexity of its counterpart in (normal) logic programming. 
