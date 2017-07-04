@@ -9,12 +9,14 @@ Before we do so, we provide a new complexity result for logic programs, that we 
 In this section, we show that deciding whether a \emph{simple} logic program has a grounded fixpoint is $\Sigma^P_2$-complete by establishing a reduction from the problem for arbitrary normal logic programs. 
 The intuition is simply to duplicate every atom $a$ as $a^b$ and $a^h$, to be used (only) in bodies or heads of rules, respectively, and add the necessary rules to ensure that they have the same interpretation in any fixpoint of the immediate consequence operator.
 
-We assume the set $\atoms$ to be fixed; for $I\subseteq\atoms$, we define sets $I^b=\{a^b\mid a\in I\}$ and $I^h=\{a^h\mid a\in I\}$.
-We extend these notations to literals in the natural way.
+We assume the set $\atoms$ to be fixed and denote by $\atoms^*$ the set $\{a^h,a^b\mid a \in \atoms\}$; for $I\subseteq\atoms$. 
+We extend the mappings $\cdot^h:\atoms \to \atoms^*$ and $\cdot^b:\atoms \to \atoms^*$ to sets and formulas 
+in the natural way, e.g., $I^b=\{a^b\mid a\in I\}$ and  if $p,q\in \atoms$, then $(p\land \lnot q)^b = p^b\land \lnot q^b$. 
+If $I$ is an $\atoms^*$-interpretation, i.e., a subset of $\atoms^*$,  we define $I|_h$ and $I|_b$ as the $\atoms$-interpretation $I|_h=\{a\mid a^h\in I\}$  and $I|_b=\{a\mid a^b\in I\}$. 
 
 \begin{definition}
   Let $\PP$ be a logic program.
-  Its simple counterpart is the logic program $\PP^s$ over $\voc^h\cup\voc^b$ containing:
+  Its simple counterpart is the logic program $\PP^s$ over $\atoms^*$ consisting of:
   \begin{itemize}
   %\item for each rule $a\leftarrow l_1,\ldots,l_n$ from $\PP$, the rule $a^h\leftarrow l^b_1,\ldots,l^b_n$;
   \item for each rule $r\in\PP$, the rule $\head(r)^h\leftarrow\body(r)^b$;
@@ -22,57 +24,73 @@ We extend these notations to literals in the natural way.
   \end{itemize}
 \end{definition}
 
+The programs $\PP$ and $\PP^s$ are closely related. The following lemmas and propositions study this relationship. 
+
 \begin{lemma}
   \label{lem:op-simple}
-  Let $I,J\subseteq\atoms$.
-  Then $T_{\PP^s}\left(I^h\cup J^b\right) = \left(T_\PP(J)\right)^h\cup I^b$.
+  For each $\atoms^*$ interpretation  $I$, it holds that 
+  \[ T_{\PP^s}\left(I\right) = \left(T_\PP(I|_b)\right)^h\cup (I|_h)^b.\]
 \end{lemma}
 \begin{proof}
+Follows directly by unfolding the definition of $\PP^s$. Indeed,
   \begin{align*}
-    T_{\PP^s}\left(I^h\cup J^b\right) &= \{\head(r)\mid\body(r)^{I^h\cup J^b}=\ltrue\} \\
-    &= \{\head(r)^h\mid(\body(r)^b)^{I^h\cup J^b}=\ltrue\}\cup\{a^h\mid a^b\in I^h\cup J^b\} \\
-    &= \left(T_\PP(J)\right)^h\cup I^b
+    T_{\PP^s}\left(I\right) &= \{\head(r)\mid r\in \PP^s\land \body(r)^I=\ltrue\} \\
+    &= \{\head(r)^h\mid r\in \PP \land (\body(r)^b)^{I}=\ltrue\}\cup\{a^b\mid a^h\in I\} \\
+    &= \{\head(r)^h\mid r\in \PP \land (\body(r))^{I|_b}=\ltrue\}\cup (I|_h)^b \\
+    &= \left(T_\PP(I|_b)\right)^h\cup (I|_h)^b.\qedhere
   \end{align*}
-  by unfolding the relevant definitions.
 \end{proof}
-Observe that any set in $\atoms^h\cup\atoms^b$ can be written in the form stated in the hypothesis of this lemma.
 
 \begin{proposition}
   \label{prop:simple-fp}
-  If $I^h\cup J^b$ is a fixpoint of $T_{\PP^s}$, then $I=J$ and $I$ is a fixpoint of $T_\PP$.
+  Let $I$ be an $\atoms^*$-interpretation. It holds that $I$ is a fixpoint of  $T_{\PP^s}$ if and only if $I|_b=I|_h$ and $I|_h$ is a fixpoint of $T_\PP$.
 \end{proposition}
 \begin{proof}
-  If $I^h\cup J^b=T_{\PP^s}\left(I^h\cup J^b\right)=T_\PP(J)^h\cup I^b$, then necessarily $I^h=T_\PP(J)^h$ and $J^b=I^b$.
-  From the latter equality we conclude that $I=J$, whence the former yields $I=T_\PP(J)=T_\PP(I)$.
+If $I$ is a fixpoint of $T_{\PP^s}$, then since the only rules defining atoms of the form $a^b$ are the rule $a^b\lrule a^h$, it follows that  $I|_b=I|_h$. 
+Now, in this case, it follows from Lemma \ref{lem:op-simple} that 
+\[ T_{\PP^s}\left(I\right) = \left(T_\PP(I|_b)\right)^h\cup (I|_b)^h = I .\]
+Hence, also 
+\[\left(T_\PP(I|_b)\right)^h=I|b^h\]
+and indeed $I|_b$ (which equals $I|_h$) is a fixpoint of $T_\PP$. 
+
+On the other hand, if $I|_h=I|_b$ and $I|_h$ is a fixpoint of $T_\PP$, it is easy to see that $I$ is a fixpoint of $T_{\PP^s}$.
+% 
+% 
+%   If $I^h\cup J^b=T_{\PP^s}\left(I^h\cup J^b\right)=T_\PP(J)^h\cup I^b$, then necessarily $I^h=T_\PP(J)^h$ and $J^b=I^b$.
+%   From the latter equality we conclude that $I=J$, whence the former yields $I=T_\PP(J)=T_\PP(I)$.
 \end{proof}
+
 
 \begin{proposition}
   \label{prop:simple-gf}
-  $I$ is a grounded fixpoint of $T_\PP$ iff $I^h\cup I^b$ is a grounded fixpoint of $T_{\PP^s}$.
+    Let $I$ be an $\atoms^*$-interpretation. It holds that $I$ is a grounded fixpoint of  $T_{\PP^s}$ if and only if $I|_b=I|_h$ and $I|_h$ is a grounded fixpoint of $T_\PP$.
 \end{proposition}
 \begin{proof}
-  Since grounded and strictly grounded fixpoints coincide in this setting, we show the result for strictly grounded fixpoints.
+  Since grounded and strictly grounded fixpoints coincide for Boolean lattices \mycite{GroundedFixpoints}, we can use the definition  of strictly grounded fixpoints in this proof.
 
-  Suppose that $I^h\cup I^b$ is a grounded fixpoint of $T_{\PP^s}$.
-  By the previous lemma, $I$ is a fixpoint of $T_\PP$.
-  Let $J\subsetneq I$ be such that $T_\PP(J)\cap I\subseteq J$.
+  First suppose $I$ is a grounded fixpoint of $T_{\PP^s}$.
+  By Proposition \ref{prop:simple-fp}, $I|_b=I|_h$ and $I|_h$ is a fixpoint of $T_\PP$. We need to show $I|_h$ is grounded. 
+  Let $J\subsetneq I|_h$ be such that $T_\PP(J)\cap I|_h\subseteq J$.
   Using Lemma~\ref{lem:op-simple}, we have that
   \begin{align*}
-    T_{\PP^s}\left(J^h\cup J^b\right)\cap\left(I^h\cup I^b\right) &=
-    \left(T_\PP(J)^h\cup J^b\right)\cap\left(I^h\cup I^b\right) \\
-    &= (\underbrace{T_\PP(J)^h\cap I^h}_{\subseteq J^h})\cup(\underbrace{J^b\cap I^b}_{\subseteq J^b}) \\
-    \subseteq J^h\cup J^b
+    T_{\PP^s}\left(J^h\cup J^b\right)\cap\left(I\right) &=
+    \left(T_\PP(J)^h\cup J^b\right)\cap\left(I\right) \\
+    &= (\underbrace{T_\PP(J)^h\cap I}_{\subseteq J^h})\cup(\underbrace{J^b\cap I}_{\subseteq J^b}) \\
+    &\subseteq J^h\cup J^b.   
   \end{align*}
-  contradicting the fact that $I^h\cup I^b$ is a grounded fixpoint of $T_{\PP^s}$.
+  Now, since $J\subsetneq I|_h$ and $I|_h=I|_b$, also $J^h\cup J^b \subsetneq I$. Hence, the previous equation contradicts contradicting the fact that $I$ is a grounded fixpoint of $T_{\PP^s}$.
 
-  Conversely, suppose that $I$ is a grounded fixpoint of $T_\PP$ and consider an arbitrary strict subset $J_1^h\cup J_2^b$ of $I^h\cup I^b$.
-  We already established that $I^h\cup I^b$ is a fixpoint of $T_{\PP^s}$.
+  Conversely, suppose that $I|_b=I|_h$ and $I|_h$ is a grounded fixpoint of $T_\PP$. 
+  Consider an arbitrary $J\subsetneq I$. 
+  It follows from Proposition~\ref{prop:simple-fp} that $I^h\cup I^b$ is a fixpoint of $T_{\PP^s}$.
   Again using Lemma~\ref{lem:op-simple}, we also have that
   \begin{align*}
-    T_{\PP^s}\left(J_1^h\cup J_2^b\right)\cap\left(I^h\cup I^b\right) &=
-    \left(T_\PP(J_2)^h\cup J_1^b\right)\cap\left(I^h\cup I^b\right) \\
-    &= (T_\PP(J_2)^h\cap I^h)\cup(J_1^b\cap I^b)
+    T_{\PP^s}\left(J\right)\cap\left(I\right) &=
+    \left(T_\PP(J|_b)^h\cup J_h^b\right)\cap\left(I\right) \\
+    &= (T_\PP(J|_b)^h\cap I)\cup(J_1^b\cap I)
   \end{align*}
+  \todo{bart from here}
+
   If this is a subset of $J_1^h\cup J_2^b$, then we conclude that $T_\PP(J_2)^h\cap I^h\subseteq J_1^h$ and $J_1^b\cap I^b\subseteq J_2^b$, which imply that
   $T_\PP(J_2)\cap I\subseteq J_1$ and $J_1\cap I\subseteq J_2$.
   Then $T_\PP(J_2)\cap I\subseteq J_1\cap I\subseteq J_2$.
