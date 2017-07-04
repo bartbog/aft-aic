@@ -165,7 +165,7 @@ All complexity results are in terms of the size of the database, \fulldb.
 %   Observe that this set is always a weak repair for $\dbhere$.
   \begin{itemize}
   \item First, assume that $\UU_I$ is a grounded repair of $\dbhere$.
-    If $J\subseteq\{y_1,\ldots,y_n\}$ is a falsifying assignment for $\varphi_I$, then $T_{\eta(\varphi)}(\check I\cup\{\add y_i\mid y_i\in J\})\cap\UU=\{\add q\}\cap\UU=\emptyset$, contradicting the fact that $\UU$ is a grounded repair for $\dbhere$.
+    If $J\subseteq\{y_1,\ldots,y_n\}$ is a falsifying assignment for $\varphi_I$, then $T_{\eta(\varphi)}(\check I\cup\{\add y_i\mid y_i\in J\})\cap\UU=(\check I\cup\{\add y_i\mid y_i\in J\}\cup\{\add q\})\cap\UU=\check I\cup\{\add y_i\mid y_i\in J\}$, contradicting the fact that $\UU$ is a grounded repair for $\dbhere$.
     (Note that $\check I\cup\{\add y_i\mid y_i\in J\}$ is always a strict subset of $\UU$, since it does not contain $p$.)
     Therefore $\varphi_I$ is a tautology.
   \item Suppose on the other hand that $\varphi_I$ is a tautology.
