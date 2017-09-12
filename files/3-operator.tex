@@ -28,6 +28,9 @@ The intuitive reading of an AIC $r$ naturally suggests an operator over this lat
 However, this definition quickly leads to inconsistent sets of update actions upon iteration, which we want to avoid.
 We therefore propose a slight variant of this intuition, using the following concept that consists of taking the union and restoring consistency afterwards.
 
+\todo{RVWR 4:
+Nevertheless, I do have one question here. The authors apply standard AFT on AICs. To avoid inconsistent set of update actions upon iteration, they define an operation in Def.5.1. Does this operation have any effect on finally produced repairs? In related work, how do other approaches solve such inconsistency?  It is better such a discussion is added to the paper.}
+\bart{Say something about this? That this is due to the fact that there are rules producing +a as well as rules producing -a}
 \begin{definition}
   Let $\UU_1$ and $\UU_2$ be sets of update actions over a set of atoms $\atoms$.
   The set $\UU_1\uplus\UU_2$ is defined as
