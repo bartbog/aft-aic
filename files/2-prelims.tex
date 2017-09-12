@@ -32,7 +32,9 @@ These mappings naturally extend to sets of literals/actions.
 
 The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. 
 It is allowed to repair this inconsistency by executing one or more of the $\alpha_i$.''
-An AIC represents a constraint a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms should only be changed if there is some rule that allows it.
+The body of an AIC represents a constraint a database should adhere to and its head represents a set of atoms that are allowed to be changed in order to fix the constraint, in case it is violated. 
+% , in addition, which atoms can be changed in order to fix it. 
+Intuitively, atoms should only be changed if there is some rule that allows it.
 Furthermore, the only actions that are able to repair the inconsistency detected by the body of an AIC are those corresponding to the duals of its literals~\cite{iclp/CaropreseGSZ06}, hence we restrict the actions allowed in the head to these.
 
 

@@ -63,7 +63,7 @@ Given a partial database \tdb, a set of AICs \aics and an update action $\alpha$
 \end{align*}
 where $\nup(r)^{\tdb}$ refers to the standard three-valued truth evaluation of the formula\footnote{Technically, $\nup(r)$ is a set of literals; we identify it with the conjunction of those literals.} $\nup(r)$ in the partial interpretation \tdb based on Kleene's truth tables \cite{Kleene38} (see Figure~\ref{fig:KT}).
 \end{definition}
-Intuitively, this means that the support of an action is the highest truth value of the (non-updateable part of the) body of a rule with the action in question in the head. 
+Intuitively, this means that the support of an action $\alpha$ is the highest truth value of the (non-updateable part of the) body of a rule in $\eta$ with $\alpha$ in the head. 
 
 
 % \luis{$\leq_t$ was not defined}
@@ -86,22 +86,22 @@ Intuitively, this means that the support of an action is the highest truth value
 \cline{1-5}
 	\end{tabular}
 \end{minipage}
-\begin{minipage}{0.3\linewidth}
-	\begin{tabular}{|cc"c|c|c|}
-\cline{1-5}
-\multicolumn{2}{|c"}{\multirow{2}{*}{{ $A\lor B$} }}&\multicolumn{3}{c|}{B}\\
-% \cline{3-5}
-
-\multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
-\thickhline
-\multirow{3}{*}{A}&\ltrue &	\ltrue & \ltrue & \ltrue	\\
-\cline{2-5}
-&\lfalse	& \ltrue & \lfalse & \lunkn		\\
-\cline{2-5}
-&\lunkn 	& \ltrue& \lunkn & \lunkn 		\\
-\cline{1-5}
-	\end{tabular}
-\end{minipage}
+% \begin{minipage}{0.3\linewidth}
+% 	\begin{tabular}{|cc"c|c|c|}
+% \cline{1-5}
+% \multicolumn{2}{|c"}{\multirow{2}{*}{{ $A\lor B$} }}&\multicolumn{3}{c|}{B}\\
+% % \cline{3-5}
+% 
+% \multicolumn{2}{|c"}{}& \ltrue & \lfalse & \lunkn \\
+% \thickhline
+% \multirow{3}{*}{A}&\ltrue &	\ltrue & \ltrue & \ltrue	\\
+% \cline{2-5}
+% &\lfalse	& \ltrue & \lfalse & \lunkn		\\
+% \cline{2-5}
+% &\lunkn 	& \ltrue& \lunkn & \lunkn 		\\
+% \cline{1-5}
+% 	\end{tabular}
+% \end{minipage}
 \begin{minipage}{0.2\linewidth}
 	\begin{tabular}{|cc"c|}
 \cline{1-3}
@@ -118,7 +118,7 @@ Intuitively, this means that the support of an action is the highest truth value
 \cline{1-3}
 	\end{tabular}
 \end{minipage}
-\caption{The Kleene truth tables \cite{Kleene38}.}
+\caption{The Kleene truth tables for conjunction and negation \cite{Kleene38}.}
 \label{fig:KT}
 
 

@@ -219,7 +219,7 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
   %The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
   %Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
   This operator preserves stable semantics by Theorem \ref{thm:partialstable-LP}, and therefore allows us to compute stable models of simple logic programs by first translating them (in linear time) to sets of AICs.
-  Since checking whether a logic program has a stable model is NP-complete, we conclude that checking whether a database has a stable repair must be NP-hard.
+  Since checking whether a logic program has a stable model is NP-complete~\cite{tcs/BidoitF91,jacm/MarekT91}, we conclude that checking whether a database has a stable repair must be NP-hard.
   Note that every logic program can be transformed in a simple logic program by removing the offending rules without changing its stable semantics.
 \end{proof}
 
