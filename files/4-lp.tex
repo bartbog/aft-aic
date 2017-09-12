@@ -1,3 +1,16 @@
+\todo{RVWR1:
+P21, Section 7:  In modeling LPs by AIGs there is a restriction on simple normal LPs, and in modeling AIGs by LPs there is a restriction on AIGs with +head. There should be some remarks on these restrictions. E.g., Can they be removed? Or, why removing these restrictions create technical difficulties.}
+
+
+\todo{RVWR 2
+In this Section should appear a comparison/discussion with the connection with logic programming
+(in particular with the rewriting of sets of AICs in terms of logic programs) presented in
+(L. Caroprese, S. Greco, C. Sirangelo, E. Zumpano, Declarative Semantics of Production Rules
+for Integrity Maintenance. ICLP 2006) and
+(L. Caroprese, S. Greco, C. Molinaro, Prioritized Active Integrity Constraints for Database
+Maintanance. DASFAA 2007)
+}
+
 \subsection{Preliminaries: Logic Programming (and AFT)}
 \renewcommand\voc\atoms
 % Let \voc be an alphabet, i.e., a collection of symbols which are called \emph{atoms}. A \emph{literal} is an atom $p$ or the negation $\lnot q$ of an atom $q$.  
@@ -13,6 +26,7 @@ The set of interpretations $2^\voc$ forms a lattice equipped with the order $\su
 The truth value (\ltrue or \lfalse) of a propositional formula $\varphi$ in a structure $\struct$, denoted $\varphi^\struct$ is defined as usual.
 With a logic program \PP, we associate an immediate consequence operator \cite{jacm/EmdenK76} $T_\PP$ that maps a structure $\struct$ to 
 	\[T_\PP(\struct) = \{p\mid \exists r \in \PP: head(r)=p\land body(r)^\struct=\ltrue\}.\] 
+	\mycitet{GroundedFixpoints} called grounded fixpoints of $T_\PP$ \emph{grounded models of $\PP$}. 
 	
 	
 	In the context of logic programming, elements of the bilattice $\left(2^\voc\right)^2$ are four-valued interpretations, pairs $\pstruct= (\struct_1,\struct_2)$ of interpretations.
@@ -69,7 +83,7 @@ Since the well-founded model of a logic program is the least precise partial sta
 %   While the operation $\aicop$ preserves various types of AFT fixpoints, it does not preserve grounded fixpoint. 
   Consider the logic program 
   \[\PP_g = \left\{\begin{array}{ll}p&\lrule \lnot q\\ q&\lrule p \end{array} \right\}.\]
-  Since $\mathcal{T}_\PP$, has no fixpoints, $\PP$ has no grounded models. 
+  Since $\mathcal{T}_{\PP_g}$, has no fixpoints, $\PP_g$ has no grounded models. 
   In this case, 
   \[\aicop(\PP_g) = \left\{\begin{array}{ll}\lnot p\land \lnot q &\aicrule \add p \\ p \land  \lnot q &\aicrule \add q\end{array}\right\}.\]
   Now, $\langle \aicop(\PP_g),\emptyset\rangle$ has one grounded repair, namely $\{\add p, \add q\}$. 
@@ -97,7 +111,7 @@ It can be seen from the previous example that for AICs, the Kripke-Kleene semant
 In a certain sense, one might say that the intuition of ``inertia'' underlying AICs lies at the foundation of this discrepancy. 
 Now, in logic programming, the Kripke-Kleene semantics exhibits similar behavior. Consider for instance the empty logic program 
 \[ \PP_\emptyset = \{ \}.\]
-This program has a Kripke-Kleene model in which each atom is false, as is to be expect. 
+This program has a Kripke-Kleene model in which each atom is false, as expected. 
 However, adding a trivial rule
 \[p\lrule p\]
  that ``simulates'' inertia results in a program with a Kripke-Kleene model in which $p$ is unknown.

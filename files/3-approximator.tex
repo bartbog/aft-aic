@@ -1,3 +1,4 @@
+\todo{RVWR 2: In general, the notation introduced in this section is too heavy and should be improved.}
 In this section, we define an approximator for \Op and hence, obtain a set of AFT-based semantics for AICs, based on intuitions similar to those underlying groundedness and various semantics from non-monotonic reasoning. 
 
 
@@ -33,9 +34,12 @@ In this section, we define an approximator for \Op and hence, obtain a set of AF
 % \paragraph{An Approximator for \Op}
 
 A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$. A partial action set \UUU is \emph{two-valued} if $\UUU(\atoms)\subseteq\{\ltrue,\lfalse\}$; in this case, we identify $\UUU$ with the action set $\{\change a\mid \UUU(a)=\ltrue\}$. 
+\bart{another comment wrt the identification of sets of atoms and sets of actions:
+
+RVWR 1:P13, lines 56-57: I would read {ch a | U(a) = t} as: if U(a) is true then a is changed, and so on, though I understand that here if means iff.}
 The intended reading of such a mapping is that $\UUU(a)$ is true if $a$ is changed by $\UUU$, it is false if $a$ is not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
 Alternatively, a partial action set is identified with an element of $(2^\atoms)^c$, i.e., with a tuple $(\UUU_t,\UUU_{tu})$ with $\UUU_t\subseteq\UUU_{tu}$, where $\UUU_t$ contains all elements that map to $\ltrue$ and $\UUU_{tu}$ all elements that map either to $\ltrue$ or to $\lunkn$ (as standard). 
-The set of all partial action sets is denoted $P$.
+The set of all partial action sets is denoted as $P$.
 The truth order $\leqt$ on three-valued truth values is defined by $\lfalse\leqt\lunkn\leqt\ltrue$. The inverse of a truth value is $\lfalse^{-1}=\ltrue, \ltrue^{-1}=\lfalse, \lunkn^{-1}=\lunkn$.
 
 A partial database is a mapping $\tdb: \atoms \to \{\ltrue,\lfalse,\lunkn\}$.
@@ -221,6 +225,7 @@ Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
 When $\db$ is clear from the context, we write \Ap for \Apfull.
  
 \end{definition}
+\todo{RVWR1: Def 6.4:  It can be appropriate to add a comment after this definition as why the operator does not produce an inconsistent repair, i.e., it is defined on P.}
 
 Definition \ref{def:apfull} is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
 In the case where $\UUU(a)=\lfalse$, $a$ is not an element of the (partial) update set at hand. The only way to add $a$ to the update is if some rule supports changing $a$, which is captured by $\suppin$. 
@@ -240,7 +245,12 @@ In all other cases, we derive nothing about $a$ being in the update or not.
 % The other case is similar. 
 
 \begin{proposition}
- \Ap is an approximator of \Op.
+ \Ap is an approximator of \Op. \todo{RVWR 2:
+Proposition 6.5 is not clear.
+$T_{\eta}$ is a fuction from P to P, where P is the set of all possible action sets of the form {ch a}.
+$T_{\eta}$ is defined as a function from from $2^At$ to $2^At$ (as observed earlier there is a mistake in this definition).
+Moreover, as explained in the paper, if O is a function from L to L, an approximator A should be a function
+from $L^2$ to $L^2.$}
 \end{proposition}
 % \begin{proof}[Sketch of the proof]
 % \leqp-monotonicity of \Ap follows from the fact that Kleene-valuation is \leqp-monotone and 
@@ -383,7 +393,7 @@ Here, it holds that
  \suppin_{\UUU_0}(c) &= \lunkn, & \suppout_{\UUU_0}(c) &=\lfalse 
 \end{align*}
 Hence, $\Ap(\UUU_0) = \UUU_0$ and $\UUU_0$ is the \Ap-Kripke-Kleene fixpoint. 
-Furthermore, we claim that there are no unfoundedness refinements of $\UUU_0$, and hence that $\UUU_0$ is also the \Ap-well-founded fixpoint. To see that our claim indeed holds, notice that any unfoundedness refinement of $\UUU_0$ should consist of making a subset of $U$ of $\{a,b,c\}$ false, in such a way that for each $u\in U$, $\Ap(\UUU_0[U: \lfalse])(u)=\lfalse$. 
+Furthermore, we claim that there are no unfoundedness refinements of $\UUU_0$, and hence that $\UUU_0$ is also the \Ap-well-founded fixpoint. To see that our claim indeed holds, notice that any unfoundedness refinement of $\UUU_0$ should consist of making a subset $U$ of $\{a,b,c\}$ false, in such a way that for each $u\in U$, $\Ap(\UUU_0[U: \lfalse])(u)=\lfalse$. 
 Assume $a\in U$. In order for $\Ap(\UUU_0[U: \lfalse])(a)$ to be false $b$ must be $\ltrue$ in $\UUU_0[U: \lfalse]$ (otherwise the body of the rule defining $\add a$ is unknown or true). That is not possible, hence $a\not \in U$. From a similar argument, we find that $b\not \in U$ and $c\not \in U$. 
 Trivially, the two intended repairs are more precise than the well-founded fixpoint. 
 

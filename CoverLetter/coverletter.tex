@@ -1,0 +1,67 @@
+\documentclass{article}
+\usepackage{natbib}
+\usepackage{url}
+\title{Cover Letter --- Fixpoint Semantics for Active Integrity Constraints}
+
+\begin{document}
+\maketitle
+Thanks for the helpful reviews. We attach the revised version of our paper. 
+Below we explain the changes we made, and we give our response to the criticisms raised by the reviewers. 
+
+
+
+
+\section{In response to the criticisms}
+	\begin{enumerate}
+	 \item Reviewer 2 states
+	 \begin{quote}
+	  ``In the current paper, we assume that, unless explicitly mentioned otherwise, all AICs are normal.
+Extensions of the semantics we deﬁne for non-normal AICs can be obtained through normalization, if needed.''
+Well, I think that the correct way to proceed is to define the semantics for general (non-normal) AICs and
+then to prove that a set of general AICs is equivalent to its normalized version wrt that semantics.
+	 \end{quote}
+	 We disagree with his assessment. Several of the reviewers already raised the point that notation is sometimes heavy. Restricting to the ``normal'' case, is one way to avoid even more notational blow-ups. If the only purpose of defining a semantics for a slightly larger language is showing that it coincides with our semantics for normal AICs, we do not find it worth the trade-off. To us, non-normal AICs are nothing more than syntactic sugar, and hence, are not a topic of semantical consideration. 
+
+	 \item There was a general consensus among the reviewers that more examples are needed throughout the paper. We have taken this issue into account and added several examples. More specifically:
+	  \begin{itemize}
+	  \item intro?
+	  \item Section 4: move LP? 
+	  \item ... 
+	  \end{itemize}
+	  
+	  \item Several of the reviewers had an issue with the notational abuse $Z <-> 2^{At}$
+	  \item Some reviewers complained about notation heavyness.. 
+	  \item Reviewer 2 seemed to think a couple of our examples/... are wrong. However, these remarks were all due to confusion that arose because of the heavy notation. 
+	  We have clarified this in the revised version (cfr also points \ref{it:abuse} and \ref{it:notation}). Some details: 
+	  \begin{itemize}
+	  \item \begin{quote}I think that Example 6.3 is wrong. After applying U, the fact a is true in DB.
+Therefore, ch a = -a.... \end{quote} and 
+\begin{quote}
+ Definition 6.2 is not clear. After updating a database DB with U (which is a partial action set) the
+fact 'a' could be unknown, that is it's not clear whether it belongs to DB or not.
+Well, in this case 'ch a' is not defined!
+\end{quote}
+Both of these comments are explaine by the fact that the definition of ch a only depends on DB, not on $U(DB)$, hence, if $a\not\in DB$, then  $ch a$ remains equal to $+a$, it never becomes $-a$ or unknown/undefined. 
+	  \item \begin{quote}
+	         Definition 5.2 looks formally wrong. If Z is the set of all possible sets of update actions, it should be a function from Z to Z (and not from $2^At$ to $2^At$).
+	        \end{quote}
+	         The confusion here is due to the fact that we identified elements of $Z$  with subsets of $At$ and used them interchangeably. 
+	      
+\end{itemize}
+\item There were some more suggestions for related work. More precisely, 
+
+	  \end{enumerate}
+
+\section{Small changes}
+ We fixed all spelling mistakes, and notational issues found by the reviewers. The only suggestions we did not incorporate are the following: 
+\begin{itemize}
+	\item 
+\end{itemize}
+
+\bibliographystyle{../idp-latex/stylesheets/elsevier/elsarticle-harv}
+\bibliography{../idp-latex/krrlib}
+
+\end{document}
+
+
+

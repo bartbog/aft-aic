@@ -15,7 +15,7 @@ for all atoms $a$ and all formulas $\varphi$ and $\psi$.
 
 An \emph{update action} $\alpha$ has the form $\add a$ or $\remove a$ with $a\in \atoms$. We call $\add a$ and $\remove a$ \emph{dual actions} and use $\alpha^D$ to denote the dual action of $\alpha$. 
 Intuitively, update actions represent changes to the database: $\add a$ adds $a$, while $\remove a$ removes $a$. Formally, $\add a$ transforms $\db$ into $\db\cup\{a\}$, and $\remove a $ transforms $\db$ into $\db\setminus\{a\}$.
-A set of update actions $\UU$ is \emph{consistent} if it does not contain both an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. 
+A set of update actions $\UU$ is \emph{consistent} if it does not contain both an action and its dual. A consistent set of update actions \UU acts on a database \db by executing all its actions simultaneously; we denote the result of this operation by $\UU(\db)$. If $\alpha$ is an update action, we simply write $\alpha(\db)$ for the result of applying $\alpha$ to $\db$, i.e.,  for $\{\alpha\}(\db)$.  
 
 Literals and update actions are related by mappings \litof and \actof, where $\litof(\add a)= a, \litof(\remove a) = \lnot a$ and $\actof$ is the inverse of $\litof$.
 %, \actof(a) = \add a$ and $\actof(\lnot a) = \remove a$.  
@@ -31,7 +31,7 @@ These mappings naturally extend to sets of literals/actions.
 \end{definition}
 
 The informal reading of the above rule is: ``If each of the $l_i$ holds in \db, then \db is inconsistent. 
-It is allowed to repair this inconsistency by executing execute one or more of the $\alpha_i$.''
+It is allowed to repair this inconsistency by executing one or more of the $\alpha_i$.''
 An AIC represents a constraint a database should adhere to and, in addition, which atoms can be changed in order to fix it. Intuitively, atoms should only be changed if there is some rule that allows it.
 Furthermore, the only actions that are able to repair the inconsistency detected by the body of an AIC are those corresponding to the duals of its literals~\cite{iclp/CaropreseGSZ06}, hence we restrict the actions allowed in the head to these.
 
@@ -54,16 +54,26 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
 
 \begin{example}
   \label{ex:repairs}
-  Consider the restriction that ``if $a$ and $b$ both hold, then $c$ and $d$ should also hold''.
-%   Since the syntax of AICs does not allow disjunction, we need two clauses to write this constraint.
-  The following set of AICs expresses these constraints, only allowing repair actions of the form ``remove $a$'' or ``remove $b$''.
+  Consider the restriction that ``if $a$ and $b$ both hold, then $c$ and $d$ should also hold''. 
+  In propositional logic, such a restriction can be expressed by the following formula:
+  \begin{align*}
+   (a \land b) \limplies (c \land d),
+  \end{align*}
+  or, equivalently by the two formulas 
+  \begin{align*}
+   \lnot(a \land b\land \neg c)\\
+   \lnot(a \land b\land \lnot d).
+  \end{align*}
+  Now, the AIC formalism provides, besides the ability to express these constraints, also control over what should happen when one of them is violated. 
+  Assuming that in such a case, we only wish to modify $a$ or $b$, the corresponding AICs are: 
   \begin{align*}
     a\land b\land\neg c &\supset -a\mid -b\\    
     a\land b\land\neg d &\supset -a\mid -b
   \end{align*}
+  where the first one expresses that if $a$ and $b$ hold, but $c$ does not (i.e., if the constraint is violated), we should remove one of the two literals $a$ and $b$ and the second constraint is similar for $d$.
   Despite the inclusion of explicit repair actions in the heads of these rules, the notions of weak repair and repair do not take them into account.
   Suppose a given database is $\db=\{a,b\}$.
-  Then both $\{{-a}\}$, $\{{-b}\}$ and $\{{+c},{+d}\}$ are repairs; furthermore, sets such as $\{{-a},{-b}\}$ or $\{{-b},{+c}\}$ are weak repairs: in all cases, all actions change $\db$, and the result always negates at least one literal in the body of each of the rules.
+  In this case, $\{{-a}\}$, $\{{-b}\}$ and $\{{+c},{+d}\}$ are repairs; furthermore, sets such as $\{{-a},{-b}\}$ or $\{{-b},{+c}\}$ are weak repairs: in all cases, all actions change $\db$, and the result always negates at least one literal in the body of each of the rules.
 
   Sets such as $\{{-a},{-c}\}$ and $\{{+a},{+c},{+d}\}$ also solve the inconsistency, but they include actions that do not change the database, and therefore are not considered weak repairs.
   Sets such as $\{{+a},{-a}\}$ are inconsistent, as it is not clear whether they state that the update of $\db$ should include $a$ or not.
@@ -75,7 +85,7 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
     a\land b\land\neg c &\supset{-b} \\
     a\land b\land\neg d &\supset{-b}
   \end{align*}
-  It is immediate to check that everything discussed above with respect to the original set of AICs also applies to its normalized counterpart.
+  It is immediate to check that everything discussed above with respect to the original set of AICs also applies to its normalized counterpart, i.e., intuitively, these constraints represent the same knowledge and the sets of repairs and weak repairs remain unchanged. 
 \end{example}
 
  We now review several other semantics for AICs that have been defined with the intention to allow only changes explicitly allowed by one of the AICs: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, and well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}.
@@ -88,7 +98,7 @@ The intuition behind this definition is that for each element in a ``good'' repa
 
 
 \begin{example}
-  Consider again the database $\db=\emptyset$ together with the set $\eta$ of normalized AICs from the previous example.
+  Consider again the database $\db=\{a,b\}$ together with the set $\eta$ of normalized AICs from the previous example.
   \begin{align}
     a\land b\land\neg c &\supset{-a} \label{rfok1} \\
     a\land b\land\neg d &\supset{-a} \label{rfok2} \\
@@ -126,8 +136,8 @@ The following example is due to \citet{tase/Cruz-FilipeEGN13}.
   Intuitively, the rules suggest that $\UU_2$ should be the preferred repair, since it includes the action suggested by the only AICs that is not satisfied, and indeed $\UU_2$ is founded (removing its only element yields $\emptyset$, and as we observed both \ref{rf7} and \ref{rf8} provide support for ${+c}$ given the state of $\db$).
 
   However, $\UU_1$ is also a founded repair.
-  If we remove ${-a}$ from $\UU_1$, we obtain $\UU'=\{{-b}\}$, and $\UU'(\db)=\{a\}$, where \ref{rf5} is applicable and ${-a}\in\head(\ref{rf5})$.
-  Dually, if we remove ${-b}$ we obtain $\UU''=\{{-a}\}$, and $\UU''(\db)=\{b\}$; now \ref{rf6} is applicable, and ${-b}\in\head(\ref{rf6})$.
+  If we remove ${-a}$ from $\UU_1$, we obtain $\UU_1'=\{{-b}\}$, and $\UU_1'(\db)=\{a\}$, where \ref{rf5} is applicable and ${-a}\in\head(\ref{rf5})$.
+  Dually, if we remove ${-b}$ we obtain $\UU_1''=\{{-a}\}$, and $\UU_1''(\db)=\{b\}$; now \ref{rf6} is applicable, and ${-b}\in\head(\ref{rf6})$.
   Thus both actions in $\UU_1$ are founded, hence this is a founded repair.
 \end{example}
 
@@ -166,7 +176,7 @@ In the normalized case that we considered, all justified weak repairs are minima
     \nup(\ref{rf8}) &= \{b\}
   \end{align*}
   The founded repair $\UU_1$ is not justified.
-  First, observe that $\neff(\UU_1)=\{{-c}\}$ (assuming that $a$, $b$ and $c$ are the only atomic formulas in the language).
+  First, observe that $\neff(\UU_1)=\{{-c}\}$ (assuming that $a$, $b$ and $c$ are the only atoms in the language).
   Consider $\UU'=\emptyset\subseteq\UU_1$; then $\UU'\cup\neff(\UU_1)=\{{-c}\}$, and $\actof(\nup(r))\not\subseteq(\UU'\cup\neff(\UU_1))$ for every $r\in\eta$; therefore $\UU'\cup\neff(\UU_1)$ is a subset of $\UU_1\cup\neff(\UU_1)$ containing $\neff(\UU_1)$ that is (trivially) closed under $\eta$.
 
   In contrast, the repair $\UU_2$ is justified.
@@ -229,7 +239,7 @@ However, well-founded repairs can also behave unexpectedly.
   It is arguable that $\UU_2$ is preferable, as it is not reasonable to apply \ref{rw13} when \ref{rw14} is also applicable, since any action that solves the inconsistency detected by \ref{rw14} also repairs \ref{rw13}, but not conversely.
   However, the well-founded semantics for AICs cannot infer this restriction.
 \end{example}
-In this example, it is interesting to note that $\UU_2$ is a founded repair (\ref{rw14} supports ${+a}$ also after $c$ has been added to $\db$, and \ref{rw12} supports ${+c}$), but $\UU_1$ is not (the action ${+b}$ is not supported, as \ref{rw13} is not applicable once $a$ as been added to $\db$).
+In this example, it is interesting to note that $\UU_2$ is a founded repair. Indeed, \ref{rw14} supports ${+a}$ and this support is independent of $b$ and $c$; furthermore  \ref{rw12} supports ${+c}$ when $\add a$ is present. However, $\UU_1$ is not founded, since the action ${+b}$ is not supported, as \ref{rw13} is not applicable once $a$ has been added to $\db$.
 
 The examples above show that there exist both founded weak repairs that are not well-founded, and well-founded weak repairs that are not founded.
 These relations were established by \citet{tase/Cruz-FilipeEGN13}, together with the connection to justified weak repairs.

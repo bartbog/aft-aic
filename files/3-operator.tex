@@ -13,6 +13,13 @@ This establishes a bijection between the sets of update actions satisfying the a
 of update actions.
 When no ambiguity arises, we omit the bar, and simply write $\UU$ for the subset of \atoms as well.
 Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline\UU$.
+\bart{There are several problems with this identification:
+
+RVWR 1:  $\bar U$ is identified with U.  But U is defined on line 16 in terms of $\bar U$. Maybe define $\bar U$ in terms of U : $\bar U$ = {a | ch a in U}
+
+TODO: emphasize taht ch a does not depend on U
+
+}
 
 Following the principle of minimality of change~\cite{Winslett90,ai/EiterG92}, we also typically prefer smaller sets of updates over larger sets.
 Therefore, we are interested in the lattice $\langle 2^{\atoms},\subseteq\rangle$, where smaller elements correspond to better repairs according to this principle.
@@ -22,7 +29,7 @@ However, this definition quickly leads to inconsistent sets of update actions up
 We therefore propose a slight variant of this intuition, using the following concept that consists of taking the union and restoring consistency afterwards.
 
 \begin{definition}
-  Let $\UU_1$ and $\UU_2$ be consistent sets of update actions over a set of atoms $\atoms$.
+  Let $\UU_1$ and $\UU_2$ be sets of update actions over a set of atoms $\atoms$.
   The set $\UU_1\uplus\UU_2$ is defined as
   \[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
   %\[\UU_1\uplus\UU_2 = (\UU_1\cup\{\alpha\in\UU_2\mid\alpha^D\not\in\UU_1\})\setminus\{\alpha\in\UU_1\mid\alpha^D\in\UU_2\}\,.\]
@@ -51,7 +58,7 @@ This operation models sequential composition of repairs in the following sense: 
 % 
 % I now changed the whole text.  Please delete these todos after you checked that you agree :-)
 % }
-Furthermore, $\UU_1\uplus\UU_2$ is always consistent by construction.
+Furthermore, $\UU_1\uplus\UU_2$ is consistent whenever $\UU_1$ and $\UU_2$ are.
 %
 \begin{definition}
   Let $\db$ be a database and $\eta$ be a set of AICs over $\db$.
@@ -68,13 +75,33 @@ In other words, $\Op^\db(\UU)$ is obtained by updating $\UU$ with the heads of a
 \begin{example}[Example \ref{ex:repairs} continued]
   Consider again the set of AICs $\eta$ from Example~\ref{ex:repairs}, where
   $\db=\{a,b\}$.
-  Then $\Op(\emptyset)=\{\remove a, \remove b\}$. Indeed, the bodies of all rules are satisfied; hence all heads are ``added'' to $\emptyset$. 
+  Then $\Op(\emptyset)=\{\remove a, \remove b\}$. Indeed, the bodies of all rules are satisfied; hence all heads are elements of $\Op(\emptyset)$.
 \end{example}
 
-The syntactic restrictions on AICs guarantee that the set $\Op^\db(\UU)$ is always consistent: if $\{+a,-a\}\subseteq\Op^\db(\UU)$, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
+The syntactic restrictions on AICs guarantee that the set $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$ is always consistent. 
+Indeed, if both $\add a$ and $\remove a$ are in this set, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
+From this, it also follows that $\Op^\db(\UU)$ is always consistent. 
 In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
 
 The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded, well-founded and grounded sets of update actions.
+
+\todo{RVWR 2:
+It looks to me that the operator $T^{DB}_{\eta}$ (that for simplicity here will be denotes as T)
+is not monotone (by definition). As a conseguence, not always a fixpoint can be reached.
+Consider the following AICs:
+
+not b, a -> -a
+not b, not a -> +a
+
+and an empty database DB.
+Then:
+
+T(0)={+a}; T(T(0))={}; T(T(T(0)))={+a} ...
+
+Observe that the {+b} is a repair.
+Could you explain better this point?}
+\bart{The reviewer seems to be confused between the difference of  ``being a fixpoint '' and ``being able to reach a fixpoint'' (by iterating starting from $\emptyset$). The ``being reachable'' is not relevant at this point. Still, we could add his theory as an example.}
+
 
 \begin{proposition}
   \label{prop:weak-repair}
@@ -120,7 +147,7 @@ This result also gives some intuition regarding why founded repairs allow for ci
 \begin{proposition}
   \label{prop:wf}
   Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a weak repair for $\fulldb$.
-  Then $\UU$ is well-founded if and only if there is an ordering $\alpha_1,\ldots,\alpha_n$ of the elements of $\UU$ such that $\alpha_i\in\Op(\{\alpha_1,\ldots,\alpha_{i-1}\})$ for each $i=1,\ldots,n$.
+  Then $\UU$ is well-founded if and only if there is an ordering $\alpha_1,\ldots,\alpha_n$ of the elements of\, $\UU$ such that $\alpha_i\in\Op(\{\alpha_1,\ldots,\alpha_{i-1}\})$ for each $i=1,\ldots,n$.
 \end{proposition}
 \begin{proof}
   If $\UU$ is well-founded, then the ordering is given by the sequence of actions introduced at each node in the path, in the well-founded repair tree for $\fulldb$, going from the root to the node with label $\UU$.

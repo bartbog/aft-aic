@@ -1,4 +1,10 @@
 \paragraph{Lattices, Operators and Fixpoints}
+\todo{RVWR 2: Could you provide an example of a 'grounded' point?
+Could you provide examples for the various types of fixpoints (A-Kripke-Kleene fixpoint etc.)?}
+\bart{What do we do with this one? If we want to give ``real'' examples, we should already introduce logic programming preliminaries in this section. 
+Otherwise, we can only give abstract examples, which are quite hard to grasp.
+Moving LP prelims here and giving some examples might work to me. Opinions? }
+
 A \emph{partially ordered set (poset)} $\langle L,\leq\rangle$ is a set $L$ equipped with a partial order $\leq$, i.e., a reflexive, antisymmetric, transitive relation. 
 As usual, we write $x<y$ as abbreviation for $x\leq y \land x\neq y$.
 If $S$ is a subset of $L$, then $x$ is an \emph{upper bound} (a \emph{lower bound}) of $S$ if for every $s\in S$, it holds that $s\leq x$ ($x\leq s$, respectively).
@@ -13,7 +19,7 @@ As is custom, we sometimes call a greatest lower bound a \emph{meet}, and a leas
  We call $\langle L,\leq\rangle$ a \emph{complete lattice}  if every subset of $L$ has a least upper bound and a greatest lower bound. 
 %  A complete lattice is always chain complete.
 % A chain complete poset has a least element $\bot$. 
-A complete lattice has both a least element $\bot$ and a greatest element $\top$. 
+A complete lattice has both a least element $\bot = \bigand L$ and a greatest element $\top = \bigor L$. 
 
 A lattice $L$ is \emph{distributive} if $\land$ and $\lor$ distribute over each other, i.e., if $x\land(y\lor z)=(x\land y)\lor(x\land z)$ and $x\lor(y\land z)=(x\lor y)\land(x\lor z)$ for all $x,y,z\in L$.
 A bounded lattice $L$ is \emph{complemented} if every element $x\in L$ has a complement: an element $\lnot x \in L$
@@ -94,7 +100,7 @@ AFT studies fixpoints of $O$ using fixpoints of $A$.
 \item The \emph{$A$-well-founded fixpoint} is the least precise (i.e., the $\leqp$-minimal) partial $A$-stable fixpoint.
 % \luis{maybe define ``least precise''? I'm guessing minimal wrt $\leqp$?}
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
-\item A \emph{partial $A$-grounded fixpoint} is a consistent pair $(x,y)$ such that whenever $A(x\land v, y\land v)_2 \leq v$, also $y\leq v$. 
+\item A \emph{partial $A$-grounded fixpoint} is a consistent pair $(x,y)$ such that for each $v\in L$, whenever $A(x\land v, y\land v)_2 \leq v$, also $y\leq v$. 
  \end{itemize}
  
 %  Several relationships exist between these fixpoints. 

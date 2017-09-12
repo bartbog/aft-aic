@@ -1,10 +1,11 @@
-Founded, well-founded and justified repairs were all introduced with the purpose of characterizing a class of repairs whose actions are supported (there is a reason for having them in the set), and that support is not circular; in particular, these repairs should be constructible ``from the ground up'', which was the motivation for defining well-founded repairs.
+Founded, well-founded and justified repairs were all introduced with the purpose of characterizing a class of repairs whose actions are supported (there is a reason for having them in the set), without being self-supporting. I.e., they try to avoid certain forms of circularity of support. 
+Sometimes, one also requires these repairs to be constructible ``from the ground up'', which was the motivation for defining well-founded repairs.
 However, all notions exhibit unsatisfactory examples: there exist founded repairs with circular support (see, e.g., Example \ref{ex:founded}), and repairs with no circular support that are not justified~\cite{tase/Cruz-FilipeEGN13}. %; well-founded repairs, on the other hand, are not stratifiable~\cite{lcf:14}, which impacts their computation in practice.
 In this section, we introduce a new semantics, grounded repairs, aimed at directly tackling this issue. 
 
 Grounded repairs are motivated by Example \ref{ex:founded}, where we noticed that the definition of founded repairs does not manage to capture groups of self-supporting arguments. 
 Indeed, there the repair $\UU_1$ is founded. It consists of two actions, $\remove a$ and $\remove b$ such that whenever one of them is removed from $\UU_1$, there is an AIC whose body is violated and whose head is the action in question. 
-However, if we remove \emph{both} of them simultaneously, we notice that no rule no longer applies. As such, we can conclude that these actions are ``self-supporting'': the only reason to have one of the two actions in the repair of our choice is because the other action is also in there. 
+However, if we remove \emph{both} of them simultaneously, we notice that no rule applies. As such, we can conclude that these actions are ``self-supporting'': the only reason to have one of the two actions in the repair of our choice is because the other action is also in there. 
 Our definition of grounded (weak) repair is aimed directly at avoiding this kind of situations. 
 
 % \luis{I think the definitions look cleaner if we don't use $A$ -- I left the old ones commented out.}
@@ -23,7 +24,7 @@ A first observation with respect to groundedness is that grounded weak repairs a
 \begin{proof}
  Suppose $\UU$ is a grounded weak repair and $\UU$ is not minimal, i.e., that there exists a $\VV\subsetneq \UU$ that is also a weak repair. 
 % Now, take $A = \UU\setminus \VV$ in the definition of grounded. Then $\VV = \UU\setminus A$.
- Since $\UU$ is grounded, there must exist a rule whose body is satisfied in $\VV$, contradicting the fact  that $\VV$ is a weak repair. 
+ Since $\UU$ is grounded, there must exist an AIC whose body is satisfied in $\VV(\db)$, contradicting the fact  that $\VV$ is a weak repair. 
 \end{proof}
 Thus, the notion of groundedness intrinsically embodies the principle of minimality of change, unlike other kinds of weak repairs previously defined.
 % Furthermore, grounded repairs also embody the notion of ``support'' previously defined.
@@ -36,7 +37,7 @@ Thus, the notion of groundedness intrinsically embodies the principle of minimal
 \end{proposition}
 \begin{proof}
   Assume that $\UU$ is a grounded repair for $\fulldb$.
-  The fact that $\UU$ is founded follows immediately from the definition of grounded repair, since for each action $\alpha$, $\VV=\UU\setminus\{\alpha\}$ is a strict subset of $\UU$. Hence, by groundedness of $\UU$, there must be a rule $r$ with $\head(r)\in \UU\setminus \VV=\{\alpha\}$, whose body is satisfied in $\VV$. We find that $\UU$ is founded indeed. % and for such $\VV$ the conditions of groundedness coincides with that of foundedness hence there must be a rule  $rby letting $A$ range over the singleton sets of actions in $\UU$.
+  The fact that $\UU$ is founded follows immediately from the definition of grounded repair, since for each action $\alpha$, $\VV=\UU\setminus\{\alpha\}$ is a strict subset of $\UU$. Hence, by groundedness of $\UU$, there must be a rule $r$ with $\head(r)\in \UU\setminus \VV=\{\alpha\}$, whose body is satisfied in $\VV(\db)$. We find that $\UU$ is founded indeed. % and for such $\VV$ the conditions of groundedness coincides with that of foundedness hence there must be a rule  $rby letting $A$ range over the singleton sets of actions in $\UU$.
   
   Now, we show how to construct a sequence of subsets of $\UU$ that illustrates that $\UU$ is well-founded. 
   For this sequence, we start from $\UU_0=\emptyset$ and construct $\UU_i=\UU_{i-1}\cup\{u_i\}$ by picking a rule $r\in \fulldb$ with $\head(r)=u_i\in\UU$ and $\UU_{i-1}(\db)\models \body(r)$.
@@ -52,7 +53,7 @@ However, the notion of grounded repair is strictly stronger than both of these: 
 %   Recall the set of AICs from Example~\ref{ex:founded}, together with $\db=\{a,b\}$.
   The repair $\UU_1=\{-a,-b\}$ is a founded repair that is not grounded: taking
   %$A = \UU_1$, and thus
-  $\VV=\emptyset$, we notice that no rule with $\remove a$ or $\add a$ in the head has its body satisfied in $\VV$. %satisfies $\Op(\VV)\cap\UU_1=\{+c\}\cap\UU_1=\emptyset\subseteq\VV$.
+  $\VV=\emptyset$, we notice that no AIC with $\remove a$ or $\add a$ in the head has its body satisfied in $\VV(\db)$. %satisfies $\Op(\VV)\cap\UU_1=\{+c\}\cap\UU_1=\emptyset\subseteq\VV$.
   The more natural repair $\UU_2=\{+c\}$ is also founded, and it is immediate to verify that it is also grounded.
 \end{example}
 
@@ -67,13 +68,15 @@ Likewise, not all well-founded repairs are grounded. %, but not conversely.
   $\VV = \{{+a}\}$ is a set of update actions such that no rule $r$ with
   %$\head(r)\in A$ 
   $\head(r)\in(\UU\setminus\VV)$
-  has its body satisfied in $\VV$. %$\Op(\UU')\cap\UU_2=\{{+a},{+b}\}\cap\UU_2=\emptyset\subseteq\UU'$.
+  has its body satisfied in $\VV(\db)$. %$\Op(\UU')\cap\UU_2=\{{+a},{+b}\}\cap\UU_2=\emptyset\subseteq\UU'$.
 \end{example}
 
 
 
 We thus have that grounded repairs are always founded and well-founded; the next example shows that they do not correspond to the intersection of those classes.
 
+\bart{RVWR 1 had a comment wrt the next example: 
+``P9, lin16: "the first three constraints require +a and +b to be included …"  But the third AIG (r17) has -b in the head. What role does r17 play? In general, what do the AIGs in this example intend to express?  Given r16, what does r19 achieve (with the same head action, the body of r19 is a super set of that of r16)?''. I tried to explain this a bit more; To be checked if it is adequate now.}
 \begin{example}\label{ex:founded:well-founded}
   Consider the following set of AICs $\eta$.
   \begin{align}
@@ -85,10 +88,14 @@ We thus have that grounded repairs are always founded and well-founded; the next
     \neg a,b,c&\supset{+a}\label{rfwf18}
   \end{align}
   Let $\db=\emptyset$.
-  Then $\UU=\{{+a},{+b},{+c}\}$ is a repair for $\fulldb$: the first three constraints require ${+a}$ and ${+b}$ to be included in the database, and the last three state that no $2$-element subset of $\UU$ can be a repair.
-  Furthermore, $\UU$ is founded (the last three rules also ensure that) and well-founded (starting with $\emptyset$, we are forced to apply rules \ref{rfwf13}, \ref{rfwf14} and \ref{rfwf16}, in that order).
+  Then $\UU=\{{+a},{+b},{+c}\}$ is a repair for $\fulldb$: the first three constraints require ${a}$ and ${b}$ to be included in the database. 
+  They do not do this in a straightforward manner. Starting from a database in which $b$ holds, but $a$ does not, rule \eqref{rfwf15} first enforces removal of $b$. 
+  Next, rule \eqref{rfwf13} adds $a$ and subsequently, rule \eqref{rfwf14} adds $b$. 
+  While such a set of constraints will rarely be written in order to enforce inclusion of $a$ and $b$ in the database, it is possible that this type of constraints show up if they are written by different developers maintaining the database, having different concerns. 
+  The last three rules state that no $2$-element subset of $\UU$ can be a repair.
+  In this example, $\UU$ is founded (the last three rules also ensure that) and well-founded (starting with $\emptyset$, we are forced to apply rules \ref{rfwf13}, \ref{rfwf14} and \ref{rfwf16}, in that order).
 
-  However, $\UU$ is not grounded: if $\VV=\{{+b}\}$, then $\VV\subsetneq\UU$, but there is no rule $r$ with $\head(r)\in\{\add a, \add c\} $ whose body is satisfied in $\VV$. %-$\Op(\UU')\cap\UU=\emptyset\cap\UU=\emptyset\subseteq\UU'$.
+  However, $\UU$ is not grounded: if $\VV=\{{+b}\}$, then $\VV\subsetneq\UU$, but there is no rule $r$ with $\head(r)\in\{\add a, \add c\} $ whose body is satisfied in $\VV(\db)$. %-$\Op(\UU')\cap\UU=\emptyset\cap\UU=\emptyset\subseteq\UU'$.
 \end{example}
 In this situation, $\UU$ might seem reasonable; however, observe that the support for its actions \emph{is} circular: it is the three last rules that make $\UU$ founded, and none of them is applicable to $\db$.
 Also note that $\VV(\db)=\{b\}$ is a database for which the given set $\eta$ behaves very awkwardly: the only applicable AIC tells us to remove $b$, while the only repair of $\VV(\db)$ is actually $\{{+a},{+c}\}$.
