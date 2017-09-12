@@ -1,0 +1,497 @@
+Comments from the Associate Editor handling the paper:
+
+The paper develops semantics for Active Integrity Constraints, a formalism that can be used to specify conditions that a database should adhere to, and how to repair the database in case of constraint violations. The reviewers were generally positive regarding the paper, with 3 recommending minor revisions and one recommending major changes. All agree that the results are interesting and, assuming that the points raised are satisfactorily addressed, should be accepted. My recommendation is that the paper be accepted, subject to major revisions being satisfactorily carried out. The authors should address all comments raised by the reviewers. In the case where they may not agree with a reviewer, they should convincingly indicate why a change is not required.
+
+In general, there appears to be a number of presumably-non-major (but nonetheless important) errors or bugs, particularly as pointed out by the second reviewer. As well two reviewers indicated that further examples are needed. There was also a general suggestion that notation could be improved and made less "heavy".
+
+----------------------------------------------------
+Reviewer #1: Active Integrity Constraints (AIGs) serve as a language to specify how to fix a database when one or more  constraints are violated. An AIG is like a rule, where the body is a conjunction of literals specifying the condition to trigger an action specified at the head to add (resp. remove) an atom to (resp. from) a given database, under the assumption that its dual atom appears in the body.  A collection of actions is called a repair, which specifies that, given a database, which atoms are added and which are removed so that no actions may be triggered by any constraint.
+
+Given a database DB and a set of AIGs, there can be multiple ways to repair DB. In the past, various types of repairs (each type defines a semantics) are proposed, each based on some intuitions and principles. But each of the proposed semantics also comes with some behaviors that are debatable. The semantics of AIGs were far from being settled.
+
+The main contributions of the paper are:
+
+1. A detailed discussion of various semantics proposed in the past (Section 2).
+
+2. The proposal of a new class of repairs, called grounded repairs, based on a fixpoint operator (Section 3).  Grounded repairs are not as restrictive as justified repairs and do not have the drawbacks of weaker semantics like founded semantics or (sequence-based) well-founded semantics.
+
+3. Applying the approximation fixpoint theory (AFT) to define a family of semantics for AIGs. The key is to formulate an approximator {\cal T}, from which AFT-well-founded semantics (AFT-WFS) and stable repairs are defined. Relationships with existing semantics are discussed. In particular, justified repairs and grounded repairs are stable repairs.
+
+4. A detailed discussion of relationships with logic programming.
+
+5. Complexity analysis.
+
+AIGs constitute an interesting formalism that deserves an in-depth study (but see Other Comments below). The results of this paper are interesting, and give a clear picture on the relationships among various semantics for AIGs. Among the above results, 3 is the most innovative and significant. AFT-WFS can be computed in polynomial time, and because it approximates stable repairs, the process of computing AFT-WFS can be applied in computing stable repairs. The formulation of approximator {\cal T} is novel and elegant. This seems to be the first time that three-valued approach is applied to updating databases.
+
+The paper is well-organized, and clearly written. The technical work is sound.
+
+Other Comments:
+
+Though I can picture how AIGs might be used in practical database management, I still wish to see a motivating example for practical applications.
+
+For example, in Example 2.3, at the surface this seems a rather strange way to express the constraint "if a and b both hold, then c and d should also hold."
+
+P2, line 30: a couple => a few
+P3, line 52: U(DB). Later in the paper you also applied an action to a database, such as \alpha(DB).
+P4, line 7:  … executing execute …
+P4, line 38: "both" are followed by three sets
+P4, line 44:  "apply normalization." Under which semantics such a normalization can be applied? In other words, under which semantics the normalization is semantics preserving?
+P5, line 10:  Is DB = {a,b}?
+P5, lines 45 and 46: U' => U_1'
+P6, line 30:  "atomic formulas". You have been using "atoms".
+P7, line 30:  I read a couple of times to understand the sentence in parentheses. Maybe: r12 supports +a, and the support remains …
+P8, line 14: "no rule no longer applies". A bit difficult to understand double negation.
+P9, lin16: "the first three constraints require +a and +b to be included …"  But the third AIG (r17) has -b in the head. What role does r17 play? In general, what do the AIGs in this example intend to express?  Given r16, what does r19 achieve (with the same head action, the body of r19 is a super set of that of r16)?
+P14, line 24: Need to quantify v, for each v in L.
+P12, lines 14-16:  \bar U is identified with U.  But U is defined on line 16 in terms of \bar U. Maybe define \bar U in terms of U : \bar U = {a | ch a in U}
+P12, line 44: "added" to \emptyset. Maybe: "added" to DB to produce \emptyset?
+P13, lines 56-57: I would read {ch a | U(a) = t} as: if U(a) is true then a is changed, and so on, though I understand that here if means iff.
+
+Def 6.4:  It can be appropriate to add a comment after this definition as why the operator does not produce an inconsistent repair, i.e., it is defined on P.
+
+P17, line 43:  Is (-a and -b) violated, or is -(-a and -b) violated?
+
+P18, line 3:  … a subset U …
+
+P21, Section 7:  In modeling LPs by AIGs there is a restriction on simple normal LPs, and in modeling AIGs by LPs there is a restriction on AIGs with +head. There should be some remarks on these restrictions. E.g., Can they be removed? Or, why removing these restrictions create technical difficulties.
+
+P22, line 26: {\cal P} should be {\cal P}_g;  Is "grounded model" defined?
+P22, line 47: .. to be expected ...
+
+
+
+
+Reviewer #2: AIJ Review Form
+===============
+
+Part A
+------
+
+CONTENT
+
+Is the paper technically sound?
+Yes, but there are a lot of abuses of notation that should be avoided.
+
+Is the work described original?
+Yes. The paper presents two new semantics for AICs.
+
+Does it show sufficient applicability to AI?
+Yes. AICs allow to define preferences on how to repair
+an inconsistent database.
+
+Does it place new results in appropriate context with earlier work?
+Yes. There is a detailed discussion about previous works on AICs.
+
+Is the paper sufficiently novel? (A paper is novel if the results it describes
+were not previously published by other authors, and were not previously published
+by the same authors in any archival journal.)
+Yes. This paper presents the new semantics of grounded repairs and AFT-well-founded repairs.
+
+Is the paper complete? (Generally, a paper is complete if it includes all relevant proofs
+and/or experimental data, a thorough  discussion of connections with the existing literature,
+and a convincing discussion of the motivations and implications of the presented work.)
+In general, yes but needs to be improved in some part (see detailed comments).
+
+Does anything need to be added or deleted?
+Yes (see detailed comments).
+
+Is the result important enough to warrant publication?
+Yes, but need to be improved.
+
+Accesibility
+--
+Is the paper accessible to the broad readers of AIJ?
+Yes, in general the paper is well written.
+However, the notation often is too heavy and needs to be improved.
+
+Specifcally:
+
+Is the problem addressed in the paper, described in an accessible manner to readers of the journal?
+Yes.
+
+Is it possible for an AI researcher, outside the specific area,  to assess its relevance to  AI in general and  to their own research area, in particular?
+Yes, but the paper should contain more examples (see detailed comments),
+in order to help the reader to understand the most technical parts.
+
+Is enough background given (e.g., prior work, preliminaries, methodology) so an AI researcher outside the specific area can  appreciate the paper's contribution?
+Yes.
+
+----
+
+FORM
+
+Does the abstract adequately reflect the contents?
+Yes
+
+Does it contain adequate references to previous work?
+Yes
+
+Does it explain clearly what was done that is new?
+Yes
+
+Does it clearly indicate why this work is important?
+Yes
+
+Is the English satisfactory?
+Yes
+
+Is the presentation otherwise satisfactory?
+Yes
+
+Are there an appropriate number of figures?
+Yes.
+
+Do the figures help clarify the concepts in the paper?
+Yes
+
+
+Part B: DETAILED COMMENTS
+-------------------------
+
+This paper presents a new semantics for Active Integrity Constraints, a formalism used to define
+i) conditions that a consistent database has to adhere to, and
+ii) how to repair it in case the constraints are violated.
+
+In the first part, the paper summarizes previously studied semantics for AICs (founded repair
+semantics, justified repair semantics, well founded repair semantics) highlighting their properties
+with many example (many of them previously presented in related papers by other authors).
+One of these properties is the circularity of support. Founded repairs could contain update actions
+that mutually supports themselves. Justified repairs and well-founded repairs do not.
+
+This paper presents grounded repairs that avoid all forms of circularity of support.
+The concept of grounded repair is somehow a nice extension of the concept of founded repair
+(see Def. 3.1) and has interesting properties.
+
+A complete picture of the relation between the new type of repair and previously proposed repairs
+is provided (Figure 1). This is an important point.
+
+After that, the paper presents an operational approach to compute repairs.
+In particular, it presents characterizations of founded/justified/well-founded/grounded repairs
+in terms of fixpoints of certain operators.
+
+After that, a set of approximators for AICs are defined.
+
+Finally connections with logic programming are presented.
+
+I think that this work is interesting and could represent a step forward in the studying
+of Active Integrity Constraints and in general in the database repairing but needs to be improved.
+
+
+MAIN COMMENTS
+
+
+SECTION 2
+
+In page 4 the following sentences are reported:
+"In the current paper, we assume that, unless explicitly mentioned otherwise, all AICs are normal.
+Extensions of the semantics we deﬁne for non-normal AICs can be obtained through normalization, if needed."
+Well, I think that the correct way to proceed is to define the semantics for general (non-normal) AICs and
+then to prove that a set of general AICs is equivalent to its normalized version wrt that semantics.
+
+
+SECTION 3
+
+At the beginning of Section 3 is reported:
+"... and that support is not circular;
+in particular, these repairs should be constructible "from the ground up", which was the motivation for deﬁning
+well-founded repairs.".
+
+Actually, founded repairs admit circularity of support.
+Moreover, I do not agree that the repair "should" be constructible "from the ground up".
+A different point of view could be that a "good" semantics should also capture the repairs not constructible from
+the ground up (as the founded repair semantics does).
+This is just a property of the well-founded repairs semantics (one could chose whether it is desiderable or not).
+
+
+SECTION 4
+
+Could you provide an example of a 'grounded' point?
+Could you provide examples for the various types of fixpoints (A-Kripke-Kleene fixpoint etc.)?
+
+
+SECTION 5
+
+Definition 5.2 looks formally wrong.
+If Z is the set of all possible sets of update actions, it should be a function from Z to Z (and not from 2^At to 2^At).
+
+The discussion after Example 5.3 seems formally wrong and confuses the reader.
+T^{DB}_{\eta}(U) is consistent by definition.
+In particular, it is consistent because of the special union operator defined earlier.
+
+It looks to me that the operator T^{DB}_{\eta} (that for simplicity here will be denotes as T)
+is not monotone (by definition). As a conseguence, not always a fixpoint can be reached.
+Consider the following AICs:
+
+not b, a -> -a
+not b, not a -> +a
+
+and an empty database DB.
+Then:
+
+T(0)={+a}; T(T(0))={}; T(T(T(0)))={+a} ...
+
+Observe that the {+b} is a repair.
+Could you explain better this point?
+
+
+SECTION 6
+
+I think that Example 6.3 is wrong.
+After applying U, the fact a is true in DB.
+Therefore, ch a = -a and we have to consider the second AIC because -a occurs in its head.
+The truth value of its non updatable part, after the update, is 'unknown' and not 'true'.
+If follows that supp^{ch}_{...}(a)=u.
+Moreover, supp^{keep}_{...}(a)=t.
+
+In general, the notation introduced in this section is too heavy and should be improved.
+
+Proposition 6.5 is not clear.
+\T_{\eta} is a fuction from P to P, where P is the set of all possible action sets of the form {ch a}.
+T_{\eta} is defined as a function from from 2^At to 2^At (as observed earlier there is a mistake in this definition).
+Moreover, as explained in the paper, if O is a function from L to L, an approximator A should be a function
+from L^2 to L^2.
+
+In general the definitions of all these concepts are unclear and too imprecise.
+Please, fix them (possibly without introducing abuses of notation).
+
+Definition 6.2 is not clear. After updating a database DB with \U (which is a partial action set) the
+fact 'a' could be unknown, that is it's not clear whether it belongs to DB or not.
+Well, in this case 'ch a' is not defined!
+Or at least the discussion after this definition should be revised.
+This fact, in my opinion makes examples in the same section unclear.
+In Example 6.7, after applying U_0, the truth value of 'a' is unknown
+(see the definition of U(DB) before Definition 6.1).
+
+Please, clarify this point.
+
+
+SECTION 7
+
+In this Section should appear a comparison/discussion with the connection with logic programming
+(in particular with the rewriting of sets of AICs in terms of logic programs) presented in
+(L. Caroprese, S. Greco, C. Sirangelo, E. Zumpano, Declarative Semantics of Production Rules
+for Integrity Maintenance. ICLP 2006) and
+(L. Caroprese, S. Greco, C. Molinaro, Prioritized Active Integrity Constraints for Database
+Maintanance. DASFAA 2007)
+
+
+MINOR COMMENTS:
+
+Page 4, Row 4: "executing execute" -> "executing"
+
+Page 8, Proof of Proposition 3.2: "there must exist a rule whose body is satisﬁed in V" ->
+                                  "there must exist a constraint whose body is satisﬁed in V(DB)"
+
+Page 8, Proof of Proposition 3.3: "satisﬁed in V" -> "satisﬁed in V(DB)"
+
+Page 8, Example 3.4: "... no rule with -a or +a ... in V." -> "... no constraint with -a or -b ... in V(DB)."
+(please fix the expression "satisfied in V" in all other places)
+
+Page 10, Row 14: Please, define T and \bot.
+
+Page 13, Proposition 5.7: "ofU" -> "of U"
+
+Page 14: "denoted P" -> "denoted as P"
+
+
+
+
+
+
+Reviewer #3: AIJ Review Form
+
+===============
+
+
+
+Part A
+
+------
+
+Please answer the following questions "yes/no" and provide appropriate justification as appropriate.
+
+
+
+CONTENT
+
+Is the paper technically sound?
+
+yes
+
+Does it show sufficient applicability to AI?
+
+yes
+
+Does it place new results in appropriate context with earlier work?
+
+yes
+
+Is the paper sufficiently novel? (A paper is novel if the results it describes were not previously published by other authors, and were not previously published by the same authors in any archival journal.)
+
+yes
+
+Is the paper complete? (Generally, a paper is complete if it includes all relevant proofs and/or experimental data, a thorough  discussion of connections with the existing literature, and a convincing discussion of the motivations and implications of the presented work.)
+
+yes
+
+Does anything need to be added or deleted?
+
+no
+
+Is the result important enough to warrant publication?
+
+yes
+
+FORM
+
+Does the abstract adequately reflect the contents?
+
+yes
+
+Are the summary and conclusions adequate?
+
+yes
+
+Does it contain adequate references to previous work?
+
+yes
+
+Does it explain clearly what was done that is new?
+
+yes
+
+Does it clearly indicate why this work is important?
+
+yes
+
+Is the English satisfactory?
+
+yes
+
+Is the presentation otherwise satisfactory?
+
+yes
+
+Are there an appropriate number of figures?
+
+yes
+
+Do the figures help clarify the concepts in the paper?
+
+yes
+
+
+
+Part B: DETAILED COMMENTS
+
+-------------------------
+
+Please provide a detailed review of the paper here.
+
+
+Summary of the paper:
+
+The paper applies approximation fixpoint theory to study the semantics of active integrity constraints (AICs). AICs specify constraints on a database along with a recipe of possible actions to execute should the constraints be violated. Possible actions are the addition or removal of atoms from the database. Various semantics had been proposed for AICs in the past, with no clear picture on which of them to prefer over others. The paper recasts existing semantics via (minimal) fixpoints of specific operators, and defines several new semantics based on operators and established techniques from approximation fixpoint theory, such as the well-founded fixpoint and grounded fixpoints. Semantical interrelationships between "old" and "new" semantics are studied in detail. A brief complexity analysis in the end suggests a possible approach to revise inconsistent databases: compute the (AFT-)well-founded-fixpoint semantics; if it is two-valued, then this is the "intended" repair;
+otherwise, grounded or partial stable fixpoints are the next-best candidates for revision.
+
+
+Review:
+
+Although I am no specialist on AICs, I think that the paper constitutes a solid contribution to the literature on that topic. Existing work on AICs seems to be adequately presented and compared against. In general, the paper is very well written, and the many examples help to illustrate the various aspects of the semantics, especially their declared strengths and weaknesses with respect to the justification status of repair actions. The fact that as many definitions as possible are presented before introducing AFT will help non-AFT-familiar readers to get the main points about grounded repairs, while those who already know AFT can delve into all the details of approximating the semantic AIC operator. Other than a few typos and minor comments as outlined below, I have no suggestions for improvement of the manuscript.
+
+
+Recommendation:
+
+Accept with minor revisions
+
+
+Minor comments:
+
+ p3: line 12 repeats the content of line 5, mentioning this once would suffice as it is not integral to the work of the present submission
+ p4: "An AIC represents a constraint ..." I would say that only the *body* of the AIC constitutes the constraint, and the head constitutes possible fixes of a violation of the constraint.
+ p8: "we notice that no rule no longer applies" This seems to be double negation gone wrong (in contrast to Spanish, double negation cancels out in English just like in logic). I presume you mean "no rule applies any longer" or "all rules no longer apply".
+ p9, Example 3.6: "... whose body is satisfied in V" -> "... whose body is satisfied in V(\emtpyset) = \{b\}"
+ p9, "the case for studying ground repairs" -> "the case for studying grounded repairs"
+ p9, Proof of Proposition 3.7: "we have found a rule r such that V\models ..." -> "we have found a rule r such that V(DB)\models ..."
+p14: The Kleene truth table for disjunction can be omitted, as the only "formulas" that are ever evaluated are conjunctions of literals (the evalutation of disjunctions is achieved via the \leq_t-maximization in Def. 6.1
+p14: "Intuitively, ... the support of an action ... the body of a rule" -> "... the body of all rules in \eta that have \alpha in the head". It is important that the maximization ranges over all rules for \alpha, not just "a" rule.
+p21: "coincides with the immediate consequence operator of the Gelfond-Lifschitz reduct" -> "... of the Gelfond-Lifschitz reduct of the program P with respect to the interpretation y."
+p21: Definition 7.1 mentions "normal" logic program rules, a notion that is not defined in the paper.
+p22: "it makes use of proposition 7.6" -> "it makes use of Proposition 7.6"
+p22: "Since T_P, has no fixpoints," -> "Since T_P has no fixpoints,"
+p25: "checking whether a logic program has a stable model is NP-complete" -> to justify this claim, cite the following two papers:
+
+Bidoit, N., and Froidevaux, C.  1991.  Negation by default and  unstratifiable  logic  programs. Theoretical  Computer  Science 78(1):85-112.
+
+Marek, V. W., and Truszczyński, M.  1991.  Autoepistemic logic. Journal of the ACM 38(3):587-618.
+
+
+
+Reviewer #4: AIJ Review Form
+===============
+
+Part A
+------
+
+Please answer the following questions "yes/no" and provide appropriate justification as appropriate.
+
+CONTENT
+
+Is the paper technically sound?  YES
+
+Is the work described original?   YES
+
+Does it show sufficient applicability to AI?  YES
+
+Does it place new results in appropriate context with earlier work?  YES
+
+Is the paper sufficiently novel? (A paper is novel if the results it describes
+were not previously published by other authors, and were not previously published
+by the same authors in any archival journal.)  YES
+
+Is the paper complete? (Generally, a paper is complete if it includes all relevant proofs
+and/or experimental data, a thorough  discussion of connections with the existing literature,
+and a convincing discussion of the motivations and implications of the presented work.)  YES
+
+Does anything need to be added or deleted?  YES
+
+Is the result important enough to warrant publication?  YES
+
+
+FORM
+
+Does the abstract adequately reflect the contents?   YES
+
+Does it contain adequate references to previous work?  YES
+
+Does it explain clearly what was done that is new?  YES
+
+Does it clearly indicate why this work is important?  YES
+
+Is the English satisfactory?  YES
+
+Is the presentation otherwise satisfactory?  YES
+
+Are there an appropriate number of figures?  YES
+
+Do the figures help clarify the concepts in the paper?  YES
+
+
+
+Part B: DETAILED COMMENTS
+-------------------------
+Active integrity constraints (AIC) expresses database dependencies through logic programming-style rules. They come with a set of declarative semantics that identifies different classes of repairs. The logic-programming style of AICs inspires that the intuitions about good repairs of database are similar to that of non-monotonic domains.  Since approximation fixpoint theory (AFT) unifies semantics of non-monotonic reasoning, the authors apply AFT to the field of AICs. The application leads to definition of new semantics: grounded repairs and AFT-well-founded semantics.
+The authors analyzed problems of existing semantics of AICs: justified, founded and well-founded repairs. Then, defined grounded repairs which are similar to grounded fixpoints [Bogaerts et al,2015a]. Grounded repair identifies a subclass of the intersection of founded repair and well-founded repair. On the other side, it is a super set of justified repair. Therefore, grounded repairs can avoid unreasonable circularities of founded repairs, without being as restrictive as justified repairs.
+Next, AFT is applied on AICs. The authors define an operator and its approximation operator. In this way,  the AFT-style well-founded model can be computed in polynomial time expectedly and approximates justified, stable and grounded repairs.
+The technical results seem correct. The results do not seem to require very involved proofs.
+The presentation is generally good. But, some part of section 5 is hard to read. I believe that the notations may need to be improved to make the presentation much clear.  For example, in Def. 5.2, the operator {\cal T^DB_\eta} is from 2^At to 2^At, while line 45 on page 12,  "…if {+a, -a} \subseteq {\cal T^DB_\eta}…", such presentation causes confusion.
+
+The paper cites the main related work and compares the presented results with the state of the art (to the best of my knowledge).
+
+Nevertheless, I do have one question here. The authors apply standard AFT on AICs. To avoid inconsistent set of update actions upon iteration, they define an operation in Def.5.1. Does this operation have any effect on finally produced repairs? In related work, how do other approaches solve such inconsistency?  It is better such a discussion is added to the paper.
+Minor comments:
+
+p.5 line 10, example 2.5:… the database DB=\emptyset, should it be DB={a,b}?
+
+
+
