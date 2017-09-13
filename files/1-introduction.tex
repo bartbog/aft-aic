@@ -18,6 +18,12 @@ AICs express database dependencies through logic programming-style rules that in
 They come with a set of declarative semantics that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair~\cite{tplp/CaropreseT11}.
 These repairs can be computed \longpaper{directly }by means of tree algorithms\longpaper{~\cite{tase/Cruz-FilipeEGN13}, which have been implemented as a prototype~\cite{CFHLNS15}.}\shortpaper{\cite{tase/Cruz-FilipeEGN13,CFHLNS15}.}
 
+\todo{here example real-life? E.G., company database. A constraint that no person can be a member both of the department finance \& accounting and the department human resources. If such a situation occurs, remove membership of HR. 
+
+While I was writing this example (thinking about it), I stumbled onto some restrictions of AICs. For instance:
+``No one can have a salary greater thann 100.000. If someone does, cap it to 100.000'' 
+You cannot write this in AICs. } 
+
 %% Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
 %% Sometimes, databases can reach states in which one of the integrity constraints is violated, for instance due to execution of some invalid update, due to merging two databases, ... 
 %% In such case, one needs to repair the database \cite{ai/EiterG92}. 

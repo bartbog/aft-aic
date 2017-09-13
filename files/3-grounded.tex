@@ -45,6 +45,7 @@ Thus, the notion of groundedness intrinsically embodies the principle of minimal
   %(taking $A=\UU\setminus\UU_{i-1}$),
   and by construction $\UU_i\subseteq\UU$.
   But $\UU$ is finite, therefore this sequence converges towards $\UU$, and thus $\UU$ is a well-founded repair.
+  \bart{This is the first mention of finiteness. Should we do it sooner? Is it essential here?  Are well-founded repairs defined in the infinite setting, using transfinite induction? They could well be... But it might be good to restrict to finite databases from the start. On the other hand. All realistic examples will contain infinite rules (by grounding from a conceptually infinite domain, e.g., integers, so it might be good to say something more about that.}
 \end{proof}
 
 However, the notion of grounded repair is strictly stronger than both of these: Example~\ref{ex:founded}, presented earlier, also shows that some forms of circular justifications are avoided by grounded repairs.
@@ -91,8 +92,8 @@ We thus have that grounded repairs are always founded and well-founded; the next
   Then $\UU=\{{+a},{+b},{+c}\}$ is a repair for $\fulldb$: the first three constraints require ${a}$ and ${b}$ to be included in the database. 
   They do not do this in a straightforward manner. Starting from a database in which $b$ holds, but $a$ does not, rule \eqref{rfwf15} first enforces removal of $b$. 
   Next, rule \eqref{rfwf13} adds $a$ and subsequently, rule \eqref{rfwf14} adds $b$. 
-  While such a set of constraints will rarely be written in order to enforce inclusion of $a$ and $b$ in the database, it is possible that this type of constraints show up if they are written by different developers maintaining the database, having different concerns. 
-  The last three rules state that no $2$-element subset of $\UU$ can be a repair.
+  While this combination of constraints seems unnatural (no-one would use these to enforce inclusion of $a$ and $b$ in the database), it is possible that this type of constraints show up if they are written by different developers maintaining the database, having different concerns. 
+  The last three rules state that no $2$-element subset of $\UU$ can be a repair. Given rule \eqref{rfwf14}, one might say that rule \eqref{rfwf17} is redundant. However, again the same argument holds that they \emph{could} show up together in a database.
   In this example, $\UU$ is founded (the last three rules also ensure that) and well-founded (starting with $\emptyset$, we are forced to apply rules \ref{rfwf13}, \ref{rfwf14} and \ref{rfwf16}, in that order).
 
   However, $\UU$ is not grounded: if $\VV=\{{+b}\}$, then $\VV\subsetneq\UU$, but there is no rule $r$ with $\head(r)\in\{\add a, \add c\} $ whose body is satisfied in $\VV(\db)$. %-$\Op(\UU')\cap\UU=\emptyset\cap\UU=\emptyset\subseteq\UU'$.
