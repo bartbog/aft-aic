@@ -7,26 +7,90 @@ Given a fixed database $\db$, we are interested in the sets of update actions $\
 \item \UU is consistent and 
 \item each action in \UU modifies \db.
 \end{enumerate}
-If $a\in \atoms$ and $\db$ is a database, we define $\change a$ to be the update action $\add a$ if $a\not\in \db$ and $\remove a$ if $a \in \db$.
-This establishes a bijection between the sets of update actions satisfying the above two conditions and subsets of $\atoms$, where a set of atoms $\overline\UU\subseteq\atoms$ is identified with the set 
-\[\UU = \{\change a\mid a \in \overline \UU \}\]
-of update actions.
-When no ambiguity arises, we omit the bar, and simply write $\UU$ for the subset of \atoms as well.
-Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline\UU$.
-\bart{There are several problems with this identification:
+Note that the second condition here implies the first since it is not possible that both $\add a$ and $\remove a$ modify \db.
+For each atom $a\in\atoms$, we define 
+ \begin{align*}
+ \change a &= \left\{\begin{array}{ll}
+                      \add a & \text{if } a \not \in \db\\
+                      \remove a & \text {otherwise.}
+                     \end{array}\right.
+\end{align*}
+Let us furthermore denote the set of update actions that modify \db by \acts. 
+With this notation, $\acts = \{\change a \mid a \in \atoms\}$ and the sets of update actions we are interested in are elements of $2^\acts$. 
+Note that $\change$ and \acts are defined solely based on the initial database \db and are not dependent of, for instance, a given repair.
 
-RVWR 1:  $\bar U$ is identified with U.  But U is defined on line 16 in terms of $\bar U$. Maybe define $\bar U$ in terms of U : $\bar U$ = {a | ch a in U}
 
-TODO: emphasize taht ch a does not depend on U
+% We denote the set of all such sets of update actions by \cua. 
+% It is easy to see that an element of \cua is uniquely identified by the set of atoms of $\db$ it changes, i.e., that elements of $\cua$ correspond one-to-one to elements of $2^{\atoms}$. 
+% Formally, we define the following two mappings that establish this correspondence
+% \begin{align*}
+% \ats&: \cua \to 2^{\atoms}: \UU \mapsto \{a\in \atoms \mid \add a \in \UU \text{ or } \remove a \in \UU\}\\
+%  \acts &: 2^{\atoms}\to \cua: \UU \mapsto \{\change a \mid a \in \UU \},
+% \end{align*}
+% where 
+% \begin{align*}
+%  \change a &= \left\{\begin{array}{ll}
+%                       \add a & \text{if } a \not \in \db\\
+%                       \remove a & \text {otherwise.}
+%                      \end{array}\right.
+% \end{align*}
 
-}
+
+
+
+% % $\litof$ $\actof$
+% % $\atomof$ $\action$
+% For mathematical simplicity, it is often easier to work with $2^{\atoms}$ instead of working directly with sets of repairs. Hence, our operators will be defined on this set. However, we would like to stress that such a set should always be thought of as a set of update actions. 
+
+
+% If $a\in \atoms$ and $\db$ is a database, we define 
+% This establishes a bijection between the sets of update actions satisfying the above two conditions and subsets of $\atoms$, where a set of atoms $\overline\UU\subseteq\atoms$ is identified with the set 
+% \[\UU = \{\change a\mid a \in \overline \UU \}\]
+% of update actions.
+% When no ambiguity arises, we omit the bar, and simply write $\UU$ for the subset of \atoms as well.
+% Only in places where the distinction between the two is essential (in technical parts of proofs) do we explicitly write $\overline\UU$.
+% \bart{There are several problems with this identification:
+% 
+% RVWR 1:  $\bar U$ is identified with U.  But U is defined on line 16 in terms of $\bar U$. Maybe define $\bar U$ in terms of U : $\bar U$ = {a | ch a in U}
+% 
+% TODO: emphasize taht ch a does not depend on U
+% 
+% }
 
 Following the principle of minimality of change~\cite{Winslett90,ai/EiterG92}, we also typically prefer smaller sets of updates over larger sets.
-Therefore, we are interested in the lattice $\langle 2^{\atoms},\subseteq\rangle$, where smaller elements correspond to better repairs according to this principle.
+Therefore, we are interested in the lattice $\langle 2^{\acts},\subseteq\rangle$, where smaller elements correspond to better repairs according to this principle.
 
-The intuitive reading of an AIC $r$ naturally suggests an operator over this lattice, defined as ``if $\UU(\db)\models\body(r)$, then add $\head(r)$ to $\UU$''.
-However, this definition quickly leads to inconsistent sets of update actions upon iteration, which we want to avoid.
-We therefore propose a slight variant of this intuition, using the following concept that consists of taking the union and restoring consistency afterwards.
+
+The intuitive reading of an AIC $r$ naturally suggests an operator over this lattice, defined as ``if $\UU(\db)\models\body(r)$, then add $\head(r)$ to $\UU$'' to obtain a new element of $2^{\acts}$. However, this naive definition does not lead to an operator that is internal in $2^{\acts}$, as illustrated for instance in the following example.
+\begin{example}
+ Consider 
+ \begin{align*}
+  \aics = \{ \lnot a \aicrule \add a\} 
+ \end{align*}
+ and $\db=\{a\}$. 
+ In this case, $\acts = \{\remove a\}$ and $2^{\acts} = \{ \emptyset, \{\remove a\}\}$.
+ Now, taking $\UU = \{\remove a\}$, the body of the only rule in $\aics$ is satisfied.
+ Naively adding its head to $\UU$ results in the set $\{\add a,\remove a\}$, which is not an element of $2^\acts$. 
+ We expect a semantic operator to map $\UU$ to $\emptyset$ since the rule in \aics indicates that the problems with $\UU(\db)$ can be solved by adding $a$, i.e., by not changing $\db$ at all. 
+\end{example}
+Intuitively, the operator $\Op$ we wish to define should satisfy the following properties:
+\begin{itemize}
+ \item \emph{(inertia)} Only change something in the input if there is a rule that warrants this change. 
+ This requirement consists itself of two parts: 
+ \begin{itemize}
+ \item Do not add anything to $\UU$ unless there is a reason for it, i.e., \[\Op(\UU) \subseteq \UU \cup \{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}.\] 
+ \item Do not remove anything from $\UU$ unless there is a reason for it, i.e.,  \[\UU \setminus \{\head(r)^D\mid r\in \aics \land \UU(\db)\models\body(r)\} \subseteq \Op(\UU).\] \end{itemize}
+ \item \emph{(consistency)} If there is an action in \UU that is ``canceled out'' by some rule in \aics, then neither the action nor its dual are in the result (i.e., \db remains unchanged with respect to this action). Formally, if $\alpha\in \UU$ and $\alpha^D \in \{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$, then $\alpha\not \in \Op(\UU), \alpha^D\not \in \Op(\UU)$. 
+ \item \emph{(completeness)} If there is an applicable rule whose body is satisfied, and whose head does not contradict $\UU$, then the head is derived. Formally, 
+ \[ \{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r) \land \head(r)^D \not \in \UU \}\subseteq \Op(\UU).\]  %from which an action can be derived that does not contradict $\UU$, then 
+\end{itemize}
+It turns out that these three properties uniquely define an operator on $2^{\acts}$. 
+In order to give a constructive characterization of this operator, we introduce the following concept. 
+
+% Formally, our operator should sati
+% 
+% However, this definition quickly leads to inconsistent sets of update actions upon iteration, which we want to avoid.
+% We therefore propose a slight variant of this intuition, using the following concept that consists of taking the union and restoring consistency afterwards.
 
 \todo{RVWR 4:
 Nevertheless, I do have one question here. The authors apply standard AFT on AICs. To avoid inconsistent set of update actions upon iteration, they define an operation in Def.5.1. Does this operation have any effect on finally produced repairs? In related work, how do other approaches solve such inconsistency?  It is better such a discussion is added to the paper.}
@@ -65,12 +129,31 @@ Furthermore, $\UU_1\uplus\UU_2$ is consistent whenever $\UU_1$ and $\UU_2$ are.
 %
 \begin{definition}
   Let $\db$ be a database and $\eta$ be a set of AICs over $\db$.
-  The operator $\Op^\db:2^\atoms\to 2^\atoms$ is defined as follows:
+  The operator $\Op^\db:2^\acts\to 2^\acts$ is defined as follows:
   \[
     \Op^\db(\UU) = \UU\uplus\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}
   \]
 \end{definition}
 In other words, $\Op^\db(\UU)$ is obtained by updating $\UU$ with the heads of all AICs whose bodies are satisfied by $\UU(\db)$.
+As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^\db$.
+
+\begin{proposition}
+ The operator $\Op$ is the only operator on $2^\acts$ that satisfies inertia, consistency and completeness. 
+\end{proposition}
+\begin{proof}
+ It is easy to verify that \Op satisfies the three properties. Now, assume $O: 2^\acts \to 2^\acts$ satisfies the three properties. Let $\alpha$ be any action in \acts and $\UU\subseteq \acts$. 
+ Let $\VV$ denote $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$. 
+ Since, $\alpha \in \acts$, we know that $\alpha^D\not \in \UU$. We show that $\alpha \in O(\UU)$ if and only if $\alpha \in \Op(\UU) = \UU\uplus \VV $. 
+ We distinguish 3 cases:
+ \begin{itemize}
+  \item If $\alpha \in \VV$, then, since $\alpha^D\not\in \UU$, by completeness, $\alpha \in O(\UU)$. In this case, since $\alpha^D\not \in \UU\cup \VV$, but $\alpha \in \UU\cup\VV$, it holds that $\alpha \in \UU \uplus \VV = \Op(\UU)$. 
+  \item If $\alpha^D \in \VV$, then there is a rule $r\in \aics$ such that $\alpha^D\in \head(r)$ and $\UU(\db)\models \body(r)$. Since $\UU(\db)\models \body(r)$, $\litof(\alpha)$ holds in $\UU(\db)$. Since $\alpha$ changes \db, we know that $\litof(\alpha)$ does not hold in $\db$, hence it must be the case that $\alpha \in \UU$. By consistency, we then find that $\alpha\not\in O(\db)$. Since $\alpha \in \UU$ but $\alpha^D\in \VV$, also $\alpha\not\in \UU\uplus\VV=\Op(\UU)$.
+  \item If neither $\alpha\in\VV$, nor $\alpha^D\in\VV$, then by inertia, it must hold that $\alpha \in O(\UU)$ if and only if $\alpha\in \UU$. In this case, it also holds that $\alpha \in \Op(\UU) = \UU \uplus\VV$ if and only if $\alpha \in \UU$.
+  \end{itemize}
+  Hence, we have proven in each of the cases that $\alpha \in O(\UU)$ if and only if $\alpha \in \Op(\UU)$ and the result follows. 
+\end{proof}
+
+
 % The resulting set may contain less update actions than the number of such rules, since different AICs may include the same action in their heads.
 
 % \luis{There was a comment about defining this with $\nup(r)$ instead. I'm not sure this is correct.}
@@ -84,7 +167,7 @@ In other words, $\Op^\db(\UU)$ is obtained by updating $\UU$ with the heads of a
 The syntactic restrictions on AICs guarantee that the set $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$ is always consistent. 
 Indeed, if both $\add a$ and $\remove a$ are in this set, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
 From this, it also follows that $\Op^\db(\UU)$ is always consistent. 
-In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
+% In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
 
 The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded, well-founded and grounded sets of update actions.
 
@@ -112,7 +195,7 @@ Could you explain better this point?}
   Then $\UU$ is a weak repair for $\fulldb$ if and only if $\UU$ is a fixpoint of $\Op$.
 \end{proposition}
 \begin{proof}
-  If $\UU$ is a weak repair for $\fulldb$, then $\UU(\db)\not\models\body(r)$ for all $r\in\eta$, whence $\Op(\UU)=\UU$.
+  If $\UU$ is a weak repair for $\fulldb$, then certainly, $\UU\in 2^{\acts}$. Also, $\UU(\db)\not\models\body(r)$ for all $r\in\eta$, whence $\Op(\UU)=\UU$.
   If $\UU$ is not a weak repair for $\fulldb$, then $\UU(\db)\models\body(r)$ for some $r\in\eta$, and $\Op(\UU)$ differs from $\UU$ by (at least) $\head(r)$.
 \end{proof}
 
@@ -127,7 +210,7 @@ Could you explain better this point?}
 
 \begin{proposition}
   \label{prop:founded-char}
-  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a consistent set of update actions.
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU\in 2^{\acts}$. % be a consistent set of update actions.
   Then $\UU$ is founded with respect to $\fulldb$ if and only if, for all $\alpha\in\UU$, it is the case that $\alpha\in\Op(\UU\setminus\{\alpha\})$.
 \end{proposition}
 \begin{proof}
@@ -149,7 +232,7 @@ This result also gives some intuition regarding why founded repairs allow for ci
 
 \begin{proposition}
   \label{prop:wf}
-  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\UU$ be a weak repair for $\fulldb$.
+  Let $\db$ be a database, $\eta$ be a set of normal AICs over $\db$ and $\spaceUU$ be a weak repair for $\fulldb$.
   Then $\UU$ is well-founded if and only if there is an ordering $\alpha_1,\ldots,\alpha_n$ of the elements of\, $\UU$ such that $\alpha_i\in\Op(\{\alpha_1,\ldots,\alpha_{i-1}\})$ for each $i=1,\ldots,n$.
 \end{proposition}
 \begin{proof}
@@ -160,7 +243,7 @@ This result also gives some intuition regarding why founded repairs allow for ci
 
 
 \begin{proposition}\label{prop:grounded:ok}
- Let $\db$ be a database and $\eta$ a set of AICs over \db. A set of update actions $\UU$ is a grounded repair of \fulldb if and only if $\UU$ is a grounded fixpoint of \Op. 
+ Let $\db$ be a database and $\eta$ a set of AICs over \db. A set of update actions $\spaceUU$ is a grounded repair of \fulldb if and only if $\spaceUU$ is a grounded fixpoint of \Op. 
 \end{proposition}
 \begin{proof}
 Recall that grounded and strictly grounded fixpoints of \Op coincide.
