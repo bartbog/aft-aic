@@ -30,7 +30,7 @@ then to prove that a set of general AICs is equivalent to its normalized version
 	  \end{itemize}
 	  
 	  \item \label{it:abuse}Several of the reviewers had an issue with the notational abuse where we identify a set of update actions satisfying certain conditions with a set of atoms. We have now removed this identification completely and always work with sets of update actions.  This resulted in changes throughout sections 5-8.
-	  \item \label{it:notation} Some reviewers complained about notation heavyness.. 
+	  \item \label{it:notation} Some reviewers complained about notation being too heavy. This has also been resolved, or at least improved. First of all, since the identification (from the previous point) is no longer made, notation is at least more uniform. Secondly, auxiliary (notation heavy) concepts such as $\mathit{supp}_{\mathcal{U},\mathit{DB},\eta}^{ch}(a)$ $\mathit{supp}_{\mathcal{U},\mathit{DB},\eta}^{keep}(a)$ are now no longer needed due to directly working with actions instead of atoms. In general, notation is more streamlined and less heavy. 
 	  \item Reviewer 2 seemed to think a couple of our examples/... are wrong. However, these remarks were all due to confusion that arose because of the heavy notation. 
 	  We have clarified this in the revised version (cfr also points \ref{it:abuse} and \ref{it:notation}). Some details: 
 	  \begin{itemize}
@@ -43,9 +43,9 @@ Well, in this case 'ch a' is not defined!
 \end{quote}
 Both of these comments are explaine by the fact that the definition of ch a only depends on DB, not on $U(DB)$, hence, if $a\not\in DB$, then  $ch a$ remains equal to $+a$, it never becomes $-a$ or unknown/undefined. 
 	  \item \begin{quote}
-	         Definition 5.2 looks formally wrong. If Z is the set of all possible sets of update actions, it should be a function from Z to Z (and not from $2^At$ to $2^At$).
+	         Definition 5.2 looks formally wrong. If Z is the set of all possible sets of update actions, it should be a function from Z to Z (and not from $2^{At}$ to $2^{At}$).
 	        \end{quote}
-	         The confusion here is due to the fact that we identified elements of $Z$  with subsets of $At$ and used them interchangeably. 
+	         The confusion here is due to the fact that we identified elements of $Z$  with subsets of $At$ and used them interchangeably. This is no longer the case.
 	      
 \end{itemize}
 \item There were some more suggestions for related work. More precisely, 

@@ -33,19 +33,31 @@ In this section, we define an approximator for \Op and hence, obtain a set of AF
 
 % \paragraph{An Approximator for \Op}
 
-A \emph{partial action set} is a mapping $\UUU:\atoms \to \{\ltrue,\lfalse,\lunkn\}$. A partial action set \UUU is \emph{two-valued} if $\UUU(\atoms)\subseteq\{\ltrue,\lfalse\}$; in this case, we identify $\UUU$ with the action set $\{\change a\mid \UUU(a)=\ltrue\}$. 
-\bart{another comment wrt the identification of sets of atoms and sets of actions:
+A \emph{partial action set} is a tuple $\UUU=(\UUU_c,\UUU_{p})$ where $\UUU_c\in 2^\acts$ and $\UUU_p\in2^\acts$. 
+A partial action set is an approximation of a set of update actions. It provides information on which update actions are \emph{certainly} applied (the actions in $\UUU_c$) and which actions are  \emph{possibly} applied (the actions in $\UUU_p$). If $\UUU_c\subseteq \UUU_p$, we say that $\UUU$ is \emph{consistent}. We are mostly concerned with consistent partial action sets. 
+If $\alpha \in \acts$, the \emph{value} of $\alpha$ in \UUU (denoted $\UUU(\alpha)$) is:
+\begin{itemize}
+ \item true, denoted $\ltrue$, if $\alpha\in \UUU_c$ and $\alpha \in \UUU_p$,
+ \item false, denoted $\lfalse$, if $\alpha\not \in \UUU_c$ and $\alpha\not\in\UUU_p$,
+ \item unknown, denoted $\lunkn$, if $\alpha\not \in \UUU_c$ and $\alpha \in \UUU_p$,
+ \item inconsistent, denoted $\lincon$, if $\alpha\in \UUU_c$ and $\alpha\not\in\UUU_p$.
+\end{itemize}
+Note that a partial action set is characterized completely by the mapping $\acts \to \{\ltrue,\lfalse,\lunkn, \lincon\}$ it induces: 
+\begin{align*} \UUU_c &= \{\alpha \in \acts \mid \UUU(\alpha)\in \{\ltrue,\lincon\}\}, \\
+\UUU_p &= \{\alpha \in \acts \mid \UUU(\alpha)\in \{\ltrue,\lunkn\}\}.
+\end{align*}
+We sometimes exploit this correspondence, by not explicating the partial action set itself, but the mapping, as this allows for more compact notation and more elegant definitions. 
+It can be seen that that $\UUU$ is consistent if and only if $\UUU(\alpha) \in \{\ltrue,\lfalse,\lunkn\}$ for all $\alpha$. 
+The intended interpretation of a consistent partial action set is thus that $\UUU(a)$ is true iff $a$ is certainly changed by $\UUU$, it is false iff $a$ is certainly not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
+The set of all consistent partial action sets is denoted as $P$. 
+As such, $P$ is exactly the consistent part of the bilattice $(2^{\acts})^2$. 
+We call $\UUU$ \emph{two-valued} if $\UUU_c = \UUU_p$, i.e., if $\UUU(\alpha)\in\{\ltrue,\lfalse\}$ for all $\alpha$; in this case, we identify $\UUU$ with the action set $\UUU_c$. 
+The truth order $\leqt$ on truth values is defined by $\lfalse\leqt\lunkn\leqt\ltrue; \lfalse \leqt \lincon\leqt \ltrue$. The inverse of a truth value is $\lfalse^{-1}=\ltrue, \ltrue^{-1}=\lfalse, \lunkn^{-1}=\lunkn, \lincon^{-1}=\lincon$.
 
-RVWR 1:P13, lines 56-57: I would read {ch a | U(a) = t} as: if U(a) is true then a is changed, and so on, though I understand that here if means iff.}
-The intended reading of such a mapping is that $\UUU(a)$ is true if $a$ is changed by $\UUU$, it is false if $a$ is not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
-Alternatively, a partial action set is identified with an element of $(2^\atoms)^c$, i.e., with a tuple $(\UUU_t,\UUU_{tu})$ with $\UUU_t\subseteq\UUU_{tu}$, where $\UUU_t$ contains all elements that map to $\ltrue$ and $\UUU_{tu}$ all elements that map either to $\ltrue$ or to $\lunkn$ (as standard). 
-The set of all partial action sets is denoted as $P$.
-The truth order $\leqt$ on three-valued truth values is defined by $\lfalse\leqt\lunkn\leqt\ltrue$. The inverse of a truth value is $\lfalse^{-1}=\ltrue, \ltrue^{-1}=\lfalse, \lunkn^{-1}=\lunkn$.
-
-A partial database is a mapping $\tdb: \atoms \to \{\ltrue,\lfalse,\lunkn\}$.
+A (consistent) partial database is a mapping $\tdb: \atoms \to \{\ltrue,\lfalse,\lunkn\}$.
 The intended reading is that $\tdb(a)$ is true if $a$ is in the database, $\tdb(a)$ is false if $a$ is not in the database and $\tdb(a)$ is unknown otherwise. 
 
-If $\UUU$ is a partial action set and \db is a (regular) database, then we define $\UUU(\db)$ to be the partial database such that 
+If $\UUU \in P$ is a consistent partial action set and \db is a (regular) database, then we define $\UUU(\db)$ to be the partial database such that 
 \[ \UUU(\db): a \mapsto \left \{\begin{array}{ll}
                                  \db(a) & \text{if }\UUU(a) = \lfalse\\
                                  \db(a)^{-1} & \text{if }\UUU(a) = \ltrue\\
@@ -125,8 +137,10 @@ Intuitively, this means that the support of an action $\alpha$ is the highest tr
 \end{figure}
 
 
-Using this notion, we define two additional values. 
-
+Using this notion, we define two additional values. \bart{I REMOVED \suppin and \suppout!!!}
+\renewcommand\suppin{{\color{red}REMOVE}}
+\renewcommand\suppout{{\color{red}REMOVE}}
+\ignore{
 \begin{definition}
 If $a\in \atoms$, $\UUU$ is a partial set of update actions and $\langle \db, \aics\rangle$ as before, we define 
 \begin{align*}
@@ -140,14 +154,15 @@ $\suppin_{\UUU}(a)$ is true if there is support for \emph{changing} $a$ after up
 $\suppin_{\UUU}(a)$ is unknown if it is not true and there is at least one rule $r$ with $\head(r)=\change a$ that has $\nup(r)^{\UUU(\db)} = \lunkn$; 
 otherwise, all rules $r$ with $\head(r)=\change a$ have a false (non-updateable part of their) body and thus, $\suppin_{\UUU}(a)$ is false. 
 Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as it is in the database (hence the name choice). 
+}
 
 \begin{example}
  Consider $\db=\emptyset$ and the following set $\aics$:
  \begin{align*}
    \lnot a\land b &\aicrule \add a\\  a \land c\land d &\aicrule\remove a\,.
  \end{align*}
- Consider $\UUU = \{a\mapsto\ltrue,b\mapsto\ltrue, c\mapsto\ltrue, d\mapsto\lunkn\}$. 
- Then  $\suppin_{\db,\aics,\UUU}(a)=\ltrue$ and $\suppout_{\db,\aics,\UUU}(a)=\lunkn$. 
+ Consider $\UUU = (\{\add a, \add b, \add c\},\{\add a, \add b, \add c,\add d\})$. Then $\UUU(\db)=\{a\mapsto\ltrue, b\mapsto \ltrue, c\mapsto\ltrue, d\mapsto\lunkn\}$. 
+ In this case, $\supp_{\UUU(\db),\aics}(\add a)=\ltrue$ and $\supp_{\UUU(\db),\aics}(\remove a)=\lunkn$. 
 \end{example}
 
 % \todo{REVIEWER 4: example please}
@@ -156,8 +171,8 @@ Similarly, $\suppout_{\UUU}(a)$ expresses the support for \emph{keeping} $a$ as 
 
 
 \begin{definition} \label{def:apfull}
-% \overlinet{truth tables are not so nice. Actually, a case split should be easier}
-Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
+% t{truth tables are not so nice. Actually, a case split should be easier}
+Given \db and \aics, we define an operator $\Apfull: P\to P$, such that for each $\UUU\in P$ and each $\alpha \in\acts$:
 
 % given by the following truth tables:
 % 
@@ -170,7 +185,7 @@ Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
 % % \cline{3-5}
 % \hline
 % 
-% \multirow{3}{*}{$\suppout_\UUU(a)$}&\ltrue &	\lfalse	\\
+% \multirow{3}{*}{$\suppout_{\UUU(\db),\eta}(a)$}&\ltrue &	\lfalse	\\
 % \cline{2-3}
 % &\lunkn 	& \lunkn		\\
 % \cline{2-3}
@@ -186,7 +201,7 @@ Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
 % % \cline{3-5}
 % \hline
 % 
-% \multirow{3}{*}{$\suppin_\UUU(a)$}&\ltrue &	\ltrue	\\
+% \multirow{3}{*}{$\suppin_{\UUU(\db),\eta}(a)$}&\ltrue &	\ltrue	\\
 % \cline{2-3}
 % &\lunkn 	& \lunkn		\\
 % \cline{2-3}
@@ -199,12 +214,12 @@ Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
 % % \begin{minipage}{0.3\linewidth}
 % 	\begin{tabular}{|cc|c|c|c|}
 % \cline{1-5}
-% \multicolumn{2}{|c|}{\multirow{2}{*}{{ $\Ap(\UUU)(a)$ if $\UUU(a)=\lunkn$} }}&\multicolumn{3}{c|}{$\suppout_\UUU(a)$}\\
+% \multicolumn{2}{|c|}{\multirow{2}{*}{{ $\Ap(\UUU)(a)$ if $\UUU(a)=\lunkn$} }}&\multicolumn{3}{c|}{$\suppout_{\UUU(\db),\eta}(a)$}\\
 % % \cline{3-5}
 % 
 % \multicolumn{2}{|c|}{}& \ltrue & \lunkn & \lfalse \\
 % \hline
-% \multirow{3}{*}{$\suppin_\UUU(a)$}&\ltrue &	\lunkn & \lunkn & \ltrue	\\
+% \multirow{3}{*}{$\suppin_{\UUU(\db),\eta}(a)$}&\ltrue &	\lunkn & \lunkn & \ltrue	\\
 % \cline{2-5}
 % &\lunkn	& \lunkn & \lunkn & \lunkn		\\
 % \cline{2-5}
@@ -212,13 +227,13 @@ Given \db and \aics, we define an operator $\Apfull: P\to P$, as follows:
 % \cline{1-5}
 % 	\end{tabular}
 \begin{itemize}
- \item If $\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a) = \suppin_\UUU(a).$
- \item If $\UUU(a)=\ltrue$, then $\Apfull(\UUU)(a) = \suppout_\UUU(a)^{-1}.$
- \item Otherwise (i.e., if $\UUU(a) = \lunkn$):
+ \item If $\UUU(\alpha)=\lfalse$, then $\Apfull(\UUU)(a) = \supp_{\UUU(\db),\eta}(\alpha).$
+ \item If $\UUU(\alpha)=\ltrue$, then $\Apfull(\UUU)(\alpha) = \supp_{\UUU(\db),\eta}(\alpha^D)^{-1}.$
+ \item Otherwise (i.e., if $\UUU(\alpha) = \lunkn$):
   \begin{itemize}
-    \item if $\suppin_\UUU(a) = \ltrue$ and $\suppout_\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a)=\ltrue$;
-    \item if $\suppout_\UUU(a) = \ltrue$ and $\suppin_\UUU(a)=\lfalse$, then $\Apfull(\UUU)(a)=\lfalse$;
-    \item otherwise, $\Apfull(\UUU)(a)=\lunkn$.
+    \item if $\supp_{\UUU(\db),\eta}(\alpha) = \ltrue$ and $\supp_{\UUU(\db),\eta}(\alpha^D)=\lfalse$, then $\Apfull(\UUU)( \alpha)=\ltrue$;
+    \item if $\supp_{\UUU(\db),\eta}(\alpha^D) = \ltrue$ and $\supp_{\UUU(\db),\eta}(\alpha)=\lfalse$, then $\Apfull(\UUU)(\alpha)=\lfalse$;
+    \item otherwise, $\Apfull(\UUU)(\alpha)=\lunkn$.
 \end{itemize}
 
 \end{itemize}
@@ -228,53 +243,57 @@ When $\db$ is clear from the context, we write \Ap for \Apfull.
 \todo{RVWR1: Def 6.4:  It can be appropriate to add a comment after this definition as why the operator does not produce an inconsistent repair, i.e., it is defined on P.}
 
 Definition \ref{def:apfull} is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
-In the case where $\UUU(a)=\lfalse$, $a$ is not an element of the (partial) update set at hand. The only way to add $a$ to the update is if some rule supports changing $a$, which is captured by $\suppin$. 
-The case for $\UUU(a)=\ltrue$ is completely symmetrical, in this case the only reason for removing $a$ from the update at hand is if there is some rule that supports keeping $a$.
-In the last case, where $\UUU(a)=\lunkn$, we have no information what the update does to $a$ yet. In this case, we can derive that $a$ \emph{must} be in the update if we already have support for $\change a$ and we are sure that there is no support for keeping $a$ (for $\change a^D$). Similarly, we can derive that $a$ \emph{must not} be in the update if we have support for $\change a^D$ but not for $\change a$. 
-In all other cases, we derive nothing about $a$ being in the update or not. 
+In the case where $\UUU(\alpha)=\lfalse$, $\alpha$ is not an element of the (partial) update set at hand. The only way to add $\alpha$ to the update is if some rule supports $\alpha$, which is captured by $ \supp_{\UUU(\db),\eta}(\alpha)$. 
+The case for $\UUU(\alpha)=\ltrue$ is completely symmetrical, in this case the only reason for removing $\alpha$ from the update at hand is there is support for its dual.
+In the last case, where $\UUU(\alpha)=\lunkn$, we have no information on whether $\alpha$ should or shouldn't be in the update yet. In this case, we can derive that $\alpha$ \emph{must} be in the update if we already have support for $\alpha$ and we are sure that there is no support for it dual (for $\alpha^D$). Similarly, we can derive that $\alpha$ \emph{must not} be in the update if we have support for $\alpha^D$ and certainly not for $\alpha$.  
+In all other cases, we derive nothing about $\alpha$ being in the update or not. 
+
+Recall that \citet{DeneckerMT04} showed that it suffices to define approximator on the consistent part of the bilattice. 
+Using the fact that, $P=(2^\acts)^c$, \Ap is a candidate approximator of \Op. The next proposition shows that this is indeed the case. 
 
 
 % We intend \Ap to be an approximator of \Op. One of the requirements of an approximator is that it agrees with \Op whenever \UUU is two-valued. This explains the exact values (\ltrue and \lfalse) in the the first two tables. 
 % A second requirement is that an approximator is \leqp-monotone. 
-% This explains the $\lunkn$ values in the first two tables. Indeed, for instance for the first table, if $\UUU(a)=\ltrue$ and $\suppout_\UUU(a)=\lunkn$, this means that there is at least one rule with $r$ with $\nup(r)^\UUU=\lunkn$. Without a priori knowledge of the structures of the rules, in such a situation it is still possible to obtain $\UUU'\geqp\UUU$ and $\UUU''\geqp \UUU$ such that $\nup(r)^{\UUU'}=\lfalse$ and $\nup(r)^{\UUU''}=\ltrue$. As such, in order to have \leqp-monotonicity, we must have that $\Ap(\UUU)\leqp\ltrue$ and $\Ap(\UUU)\leqp \lfalse$, hence $\Ap(\UUU)=\lunkn$.
+% This explains the $\lunkn$ values in the first two tables. Indeed, for instance for the first table, if $\UUU(a)=\ltrue$ and $\suppout_{\UUU(\db),\eta}(a)=\lunkn$, this means that there is at least one rule with $r$ with $\nup(r)^\UUU=\lunkn$. Without a priori knowledge of the structures of the rules, in such a situation it is still possible to obtain $\UUU'\geqp\UUU$ and $\UUU''\geqp \UUU$ such that $\nup(r)^{\UUU'}=\lfalse$ and $\nup(r)^{\UUU''}=\ltrue$. As such, in order to have \leqp-monotonicity, we must have that $\Ap(\UUU)\leqp\ltrue$ and $\Ap(\UUU)\leqp \lfalse$, hence $\Ap(\UUU)=\lunkn$.
 % 
 % Similar arguments also explain all the $\lunkn$ values found in the third table. 
 % To explain the exact values in the last table, we consider two cases. 
-% In both cases $\UUU(a)=\lunkn$, i.e., we have no prior knowledge of whether to update $a$ in the database or not. In the first case $\suppin_\UUU(a)=\ltrue$ and $\suppout_\UUU(a)=\lfalse$. This means that $\UUU$ contains enough information to decide that there is a rule that will require $\change a$ \emph{and} that there will no rule that requires $(\change a)^D$ in any more precise update set. 
+% In both cases $\UUU(a)=\lunkn$, i.e., we have no prior knowledge of whether to update $a$ in the database or not. In the first case $\suppin_{\UUU(\db),\eta}(a)=\ltrue$ and $\suppout_{\UUU(\db),\eta}(a)=\lfalse$. This means that $\UUU$ contains enough information to decide that there is a rule that will require $\change a$ \emph{and} that there will no rule that requires $(\change a)^D$ in any more precise update set. 
 % In such a situation, we have sufficient information to conclude that $\change a$ must be in the intended update set. 
 % The other case is similar. 
 
 \begin{proposition}
- \Ap is an approximator of \Op. \todo{RVWR 2:
-Proposition 6.5 is not clear.
-$T_{\eta}$ is a fuction from P to P, where P is the set of all possible action sets of the form {ch a}.
-$T_{\eta}$ is defined as a function from from $2^At$ to $2^At$ (as observed earlier there is a mistake in this definition).
-Moreover, as explained in the paper, if O is a function from L to L, an approximator A should be a function
-from $L^2$ to $L^2.$}
+ \Ap is an approximator of \Op.
+%  \todo{RVWR 2:
+% Proposition 6.5 is not clear.
+% $T_{\eta}$ is a fuction from P to P, where P is the set of all possible action sets of the form {ch a}.
+% $T_{\eta}$ is defined as a function from from $2^At$ to $2^At$ (as observed earlier there is a mistake in this definition).
+% Moreover, as explained in the paper, if O is a function from L to L, an approximator A should be a function
+% from $L^2$ to $L^2.$}
 \end{proposition}
 % \begin{proof}[Sketch of the proof]
 % \leqp-monotonicity of \Ap follows from the fact that Kleene-valuation is \leqp-monotone and 
 % \end{proof}
 \begin{proof}
-First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $a\in \atoms$, also the functions that map $\UUU$ to $\suppin_\UUU(a)$ and $\suppout_\UUU(a)$ are $\leqp$-monotone. Now take some $a\in\atoms$ and suppose $\UUU'\geqp\UUU$. Then  $\suppin_{\UUU'}(a)\geqp \suppin_\UUU(a)$ and $\suppout_{\UUU'}(a)\geqp \suppout_\UUU(a)$. We show that $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ by a case analysis on the definition of $\Ap(\UUU)(a)$. 
+First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Kleene-valuation is $\leqp$-monotone. Hence, for each $\alpha \in \acts$, also the functions that map $\UUU$ to $\supp_{\UUU(\db),\eta}(\alpha)$ and $\supp_{\UUU(\db),\eta}(\alpha^D)$ are $\leqp$-monotone. Now take some $\alpha \in\acts$ and suppose $\UUU'\geqp\UUU$. Then  $\supp_{\UUU'(\db),\eta}(\alpha)\geqp \supp_{\UUU(\db),\eta}(\alpha)$ and $\supp_{\UUU'(\db),\eta}(\alpha^D)\geqp \supp_{\UUU(\db),\eta}(\alpha^D)$. We show that $\Ap(\UUU')(\alpha)\geqp \Ap(\UUU)(\alpha)$ by a case analysis on the definition of $\Ap(\UUU)( \alpha)$. 
 \begin{itemize}
-\item If $\UUU(a)=\lfalse$, then $\UUU'(a)=\lfalse$ since $\UUU'\geqp\UUU$. In this case $\Ap(\UUU')(a) = \suppin_{\UUU'}(a) \geqp \suppin_{\UUU}(a) =  \Ap(\UUU)(a)$. 
-\item The case where $\UUU(a)=\ltrue$ is similar.
-\item Assume $\UUU(a) = \lunkn$. 
+\item If $\UUU(\alpha)=\lfalse$, then $\UUU'(\alpha)=\lfalse$ since $\UUU'\geqp\UUU$. In this case $\Ap(\UUU')(\alpha) = \supp_{\UUU'(\db),\eta}(\alpha) \geqp \supp_{\UUU(\db),\eta}(\alpha) =  \Ap(\UUU)(\alpha)$. 
+\item The case where $\UUU(\alpha)=\ltrue$ is similar. 
+\item Assume $\UUU(\alpha) = \lunkn$. 
 \begin{itemize}
-\item If $\suppin_\UUU(a) = \ltrue$ and $\suppout_\UUU(a)=\lfalse$, then $\Ap(\UUU)(a)=\ltrue$ and also $\suppin_{\UUU'}(a) = \ltrue$ and $\suppout_{\UUU'}(a)=\lfalse$. Hence if $\UUU'(a)=\lunkn$, this is trivially proven. In case $\UUU'(a)=\ltrue$, $\Ap(\UUU')(a) = \suppout_{\UUU'}(a)^{-1}=\ltrue$ and in case $\UUU'(a)=\lfalse$, $\Ap(\UUU')(a)= \suppin_{\UUU'}(a)= \ltrue$. Hence, in all cases $\Ap(\UUU)(a) = \Ap(\UUU')(a)$ and the claim follows.
-\item The case where $\suppout_\UUU(a)=\ltrue$ and $\suppin_\UUU(a) = \lfalse$ is similar to the previous.
-\item In all other cases, $\Ap(\UUU)(a)=\lunkn$, hence $\Ap(\UUU')(a)\geqp \Ap(\UUU)(a)$ is trivially satisfied.
+\item If $\supp_{\UUU(\db),\eta}(\alpha) = \ltrue$ and $\supp_{\UUU(\db),\eta}(\alpha^D)=\lfalse$, then $\Ap(\UUU)(\alpha)=\ltrue$ and also $\supp_{\UUU'(\db),\eta}(\alpha) = \ltrue$ and $\supp_{\UUU'(\db),\eta}(\alpha)=\lfalse$. Hence if $\UUU'(\alpha)=\lunkn$, this is trivially proven. In case $\UUU'(\alpha)=\ltrue$, $\Ap(\UUU')(\alpha) = \supp_{\UUU'(\db),\eta}(\alpha^D)^{-1}=\ltrue$ and in case $\UUU'(\alpha)=\lfalse$, $\Ap(\UUU')(a)= \supp_{\UUU'(\db),\eta}(\alpha)= \ltrue$. Hence, in all cases $\Ap(\UUU)(\alpha) = \Ap(\UUU')(\alpha)$ and the claim follows.
+\item The case where $\supp_{\UUU(\db),\eta}(\alpha^D)=\ltrue$ and $\supp_{\UUU(\db),\eta}(\alpha) = \lfalse$ is similar to the previous.
+\item In all other cases, $\Ap(\UUU)(\alpha)=\lunkn$, hence $\Ap(\UUU')(\alpha)\geqp \Ap(\UUU)(\alpha)$ is trivially satisfied.
 \end{itemize}
 
 \end{itemize}
 
-Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $a \in \atoms$, we again prove this claim by a case analysis on the definition of of $\Ap(\UU)(a)$.
+Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $\alpha \in \acts$, we again prove this claim by a case analysis on the definition of of $\Ap(\UU)(\alpha)$. 
 \begin{itemize}
- \item If $\UU(a)=\lfalse$, then $\Op(\UUU)(a)= \ltrue$ if and only if there is some rule $r\in \eta$ with $\UU(\db) \models \body(r)$ and $\head(r)=\change a$. 
-   Since $\body(r)=\nup(r)\land a$, we conclude that $\Op(\UU)(a)$ is true if and only if $\suppin_{\UU}(a) = \ltrue$, if and only if $\Ap(\UU)(a)=\ltrue$. 
- \item The case for $\UU(a)=\lfalse$ is similar. 
- \item The case where $\UU(a)= \lunkn$ cannot occur, since $\UU$ is two-valued. \qedhere
+ \item If $\UU(\alpha)=\lfalse$, then $\Op(\UUU)(\alpha)= \ltrue$ if and only if there is some rule $r\in \eta$ with $\UU(\db) \models \body(r)$ and $\head(r)=\alpha$. 
+   Since $\body(r)=\nup(r)\land \litof(\alpha^D)$, we conclude that $\Op(\UU)(\alpha)$ is true if and only if $\supp_{\UU(\db),\eta}(\alpha) = \ltrue$, if and only if $\Ap(\UU)(\alpha)=\ltrue$. 
+ \item The case for $\UU(\alpha)=\lfalse$ is similar. 
+ \item The case where $\UU(\alpha)= \lunkn$ cannot occur, since $\UU$ is two-valued. \qedhere
 \end{itemize}
 \end{proof}
 
@@ -316,26 +335,28 @@ We now illustrate these semantics by means of some examples.
  a \land \lnot b &\aicrule \add b \\
  a \land c \land b &\aicrule \remove b
 \end{align*} with $\db = \emptyset$.
-Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
-\[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
+Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at $\UUU_0$ that maps
+\[\add a\mapsto \lunkn, \add b\mapsto \lunkn,\add c\mapsto\lunkn,\]
+i.e., $\UUU_0$ is\footnote{Recall that for simplicity, we often characterize partial action sets by their induced truth function.} the partial action 
+\[(\emptyset,\{\add a, \add b, \add c\}).\]
 Here, we see that 
 \begin{align*}
- \suppin_{\UUU_0}(a) &= \ltrue, & \suppout_{\UUU_0}(a) &=\lfalse \\
- \suppin_{\UUU_0}(b) &= \lunkn, & \suppout_{\UUU_0}(b) &=\lunkn \\
- \suppin_{\UUU_0}(c) &= \lunkn, & \suppout_{\UUU_0}(c) &=\lfalse 
+ \supp_{\UUU_0(\db),\aics}(\add a) &= \ltrue, & \supp_{\UUU_0(\db),\aics}(\remove a) &=\lfalse \\
+ \supp_{\UUU_0(\db),\aics}(\add b) &= \lunkn, & \supp_{\UUU_0(\db),\aics}(\remove b) &=\lunkn \\
+ \supp_{\UUU_0(\db),\aics}(\add c) &= \lunkn, & \supp_{\UUU_0(\db),\aics}(\remove c) &=\lfalse 
 \end{align*}
 Hence, 
-\[\UUU_1 = \Ap(\UUU_0): a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lunkn\]
+\[\UUU_1 = \Ap(\UUU_0): \add a\mapsto \ltrue,\add  b\mapsto \lunkn,\add  c\mapsto\lunkn\]
 is a refinement of $\UUU_0$. 
-Now, it can be verified that $\UUU_1$ is a fixpoint of $\Ap$. This is the Kripke-Kleene fixpoint. It is a partial repair set and provides the information that $a$ must be repaired, but it is uncertain about $b$ and $c$. 
+Now, it can be verified that $\UUU_1$ is a fixpoint of $\Ap$. This is the Kripke-Kleene fixpoint. It is a partial repair set and provides the information that $a$ must be added, but it is uncertain about $b$ and $c$. 
 
 A well-founded induction continues by unfoundedness refinement. 
 %It can be verified that 
 The partial update set
-\[\UUU_2 = a\mapsto \ltrue, b\mapsto \lunkn, c\mapsto\lfalse\]
+\[\UUU_2 = \add a\mapsto \ltrue, \add b\mapsto \lunkn,  \add c\mapsto\lfalse\]
 is an unfoundedness refinement of $\UUU_1$.
 This follows easily from the fact that 
-\[\UUU_3 = \Ap(\UUU_2)= a\mapsto \ltrue, b\mapsto \ltrue, c\mapsto\lfalse.\]
+\[\UUU_3 = \Ap(\UUU_2)= \add a\mapsto \ltrue, \add b\mapsto \ltrue, \add c\mapsto\lfalse.\]
 %Hence
 Furthermore,
 $\UUU_3$ is an application refinement of $\UUU_2$. Since this is an exact point, it is the \Ap-well-founded fixpoint of \Op. It is clearly the intended repair in this example.
@@ -354,18 +375,18 @@ Note that in this example, unfoundedness refinements take care of minimizations 
  \end{align*} with $\db = \emptyset$. Intuitively, we expect $\add c$ to be an element of ``good'' repairs, and (following the minimality of change principle), no other actions to be in ``good'' repairs. 
 
 Now, the \Ap-well-founded fixpoint can be computed as the limit of a well-founded induction. It starts at
-\[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
+\[\UUU_0: \add a\mapsto \lunkn, \add b\mapsto \lunkn, \add c\mapsto\lunkn.\]
 Here, we see that 
 \begin{align*}
- \suppin_{\UUU_0}(a) &= \lunkn, & \suppout_{\UUU_0}(a) &=\lfalse \\
- \suppin_{\UUU_0}(b) &= \lunkn, & \suppout_{\UUU_0}(b) &=\lfalse \\
- \suppin_{\UUU_0}(c) &= \lunkn, & \suppout_{\UUU_0}(c) &=\lfalse 
+ \supp_{\UUU_0(\db),\aics}(\add a) &= \lunkn, & \supp_{\UUU_0(\db),\aics}(\remove a) &=\lfalse \\
+ \supp_{\UUU_0(\db),\aics}(\add b) &= \lunkn, & \supp_{\UUU_0(\db),\aics}(\remove b) &=\lfalse \\
+ \supp_{\UUU_0(\db),\aics}(\add c) &= \lunkn, & \supp_{\UUU_0(\db),\aics}(\remove c) &=\lfalse 
 \end{align*}
 Hence, $\Ap(\UUU_0)=\UUU_0$ and $\UUU_0$ is the \Ap-Kripke-Kleene fixpoint. 
 A well-founded induction can continue with unfoundedness refinements. Indeed, consider 
-\[\UUU_1: a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto\lunkn.\]
+\[\UUU_1: \add a\mapsto \lfalse, \add b\mapsto \lfalse, \add c\mapsto\lunkn.\]
 Since 
-\[\Ap(\UUU_1) = a\mapsto \lfalse, b\mapsto \lfalse, c\mapsto \ltrue,\] it holds that $\UUU_1$ is an unfoundedness refinement of $\UUU_0$. 
+\[\Ap(\UUU_1) = \add a\mapsto \lfalse, \add b\mapsto \lfalse, \add c\mapsto \ltrue,\] it holds that $\UUU_1$ is an unfoundedness refinement of $\UUU_0$. 
 Finally, we can conclude that $\UUU_2:=\Ap(\UUU_1)$ is the \Ap-well-founded fixpoint. This corresponds to the intended repair.
 \end{example}
 
@@ -384,39 +405,39 @@ As can be expected, not every set of AICs has a two-valued well-founded repair. 
  Let us investigate what the different AFT-style semantics give in this case. 
  
  Consider 
-\[\UUU_0: a\mapsto \lunkn, b\mapsto \lunkn, c\mapsto\lunkn.\]
+\[\UUU_0: \add a\mapsto \lunkn,  \add b\mapsto \lunkn,\add c\mapsto\lunkn.\]
 
 Here, it holds that 
 \begin{align*}
- \suppin_{\UUU_0}(a) &= \lunkn, & \suppout_{\UUU_0}(a) &=\lfalse \\
- \suppin_{\UUU_0}(b) &= \lunkn, & \suppout_{\UUU_0}(b) &=\lfalse \\
- \suppin_{\UUU_0}(c) &= \lunkn, & \suppout_{\UUU_0}(c) &=\lfalse 
+ \supp_{\UUU_0(\db),\aics}(\add a) &= \lunkn, & \supp_{\UUU_0(\db),\aics}(\remove a) &=\lfalse \\
+ \supp_{\UUU_0(\db),\aics}(\add b) &= \lunkn, & \supp_{\UUU_0(\db),\aics}(\remove b) &=\lfalse \\
+ \supp_{\UUU_0(\db),\aics}(\add c) &= \lunkn, & \supp_{\UUU_0(\db),\aics}(\remove c) &=\lfalse 
 \end{align*}
 Hence, $\Ap(\UUU_0) = \UUU_0$ and $\UUU_0$ is the \Ap-Kripke-Kleene fixpoint. 
-Furthermore, we claim that there are no unfoundedness refinements of $\UUU_0$, and hence that $\UUU_0$ is also the \Ap-well-founded fixpoint. To see that our claim indeed holds, notice that any unfoundedness refinement of $\UUU_0$ should consist of making a subset $U$ of $\{a,b,c\}$ false, in such a way that for each $u\in U$, $\Ap(\UUU_0[U: \lfalse])(u)=\lfalse$. 
-Assume $a\in U$. In order for $\Ap(\UUU_0[U: \lfalse])(a)$ to be false $b$ must be $\ltrue$ in $\UUU_0[U: \lfalse]$ (otherwise the body of the rule defining $\add a$ is unknown or true). That is not possible, hence $a\not \in U$. From a similar argument, we find that $b\not \in U$ and $c\not \in U$. 
+Furthermore, we claim that there are no unfoundedness refinements of $\UUU_0$, and hence that $\UUU_0$ is also the \Ap-well-founded fixpoint. To see that our claim indeed holds, notice that any unfoundedness refinement of $\UUU_0$ should consist of making a subset $U$ of $\{ \add a,\add b,\add c\}$ false, in such a way that for each $\alpha \in U$, $\Ap(\UUU_0[U: \lfalse])(\alpha)=\lfalse$. 
+Assume $\add a\in U$. In order for $\Ap(\UUU_0[U: \lfalse])(\add a)$ to be false $\add b$ must be $\ltrue$ in $\UUU_0[U: \lfalse]$ (otherwise the body of the rule defining $\add a$ is unknown or true). That is not possible, hence $ \add a\not \in U$. From a similar argument, we find that $\add b\not \in U$ and $\add c\not \in U$. 
 Trivially, the two intended repairs are more precise than the well-founded fixpoint. 
 
-Now, let us check whether $\UU := \{\add a, \add c\}$ is a stable fixpoint. 
+Now, let us check whether $\UU := \{\add a, \add c\}$ is a stable repair. 
 For this, we need to verify if 
 \[\UU =\lfp(\Ap(\cdot,\UU)_1).\]
 Define $\UU_0=\emptyset$. Then 
-\[(\UU_0,\UU) = a \mapsto \lunkn, b\mapsto \lfalse, c\mapsto \lunkn.\]
+\[(\UU_0,\UU) = \add a \mapsto \lunkn, \add b\mapsto \lfalse, \add c\mapsto \lunkn.\]
 Hence 
-\[\Ap(\UU_0,\UU) = a \mapsto \ltrue, b\mapsto \lunkn, c \mapsto \lunkn\]
+\[\Ap(\UU_0,\UU) = \add a \mapsto \ltrue, \add b\mapsto \lunkn, \add c \mapsto \lunkn\]
 and 
-\[\UU_1 := \Ap(\UU_0,\UU)_1 = \{a\}.\]
+\[\UU_1 := \Ap(\UU_0,\UU)_1 = \{\add a\}.\]
 Similarly, 
-\[(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \lunkn.\]
+\[(\UU_1,\UU) = \add a \mapsto \ltrue, \add b\mapsto \lfalse,\add  c\mapsto \lunkn.\]
 Hence 
 %\[\Ap(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c \mapsto \lunkn\]
-\[\Ap(\UU_1,\UU) = a \mapsto \ltrue, b\mapsto \lfalse, c \mapsto \ltrue\]
+\[\Ap(\UU_1,\UU) = \add a \mapsto \ltrue, \add b\mapsto \lfalse, \add c \mapsto \ltrue\]
 and 
 \[\UU_2 := \Ap(\UU_1,\UU)_1 = \UU.\]
 Furthermore, $\Ap(\UU_2,\UU) = \UU_2=\UU$, hence  we find that indeed, \UU is an \Ap-stable fixpoint. 
 The case for $\{\add b\}$ is similar. 
 
-It can also be verified that there are no other $\Ap$-stable fixpoints. Due to minimality, no other could contain $\add b$, hence they must be subsets of $\{\add a,\add c\}$. Again, due to minimality, the only such subset is \UU.
+It can also be verified that there are no other $\Ap$-stable fixpoints. Due to minimality, no other could contain $\add b$, hence they must be subsets of $\{\add a,\add c\}$. But since $\UU$ is a stable repair, it is already minimal, hence no strict subset of $\{\add a,\add c\}$ can be a stable repair.
 \end{example}
 
 Hence, in the above example, \Ap-stable repairs capture the intended semantics.
@@ -434,15 +455,20 @@ We omit examples of grounded fixpoints, as we already included some in Section~\
 % \luis{probably we'll ignore the whole discussion above}
 
 We now show that all AFT-style semantics are nicely invariant under shifting. 
+% In order to show this, we define  for each set $S$ of atoms:
+% \[\shift_S{\acts} = \{\alpha^D\mid \alpha \in \acts \land (\alpha = \add a \text{ or } \alpha = \remove a \text{ with } a\in S\} \cup \]
 \begin{proposition}
- \Ap, and hence also \Op, is invariant under shifting, i.e., for each set $S\subseteq \atoms$:
- \[\Apfull = \threeap_{\langle\shift_S(\db),\shift_S(\eta)\rangle}\]
+ \Ap, and hence also \Op, commutes with shifting, i.e., for each set $S\subseteq \atoms$:
+ \[\shift_s \circ \Apfull = \threeap_{\langle\shift_S(\db),\shift_S(\eta)\rangle}\]
 \end{proposition}
 \begin{proof}
-First note that for each update action $u$, $u$ changes $\db$ iff $\shift_S(u)$ changes $\shift_S(\db)$. Hence for each atom $\change_{\db} a = \change_{\shift_S(\db)} a$ and thus
-$\overline{\UU}=\overline{\shift_S(\UU)}$ 
-(where the first identification is with respect to \db and the second with respect to $\shift_S(\db)$. 
-Since \Ap is defined entirely in terms of these sets, the result follows. 
+The clue to proving this proposition is the fact that for each action $\alpha$, 
+\[\supp_{\UUU(\db),\aics}(\alpha) = \supp_{\UUU(\shift_S(\db)),\shift_S(\aics)}(\shift_S(\alpha)).\]
+Then, the result easily follows from the fact that \Ap has been defined entirely based on the $\supp$ function.  
+% First note that for each update action $\alpha$, $\alpha $ changes $\db$ iff $\shift_S(u)$ changes $\shift_S(\db)$. Hence for each atom $\change_{\db} a = \change_{\shift_S(\db)} a$ and thus
+% ${\UU}={\shift_S(\UU)}$ 
+% (where the first identification is with respect to \db and the second with respect to $\shift_S(\db)$. 
+% Since \Ap is defined entirely in terms of these sets, the result follows. 
 % \bart{Proof is still a bit of handwaving if you ask me. Could probably be more formalised}
 % \luis{I'm ok with it :-) I don't see that we gain a lot by adding a formal proof.}
 % \luis{I was rereading Caroprese's work, and they talk about shifting in their 2011 paper (Theorem 20). This also allows us to handwave a bit, I guess.  As an alternative, we can prove the theorem formally using the lemmas they have in the Appendix.}
@@ -457,20 +483,20 @@ Since \Ap is defined entirely in terms of these sets, the result follows.
 \end{proposition}
 \begin{proof}
 Let $\left(\UUU_i\right)_{i\leq k}$ be a well-founded induction of \Ap. 
-For each $i$, define $\UU_i$ as $\{a \in \atoms \mid \UUU_i=\ltrue\}$. 
+For each $i$, define $\UU_i$ as $\{\alpha \in \acts \mid \UUU_i(\alpha)=\ltrue\}$. 
 We will prove the following claim by induction on the length $k$ of the well-founded induction (note that we restrict to finite well-founded inductions here, since we assume $\atoms$ to be finite). 
 
-There exists a sequence $\alpha_1,\dots,\alpha_n$ such that $\UU_k=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $\{\alpha_1,\dots,\alpha_{i-1}\}(\db) \models \body (r_i)$ and $\alpha_i = \head(r_i)$.
+\begin{quote}\textbf{Claim:} There exists a sequence $\alpha_1,\dots,\alpha_n$ such that $\UU_k=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $\{\alpha_1,\dots,\alpha_{i-1}\}(\db) \models \body (r_i)$ and $\alpha_i = \head(r_i)$.\end{quote}
 
 From this claim, taking any terminal well-founded induction yields the desired result. 
 
 We now show the claim indeed holds. 
 The claim is trivial for $k=0$. Assume the claim holds for $k$, we show that it also holds for $k+1$. 
 Thus assume $\alpha_1,\dots,\alpha_n$ is a sequence with $\UU_{k} = \{ \alpha_1,\dots,\alpha_n\}$ satisfying the above condition. 
-If $\UUU_{k+1}$ is an unfoundedness refinement of $\UUU_k$, then $\UU_{k+1}=\UU_k$ and there is nothing to show. Hence, assume that $\UUU_k \leqp \UUU_{k+1}\leqp \Ap(\UUU_k)$. In this case, $\UU_{k+1} = \UU_k \cup \{ b_j\mid 1\leq j\leq m\}$ for some sequence of elements $b_j$ such that $\Ap(\UUU_k)(b_j) = \ltrue$. For each $j$, let $\UU'_j$ denote $\{\alpha_1,\dots,\alpha_n,\beta_1,\dots,\beta_j\}$. 
+If $\UUU_{k+1}$ is an unfoundedness refinement of $\UUU_k$, then $\UU_{k+1}=\UU_k$ and there is nothing to show. Hence, assume that $\UUU_k \leqp \UUU_{k+1}\leqp \Ap(\UUU_k)$. In this case, $\UU_{k+1} = \UU_k \cup \{ \beta_j\mid 1\leq j\leq m\}$ for some sequence of elements $\beta_j$ such that $\Ap(\UUU_k)(\beta_j) = \ltrue$. For each $j$, let $\UU'_j$ denote $\{\alpha_1,\dots,\alpha_n,\beta_1,\dots,\beta_j\}$. 
 We claim that the sequence 
 $\alpha_1,\dots,\alpha_n,\beta_1,\dots,\beta_m$ still satisfies the condition in the claim. 
-To see this, note that from the definition of $\Ap$, it follows that for each $j\in \{1,\dots, m\}$ there is a rule $r_j$ with $\nup(r)^{\UUU_k(\db)}=\ltrue$ and $\head(r_j)=b_j$. Furthermore, for each $j$ it holds that $\UU_{j-1}' \geqp \UUU_k$, hence also $\nup(r)^{\UU_{j-1}'}=\ltrue$. Since $b_j\not \in \UU_{j-1}$, we also see that $\body(r_j)^{\UU_{j-1}'} = \ltrue$. Hence, the claim indeed follows for $\beta+1$ as well. 
+To see this, note that from the definition of $\Ap$, it follows that for each $j\in \{1,\dots, m\}$ there is a rule $r_j$ with $\nup(r)^{\UUU_k(\db)}=\ltrue$ and $\head(r_j)=\beta_j$. Furthermore, for each $j$ it holds that $\UU_{j-1}' \geqp \UUU_k$, hence also $\nup(r)^{\UU_{j-1}'}=\ltrue$. Since $\beta_j\not \in \UU_{j-1}$, we also see that $\body(r_j)^{\UU_{j-1}'} = \ltrue$. Hence, the claim indeed holds for $k+1$ as well. 
 % 
 % 
 % 
@@ -485,9 +511,9 @@ To see this, note that from the definition of $\Ap$, it follows that for each $j
 \end{proof}
 
 \begin{example}\label{ex:wf:wf}
-  The converse of Proposition \ref{prop:wf-wf} does not hold, as ilustrated by Example~\ref{ex:well-founded}.
-  The intuitive repair $\UU_2: a \mapsto \ltrue, b\mapsto \lfalse, c\mapsto \ltrue$ (in the notation used in this section) is the AFT-well-founded repair for $\fulldb$.
-  However, there is another well-founded repair $\UU_1:a \mapsto \ltrue, b\mapsto \ltrue, c\mapsto \lfalse$.
+  The converse of Proposition \ref{prop:wf-wf} does not hold, as illustrated by Example~\ref{ex:well-founded}.
+  The intuitive repair $\UU_2 = \{ \add a, \add c\}$ is the AFT-well-founded repair for $\fulldb$.
+  However, there is another well-founded repair $\UU_1 = \{  \add a ,\add b\}$.
 \end{example}
 %% \begin{example}\label{ex:wf:wf}The converse of Proposition \ref{prop:wf-wf} does
 %% not hold. Consider for instance the following set $\aics$ of AICs 
@@ -533,21 +559,21 @@ We can safely assume that \UU is a repair of \db (otherwise, it is not a $\Ap$-s
 Below, we prove the following claims:
 \begin{compactdesc}
  \item \textbf{Claim 1}: \UU is a minimal prefixpoint of $O$ if and only if $\UU$ is a justified repair of \fulldb. 
- \item \textbf{Claim 2}: For any literal $l$, $\actof(l)\in \ext(\db)$ if and only if $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue$. 
- \item \textbf{Claim 3}: For any update action $\alpha$, $\alpha\in \closure(\ext(\VV))$ if and only if  $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\alpha) = \ltrue$. 
+ \item \textbf{Claim 2}: For any literal $l$, $\actof(l)\in \ext(\db)$ if and only if $l^{( \VV, \UU)(\db)} = \ltrue$. 
+ \item \textbf{Claim 3}: For any update action $\alpha$, $\alpha\in \closure(\ext(\VV))$ if and only if  $\supp_{(\VV,\UU)(\db),\aics}(\alpha) = \ltrue$. 
  \item \textbf{Claim 4}: For every set of update actions $\VV\subseteq \UU$: 
- \[\Ap(\overline\VV,\overline\UU)_1\subseteq \overline{O(\VV)}.\] 
+ \[\Ap(\VV,\UU)_1\subseteq O(\VV).\] 
 \end{compactdesc}
 Now, assume $\UU$ is a $\Ap$-stable repair. It is clear that $O$ is a monotone operator, hence it has a unique minimal prefixpoint, which is also its least fixpoint. Since $\UU$ is a repair, it is a fixpoint of $O$; we need to show that it is minimal. Assume $\UU'\subseteq \UU$ is a prefixpoint of $O$ as well. This means $O(\UU')\subseteq \UU'$ 
 and hence 
-\[\Ap(\overline{\UU'},\overline\UU)_1 \subseteq \overline{(O(\UU'))}\subseteq \overline{\UU'},\]
-i.e., $\overline{\UU'}$ is a prefixpoint of $\Ap(\cdot,\overline\UU)_1$. 
-Since $\overline\UU$ is an $\Ap$-stable repair, $\overline\UU$ is the least prefixpoint of $\Ap(\cdot,\overline\UU)_1$ and thus $\overline\UU = \overline{\UU'}$. Hence, also $\UU=\UU'$, which we needed to prove. We conclude that, indeed, $\UU$ is a justified repair. 
+\[\Ap({\UU'},\UU)_1 \subseteq {(O(\UU'))}\subseteq {\UU'},\]
+i.e., ${\UU'}$ is a prefixpoint of $\Ap(\cdot,\UU)_1$. 
+Since $\UU$ is an $\Ap$-stable repair, $\UU$ is the least prefixpoint of $\Ap(\cdot,\UU)_1$ and thus $\UU = {\UU'}$. Hence, also $\UU=\UU'$, which we needed to prove. We conclude that, indeed, $\UU$ is a justified repair. 
 
 
 % 
-% From Claim 4, it follows that this least fixpoint must thus also be the least fixpoint of $\Ap(\cdot,\overline\UU)_1$ (note that dropping the assumptions of consistency or of ``all actions should change \db'' never yields smaller fixpoints, since dropping one of these assumptions never adds subsets of this least fixpoint). 
-% Hence, $\UU$ is a minimal prefixpoint of $O$ if and only if $\overline \UU$ is a stable fixpoint of $\Ap$. By Claim 1, we then find that our proposition indeed holds. 
+% From Claim 4, it follows that this least fixpoint must thus also be the least fixpoint of $\Ap(\cdot,\UU)_1$ (note that dropping the assumptions of consistency or of ``all actions should change \db'' never yields smaller fixpoints, since dropping one of these assumptions never adds subsets of this least fixpoint). 
+% Hence, $\UU$ is a minimal prefixpoint of $O$ if and only if $ \UU$ is a stable fixpoint of $\Ap$. By Claim 1, we then find that our proposition indeed holds. 
 % % 
 % All that remains is to prove our claims. 
 
@@ -562,32 +588,36 @@ follows immediately from the definition of justified repair. Prefixpoints of the
 %% \bart{\UU IS a repair. That is established in the first sentence of the proof. So we proved what we claimed, no? (our claim is only claimed for sets that are repairs in the first place)}
 %% \luis{Yes. I was referring to the sentence ``Hence\ldots''. What I'm missing is precisely the combination of that sentence with the fact that \UU is a repair, which was established previously (I was confused the first time I read the proof).}
 
-\textbf{Claim 2} Pick some literal $l$ and assume that $l=a$ or $l=\lnot a$ for some atom $a\in \atoms$.
+\textbf{Claim 2} Pick some literal $l$.
 
-First assume that $\actof(l)\in\ext(\VV)=\VV\cup\neff_\UU(\db)$. We show that $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue$. 
+First assume that $\actof(l)\in\ext(\VV)=\VV\cup\neff_\UU(\db)$. We show that $l^{( \VV,  \UU)(\db)} = \ltrue$. 
  We consider two cases:
 \begin{itemize}
- \item If $\actof(l)\in \neff_\UU(\db)$, then $l^\db = \ltrue$ and $\UU$ does not change the value of $l$, hence $a\not\in\overline\UU$. Thus $(\overline \VV,\overline \UU)(a)=\lfalse$ and in this case $l^{(\overline \VV,\overline \UU)(\db)} = l^\db = \ltrue$. 
- \item If $\actof(l)\not\in \neff_\UU(\db)$, then it must hold that $\actof(l) \in \VV\subseteq \UU$. Since $\actof(l)\in \UU$ and every action in \UU changes \db, it must hold that $\lit^\db=\lfalse$. Now, since $\lit \in \VV$, $a\in \overline \VV$ and $(\overline \VV, \overline \UU) (a) = \ltrue$. Thus $\lit^{(\overline\VV,\overline\UU)(\db)} = (l^\db)^{-1} = \ltrue$ in this case. 
+ \item If $\actof(l)\in \neff_\UU(\db)$, then $l^\db = \ltrue$ and $\UU$ does not change the value of $l$. Thus, $l^{( \VV, \UU)(\db)} = l^\db = \ltrue$. 
+ \item If $\actof(l)\not\in \neff_\UU(\db)$, then it must hold that $\actof(l) \in \VV\subseteq \UU$. Since $\actof(l)\in \UU$ and every action in \UU changes \db, it must hold that $\lit^\db=\lfalse$. Now, since $\actof(\lit) \in \VV$, $( \VV,  \UU)$ changes the value of $l$ and thus $\lit^{(\VV,\UU)(\db)} = (l^\db)^{-1} = \ltrue$ in this case. 
 \end{itemize}
-For the other direction, assume that $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue$. We need to show that $\actof(l)\in\ext(\VV)=\VV\cup\neff_\UU(\db)$. Assume that $\actof(l)\not\in \neff_\UU(\db)$, we show that $\actof(l)\in \VV$. 
-Since $l^{(\overline \VV, \overline \UU)(\db)} = \ltrue$ and $\overline\UU\geqp (\overline\VV,\overline\UU)$, also $l^\UU=\ltrue$. Since $l\not\in \neff_\UU(\db)$, this means that $l^\db=\lfalse$.
+For the other direction, assume that $l^{( \VV,  \UU)(\db)} = \ltrue$. We need to show that $\actof(l)\in\ext(\VV)=\VV\cup\neff_\UU(\db)$. Assume that $\actof(l)\not\in \neff_\UU(\db)$, we show that $\actof(l)\in \VV$. 
+Since $l^{( \VV,  \UU)(\db)} = \ltrue$ and $\UU\geqp (\VV,\UU)$, also $l^\UU=\ltrue$. Since $l\not\in \neff_\UU(\db)$, this means that $l^\db=\lfalse$.
 Now,
-$l^{(\overline \VV, \overline \UU)(\db)} = \ltrue = (l^\db)^{-1}$. Hence it must hold that $(\overline \VV,\overline \UU)(a) = \ltrue$, i.e., that $a\in \overline \VV$. Since $\lit^\db = \lfalse$, this means that $  \actof{(\lit)}\in \VV$, which is exactly what we needed to prove. 
+$l^{( \VV,  \UU)(\db)} = \ltrue = (l^\db)^{-1}$. Hence it must hold that $( \VV, \UU)$ changes the value of \lit. Since $\lit^\db = \lfalse$, this means that $  \actof{(\lit)}\in \VV$, which is exactly what we needed to prove. 
 
 
 \textbf{Claim 3} 
 Let $\alpha$ be an update action. 
-It holds that  $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\alpha) = \ltrue$ if and only if there is some rule $r$ with $\head(r)=\alpha$ and $\nup(r)^{ (\overline\VV, \overline\UU)(\db)} = \ltrue$. This means that for each literal $l'\in \nup(r)$, $l'^{(\overline\VV, \overline\UU)(\db)} = \ltrue$. From Claim 2 it then follows that this is equivalent with the condition that each literal $l'\in\nup(r)$ is an element of   $\ext(\VV)$, i.e., with  the condition that $\alpha \in \closure(\ext(\VV))$. 
+It holds that  $\supp_{(\VV,\UU)(\db),\aics}(\alpha) = \ltrue$ if and only if there is some rule $r$ with $\head(r)=\alpha$ and $\nup(r)^{ (\VV, \UU)(\db)} = \ltrue$. This means that for each literal $l'\in \nup(r)$, $l'^{(\VV, \UU)(\db)} = \ltrue$. From Claim 2 it then follows that this is equivalent with the condition that each literal $l'\in\nup(r)$ is an element of   $\ext(\VV)$, i.e., with  the condition that $\alpha \in \closure(\ext(\VV))$. 
 
 
 \textbf{Claim 4}
-Take an atom $a$ and a set $\VV$ of update actions. It holds that $a\in \Ap(\overline\VV,\overline\UU)_1$ if and only if one of the following holds:
-\begin{itemize}
- \item $(\overline \VV,\overline \UU)(a) = \lfalse$ and $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue$
- \item $(\overline \VV,\overline \UU)(a) = \lunkn$, $ \supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue$, and $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a^D) = \lfalse$.
-\end{itemize}
-In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue$, hence by Claim 3, $\change a\in \closure(\ext(\VV))$. Now if $\VV\subseteq \UU$, then $a\in\Ap(\overline\VV,\overline\UU)_1$ entails $a\in \overline\UU$, hence also $\change a \in \UU$ and thus $\change a \in \closure(\ext(\VV)) \cap \UU = O(\UU)$, which we needed to prove. \qedhere
+Take $\alpha\in\acts$ and a set $\VV$ of update actions. It holds that $ \alpha \in \Ap(\VV,\UU)_1$ if and only if one of the following holds:
+\begin{enumerate}
+ \item  $( \VV, \UU)(\alpha) = \ltrue$ and $\supp_{(\VV,\UU)(\db),\aics}(\alpha^D)=\lfalse$
+ \item $( \VV, \UU)(\alpha) = \lfalse$ and $\supp_{(\VV,\UU)(\db),\aics}(\alpha)=\ltrue$
+ \item $( \VV, \UU)(\alpha) = \lunkn$, $ \supp_{(\VV,\UU)(\db),\aics}(\alpha)=\ltrue$, and $\supp_{(\VV,\UU)(\db),\aics}(\alpha^D) = \lfalse$.
+\end{enumerate}
+In the first case, $\alpha \in \VV$, hence $\alpha\in\ext(\VV)$ and $\alpha \in \closure(\ext(\VV))$. 
+If $\supp_{(\VV,\UU)(\db),\aics}(\alpha)=\ltrue$ (i.e., in cases ii and iii), then by Claim 3, $\alpha\in \closure(\ext(\VV))$. Thus, in all cases, $\alpha\in \closure(\ext(\VV))$. 
+Now, since $\UU$ is a repair, $(\UU,\UU)$ is a fixpoint of of $\Ap$. Since $(\VV,\UU)\leqp(\UU,\UU)$, $\alpha \in \Ap(\VV,\UU)_1$ entails $\alpha \in \Ap(\UU,\UU)_1$, i.e., $\alpha \in \UU$. 
+Thus, $\alpha \not \in \neff_\UU(\db)$ and we find that $\alpha \in \closure(\ext(\VV))\setminus  \neff_\UU(\db) = O(\VV)$,  which we needed to prove. \qedhere
 
 
 
@@ -601,7 +631,7 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
 % 
 % 
 % 
-% We first show that $O(\VV)\subseteq A(\overline\VV,\overline\UU)_1$.
+% We first show that $O(\VV)\subseteq A(\VV,\UU)_1$.
 % Take any action $a\in O(\VV)$
 % 
 % TODO: get to $a\in O(\VV)$ IFF $\suppin_\VV(a) = \ltrue$. 
@@ -643,13 +673,13 @@ In both cases, $\supp_{(\overline\VV,\overline\UU)(\db),\aics}(\change a)=\ltrue
  \end{align*}
  with $\db=\emptyset$. 
  In this case $\{\add a,\add b\}$ is a justified repair of \fulldb, but not a stable repair. 
- To see that it is not a stable repair, recall that we identify a partial action set with an element of $(2^{\atoms})^c$, e.g., $\{a\mapsto\lunkn,b\mapsto\lunkn\}$ is identified with $(\emptyset,\{a,b\})$. It now suffices to note that 
+ To see that it is not a stable repair, it suffices to note that 
  \[
- \Ap(\emptyset,\{a,b\}) = (\emptyset,\{a,b\})
+ \Ap(\emptyset,\{+a,+b\}) = (\emptyset,\{+a,+b\})
  \]
  and hence
  \[
- \lfp \Ap(\cdot,\{a,b\})_1 = \emptyset\neq \{a,b\}.\]
+ \lfp \Ap(\cdot,\{+a,+b\})_1 = \emptyset\neq \{+a,+b\}.\]
   
 To see that it is a justified repair, note that $\{\add a,\add b\}$ is the least set closed under \aics. 
 \end{example}
@@ -670,13 +700,13 @@ If \aics is unipolar, then each justified repair of \fulldb is \Ap-stable.
  To prove this theorem, we show the following strengthening of \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}. 
  \begin{compactdesc}
   \item \textbf{Claim 4'}: For every set of update actions $\VV\subseteq \UU$: 
- \[\Ap(\overline\VV,\overline\UU)_1= \overline{O(\VV)}.\] 
+ \[\Ap(\VV,\UU)_1= {O(\VV)}.\] 
 \end{compactdesc}
- It then follows easily that $\UU$ is a minimal fixpoint of $O$ iff $\bar\UU$ is a minimal fixpoint of $\Ap(\overline\VV,\overline\UU)_1$ and the result follows from \textbf{Claim 1} in the proof of Proposition \ref{prop:stable_is_justified} and the definition of \Ap-stable fixpoint. 
+ It then follows easily that $\UU$ is a minimal fixpoint of $O$ iff $\UU$ is a minimal fixpoint of $\Ap(\cdot,\UU)_1$ and the result follows from \textbf{Claim 1} in the proof of Proposition \ref{prop:stable_is_justified} and the definition of \Ap-stable fixpoint. 
  
 \textbf{Claim 4'}
 One direction of this claim has been proven as \textbf{Claim 4} in the proof of Proposition \ref{prop:stable_is_justified}; we show that the other inclusion also holds.
- Take an atom $a$ and a set $\VV\subseteq\UU$ of update actions such that $a\in \overline{O(\VV)}$; we show that $a\in\Ap(\overline\VV,\overline\UU)_1$. Since $a\in\overline{O(\VV)}$, it holds that $\change a\in \closure(\ext(\VV))$ and thus (by \textbf{Claim 3}) that $\suppin_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\ltrue$. This means that there is at least one rule $r\in\aics$ with $\head(r)=\change a$. Since \aics is unipolar, there can be no rules $r'\in\aics$ with $\head(r') = (\change a)^D$ hence, it holds that $\suppout_{(\overline\VV,\overline\UU)(\db),\aics}(a)=\lfalse$. From the definition of $\Ap$, we then find that $\Ap(\overline\VV,\overline\UU)(a)=\ltrue$ and thus that  $a\in \Ap(\overline\VV,\overline\UU)_1$, which we needed to prove. 
+ Take $\alpha \in \acts$ and a set $\VV\subseteq\UU$ of update actions such that $\alpha \in {O(\VV)}$; we show that $\alpha\in\Ap(\VV,\UU)_1$. Since $\alpha\in{O(\VV)}$, it holds that $\alpha\in \closure(\ext(\VV))$ and thus (by \textbf{Claim 3}) that $\supp_{(\VV,\UU)(\db),\aics}(\alpha)=\ltrue$. This means that there is at least one rule $r\in\aics$ with $\head(r)=\alpha$. Since \aics is unipolar, there can be no rules $r'\in\aics$ with $\head(r') = \alpha^D$ hence, it holds that $\supp_{(\VV,\UU)(\db),\aics}(a^D)=\lfalse$. From the definition of $\Ap$, we then find that $\Ap(\VV,\UU)(\alpha)=\ltrue$ and thus that  $\alpha\in \Ap(\VV,\UU)_1$, which we needed to prove. 
 \qedhere
 \end{proof}
 
