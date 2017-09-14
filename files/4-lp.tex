@@ -130,13 +130,13 @@ However, adding a trivial rule
 
 \begin{proposition}\label{prop:lplink}
   Suppose that $\db=\emptyset$ and that the only update actions in \aics are of the form $\add a$.
+  The mapping $\actof$ induces an isomorphism between the lattices $2^\atoms$ and $2^\acts$ and between $(2^\atoms)^c$ and $(2^\acts)^c$. 
   Let $\lpop(\aics)$ denote the following logic program:  
  \begin{align*}
   \lpop(\aics)=& \{a \lrule \nup(r)\mid r\in \aics, \head(r)= \add a\}\\
   &\cup \{a \lrule a\mid a \in \atoms\}
  \end{align*}
- then $\Ap = \Psi_{\lpop(\aics)}$. 
-
+ then for each partial interpretation \pstruct, , $\Ap(\actof(\pstruct)) = \actof(\Psi_{\lpop(\aics)}(\pstruct))$. 
 Hence, all AFT semantics for \fulldb coincide in this case with the equally-named semantics for the logic program $\lpop(\aics)$. 
 \end{proposition}
 %% \begin{proof}
@@ -150,20 +150,42 @@ Hence, all AFT semantics for \fulldb coincide in this case with the equally-name
   By definition,
   \begin{align*}
     \Psi_{\lpop(\aics)}(\pstruct)_1 &= \{a\in\atoms \mid \body(r)^\pstruct=\ltrue \mbox{ for some $r\in\lpop(\aics)$ with $\head(r)=a$}\} \\
-    &= \{a\in\atoms \mid \nup(r)^\pstruct=\ltrue \mbox{ for some $r\in\aics$ with $\head(r)=a$}\}\cup\{a\in\atoms\mid a^\pstruct=\ltrue\} \\
-    &= \{\head(r) \mid r\in\aics\land\nup(r)^\pstruct=\ltrue\}\cup\{a\in\atoms\mid a^\pstruct=\ltrue\}
+    &= \{a\in\atoms \mid \nup(r)^\pstruct=\ltrue \mbox{ for some $r\in\aics$ with $\head(r)=+a$}\}\cup\{a\in\atoms\mid a^\pstruct=\ltrue\} \\
+    &= \{\litof(\head(r)) \mid r\in\aics\land\nup(r)^\pstruct=\ltrue\}\cup\{a\in\atoms\mid a^\pstruct=\ltrue\}\\
+    &= \{\litof(\alpha) \mid \supp_{\pstruct,\eta}(\alpha) = \ltrue \}\cup\{a\in\atoms\mid a^\pstruct=\ltrue\}
   \end{align*}
-  and
+  Now, since, for each $\alpha \in \acts$, it holds that $\supp_{\pstruct,\eta}(\alpha^D) = \lfalse$ (since there are no rules with $\alpha^D$ in the head). 
+  From the definition of \Ap, it then follows that
+  \[ 
+\Ap(\actof(\pstruct))_1 = \{\alpha \mid     \supp_{\pstruct,\eta}(\alpha) = \ltrue \text{ or } \alpha^{\actof(\pstruct)}=\ltrue\},
+  \]
+  i.e., that 
+  \[\Ap(\actof(\pstruct))_1 =  \actof(\Psi_{\lpop(\aics)}(\pstruct)_1 ).\]
+  
+  Similarly, we also find that 
+    \[\Ap(\actof(\pstruct))_2 =  \actof(\Psi_{\lpop(\aics)}(\pstruct)_2 )\]
+    and the result follows. \qedhere
+% 
+\ignore{
+  
+  $\alpha\in \Ap(\actof(\pstruct))$ if and only if $\alpha \in \actof(\pstruct)$ or 
+  Using, this, we see that: 
+   \begin{align*}
+    \Psi_{\lpop(\aics)}(\pstruct)_1 &= \{\litof(\alpha) \mid 
+      \end{align*}
+
   \begin{align*}
     \Psi_{\lpop(\aics)}(\pstruct)_2 &= \{a\in\atoms \mid \body(r)^\pstruct\neq\lfalse \mbox{ for some $r\in\lpop(\aics)$ with $\head(r)=a$}\} \\
-    &= \{a\in\atoms \mid \nup(r)^\pstruct\neq\lfalse \mbox{ for some $r\in\aics$ with $\head(r)=a$}\}\cup\{a\in\atoms\mid a^\pstruct\neq\lfalse\} \\
-    &= \{\head(r) \mid r\in\aics\land\nup(r)^\pstruct\neq\lfalse\}\cup\{a\in\atoms\mid a^\pstruct\neq\lfalse\}
+    &= \{a\in\atoms \mid \nup(r)^\pstruct\neq\lfalse \mbox{ for some $r\in\aics$ with $\head(r)=\add a$}\}\cup\{a\in\atoms\mid a^\pstruct\neq\lfalse\} \\
+    &= \{\litof(\head(r)) \mid r\in\aics\land\nup(r)^\pstruct\neq\lfalse\}\cup\{a\in\atoms\mid a^\pstruct\neq\lfalse\}
   \end{align*}
 
+  Note that (since $\db=\emptyset$), for each partial interpretation $\pstruct$, $\actof(\pstruct) (\db) = \pstruct$. 
   We proceed by case analysis on $a^\pstruct$.
   \begin{itemize}
-  \item $a^\pstruct=\ltrue$: since $\aics$ cannot contain $\remove a$, we know that $\Ap(\pstruct)(a)=\ltrue=\Psi_{\lpop(\aics)}(\pstruct)(a)$.
-  \item $a^\pstruct=\lfalse$: then $\Ap(\pstruct)(a)=\suppin_{\pstruct}(a)=\max_{\leq_t}\{\nup(r)^{\pstruct}\mid r\in \aics \land \head(r) =\add a\}$.
+  \item Assume $a^\pstruct=\ltrue$. In this case also $\actof(a)^{\actof(\pstruct)}=\ltrue$. Now, since $\aics$ cannot contain $\remove a$, we know that $\Ap(\actof(\pstruct))(\actof(a))=\ltrue=\Psi_{\lpop(\aics)}(\pstruct)(a)$.
+  \item Assume $a^\pstruct=\lfalse$. In this case also $\actof(a)^{\actof(\pstruct)}=\lfalse$. Then 
+  \[ \Ap(\actof(\pstruct))(\actof(a))=\supp_{\pstruct,\eta}(+a)=\max_{\leq_t}\{\nup(r)^{\pstruct}\mid r\in \aics \land \head(r) =\add a\}.\]
     If this last expression evaluates to $\ltrue$, then $a\in\Psi_{\lpop(\aics)}(\pstruct)_1$, and thus $\Psi_{\lpop(\aics)}(\pstruct)(a)=\ltrue$.
     If it evaluates to $\lunkn$, then $a\notin\Psi_{\lpop(\aics)}(\pstruct)_1$ but $a\in\Psi_{\lpop(\aics)}(\pstruct)_2$, hence $\Psi_{\lpop(\aics)}(\pstruct)(a)=\lunkn$.
     Finally, if it evaluates to $\lfalse$, then $a\notin\Psi_{\lpop(\aics)}(\pstruct)_2$, and hence $\Psi_{\lpop(\aics)}(\pstruct)(a)=\lfalse$.
@@ -173,7 +195,7 @@ Hence, all AFT semantics for \fulldb coincide in this case with the equally-name
     Otherwise, necessarily $\Ap(\pstruct)(a)=\lunkn$, and again the previous reasoning establishes that $\Psi_{\lpop(\aics)}(\pstruct)(a)=\lunkn$.
     We again conclude that, in all cases, $\Ap(\pstruct)(a)=\Psi_{\lpop(\aics)}(\pstruct)(a)$.
   \end{itemize}
-
+}
 \end{proof}
 
 %    \Psi_\PP(\pstruct)_1 &=\{a\in \voc\mid body(r)^\pstruct=\ltrue \text{ for some rule $r\in \PP$ with }head(r)=a\},\\
@@ -210,7 +232,7 @@ since $\aicop$ adds a literal $\lnot a$ to the body of each rule $r$ with $\head
                    \eta_2 &=\emptyset.
 \end{align*}
 These two are not equivalent under all AFT semantics. 
-For the first one, the KK-repair is $\{a\mapsto\lfalse,b\mapsto\lfalse\}$, while for the latter, the KK-repair is $\{a\mapsto\lunkn,b\mapsto\lunkn\}$. However, they have the same translation to logic programs (since there are no rules with positive actions in the head).          
+For the first one, the KK-repair is $\{\add a\mapsto\lfalse,\add b\mapsto\lfalse\}$, while for the latter, the KK-repair is $\{\add a\mapsto\lunkn,\add b\mapsto\lunkn\}$. However, they have the same translation to logic programs (since there are no rules with positive actions in the head).          
 %                    
 % 
 \end{example}
