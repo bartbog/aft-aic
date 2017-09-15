@@ -1,4 +1,4 @@
-In this section we summarize previous work on active integrity constraints (AICs), including results developed by \citet{ppdp/FlescaGZ04,iclp/CaropreseGSZ06,tplp/CaropreseT11} and \citet{tase/Cruz-FilipeEGN13}.
+In this section we summarize previous work on active integrity constraints (AICs), including results developed by \citet{ppdp/FlescaGZ04,iclp/CaropreseGSZ06,tplp/CaropreseT11} and \citet{tase/Cruz-FilipeGEN13}.
 
 We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
 We say that $\lnot a$ is the \emph{dual} literal of $a$ and vice versa, and denote the dual of a literal $l$ by $l^D$. 
@@ -40,7 +40,7 @@ Furthermore, the only actions that are able to repair the inconsistency detected
 
 An AIC is called \emph{normal} if $k=1$. The \emph{normalization} of an AIC of the form \eqref{eq:aic} is the set of AICs 
 \[\{l_1\land \dots\land l_n\aicrule \alpha_i\mid 1\leq i\leq k\}.\]
-It follows from the informal explanation above that we expect normalization to preserve semantics. Indeed, this is the case for most semantics of AICs -- the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which also poses several other problems~\cite{tase/Cruz-FilipeEGN13}.
+It follows from the informal explanation above that we expect normalization to preserve semantics. Indeed, this is the case for most semantics of AICs -- the notorious exception being the semantics of justified repairs \cite{tplp/CaropreseT11}, which also poses several other problems~\cite{tase/Cruz-FilipeGEN13}.
 In the current paper, we assume that, unless explicitly mentioned otherwise, \emph{all AICs are normal}. Extensions of the semantics we define for non-normal AICs can be obtained through normalization, if needed.
 
 \begin{definition}
@@ -90,7 +90,7 @@ A $\subseteq$-minimal weak repair is called a \emph{repair}.
   It is immediate to check that everything discussed above with respect to the original set of AICs also applies to its normalized counterpart, i.e., intuitively, these constraints represent the same knowledge and the sets of repairs and weak repairs remain unchanged. 
 \end{example}
 
- We now review several other semantics for AICs that have been defined with the intention to allow only changes explicitly allowed by one of the AICs: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, and well-founded (weak) repairs \cite{tase/Cruz-FilipeEGN13}.
+ We now review several other semantics for AICs that have been defined with the intention to allow only changes explicitly allowed by one of the AICs: founded (weak) repairs \cite{iclp/CaropreseGSZ06}, justified (weak) repairs \cite{tplp/CaropreseT11}, and well-founded (weak) repairs \cite{tase/Cruz-FilipeGEN13}.
 
 \begin{definition}[\citenb{iclp/CaropreseGSZ06}]
  A set of update actions \UU is \emph{founded} with respect to $\fulldb$ if, for each $\alpha \in \UU$, there is a rule  $r\in \aics$ with $\alpha\in\head(r)$ and such that $\UU'(\db)\models \body(r)$, where $\UU'=\UU\setminus\{\alpha\}$. A \emph{founded (weak) repair} is a (weak) repair that is founded.
@@ -122,7 +122,7 @@ The intuition behind this definition is that for each element in a ``good'' repa
 \end{example}
 
 \citet{tplp/CaropreseT11} discovered that there can be founded repairs exhibiting \emph{circularity of support}.
-The following example is due to \citet{tase/Cruz-FilipeEGN13}.
+The following example is due to \citet{tase/Cruz-FilipeGEN13}.
 
 \begin{example}
   \label{ex:founded}
@@ -210,14 +210,14 @@ Interestingly, this can already be seen by an example originally given by \citet
   Furthermore, this repair is intuitively compatible with $\eta$, since rule \ref{rj9} requires us to remove $a$ from $\db$, which triggers \ref{rj11} and forces us also to remove $b$.
 
   The repair $\UU$ is founded, but for a different reason: if we remove ${-a}$ from $\UU$, then \ref{rj10} is applicable, and its head includes $-a$, while removing ${-b}$ from $\UU$ makes \ref{rj11} applicable, and its head includes $-b$.
-  \citet{tplp/CaropreseT11} considered this as another instance of circularity of support (see~\cite{tase/Cruz-FilipeEGN13} for a discussion).
+  \citet{tplp/CaropreseT11} considered this as another instance of circularity of support (see~\cite{tase/Cruz-FilipeGEN13} for a discussion).
   The repair $\UU$ is not justified: $\neff(\UU)=\emptyset$, and taking $\UU'=\emptyset$ we have that $\UU'\cup\neff(\UU)=\emptyset$ is again trivially closed under $\eta$ (every rule has non-updateable literals in its body).
 \end{example}
 
-A different attempt to resolve the problems of circularity posed by founded repairs, while avoiding the over-restrictiveness of justified repairs, was the introduction of well-founded repairs by~\citet{tase/Cruz-FilipeEGN13} -- a third kind of repairs, motivated by an operational approach directly inspired by the syntax of AICs.
+A different attempt to resolve the problems of circularity posed by founded repairs, while avoiding the over-restrictiveness of justified repairs, was the introduction of well-founded repairs by~\citet{tase/Cruz-FilipeGEN13} -- a third kind of repairs, motivated by an operational approach directly inspired by the syntax of AICs.
 
 
-\begin{definition}[\citenb{tase/Cruz-FilipeEGN13}]
+\begin{definition}[\citenb{tase/Cruz-FilipeGEN13}]
  A (weak) repair \UU for \fulldb is \emph{well-founded} if there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
 \end{definition}
 
@@ -244,7 +244,7 @@ However, well-founded repairs can also behave unexpectedly.
 In this example, it is interesting to note that $\UU_2$ is a founded repair. Indeed, \ref{rw14} supports ${+a}$ and this support is independent of $b$ and $c$; furthermore  \ref{rw12} supports ${+c}$ when $\add a$ is present. However, $\UU_1$ is not founded, since the action ${+b}$ is not supported, as \ref{rw13} is not applicable once $a$ has been added to $\db$.
 
 The examples above show that there exist both founded weak repairs that are not well-founded, and well-founded weak repairs that are not founded.
-These relations were established by \citet{tase/Cruz-FilipeEGN13}, together with the connection to justified weak repairs.
+These relations were established by \citet{tase/Cruz-FilipeGEN13}, together with the connection to justified weak repairs.
 \begin{lemma}
   \label{lem:justified-wf}
   Let $\db$ be a database, $\eta$ be a set of AICs over $\db$ and $\UU$ be a set of update actions over $\db$.
