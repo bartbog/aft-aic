@@ -126,8 +126,8 @@ All complexity results are in terms of the size of the database, \fulldb.
   $\Ap(\UUU)$ is computable in polynomial time. % on the size of 
 \end{proposition}
 \begin{proof}
-    The definition of \Ap only requires evaluating $\UUU(a)$, $\suppin_{\UUU}(a)$ and $\suppout_{\UUU}(a)$ for each $a\in\atoms$.
-    In turn, the two last computations can be done in polynomial time: they require evaluating each literal in the body of each rule from $\eta$ with head $\add a$ or $\remove a$ and computing its truth value under the database updated by $\UUU$.
+    The definition of \Ap only requires evaluating $\UUU(\alpha)$, $\supp_{\UUU(\db),\aics}(\alpha)$ and $\supp_{\UUU(\db),\aics}(\alpha^D)$ for each $ \alpha\in\acts$.
+    In turn, the two last computations can be done in polynomial time: they require evaluating each literal in the body of each rule from $\eta$ with head $\alpha$ or $\alpha^D$ and computing its truth value under the database updated by $\UUU$.
 \end{proof}
 
 \begin{proposition}
@@ -200,9 +200,9 @@ $y'=\lfp (S_A^x)$.
  \end{proposition}
  \begin{proof}[Proof of Proposition \ref{prop:compl:wf}]
  To compute the \Ap-well-founded fixpoint, we can construct a well-founded induction with only strict refinements. 
- Since such a well-founded is $\leqp$-increasing, it can consist of at most of $|\atoms|$ steps. 
+ Since such a well-founded is $\leqp$-increasing, it can consist of at most of $|\acts|=|\atoms|$ steps. 
  Computing if there exists a strict application refinement of a given partial repair set \UUU
-can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} shows that the most precise unfoundedness refinement can also be computed as the least fixpoint of a derived operator on $2^\atoms$. Such a fixpoint can again be computed in polynomial time. Hence, it follows that we can compute a terminal well-founded induction, and thus the well-founded fixpoint, in polynomial time. 
+can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} shows that the most precise unfoundedness refinement can also be computed as the least fixpoint of a derived operator on $2^\acts$. Such a fixpoint can again be computed in polynomial time. Hence, it follows that we can compute a terminal well-founded induction, and thus the well-founded fixpoint, in polynomial time. 
 %  
 %   \luis{not sure about this one: Bart writes ``a well-founded induction runs in polytime in the height of the lattice if computing $A(x,y)$ can be done in polytime''.  So it should follow from Proposition~\ref{prop:At-poly}, but I'm missing the argument (I only get NP).}
 \end{proof}
@@ -211,10 +211,10 @@ can be done by computing $\Ap(\UUU)$. Now, Proposition \ref{prop:biggestufs} sho
   The task of checking if a database $\fulldb$ has a stable repair is NP-complete.
 \end{proposition}
 \begin{proof}
-  \emph{(Inclusion)} Given a candidate repair, checking that it is stable can be done in polynomial time, as it amounts to verifying that it is a repair (two-valued) and that it is a least fixpoint of the operators $\Ap(\cdot,y)_1$ and $\Ap(x,\cdot)_2$.
+  \emph{(Inclusion)} Given a candidate repair $\UU$, checking that it is stable can be done in polynomial time, as it amounts to verifying that it is a repair (two-valued) and that it is a least fixpoint of the operators $\Ap(\cdot, \UU)_1$ and $\Ap(\UU,\cdot)_2$.
   The latter can be done in polynomial time, as in the proof of Proposition~\ref{prop:KK-poly}.
 
-  \emph{(Hardness)} For completeness, we again use the reduction from simple logic programs to AICs from~\cite{tplp/CaropreseT11} given in Definition~\ref{defn:aic-transf}.
+  \emph{(Hardness)} For hardness, we again use the reduction from simple logic programs to AICs from~\cite{tplp/CaropreseT11} given in Definition~\ref{defn:aic-transf}.
   %A simple logic program is one where rules are not trivial tautologies, i.e., they do not contain contradictory atoms in their bodies and they do not include their head in their body.
   %The operator $\aicop$ from~\cite{tplp/CaropreseT11} is defined as follows: if $r$ is the logic programming rule $a\leftarrow \ell_1,\ldots,\ell_n$, then $\aicop(r)$ is ${+a}\leftarrow \ell_1\wedge\ldots\wedge\ell_n\wedge\neg a$.
   %Given a logic program $P$, we define $\aicop(P)=\bigcup\{\aicop(r)\mid r\in P\}$.
