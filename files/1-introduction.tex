@@ -23,6 +23,7 @@ These repairs can be computed \longpaper{directly }by means of tree algorithms\l
 While I was writing this example (thinking about it), I stumbled onto some restrictions of AICs. For instance:
 ``No one can have a salary greater thann 100.000. If someone does, cap it to 100.000'' 
 You cannot write this in AICs. } 
+\luis{There are some simple extensions where you can :) unfortunately that paper has been extremely hard to get published :/ we can discuss this.}
 
 %% Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
 %% Sometimes, databases can reach states in which one of the integrity constraints is violated, for instance due to execution of some invalid update, due to merging two databases, ... 
@@ -61,7 +62,7 @@ This operator immediately induces several semantics:
 The first two semantics are pre-existing semantics for AICs that we recover in an operator-based fashion.
 
 Next, we define a three-valued variant of $\Op$. In the terminology of \emph{approximation fixpoint theory (AFT)} \cite{\refto{AFT}} our three-valued operator is an \emph{approximator} of the original semantic operator.
-Given such an approximator $\Ap$, AFT induces a couple more semantics: 
+Given such an approximator $\Ap$, AFT induces a few more semantics: 
 \begin{enumerate}    \setcounter{enumi}{\value{hereiam}}
 \item the \emph{Kripke-Kleene repair} is the \emph{Kripke-Kleene fixpoint} of $\Ap$; 
 \item the \emph{AFT-well-founded repair} is the \emph{well-founded fixpoint} of $\Ap$; 

@@ -87,14 +87,9 @@ Intuitively, the operator $\Op$ we wish to define should satisfy the following p
 It turns out that these three properties uniquely define an operator on $2^{\acts}$. 
 In order to give a constructive characterization of this operator, we introduce the following concept. 
 
-% Formally, our operator should sati
-% 
 % However, this definition quickly leads to inconsistent sets of update actions upon iteration, which we want to avoid.
 % We therefore propose a slight variant of this intuition, using the following concept that consists of taking the union and restoring consistency afterwards.
 
-\todo{RVWR 4:
-Nevertheless, I do have one question here. The authors apply standard AFT on AICs. To avoid inconsistent set of update actions upon iteration, they define an operation in Def.5.1. Does this operation have any effect on finally produced repairs? In related work, how do other approaches solve such inconsistency?  It is better such a discussion is added to the paper.}
-\bart{Say something about this? That this is due to the fact that there are rules producing +a as well as rules producing -a}
 \begin{definition}
   Let $\UU_1$ and $\UU_2$ be sets of update actions over a set of atoms $\atoms$.
   The set $\UU_1\uplus\UU_2$ is defined as
@@ -102,30 +97,12 @@ Nevertheless, I do have one question here. The authors apply standard AFT on AIC
   %\[\UU_1\uplus\UU_2 = (\UU_1\cup\{\alpha\in\UU_2\mid\alpha^D\not\in\UU_1\})\setminus\{\alpha\in\UU_1\mid\alpha^D\in\UU_2\}\,.\]
 \end{definition}
 This operation models sequential composition of repairs in the following sense: given a database $\db$, if every action in $\UU_1$ changes $\db$ and every action in $\UU_2$ changes $\UU_1(\db)$, then $(\UU_1\uplus\UU_2)(\db)=\UU_2(\UU_1(\db))$.
-%% In this case, we also have the relation
-%% \[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
-% \bart{Why does it say ``in this case, we also have the relation? Isn't it always equal (that's what was here previously)? 
-% \begin{align*} 
-% X \uplus Y  &:= X \cup (Y\setminus X^D) \setminus (X \cap Y^D) \\ 
-%    & = (X\setminus (X \cap Y^D) ) \cup  ((Y\setminus X^D)  \setminus (X \cap Y^D)) \\ 
-%    &= (X\setminus (Y^D) ) \cup  ((Y\setminus X^D)  \setminus (X \cap Y^D) ) \\ 
-%    &=  (X\setminus (Y^D) ) \cup (Y\setminus X^D)
-% \end{align*}
-% where the last equality holds since $Y$ and $Y^D$ are  disjoint.
-% 
-% Personally, I find the characterization 
-% \[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\,.\]
-% more understandably: take the union and restore consistency. 
-% Also: this definitions is nicely symmetrical.
-% }
-% 
-% \luis{Agh. I think I overcorrected.  The relation
-% \[\left(\UU_1\uplus \UU_2\right)(\db) = \left(\UU_1\cup \UU_2\right) \setminus \{\alpha \mid \alpha,\alpha^D\in \UU_1\cup\UU_2\}\]
-% always holds, but the previous property doesn't: if $\db=\emptyset$, $\UU_1=\{\remove a\}$ and $\UU_2=\{\add a\}$, then $\UU_2(\UU_1(\db))=\UU_2(\emptyset)=\{a\}\neq(\UU_1\uplus\UU_2)(\db)=\emptyset$.
-% 
-% I now changed the whole text.  Please delete these todos after you checked that you agree :-)
-% }
-Furthermore, $\UU_1\uplus\UU_2$ is consistent whenever $\UU_1$ and $\UU_2$ are.
+
+Observe that, while a set of AICs may include both a rule with head $+a$ and another with head $-a$, these rules are not simultaneously applicable, as the conjunction of their bodies is always unsatisfiable.
+However, it may be the case that applying one of them makes the other applicable (undoing the effect of the first one).
+In this case, the operation defined above guarantees that the database always reflects the \emph{last} actions that were executed.
+
+We note also that $\UU_1\uplus\UU_2$ is consistent whenever $\UU_1$ and $\UU_2$ are.
 %
 \begin{definition}
   Let $\db$ be a database and $\eta$ be a set of AICs over $\db$.
@@ -164,6 +141,7 @@ As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^
   Then $\Op(\emptyset)=\{\remove a, \remove b\}$. Indeed, the bodies of all rules are satisfied; hence all heads are elements of $\Op(\emptyset)$.
 \end{example}
 
+\luis{this paragraph seems completely out of place. Delete?}
 The syntactic restrictions on AICs guarantee that the set $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$ is always consistent. 
 Indeed, if both $\add a$ and $\remove a$ are in this set, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
 From this, it also follows that $\Op^\db(\UU)$ is always consistent. 
@@ -187,7 +165,7 @@ T(0)={+a}; T(T(0))={}; T(T(T(0)))={+a} ...
 Observe that the {+b} is a repair.
 Could you explain better this point?}
 \bart{The reviewer seems to be confused between the difference of  ``being a fixpoint '' and ``being able to reach a fixpoint'' (by iterating starting from $\emptyset$). The ``being reachable'' is not relevant at this point. Still, we could add his theory as an example.}
-
+\luis{I'd rather address this in the reply, as it is such a strange comment. Anyway, I added a simple example about fixpoints not having to exist (which is a reasonable variant of what he says).}
 
 \begin{proposition}
   \label{prop:weak-repair}
@@ -198,6 +176,13 @@ Could you explain better this point?}
   If $\UU$ is a weak repair for $\fulldb$, then certainly, $\UU\in 2^{\acts}$. Also, $\UU(\db)\not\models\body(r)$ for all $r\in\eta$, whence $\Op(\UU)=\UU$.
   If $\UU$ is not a weak repair for $\fulldb$, then $\UU(\db)\models\body(r)$ for some $r\in\eta$, and $\Op(\UU)$ differs from $\UU$ by (at least) $\head(r)$.
 \end{proof}
+
+\begin{example}
+  In general, $\Op$ does not need to have fixpoints (since there may be no database satisfying $\eta$).
+  A simple (unrealistic) example is if $\eta$ consists of the two rules
+  \[a\aicrule-a \qquad \mbox{ and } \qquad \neg a\aicrule +a\]
+  where $\Op(\db)\neq\db$ for any database $\db$.
+\end{example}
 
 \begin{proposition}
   \label{prop:repair}

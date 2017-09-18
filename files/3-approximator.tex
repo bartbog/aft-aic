@@ -241,6 +241,7 @@ When $\db$ is clear from the context, we write \Ap for \Apfull.
  
 \end{definition}
 \todo{RVWR1: Def 6.4:  It can be appropriate to add a comment after this definition as why the operator does not produce an inconsistent repair, i.e., it is defined on P.}
+\luis{I don't get this comment. Isn't it simply by construction? ``This function is defined by cases, each of which returns either $\ltrue$, $\lfalse$ or $\lunkn$. Show that its codomain is $\{\ltrue,\lfalse,\lunkn\}$.'' Or am I missing something?}
 
 Definition \ref{def:apfull} is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
 In the case where $\UUU(\alpha)=\lfalse$, $\alpha$ is not an element of the (partial) update set at hand. The only way to add $\alpha$ to the update is if some rule supports $\alpha$, which is captured by $ \supp_{\UUU(\db),\eta}(\alpha)$. 
@@ -249,7 +250,7 @@ In the last case, where $\UUU(\alpha)=\lunkn$, we have no information on whether
 In all other cases, we derive nothing about $\alpha$ being in the update or not. 
 
 Recall that \citet{DeneckerMT04} showed that it suffices to define approximator on the consistent part of the bilattice. 
-Using the fact that, $P=(2^\acts)^c$, \Ap is a candidate approximator of \Op. The next proposition shows that this is indeed the case. 
+Using the fact that $P=(2^\acts)^c$, \Ap is a candidate approximator of \Op. The next proposition shows that this is indeed the case. 
 
 
 % We intend \Ap to be an approximator of \Op. One of the requirements of an approximator is that it agrees with \Op whenever \UUU is two-valued. This explains the exact values (\ltrue and \lfalse) in the the first two tables. 

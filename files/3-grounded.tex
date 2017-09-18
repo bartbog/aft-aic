@@ -5,7 +5,7 @@ In this section, we introduce a new semantics, grounded repairs, aimed at direct
 
 Grounded repairs are motivated by Example \ref{ex:founded}, where we noticed that the definition of founded repairs does not manage to capture groups of self-supporting arguments. 
 Indeed, there the repair $\UU_1$ is founded. It consists of two actions, $\remove a$ and $\remove b$ such that whenever one of them is removed from $\UU_1$, there is an AIC whose body is violated and whose head is the action in question. 
-However, if we remove \emph{both} of them simultaneously, we notice that no rule applies. As such, we can conclude that these actions are ``self-supporting'': the only reason to have one of the two actions in the repair of our choice is because the other action is also in there. 
+However, if we remove \emph{both} of them simultaneously, we notice that no rule any longer applies. As such, we can conclude that these actions are ``self-supporting'': the only reason to have one of the two actions in the repair of our choice is because the other action is also in there. 
 Our definition of grounded (weak) repair is aimed directly at avoiding this kind of situations. 
 
 % \luis{I think the definitions look cleaner if we don't use $A$ -- I left the old ones commented out.}
@@ -46,6 +46,7 @@ Thus, the notion of groundedness intrinsically embodies the principle of minimal
   and by construction $\UU_i\subseteq\UU$.
   But $\UU$ is finite, therefore this sequence converges towards $\UU$, and thus $\UU$ is a well-founded repair.
   \bart{This is the first mention of finiteness. Should we do it sooner? Is it essential here?  Are well-founded repairs defined in the infinite setting, using transfinite induction? They could well be... But it might be good to restrict to finite databases from the start. On the other hand. All realistic examples will contain infinite rules (by grounding from a conceptually infinite domain, e.g., integers, so it might be good to say something more about that.}
+  \luis{In a database context everything should be finite. If you allow for an infinite number of rules, even checking whether the database satisfies a set of AICs can become undecidable.}
 \end{proof}
 
 However, the notion of grounded repair is strictly stronger than both of these: Example~\ref{ex:founded}, presented earlier, also shows that some forms of circular justifications are avoided by grounded repairs.
@@ -76,8 +77,8 @@ Likewise, not all well-founded repairs are grounded. %, but not conversely.
 
 We thus have that grounded repairs are always founded and well-founded; the next example shows that they do not correspond to the intersection of those classes.
 
-\bart{RVWR 1 had a comment wrt the next example: 
-``P9, lin16: "the first three constraints require +a and +b to be included …"  But the third AIG (r17) has -b in the head. What role does r17 play? In general, what do the AIGs in this example intend to express?  Given r16, what does r19 achieve (with the same head action, the body of r19 is a super set of that of r16)?''. I tried to explain this a bit more; To be checked if it is adequate now.}
+%% \bart{RVWR 1 had a comment wrt the next example: 
+%% ``P9, lin16: "the first three constraints require +a and +b to be included …"  But the third AIG (r17) has -b in the head. What role does r17 play? In general, what do the AIGs in this example intend to express?  Given r16, what does r19 achieve (with the same head action, the body of r19 is a super set of that of r16)?''. I tried to explain this a bit more; To be checked if it is adequate now.}
 \begin{example}\label{ex:founded:well-founded}
   Consider the following set of AICs $\eta$.
   \begin{align}
@@ -93,7 +94,7 @@ We thus have that grounded repairs are always founded and well-founded; the next
   They do not do this in a straightforward manner. Starting from a database in which $b$ holds, but $a$ does not, rule \eqref{rfwf15} first enforces removal of $b$. 
   Next, rule \eqref{rfwf13} adds $a$ and subsequently, rule \eqref{rfwf14} adds $b$. 
   While this combination of constraints seems unnatural (no-one would use these to enforce inclusion of $a$ and $b$ in the database), it is possible that this type of constraints show up if they are written by different developers maintaining the database, having different concerns. 
-  The last three rules state that no $2$-element subset of $\UU$ can be a repair. Given rule \eqref{rfwf14}, one might say that rule \eqref{rfwf17} is redundant. However, again the same argument holds that they \emph{could} show up together in a database.
+  The last three rules state that no $2$-element subset of $\UU$ can be a repair. Given rule \eqref{rfwf14}, one might say that rule \eqref{rfwf17} is redundant. However, again the same argument holds: they \emph{could} show up together in a database.
   In this example, $\UU$ is founded (the last three rules also ensure that) and well-founded (starting with $\emptyset$, we are forced to apply rules \ref{rfwf13}, \ref{rfwf14} and \ref{rfwf16}, in that order).
 
   However, $\UU$ is not grounded: if $\VV=\{{+b}\}$, then $\VV\subsetneq\UU$, but there is no rule $r$ with $\head(r)\in\{\add a, \add c\} $ whose body is satisfied in $\VV(\db)$. %-$\Op(\UU')\cap\UU=\emptyset\cap\UU=\emptyset\subseteq\UU'$.
