@@ -25,6 +25,15 @@ While I was writing this example (thinking about it), I stumbled onto some restr
 You cannot write this in AICs. } 
 \luis{There are some simple extensions where you can :) unfortunately that paper has been extremely hard to get published :/ we can discuss this.}
 \bart{I'ld love te hear it}
+\luis{Essentially you allow the bodies of rules to use also extra predicates with fixed semantic, like decidable fragments of arithmetic. For the heads, you can disallow actions involving those predicates. Your example then becomes something like:
+\begin{align*}
+\mbox{salary}(X,Y),Y>100000,\neg\mbox{fixSalary}(X) & \aicrule +\mbox{fixSalary}(X) \\
+\mbox{salary}(X,Y),Y>100000,\mbox{fixSalary}(X) & \aicrule -\mbox{salary}(X,Y) \\
+\mbox{fixSalary}(X),\neg\mbox{salary}(X,Y) & \aicrule +\mbox{salary}(X,100000) \\
+\mbox{salary}(X,Y),Y\leq100000,\mbox{fixSalary}(X) & \aicrule -\mbox{fixSalary}(X)
+\end{align*}
+In the third rule, you also use universal quantification on a free variable, which is ok if the variable is a singleton. Nevertheless, the referees of that paper said that the contributions were non-existent, so we're still trying to get it published somewhere :-)
+}
 
 %% Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
 %% Sometimes, databases can reach states in which one of the integrity constraints is violated, for instance due to execution of some invalid update, due to merging two databases, ... 

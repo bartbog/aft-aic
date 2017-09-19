@@ -114,11 +114,17 @@ We note also that $\UU_1\uplus\UU_2$ is consistent whenever $\UU_1$ and $\UU_2$ 
 In other words, $\Op^\db(\UU)$ is obtained by updating $\UU$ with the heads of all AICs whose bodies are satisfied by $\UU(\db)$.
 As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^\db$.
 
+
 \begin{proposition}
  The operator $\Op$ is the only operator on $2^\acts$ that satisfies inertia, consistency and completeness. 
 \end{proposition}
 \begin{proof}
- It is easy to verify that \Op satisfies the three properties. Now, assume $O: 2^\acts \to 2^\acts$ satisfies the three properties. Let $\alpha$ be any action in \acts and $\UU\subseteq \acts$. 
+ It is easy to verify that \Op also satisfies inertia and completeness.
+ For consistency, observe that the syntactic restrictions on AICs guarantee that the set $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$ is always consistent. 
+ Indeed, if both $\add a$ and $\remove a$ are in this set, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
+ From this, it also follows that $\Op(\UU)$ is always consistent. 
+
+ Now, assume $O: 2^\acts \to 2^\acts$ satisfies the three properties. Let $\alpha$ be any action in \acts and $\UU\subseteq \acts$. 
  Let $\VV$ denote $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$. 
  Since, $\alpha \in \acts$, we know that $\alpha^D\not \in \UU$. We show that $\alpha \in O(\UU)$ if and only if $\alpha \in \Op(\UU) = \UU\uplus \VV $. 
  We distinguish 3 cases:
@@ -130,10 +136,8 @@ As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^
   Hence, we have proven in each of the cases that $\alpha \in O(\UU)$ if and only if $\alpha \in \Op(\UU)$ and the result follows. 
 \end{proof}
 
-
 % The resulting set may contain less update actions than the number of such rules, since different AICs may include the same action in their heads.
 
-% \luis{There was a comment about defining this with $\nup(r)$ instead. I'm not sure this is correct.}
 
 \begin{example}[Example \ref{ex:repairs} continued]
   Consider again the set of AICs $\eta$ from Example~\ref{ex:repairs}, where
@@ -142,10 +146,8 @@ As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^
 \end{example}
 
 \luis{this paragraph seems completely out of place. Delete?}
-\bart{I added/extended it since there was a reviewer concerned about this. It is important to note that this set is consistent to guarantee consisntency of $\Op^\db(\UU)$.} 
-The syntactic restrictions on AICs guarantee that the set $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$ is always consistent. 
-Indeed, if both $\add a$ and $\remove a$ are in this set, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
-From this, it also follows that $\Op^\db(\UU)$ is always consistent. 
+\bart{I added/extended it since there was a reviewer concerned about this. It is important to note that this set is consistent to guarantee consisntency of $\Op^\db(\UU)$.}
+\luis{Yup, I thought that was the reason. But Proposition 5.4 already stated that it held, which was what confused me. I moved your text to inside that proof -- see if you agree.}
 % In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
 
 The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded, well-founded and grounded sets of update actions.

@@ -245,12 +245,15 @@ When $\db$ is clear from the context, we write \Ap for \Apfull.
 \bart{It isn't literally the case. We can say something like
 
 Since $\supp_{\UUU(\db),\eta}(\alpha)$ and $\supp_{\UUU(\db),\eta}(\alpha^D)^{-1}$ are consistent whenever $\UUU$ is consistent, the above operator is indeed defined on $P$, i.e., $\Apfull(\UUU)$ is consistent whenever $\UUU$ is.}
+\luis{Ah. I added it after the informal explanation of the definition, I think it's more natural there. (I had started writing an explanation there earlier, but couldn't really see the point.)}
 
 Definition \ref{def:apfull} is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
 In the case where $\UUU(\alpha)=\lfalse$, $\alpha$ is not an element of the (partial) update set at hand. The only way to add $\alpha$ to the update is if some rule supports $\alpha$, which is captured by $ \supp_{\UUU(\db),\eta}(\alpha)$. 
 The case for $\UUU(\alpha)=\ltrue$ is completely symmetrical, in this case the only reason for removing $\alpha$ from the update at hand is there is support for its dual.
 In the last case, where $\UUU(\alpha)=\lunkn$, we have no information on whether $\alpha$ should or shouldn't be in the update yet. In this case, we can derive that $\alpha$ \emph{must} be in the update if we already have support for $\alpha$ and we are sure that there is no support for it dual (for $\alpha^D$). Similarly, we can derive that $\alpha$ \emph{must not} be in the update if we have support for $\alpha^D$ and certainly not for $\alpha$.  
 In all other cases, we derive nothing about $\alpha$ being in the update or not. 
+
+Since $\supp_{\UUU(\db),\eta}(\alpha)$ and $\supp_{\UUU(\db),\eta}(\alpha^D)^{-1}$ are consistent whenever $\UUU$ is consistent, the above operator is indeed defined on $P$, i.e., $\Apfull(\UUU)$ is consistent whenever $\UUU$ is.
 
 Recall that \citet{DeneckerMT04} showed that it suffices to define approximator on the consistent part of the bilattice. 
 Using the fact that $P=(2^\acts)^c$, \Ap is a candidate approximator of \Op. The next proposition shows that this is indeed the case. 
