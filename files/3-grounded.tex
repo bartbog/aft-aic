@@ -47,6 +47,14 @@ Thus, the notion of groundedness intrinsically embodies the principle of minimal
   But $\UU$ is finite, therefore this sequence converges towards $\UU$, and thus $\UU$ is a well-founded repair.
   \bart{This is the first mention of finiteness. Should we do it sooner? Is it essential here?  Are well-founded repairs defined in the infinite setting, using transfinite induction? They could well be... But it might be good to restrict to finite databases from the start. On the other hand. All realistic examples will contain infinite rules (by grounding from a conceptually infinite domain, e.g., integers, so it might be good to say something more about that.}
   \luis{In a database context everything should be finite. If you allow for an infinite number of rules, even checking whether the database satisfies a set of AICs can become undecidable.}
+  \bart{Several comments with respect to this
+  \begin{itemize}
+   \item I don't care about decidability. At least, not initially. For me, the first concern is defining a good semantics, without worrying about ``down-to-earth'' issues such as decidability
+   \item An actual database might be finite, but the set of atoms it ``could'' exist of typically isn't (unless you call the set of all integers finite. It isn't. Concrete implementations of DB systems use a finite approximation of this set). We are here restricting \atoms to be finite. That is a strong restriction
+   \item I really think that all semantics can easily be defined in the infinite case.
+   \item For pracitical reasons, you can always add conditions like safety (cfr how it is done in ASP) to avoid an infinite blow-up in real databases. But at the moment of defining the semantics, that shouldn't be an issue. If your semantics breaks for the infinite case, something might be wrong/missing. 
+  \end{itemize}}
+
 \end{proof}
 
 However, the notion of grounded repair is strictly stronger than both of these: Example~\ref{ex:founded}, presented earlier, also shows that some forms of circular justifications are avoided by grounded repairs.

@@ -142,6 +142,7 @@ As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^
 \end{example}
 
 \luis{this paragraph seems completely out of place. Delete?}
+\bart{I added/extended it since there was a reviewer concerned about this. It is important to note that this set is consistent to guarantee consisntency of $\Op^\db(\UU)$.} 
 The syntactic restrictions on AICs guarantee that the set $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$ is always consistent. 
 Indeed, if both $\add a$ and $\remove a$ are in this set, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
 From this, it also follows that $\Op^\db(\UU)$ is always consistent. 

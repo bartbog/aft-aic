@@ -242,6 +242,9 @@ When $\db$ is clear from the context, we write \Ap for \Apfull.
 \end{definition}
 \todo{RVWR1: Def 6.4:  It can be appropriate to add a comment after this definition as why the operator does not produce an inconsistent repair, i.e., it is defined on P.}
 \luis{I don't get this comment. Isn't it simply by construction? ``This function is defined by cases, each of which returns either $\ltrue$, $\lfalse$ or $\lunkn$. Show that its codomain is $\{\ltrue,\lfalse,\lunkn\}$.'' Or am I missing something?}
+\bart{It isn't literally the case. We can say something like
+
+Since $\supp_{\UUU(\db),\eta}(\alpha)$ and $\supp_{\UUU(\db),\eta}(\alpha^D)^{-1}$ are consistent whenever $\UUU$ is consistent, the above operator is indeed defined on $P$, i.e., $\Apfull(\UUU)$ is consistent whenever $\UUU$ is.}
 
 Definition \ref{def:apfull} is motivated as follows. Assume $\UUU$ is a partial update set containing some information on the intended update. In this case $\Ap(\UUU)$ represents a revised update, using the AICs in \aics. 
 In the case where $\UUU(\alpha)=\lfalse$, $\alpha$ is not an element of the (partial) update set at hand. The only way to add $\alpha$ to the update is if some rule supports $\alpha$, which is captured by $ \supp_{\UUU(\db),\eta}(\alpha)$. 
