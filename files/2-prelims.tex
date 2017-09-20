@@ -1,6 +1,9 @@
 In this section we summarize previous work on active integrity constraints (AICs), including results developed by \citet{ppdp/FlescaGZ04,iclp/CaropreseGSZ06,tplp/CaropreseT11} and \citet{tase/Cruz-FilipeGEN13}.
 
-We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
+We assume a fixed set \atoms of \emph{atoms}. An \emph{interpretation} or \emph{database} is a subset of \atoms. 
+In the current paper, following, e.g., \citet{tase/Cruz-FilipeGEN13}, we assume,  \atoms to be a finite set. 
+This restriction is not essential for defining our semantics, or to any of the theorems we prove about them, with the exception of complexity results and comparison with existing semantics (that have only been defined in the finite case). 
+A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
 We say that $\lnot a$ is the \emph{dual} literal of $a$ and vice versa, and denote the dual of a literal $l$ by $l^D$. 
 Propositional formulas are defined as usual: atoms are formulas, the negation of a formula is a formula, and the conjunction of formulas is a formula. 
 The satisfaction relation between databases \db and literals is defined as usual: 

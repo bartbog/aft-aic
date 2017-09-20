@@ -1,5 +1,5 @@
-\todo{RVWR1:
-P21, Section 7:  In modeling LPs by AIGs there is a restriction on simple normal LPs, and in modeling AIGs by LPs there is a restriction on AIGs with +head. There should be some remarks on these restrictions. E.g., Can they be removed? Or, why removing these restrictions create technical difficulties.}
+% \todo{RVWR1:
+% P21, Section 7:  In modeling LPs by AIGs there is a restriction on simple normal LPs, and in modeling AIGs by LPs there is a restriction on AIGs with +head. There should be some remarks on these restrictions. E.g., Can they be removed? Or, why removing these restrictions create technical difficulties.}
 
 
 \todo{RVWR 2
@@ -11,48 +11,10 @@ for Integrity Maintenance. ICLP 2006) and
 Maintanance. DASFAA 2007)
 }
 
-\subsection{Preliminaries: Logic Programming (and AFT)}
-\renewcommand\voc\atoms
-% Let \voc be an alphabet, i.e., a collection of symbols which are called \emph{atoms}. A \emph{literal} is an atom $p$ or the negation $\lnot q$ of an atom $q$.  
-A (normal\footnote{Sometimes, logic programs are defined with disjunctive rules. In the current paper, we only consider \emph{normal} logic programs: logic programs where the head is a single atom. In some propositions, we explicate the fact our programs our normal to emphasize that these results are no longer guaranteed to hold in the more general case.}) logic program $\mathcal{P}$ is a set of \emph{rules} $r$ of the form 
-\begin{equation}
- \tag{2}h\lrule l_1\land \dots \land l_n \label{rule:lp}
-\end{equation}
-where
-$h$ is an atom called the \emph{head} of $r$, denoted $head(r)$, and each of the $l_i$ is a literal; $ l_1\land \dots \land l_n$ is called  the \emph{body} of $r$ and denoted $body(r)$.
-A rule of the form \eqref{rule:lp} is called \emph{simple} if none of the $l_i$ equals $\lnot h$ or $h$; a logic program is \emph{simple} if it consists of only simple rules.
-% An interpretation $\struct$ of the alphabet \voc is an element of $2^\voc$, i.e., a subset of $\voc$.  
-The set of interpretations $2^\voc$ forms a lattice equipped with the order $\subseteq$. 
-The truth value (\ltrue or \lfalse) of a propositional formula $\varphi$ in a structure $\struct$, denoted $\varphi^\struct$ is defined as usual.
-With a logic program \PP, we associate an immediate consequence operator \cite{jacm/EmdenK76} $T_\PP$ that maps a structure $\struct$ to 
-	\[T_\PP(\struct) = \{p\mid \exists r \in \PP: head(r)=p\land body(r)^\struct=\ltrue\}.\] 
-	\mycitet{GroundedFixpoints} called grounded fixpoints of $T_\PP$ \emph{grounded models of $\PP$}. 
-	
-	
-	In the context of logic programming, elements of the bilattice $\left(2^\voc\right)^2$ are four-valued interpretations, pairs $\pstruct= (\struct_1,\struct_2)$ of interpretations.
-The pair $(\struct_1,\struct_2)$ approximates all interpretations $\struct'$ with $\struct_1\subseteq \struct'\subseteq \struct_2$.
-We often identify an interpretation $I$ with the four-valued interpretation $(I,I)$.
-% If $\pstruct=(I_1,I_2)$ is a (four-valued) interpretation, and $U\subseteq \voc$, we write $\pstruct[U:\lfalse]$ for the (four-valued) interpretation that equals $\pstruct$ on all elements not in $U$ and that interprets all elements in $U$ as $\lfalse$, i.e., the interpretation $(I_1\setminus U, I_2\setminus U)$. 
-We are mostly concerned with consistent (also called partial or three-valued) interpretations: tuples $\pstruct=(\struct_1,\struct_2)$ with $\struct_1\subseteq\struct_2$. 
-For such an interpretation, the atoms in $\struct_1$ are \emph{true} (\ltrue) in $\pstruct$, the atoms in $\struct_2\setminus\struct_1$ are \emph{unknown} (\lunkn) in $\pstruct$ and the other atoms are \emph{false} (\lfalse) in $\pstruct$. 
-If $\pstruct$ is a three-valued interpretation, and $\varphi$ a formula, we write $\varphi^\pstruct$ for the standard three-valued valuation based on the Kleene truth tables (see Figure \ref{fig:KT}). 
 
 
 
-
-Several approximators have been defined for logic programs. The most common is Fitting's immediate consequence operator $\Psi_\PP$ \cite{tcs/Fitting02}, a direct
-generalization of $T_\PP$ to partial interpretations:
-  \begin{align*}
-    \Psi_\PP(\pstruct)_1 &=\{a\in \voc\mid body(r)^\pstruct=\ltrue \text{ for some rule $r\in \PP$ with }head(r)=a\},\\
-    \Psi_\PP(\pstruct)_2 &=\{a\in \voc\mid body(r)^\pstruct\neq \lfalse \text{ for some rule $r\in \PP$ with }head(r)=a\}.
-   \end{align*}
-\citet{DeneckerMT00} showed that $\Psi_\PP$ is an approximator of $T_\PP$, that  the well-founded fixpoint of $\Psi_\PP$ is the well-founded model of $\PP$ as defined by \citeauthor{GelderRS91} and that $\Psi_\PP$-stable fixpoints are exactly the stable models of $\PP$ as defined by \citeauthor{iclp/GelfondL88}. In this case, 
-the operator $\Psi_\PP(\cdot,y)_1$ coincides with the immediate consequence operator of the Gelfond-Lifschitz reduct \cite{iclp/GelfondL88}  of $\PP$ with respect to the interpretation $y$. 
-
-
-
-
-\subsection{AIC and Logic Programs}
+% \subsection{AIC and Logic Programs}
 \citet{tplp/CaropreseT11} defined a translation from logic programs to AICs as follows. 
 \begin{definition}
   \label{defn:aic-transf}
@@ -69,7 +31,7 @@ The same result is also a corollary of the following stronger theorem.
 \begin{theorem}\label{thm:partialstable-LP}
  Let $\PP$ be a simple normal logic program and $\pstruct$ a partial interpretation. It holds that $\pstruct$ is a partial stable model of \PP if and only if $\pstruct$ is a partial stable repair of $\langle \aicop(\PP),\emptyset\rangle$. 
 \end{theorem}
-The proof of this theorem follows later, since it makes use of Proposition \ref{prop:lplink}. 
+The proof of this theorem follows later, since it makes use of Theorem \ref{thm:lplink}. 
 Since the well-founded model of a logic program is the least precise partial stable model, and an analogous relationship holds in the setting of AICs, we immediately find the following corollary. 
 
 \begin{corollary}
@@ -123,12 +85,12 @@ However, adding a trivial rule
   $\PP'$ and $\PP_g$ only differ from each other in the rules $p\lrule p$ and $q\lrule q$, which simulate inertia.
  
  
- The above discussion provides intuitions on what a transformation that preserves all AFT semantics should look like. In the following proposition, this is formalized. 
+ The above discussion provides intuitions on what a transformation that preserves all AFT semantics should look like. In the following theorem, this is formalized. 
 
   
 
 
-\begin{proposition}\label{prop:lplink}
+\begin{theorem}\label{thm:lplink}
   Suppose that $\db=\emptyset$ and that the only update actions in \aics are of the form $\add a$.
   The mapping $\actof$ induces an isomorphism between the lattices $2^\atoms$ and $2^\acts$ and between $(2^\atoms)^c$ and $(2^\acts)^c$. 
   Let $\lpop(\aics)$ denote the following logic program:  
@@ -138,7 +100,7 @@ However, adding a trivial rule
  \end{align*}
  then for each partial interpretation \pstruct, , $\Ap(\actof(\pstruct)) = \actof(\Psi_{\lpop(\aics)}(\pstruct))$. 
 Hence, all AFT semantics for \fulldb coincide in this case with the equally-named semantics for the logic program $\lpop(\aics)$. 
-\end{proposition}
+\end{theorem}
 %% \begin{proof}
 %%   \luis{The complete proof has been done by hand. Should we add it, or is the detail given here enough?}
 %%   \bart{I would add the complete proof, especially given the bug I discoverd recently, in a different Theorem... }
@@ -222,8 +184,8 @@ since $\aicop$ adds a literal $\lnot a$ to the body of each rule $r$ with $\head
 \end{proof}
 
 
-\begin{example}
- Proposition \ref{prop:lplink} does not hold in general, not even for unipolar AICs. 
+\begin{example}\label{ex:unipolarno}
+ Theorem \ref{thm:lplink} does not hold in general, not even for unipolar AICs. 
  Consider for instance the following sets of AICs. 
  \begin{align*}\eta_1 &= \left\{\begin{array}{l}
                     a \aicrule \remove a\\
@@ -238,6 +200,22 @@ For the first one, the KK-repair is $\{\add a\mapsto\lfalse,\add b\mapsto\lfalse
 \end{example}
 
 The reason why the equivalence does not hold in the previous example is because rules with $\remove a$ in the head are ignored, while in the context of AICs such rules can make a semantic difference. 
+
+\paragraph{Limitations}
+\todo{Luis, can you give your opinion on this paragraph? I'm not so very convinced myself}
+In this Section, we studied mappings from sets of active integrity constraints to logic programs and back and how the semantics of the two formalisms relate. 
+We briefly discuss the restrictions of this approach. 
+In our translation of AICs to logic programs, namely in Theorem \ref{thm:lplink}, we assume that $\db=\emptyset$ and that the only update actions that occur in heads of rules are positive, i.e., of the form $\add a$. 
+Since all our semantics satisfy the shifting property, the correspondence between the semantics still holds if \db is arbitrary but all actions in rule heads change \db. 
+However, the condition that all actions in heads of rules change \db is essential. We are not aware of a modular way to encode removal of atoms in the heads of logic programming rules. 
+Example \ref{ex:ex:unipolarno} illustrates that this condition is indeed essential. 
+
+Another limitation of our results is that for the reverse translation, we only preserve (partial) stable repairs and the AFT-well-founded repair (cfr Theorem \ref{thm:partialstable-LP}). 
+However, our discussion does highlight where the difference comes from, namely the intuition of inertia. 
+That is, as shown in the proof of Theorem \ref{thm:partialstable-LP}: for each simple normal logic program $\PP$, the semantics of $\triv(\PP)$ and $\aicop(\PP)$ coincide. 
+
+Furthermore, we restrict our attention to \emph{normal} programs; \citet{tplp/CaropreseT11} discuss this translation without requiring normality. However, as mentioned before, we see non-normal AICs as syntactic sugar for their normalization and hence have no need for non-normal logic programs either. 
+The restriction that our programs are \emph{simple} is rather a technical requirement that simplifies proofs. For several semantics, this is non-essential: for (partial) stable and well-founded semantics, each program can easily be translated into an equivalent simple program.  
 
 %%% Local Variables:
 %%% mode: latex

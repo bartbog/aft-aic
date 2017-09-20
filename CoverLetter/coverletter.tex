@@ -6,9 +6,8 @@
 \begin{document}
 \maketitle
 Thanks for the helpful reviews. We attach the revised version of our paper. 
+ We fixed all spelling mistakes, and notational issues found by the reviewers.
 Below we explain the changes we made, and we give our response to the criticisms raised by the reviewers. 
-
-
 
 
 \section{In response to the criticisms}
@@ -25,9 +24,9 @@ then to prove that a set of general AICs is equivalent to its normalized version
 
 	 \item There was a general consensus among the reviewers that more examples are needed throughout the paper. We have taken this issue into account and added several examples. More specifically:
 	  \begin{itemize}
-	  \item intro?
-	  \item Section 4: move LP? 
-	  \item ... 
+	  \item We added a realistic example in the introduction (and also extended the general motivation of the formalism).  TODO CHECK
+	  \item We moved preliminaries on logic programming to Section 4. This way, Section 4 now contains examples of the various fixpoints defined in AFT, as requested by Reviewer 2. 
+	  \item We added some minor examples in Sections 5-6 to clarify points raised by reviewers. 
 	  \end{itemize}
 	  
 	  \item \label{it:abuse}Several of the reviewers had an issue with the notational abuse where we identify a set of update actions satisfying certain conditions with a set of atoms. We have now removed this identification completely and always work with sets of update actions.  This resulted in changes throughout sections 5-8.
@@ -49,15 +48,16 @@ Both of these comments are explained by the fact that the definition of ch a onl
 	         The confusion here is due to the fact that we identified elements of $Z$  with subsets of $At$ and used them interchangeably. This is no longer the case.
 	      
 \end{itemize}
-\item There were some more suggestions for related work. More precisely, 
-
+\item There were some general comments regarding the intuitions behind Definition 5.2 and the $\uplus$ operator. We have clarified this, by means of defining three desired properties (inertia, cancellation and completeness) of our operator and then showing that these three properties characterize our operator completely. 
+\item There were some more suggestions for related work. More precisely,  TODO: LUIS, add related work you added :-)
+\item The first reviewer requested to add a discussion on limitations of our translations. We did this at the end of Section 7. 
 	  \end{enumerate}
-
-\section{Small changes}
- We fixed all spelling mistakes, and notational issues found by the reviewers. The only suggestions we did not incorporate are the following: 
-\begin{itemize}
-	\item 
-\end{itemize}
+% 
+% \section{Small changes}
+%  The only suggestions we did not incorporate are the following: 
+% \begin{itemize}
+% 	\item 
+% \end{itemize}
 
 \bibliographystyle{../idp-latex/stylesheets/elsevier/elsarticle-harv}
 \bibliography{../idp-latex/krrlib}

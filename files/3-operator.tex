@@ -73,6 +73,7 @@ The intuitive reading of an AIC $r$ naturally suggests an operator over this lat
  Naively adding its head to $\UU$ results in the set $\{\add a,\remove a\}$, which is not an element of $2^\acts$. 
  We expect a semantic operator to map $\UU$ to $\emptyset$ since the rule in \aics indicates that the problems with $\UU(\db)$ can be solved by adding $a$, i.e., by not changing $\db$ at all. 
 \end{example}
+This kind of problems is inherent to the fact that AICs can have rules with dual heads and does not occur in other formalisms where AFT is applied, such as, e.g., logic programming. 
 Intuitively, the operator $\Op$ we wish to define should satisfy the following properties:
 \begin{itemize}
  \item \emph{(inertia)} Only change something in the input if there is a rule that warrants this change. 
@@ -80,7 +81,7 @@ Intuitively, the operator $\Op$ we wish to define should satisfy the following p
  \begin{itemize}
  \item Do not add anything to $\UU$ unless there is a reason for it, i.e., \[\Op(\UU) \subseteq \UU \cup \{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}.\] 
  \item Do not remove anything from $\UU$ unless there is a reason for it, i.e.,  \[\UU \setminus \{\head(r)^D\mid r\in \aics \land \UU(\db)\models\body(r)\} \subseteq \Op(\UU).\] \end{itemize}
- \item \emph{(consistency)} If there is an action in \UU that is ``canceled out'' by some rule in \aics, then neither the action nor its dual are in the result (i.e., \db remains unchanged with respect to this action). Formally, if $\alpha\in \UU$ and $\alpha^D \in \{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$, then $\alpha\not \in \Op(\UU), \alpha^D\not \in \Op(\UU)$. 
+ \item \emph{(cancellation)} If there is an action in \UU that is ``canceled out'' by some rule in \aics, then neither the action nor its dual are in the result (i.e., \db remains unchanged with respect to this action). Formally, if $\alpha\in \UU$ and $\alpha^D \in \{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$, then $\alpha\not \in \Op(\UU), \alpha^D\not \in \Op(\UU)$. 
  \item \emph{(completeness)} If there is an applicable rule whose body is satisfied, and whose head does not contradict $\UU$, then the head is derived. Formally, 
  \[ \{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r) \land \head(r)^D \not \in \UU \}\subseteq \Op(\UU).\]  %from which an action can be derived that does not contradict $\UU$, then 
 \end{itemize}
@@ -112,17 +113,18 @@ We note also that $\UU_1\uplus\UU_2$ is consistent whenever $\UU_1$ and $\UU_2$ 
   \]
 \end{definition}
 In other words, $\Op^\db(\UU)$ is obtained by updating $\UU$ with the heads of all AICs whose bodies are satisfied by $\UU(\db)$.
+To see that this operator is well-defined (i.e., that the result of applying it indeed yields a consistent set of actions), observe that the syntactic restrictions on AICs guarantee that the set $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$ is always consistent. 
+ Indeed, if both $\add a$ and $\remove a$ are in this set, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
+ From this, it also follows that $\Op(\UU)$ is always consistent. 
 As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^\db$.
 
 
 \begin{proposition}
- The operator $\Op$ is the only operator on $2^\acts$ that satisfies inertia, consistency and completeness. 
+ The operator $\Op$ is the only operator on $2^\acts$ that satisfies inertia, cancellation and completeness. 
 \end{proposition}
 \begin{proof}
- It is easy to verify that \Op also satisfies inertia and completeness.
- For consistency, observe that the syntactic restrictions on AICs guarantee that the set $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$ is always consistent. 
- Indeed, if both $\add a$ and $\remove a$ are in this set, then there must be rules $r_1$ and $r_2$ such that $\neg a\in\body(r_1)$ and $a\in\body(r_2)$ with $\UU(\db)\models\body(r_i)$ for $i=1,2$, which is impossible since it would mean that $\UU(\db)\models a$ and $\UU(\db)\models \lnot a$.
- From this, it also follows that $\Op(\UU)$ is always consistent. 
+ It is easy to verify that \Op also satisfies inertia, cancellation and completeness.
+ 
 
  Now, assume $O: 2^\acts \to 2^\acts$ satisfies the three properties. Let $\alpha$ be any action in \acts and $\UU\subseteq \acts$. 
  Let $\VV$ denote $\{\head(r)\mid r\in \aics \land \UU(\db)\models\body(r)\}$. 
@@ -130,7 +132,7 @@ As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^
  We distinguish 3 cases:
  \begin{itemize}
   \item If $\alpha \in \VV$, then, since $\alpha^D\not\in \UU$, by completeness, $\alpha \in O(\UU)$. In this case, since $\alpha^D\not \in \UU\cup \VV$, but $\alpha \in \UU\cup\VV$, it holds that $\alpha \in \UU \uplus \VV = \Op(\UU)$. 
-  \item If $\alpha^D \in \VV$, then there is a rule $r\in \aics$ such that $\alpha^D\in \head(r)$ and $\UU(\db)\models \body(r)$. Since $\UU(\db)\models \body(r)$, $\litof(\alpha)$ holds in $\UU(\db)$. Since $\alpha$ changes \db, we know that $\litof(\alpha)$ does not hold in $\db$, hence it must be the case that $\alpha \in \UU$. By consistency, we then find that $\alpha\not\in O(\db)$. Since $\alpha \in \UU$ but $\alpha^D\in \VV$, also $\alpha\not\in \UU\uplus\VV=\Op(\UU)$.
+  \item If $\alpha^D \in \VV$, then there is a rule $r\in \aics$ such that $\alpha^D\in \head(r)$ and $\UU(\db)\models \body(r)$. Since $\UU(\db)\models \body(r)$, $\litof(\alpha)$ holds in $\UU(\db)$. Since $\alpha$ changes \db, we know that $\litof(\alpha)$ does not hold in $\db$, hence it must be the case that $\alpha \in \UU$. By cancellation, we then find that $\alpha\not\in O(\db)$. Since $\alpha \in \UU$ but $\alpha^D\in \VV$, also $\alpha\not\in \UU\uplus\VV=\Op(\UU)$.
   \item If neither $\alpha\in\VV$, nor $\alpha^D\in\VV$, then by inertia, it must hold that $\alpha \in O(\UU)$ if and only if $\alpha\in \UU$. In this case, it also holds that $\alpha \in \Op(\UU) = \UU \uplus\VV$ if and only if $\alpha \in \UU$.
   \end{itemize}
   Hence, we have proven in each of the cases that $\alpha \in O(\UU)$ if and only if $\alpha \in \Op(\UU)$ and the result follows. 
@@ -145,30 +147,30 @@ As before, when $\db$ is clear from the context, we simply write $\Op$ for $\Op^
   Then $\Op(\emptyset)=\{\remove a, \remove b\}$. Indeed, the bodies of all rules are satisfied; hence all heads are elements of $\Op(\emptyset)$.
 \end{example}
 
-\luis{this paragraph seems completely out of place. Delete?}
-\bart{I added/extended it since there was a reviewer concerned about this. It is important to note that this set is consistent to guarantee consisntency of $\Op^\db(\UU)$.}
-\luis{Yup, I thought that was the reason. But Proposition 5.4 already stated that it held, which was what confused me. I moved your text to inside that proof -- see if you agree.}
-% In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
-
-The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded, well-founded and grounded sets of update actions.
-
-\todo{RVWR 2:
-It looks to me that the operator $T^{DB}_{\eta}$ (that for simplicity here will be denotes as T)
-is not monotone (by definition). As a conseguence, not always a fixpoint can be reached.
-Consider the following AICs:
-
-not b, a -> -a
-not b, not a -> +a
-
-and an empty database DB.
-Then:
-
-T(0)={+a}; T(T(0))={}; T(T(T(0)))={+a} ...
-
-Observe that the {+b} is a repair.
-Could you explain better this point?}
-\bart{The reviewer seems to be confused between the difference of  ``being a fixpoint '' and ``being able to reach a fixpoint'' (by iterating starting from $\emptyset$). The ``being reachable'' is not relevant at this point. Still, we could add his theory as an example.}
-\luis{I'd rather address this in the reply, as it is such a strange comment. Anyway, I added a simple example about fixpoints not having to exist (which is a reasonable variant of what he says).}
+% \luis{this paragraph seems completely out of place. Delete?}
+% \bart{I added/extended it since there was a reviewer concerned about this. It is important to note that this set is consistent to guarantee consisntency of $\Op^\db(\UU)$.}
+% \luis{Yup, I thought that was the reason. But Proposition 5.4 already stated that it held, which was what confused me. I moved your text to inside that proof -- see if you agree.}
+% % In the interest of legibility, we write simply $\Op$ instead of $\Op^\db$ whenever $\db$ is clear from the context.
+% 
+% The operator $\Op$ provides alternative characterizations of the notions of weak repair, repair, founded, well-founded and grounded sets of update actions.
+% 
+% \todo{RVWR 2:
+% It looks to me that the operator $T^{DB}_{\eta}$ (that for simplicity here will be denotes as T)
+% is not monotone (by definition). As a conseguence, not always a fixpoint can be reached.
+% Consider the following AICs:
+% 
+% not b, a -> -a
+% not b, not a -> +a
+% 
+% and an empty database DB.
+% Then:
+% 
+% T(0)={+a}; T(T(0))={}; T(T(T(0)))={+a} ...
+% 
+% Observe that the {+b} is a repair.
+% Could you explain better this point?}
+% \bart{The reviewer seems to be confused between the difference of  ``being a fixpoint '' and ``being able to reach a fixpoint'' (by iterating starting from $\emptyset$). The ``being reachable'' is not relevant at this point. Still, we could add his theory as an example.}
+% \luis{I'd rather address this in the reply, as it is such a strange comment. Anyway, I added a simple example about fixpoints not having to exist (which is a reasonable variant of what he says).}
 
 \begin{proposition}
   \label{prop:weak-repair}
