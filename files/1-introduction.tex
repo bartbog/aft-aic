@@ -34,6 +34,26 @@ You cannot write this in AICs. }
 \end{align*}
 In the third rule, you also use universal quantification on a free variable, which is ok if the variable is a singleton. Nevertheless, the referees of that paper said that the contributions were non-existent, so we're still trying to get it published somewhere :-)
 }
+\bart{About the third rule. Let's be clear: the meaning is: 
+\begin{align*}
+ \mbox{fixSalary}(X),(\neg\exists Y:\mbox{salary}(X,Y)) & \aicrule +\mbox{salary}(X,100000) \\
+\end{align*}
+right? 
+I would always make this explicit. Gets confusing otherwise. 
+What your write now is not really what I had in mind. It is very procedural, among others because of the ``temporary'' variable fixsalary. It's not really nice KR. 
+It feels like a workaround. 
+For instance, none of our semantics will work for this kind of example. (because of that fixSalary)
+I would like to be able to write something like this
+\begin{align*}
+\mbox{salary}(X) > 100.000 \aicrule \mbox{salary}(X) = 100.000
+\end{align*}
+I.e/; I especially need functions! 
+
+Regarding the reviewers comment, without having read the paper, I would agree that just having predicates with a fixed interpretation is not really a major contribution. 
+This is in a sense already present in the AIC formalism. Predicates that do not occur in rule heads are ``fixed''. Whether or not this fixed interpretation is shared over all databases is not a big deal? 
+Anyway, as I said, I didn't read the unpublished work :p 
+}
+
 
 %% Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
 %% Sometimes, databases can reach states in which one of the integrity constraints is violated, for instance due to execution of some invalid update, due to merging two databases, ... 
