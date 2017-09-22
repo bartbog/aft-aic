@@ -2,14 +2,14 @@
 % P21, Section 7:  In modeling LPs by AIGs there is a restriction on simple normal LPs, and in modeling AIGs by LPs there is a restriction on AIGs with +head. There should be some remarks on these restrictions. E.g., Can they be removed? Or, why removing these restrictions create technical difficulties.}
 
 
-\todo{RVWR 2
-In this Section should appear a comparison/discussion with the connection with logic programming
-(in particular with the rewriting of sets of AICs in terms of logic programs) presented in
-(L. Caroprese, S. Greco, C. Sirangelo, E. Zumpano, Declarative Semantics of Production Rules
-for Integrity Maintenance. ICLP 2006) and
-(L. Caroprese, S. Greco, C. Molinaro, Prioritized Active Integrity Constraints for Database
-Maintanance. DASFAA 2007)
-}
+%\todo{RVWR 2
+%In this Section should appear a comparison/discussion with the connection with logic programming
+%(in particular with the rewriting of sets of AICs in terms of logic programs) presented in
+%(L. Caroprese, S. Greco, C. Sirangelo, E. Zumpano, Declarative Semantics of Production Rules
+%for Integrity Maintenance. ICLP 2006) and
+%(L. Caroprese, S. Greco, C. Molinaro, Prioritized Active Integrity Constraints for Database
+%Maintanance. DASFAA 2007)
+%}
 
 
 
@@ -98,7 +98,7 @@ However, adding a trivial rule
   \lpop(\aics)=& \{a \lrule \nup(r)\mid r\in \aics, \head(r)= \add a\}\\
   &\cup \{a \lrule a\mid a \in \atoms\}
  \end{align*}
- then for each partial interpretation \pstruct, , $\Ap(\actof(\pstruct)) = \actof(\Psi_{\lpop(\aics)}(\pstruct))$. 
+ then for each partial interpretation \pstruct, $\Ap(\actof(\pstruct)) = \actof(\Psi_{\lpop(\aics)}(\pstruct))$. 
 Hence, all AFT semantics for \fulldb coincide in this case with the equally-named semantics for the logic program $\lpop(\aics)$. 
 \end{theorem}
 %% \begin{proof}
@@ -203,19 +203,29 @@ The reason why the equivalence does not hold in the previous example is because 
 
 \paragraph{Limitations}
 \todo{Luis, can you give your opinion on this paragraph? I'm not so very convinced myself}
+\luis{I added a new 2nd paragraph}
 In this Section, we studied mappings from sets of active integrity constraints to logic programs and back and how the semantics of the two formalisms relate. 
 We briefly discuss the restrictions of this approach. 
 In our translation of AICs to logic programs, namely in Theorem \ref{thm:lplink}, we assume that $\db=\emptyset$ and that the only update actions that occur in heads of rules are positive, i.e., of the form $\add a$. 
 Since all our semantics satisfy the shifting property, the correspondence between the semantics still holds if \db is arbitrary but all actions in rule heads change \db. 
-However, the condition that all actions in heads of rules change \db is essential. We are not aware of a modular way to encode removal of atoms in the heads of logic programming rules. 
-Example \ref{ex:unipolarno} illustrates that this condition is indeed essential. 
+However, the condition that all actions in heads of rules change \db is essential,
+%. We are not aware of a modular way to encode removal of atoms in the heads of logic programming rules. 
+%Example \ref{ex:unipolarno} illustrates that this condition is indeed essential. 
+as illustrated by Example~\ref{ex:unipolarno}.
+
+The more general translation $\mathit{Rew}$ introduced by \citet{iclp/CaropreseGSZ06} applies to AICs with arbitrary actions on their head.
+This translation is significantly more complex than ours, generating a logic program with an extended signature that includes two atoms for each possible update action.
+Furthermore, it is tailored to guarantee a precise correspondence between stable models of logic programs and founded repairs for AICs -- the only semantics that had been developed up to \cite{iclp/CaropreseGSZ06}.
+By contrast, the correspondence stated in Theorem~\ref{thm:lplink} holds for all different semantics considered in the current work.
+\luis{I tried to write this in a way that the question ``is there a precise correspondence between semantics using their translation?'' is not the obvious one, but I'm not sure we shouldn't discuss it. I need to look at this more carefully.}
 
 Another limitation of our results is that for the reverse translation, we only preserve (partial) stable repairs and the AFT-well-founded repair (cfr Theorem \ref{thm:partialstable-LP}). 
 However, our discussion does highlight where the difference comes from, namely the intuition of inertia. 
 That is, as shown in the proof of Theorem \ref{thm:partialstable-LP}: for each simple normal logic program $\PP$, the semantics of $\triv(\PP)$ and $\aicop(\PP)$ coincide. 
 
-Furthermore, we restrict our attention to \emph{normal} programs; \citet{tplp/CaropreseT11} discuss this translation without requiring normality. However, as mentioned before, we see non-normal AICs as syntactic sugar for their normalization and hence have no need for non-normal logic programs either. 
+Furthermore, we restrict our attention to \emph{normal} programs; \citet{tplp/CaropreseT11} discuss this translation without requiring normality. However, as mentioned before, we see non-normal AICs as syntactic sugar for their normalization and hence have no need for non-normal logic programs either. The same applies to the translation $\mathit{Rew}$ from~\cite{iclp/CaropreseGSZ06}.
 The restriction that our programs are \emph{simple} is rather a technical requirement that simplifies proofs. For several semantics, this is non-essential: for (partial) stable and well-founded semantics, each program can easily be translated into an equivalent simple program.  
+
 
 %%% Local Variables:
 %%% mode: latex
