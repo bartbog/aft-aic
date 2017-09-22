@@ -1,5 +1,5 @@
-\todo{RVWR1: Though I can picture how AIGs might be used in practical database management, I still wish to see a motivating example for practical applications.}
-\bart{We should make a ``real-life''-like example of a database, with AICs or AIGs.}
+%\todo{RVWR1: Though I can picture how AIGs might be used in practical database management, I still wish to see a motivating example for practical applications.}
+%\bart{We should make a ``real-life''-like example of a database, with AICs or AIGs.}
 
 One of the key components of modern-day databases are integrity constraints: logical formulas that specify semantic relationships between the data being modeled that have to be satisfied at all times.
 When the database is changed (typically due to updating), it is necessary to check if its integrity constraints still hold; in the negative case, the database must be repaired.
@@ -18,41 +18,75 @@ AICs express database dependencies through logic programming-style rules that in
 They come with a set of declarative semantics that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair~\cite{tplp/CaropreseT11}.
 These repairs can be computed \longpaper{directly }by means of tree algorithms\longpaper{~\cite{tase/Cruz-FilipeGEN13}, which have been implemented as a prototype~\cite{ic3k/Cruz-FilipeFHLN15}.}\shortpaper{\cite{tase/Cruz-FilipeGEN13,CFHLNS15}.}
 
-\todo{here example real-life? E.G., company database. A constraint that no person can be a member both of the department finance \& accounting and the department human resources. If such a situation occurs, remove membership of HR. 
+\begin{example}
+  We motivate the use of AICs in practice by means of a simple example.
+  Consider a company's database, including tables $\mathrm{employee}$ and $\mathrm{dept}$ (relating employees to the department where they work).
+  In particular, each employee is assigned to a unique department; if a employee is listed as working in two different departments, then the database is inconsistent, and this inconsistency must be fixed by removing one of those entries.
 
-While I was writing this example (thinking about it), I stumbled onto some restrictions of AICs. For instance:
-``No one can have a salary greater thann 100.000. If someone does, cap it to 100.000'' 
-You cannot write this in AICs. } 
-\luis{There are some simple extensions where you can :) unfortunately that paper has been extremely hard to get published :/ we can discuss this.}
-\bart{I'ld love te hear it}
-\luis{Essentially you allow the bodies of rules to use also extra predicates with fixed semantic, like decidable fragments of arithmetic. For the heads, you can disallow actions involving those predicates. Your example then becomes something like:
-\begin{align*}
-\mbox{salary}(X,Y),Y>100000,\neg\mbox{fixSalary}(X) & \aicrule +\mbox{fixSalary}(X) \\
-\mbox{salary}(X,Y),Y>100000,\mbox{fixSalary}(X) & \aicrule -\mbox{salary}(X,Y) \\
-\mbox{fixSalary}(X),\neg\mbox{salary}(X,Y) & \aicrule +\mbox{salary}(X,100000) \\
-\mbox{salary}(X,Y),Y\leq100000,\mbox{fixSalary}(X) & \aicrule -\mbox{fixSalary}(X)
-\end{align*}
-In the third rule, you also use universal quantification on a free variable, which is ok if the variable is a singleton. Nevertheless, the referees of that paper said that the contributions were non-existent, so we're still trying to get it published somewhere :-)
-}
-\bart{About the third rule. Let's be clear: the meaning is: 
-\begin{align*}
- \mbox{fixSalary}(X),(\neg\exists Y:\mbox{salary}(X,Y)) & \aicrule +\mbox{salary}(X,100000) \\
-\end{align*}
-right? 
-I would always make this explicit. Gets confusing otherwise. 
-What your write now is not really what I had in mind. It is very procedural, among others because of the ``temporary'' variable fixsalary. It's not really nice KR. 
-It feels like a workaround. 
-For instance, none of our semantics will work for this kind of example. (because of that fixSalary)
-I would like to be able to write something like this
-\begin{align*}
-\mbox{salary}(X) > 100.000 \aicrule \mbox{salary}(X) = 100.000
-\end{align*}
-I.e/; I especially need functions! 
+  We can write this requirement as the following AIC.
+  \[
+  \mathrm{employee}(x),\mathrm{dept}(x,y),\mathrm{dept}(x,y),y\neq z \aicrule -\mathrm{dept}(x,y)
+  \]
 
-Regarding the reviewers comment, without having read the paper, I would agree that just having predicates with a fixed interpretation is not really a major contribution. 
-This is in a sense already present in the AIC formalism. Predicates that do not occur in rule heads are ``fixed''. Whether or not this fixed interpretation is shared over all databases is not a big deal? 
-Anyway, as I said, I didn't read the unpublished work :p 
-}
+  The intended meaning of this rule is: if all the literals in the lefthandside (body) of the rule are true in some state of the database, for particular values of $x$, $y$ and $z$, then the database is inconsistent, and this inconsistency can be solved by performing the action on the right.
+
+  Suppose that the database is
+  \[DB=\{\mathrm{employee}(\mathrm{john}),\mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{john},{hr})\}\,.\]
+  This database is inconsistent, and applying our AIC with $x=\mathrm{john}$, $y=\mathrm{finance}$ and $z=\mathrm{hr}$ gives us a possible fix consisting of the action ``remove $\mathrm{dept}(\mathrm{john},\mathrm{finance})$''.
+  Observe, however, that the instantiation $x=\mathrm{john}$, $y=\mathrm{hr}$ and $z=\mathrm{finance}$ detects the same inconsistency, but proposes instead the fix ``remove $\mathrm{dept}(\mathrm{john},\mathrm{hr})$'': in general, there can be several different ways to repair inconsistencies.
+
+  AICs may also interact with each other.
+  Suppose that we add the constraint
+  \[\mathrm{supervisor}(x,y),\mathrm{dept}(x,z),\neg\mathrm{dept}(y,z)\aicrule +\mathrm{dept}(y,z)\]
+  stating that employees can only supervise people from their own department, and assumes that the $\mathrm{supervisor}$ table is more reliable than $\mathrm{dept}$.
+  If the database is now
+  \[
+    DB=\{\mathrm{employee}(\mathrm{john}),\mathrm{employee}(\mathrm{ann}),
+    \mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{ann},\mathrm{hr}),
+    \mathrm{supervisor}(\mathrm{ann},\mathrm{john})\}
+  \]
+  then this AIC detects an inconsistency, and suggests that it be fixed by adding the entry $\mathrm{dept}(\mathrm{john},\mathrm{hr})$.
+  The database is still inconsistent, though, since there are now two entries for John in the $\mathrm{dept}$ table; restoring inconsistency would also require removing the entry $\mathrm{dept}(\mathrm{john},\mathrm{finance})$.
+
+  Alternatively, the database could be repaired by instead changing the department information for Ann.
+  The semantics of AICs make it clear that the former solution is preferrable.
+\end{example}
+
+%% \todo{here example real-life? E.G., company database. A constraint that no person can be a member both of the department finance \& accounting and the department human resources. If such a situation occurs, remove membership of HR. 
+
+%% While I was writing this example (thinking about it), I stumbled onto some restrictions of AICs. For instance:
+%% ``No one can have a salary greater thann 100.000. If someone does, cap it to 100.000'' 
+%% You cannot write this in AICs. } 
+%% \luis{There are some simple extensions where you can :) unfortunately that paper has been extremely hard to get published :/ we can discuss this.}
+%% \bart{I'ld love te hear it}
+%% \luis{Essentially you allow the bodies of rules to use also extra predicates with fixed semantic, like decidable fragments of arithmetic. For the heads, you can disallow actions involving those predicates. Your example then becomes something like:
+%% \begin{align*}
+%% \mbox{salary}(X,Y),Y>100000,\neg\mbox{fixSalary}(X) & \aicrule +\mbox{fixSalary}(X) \\
+%% \mbox{salary}(X,Y),Y>100000,\mbox{fixSalary}(X) & \aicrule -\mbox{salary}(X,Y) \\
+%% \mbox{fixSalary}(X),\neg\mbox{salary}(X,Y) & \aicrule +\mbox{salary}(X,100000) \\
+%% \mbox{salary}(X,Y),Y\leq100000,\mbox{fixSalary}(X) & \aicrule -\mbox{fixSalary}(X)
+%% \end{align*}
+%% In the third rule, you also use universal quantification on a free variable, which is ok if the variable is a singleton. Nevertheless, the referees of that paper said that the contributions were non-existent, so we're still trying to get it published somewhere :-)
+%% }
+%% \bart{About the third rule. Let's be clear: the meaning is: 
+%% \begin{align*}
+%%  \mbox{fixSalary}(X),(\neg\exists Y:\mbox{salary}(X,Y)) & \aicrule +\mbox{salary}(X,100000) \\
+%% \end{align*}
+%% right? 
+%% I would always make this explicit. Gets confusing otherwise. 
+%% What your write now is not really what I had in mind. It is very procedural, among others because of the ``temporary'' variable fixsalary. It's not really nice KR. 
+%% It feels like a workaround. 
+%% For instance, none of our semantics will work for this kind of example. (because of that fixSalary)
+%% I would like to be able to write something like this
+%% \begin{align*}
+%% \mbox{salary}(X) > 100.000 \aicrule \mbox{salary}(X) = 100.000
+%% \end{align*}
+%% I.e/; I especially need functions! 
+
+%% Regarding the reviewers comment, without having read the paper, I would agree that just having predicates with a fixed interpretation is not really a major contribution. 
+%% This is in a sense already present in the AIC formalism. Predicates that do not occur in rule heads are ``fixed''. Whether or not this fixed interpretation is shared over all databases is not a big deal? 
+%% Anyway, as I said, I didn't read the unpublished work :p 
+%% }
 
 
 %% Modern databases are often equipped with integrity constraints that specify which are valid states of the database. 
@@ -131,7 +165,7 @@ By integrating active integrity constraints in AFT, we provide solid foundations
 For instance, we can now directly apply existing results from AFT, such as modularity results and predicate introduction results to AICs. 
 It remains to be researched how these related for instance to existing modularity results for AICs \cite{foiks/Cruz-Filipe14,iclp/Cruz-Filipe16}. 
 % Similarly, AFT provides us with predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
-Furthermore, in view of the results from \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming.
+Furthermore, our work also paves the way to applying AFT to revision programming, following the results from \citet{tplp/CaropreseT11}, and to AICs outside the database world, as generalized in \citet{ekaw/Cruz-Filipe16}.
 
 
 % Besides defining a new class of interesting semantics, our work provides solid foundations for transferring a rich body of work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
