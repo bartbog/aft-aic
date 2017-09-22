@@ -208,7 +208,7 @@ We briefly discuss the restrictions of this approach.
 In our translation of AICs to logic programs, namely in Theorem \ref{thm:lplink}, we assume that $\db=\emptyset$ and that the only update actions that occur in heads of rules are positive, i.e., of the form $\add a$. 
 Since all our semantics satisfy the shifting property, the correspondence between the semantics still holds if \db is arbitrary but all actions in rule heads change \db. 
 However, the condition that all actions in heads of rules change \db is essential. We are not aware of a modular way to encode removal of atoms in the heads of logic programming rules. 
-Example \ref{ex:ex:unipolarno} illustrates that this condition is indeed essential. 
+Example \ref{ex:unipolarno} illustrates that this condition is indeed essential. 
 
 Another limitation of our results is that for the reverse translation, we only preserve (partial) stable repairs and the AFT-well-founded repair (cfr Theorem \ref{thm:partialstable-LP}). 
 However, our discussion does highlight where the difference comes from, namely the intuition of inertia. 
