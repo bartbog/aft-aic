@@ -213,11 +213,16 @@ However, the condition that all actions in heads of rules change \db is essentia
 %Example \ref{ex:unipolarno} illustrates that this condition is indeed essential. 
 as illustrated by Example~\ref{ex:unipolarno}.
 
-The more general translation $\mathit{Rew}$ introduced by \citet{iclp/CaropreseGSZ06} applies to AICs with arbitrary actions on their head.
-This translation is significantly more complex than ours, generating a logic program with an extended signature that includes two atoms for each possible update action.
-Furthermore, it is tailored to guarantee a precise correspondence between stable models of logic programs and founded repairs for AICs -- the only semantics that had been developed up to \cite{iclp/CaropreseGSZ06}.
+The translation $\mathit{Rew}$ introduced by \citet{iclp/CaropreseGSZ06}, on the other hand, is at first sight more expressive than ours, as applies to AICs with arbitrary actions on their head.
+In order to deal also with removal actions (in the case of an empty database), the authors are required to consider a logic program with an extended signature that includes two copies of the database and two atoms for each possible update action.
+They can then prove a precise correspondence between stable models of logic programs and founded repairs for AICs -- the only semantics that had been developed up to \cite{iclp/CaropreseGSZ06}.
+
+However, their construction is very directly tailored to founded repairs, and it is not obvious that it can be adapted to AFT semantics.
+In order to capture inertia, the authors duplicate all database atoms, so that every model contains both a copy of the original database and a copy of the repaired database.
+Additional rules ensure that, in each model, the repaired database corresponds exactly to the result of applying the update actions also included in that model to the original database.
+It is easy to construct examples where e.g.~a grounded repair for a set of AICs does not correspond to a grounded model of the corresponding logic program because of the additional interpretations (for the logic program) where the set of update actions and the updated database do not match.
+\luis{I have such an example on paper, but including it implies defining their translation in detail, which I would rather avoid. What do you think?}
 By contrast, the correspondence stated in Theorem~\ref{thm:lplink} holds for all different semantics considered in the current work.
-\luis{I tried to write this in a way that the question ``is there a precise correspondence between semantics using their translation?'' is not the obvious one, but I'm not sure we shouldn't discuss it. I need to look at this more carefully.}
 
 Another limitation of our results is that for the reverse translation, we only preserve (partial) stable repairs and the AFT-well-founded repair (cfr Theorem \ref{thm:partialstable-LP}). 
 However, our discussion does highlight where the difference comes from, namely the intuition of inertia. 
