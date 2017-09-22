@@ -18,39 +18,40 @@ AICs express database dependencies through logic programming-style rules that in
 They come with a set of declarative semantics that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair~\cite{tplp/CaropreseT11}.
 These repairs can be computed \longpaper{directly }by means of tree algorithms\longpaper{~\cite{tase/Cruz-FilipeGEN13}, which have been implemented as a prototype~\cite{ic3k/Cruz-FilipeFHLN15}.}\shortpaper{\cite{tase/Cruz-FilipeGEN13,CFHLNS15}.}
 
-\begin{example}
+\begin{example}\label{ex:intro}
   We motivate the use of AICs in practice by means of a simple example.
   Consider a company's database, including tables $\mathrm{employee}$ and $\mathrm{dept}$ (relating employees to the department where they work).
-  In particular, each employee is assigned to a unique department; if a employee is listed as working in two different departments, then the database is inconsistent, and this inconsistency must be fixed by removing one of those entries.
+  In particular, each employee is assigned to a unique department; if an employee is listed as working in two different departments, then the database is inconsistent, and this inconsistency must be fixed by removing one of those entries.
 
   We can write this requirement as the following AIC.
   \[
-  \mathrm{employee}(x),\mathrm{dept}(x,y),\mathrm{dept}(x,y),y\neq z \aicrule -\mathrm{dept}(x,y)
+  \forall x, y, z: \mathrm{employee}(x),\mathrm{dept}(x,y),\mathrm{dept}(x,z),y\neq z \aicrule -\mathrm{dept}(x,y)
   \]
 
   The intended meaning of this rule is: if all the literals in the lefthandside (body) of the rule are true in some state of the database, for particular values of $x$, $y$ and $z$, then the database is inconsistent, and this inconsistency can be solved by performing the action on the right.
 
   Suppose that the database is
-  \[DB=\{\mathrm{employee}(\mathrm{john}),\mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{john},{hr})\}\,.\]
+  \[\db=\{\mathrm{employee}(\mathrm{john}),\mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{john},{hr})\}\,.\]
   This database is inconsistent, and applying our AIC with $x=\mathrm{john}$, $y=\mathrm{finance}$ and $z=\mathrm{hr}$ gives us a possible fix consisting of the action ``remove $\mathrm{dept}(\mathrm{john},\mathrm{finance})$''.
   Observe, however, that the instantiation $x=\mathrm{john}$, $y=\mathrm{hr}$ and $z=\mathrm{finance}$ detects the same inconsistency, but proposes instead the fix ``remove $\mathrm{dept}(\mathrm{john},\mathrm{hr})$'': in general, there can be several different ways to repair inconsistencies.
 
   AICs may also interact with each other.
   Suppose that we add the constraint
-  \[\mathrm{supervisor}(x,y),\mathrm{dept}(x,z),\neg\mathrm{dept}(y,z)\aicrule +\mathrm{dept}(y,z)\]
-  stating that employees can only supervise people from their own department, and assumes that the $\mathrm{supervisor}$ table is more reliable than $\mathrm{dept}$.
+  \[ \forall x, y, z: \mathrm{supervisor}(x,y),\mathrm{dept}(x,z),\neg\mathrm{dept}(y,z)\aicrule +\mathrm{dept}(y,z)\]
+  stating that employees can only supervise people from their own department, and that whenever this constraint is violated, the department of the supervisee needs to be updated (i.e., the  $\mathrm{supervisor}$ table and the department of the supervisor are deemed correct. 
   If the database is now
   \[
-    DB=\{\mathrm{employee}(\mathrm{john}),\mathrm{employee}(\mathrm{ann}),
+    \db=\{\mathrm{employee}(\mathrm{john}),\mathrm{employee}(\mathrm{ann}),
     \mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{ann},\mathrm{hr}),
     \mathrm{supervisor}(\mathrm{ann},\mathrm{john})\}
   \]
   then this AIC detects an inconsistency, and suggests that it be fixed by adding the entry $\mathrm{dept}(\mathrm{john},\mathrm{hr})$.
   The database is still inconsistent, though, since there are now two entries for John in the $\mathrm{dept}$ table; restoring inconsistency would also require removing the entry $\mathrm{dept}(\mathrm{john},\mathrm{finance})$.
 
-  Alternatively, the database could be repaired by instead changing the department information for Ann.
-  The semantics of AICs make it clear that the former solution is preferrable.
-\end{example}
+  Alternatively, the database could be repaired by instead changing the department information for Ann. 
+%   However, such a repair will be disallowed by the semantics of AICs, as 
+  The semantics of AICs make it clear that the former solution is preferable.
+\end{example}	
 
 %% \todo{here example real-life? E.G., company database. A constraint that no person can be a member both of the department finance \& accounting and the department human resources. If such a situation occurs, remove membership of HR. 
 
@@ -165,7 +166,7 @@ By integrating active integrity constraints in AFT, we provide solid foundations
 For instance, we can now directly apply existing results from AFT, such as modularity results and predicate introduction results to AICs. 
 It remains to be researched how these related for instance to existing modularity results for AICs \cite{foiks/Cruz-Filipe14,iclp/Cruz-Filipe16}. 
 % Similarly, AFT provides us with predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
-Furthermore, our work also paves the way to applying AFT to revision programming, following the results from \citet{tplp/CaropreseT11}, and to AICs outside the database world, as generalized in \citet{ekaw/Cruz-Filipe16}.
+Furthermore, our work paves the way to applying AFT to revision programming, following the results from \citet{tplp/CaropreseT11}, and to AICs outside the database world, as generalized in \citet{ekaw/Cruz-Filipe16}.
 
 
 % Besides defining a new class of interesting semantics, our work provides solid foundations for transferring a rich body of work from the non-monotonic reasoning domain to AICs. For instance, we can now directly apply existing results from AFT, such as modularity results \cite{tocl/VennekensGD06,tocl/BogaertsVD16} or predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
