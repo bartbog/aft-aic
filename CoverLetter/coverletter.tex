@@ -19,7 +19,7 @@ Extensions of the semantics we deﬁne for non-normal AICs can be obtained throu
 Well, I think that the correct way to proceed is to define the semantics for general (non-normal) AICs and
 then to prove that a set of general AICs is equivalent to its normalized version wrt that semantics.
 	 \end{quote}
-         We understand the referee's point. There is a major reason for not doing this, namely that several of the reviewers already raised the point that notation is sometimes heavy. Restricting to the ``normal'' case, is one way to avoid even more notational blow-ups. If the only purpose of defining a semantics for a slightly larger language is showing that it coincides with our semantics for normal AICs, we do not find it worth the trade-off. To us, non-normal AICs are nothing more than syntactic sugar, and hence, are not a topic of semantical consideration. 
+         We understand the referee's point. There is a major reason for not doing this, namely that several of the reviewers already raised the point that notation is sometimes heavy. Restricting to the ``normal'' case is one way to avoid even more notational blow-ups. If the only purpose of defining a semantics for a slightly larger language is showing that it coincides with our semantics for normal AICs, we do not find it worth the trade-off. To us, non-normal AICs are nothing more than syntactic sugar, and hence, are not a topic of semantical consideration. 
 
 
 	 \item There was a general consensus among the reviewers that more examples are needed throughout the paper. We have taken this issue into account and added several examples. More specifically:
@@ -41,7 +41,7 @@ Therefore, ch a = -a.... \end{quote} and
 fact 'a' could be unknown, that is it's not clear whether it belongs to DB or not.
 Well, in this case 'ch a' is not defined!
 \end{quote}
-Both of these comments are explained by the fact that the definition of ch a only depends on the original DB, not on $U(DB)$, hence, if $a\not\in DB$, then  $ch a$ remains equal to $+a$, it never becomes $-a$ or unknown/undefined. 
+Both of these comments are explained by the fact that the definition of ch a only depends on the original DB, not on $U(DB)$, hence, if $a\not\in DB$, then  $ch\ a$ remains equal to $+a$, it never becomes $-a$ or unknown/undefined. 
 	  \item \begin{quote}
 	         Definition 5.2 looks formally wrong. If Z is the set of all possible sets of update actions, it should be a function from Z to Z (and not from $2^{At}$ to $2^{At}$).
 	        \end{quote}
@@ -49,7 +49,7 @@ Both of these comments are explained by the fact that the definition of ch a onl
 	      
 \end{itemize}
 \item There were some general comments regarding the intuitions behind Definition 5.2 and the $\uplus$ operator. We have clarified this, by means of defining three desired properties (inertia, cancellation and completeness) of our operator and then showing that these three properties characterize our operator completely. 
-\item There were some more suggestions for related work. More precisely,  TODO: LUIS, add related work you added :-)
+\item There were some more suggestions for related work, namely regarding a comparison between our translation from AICs to logic programs in Section 7 and a similar translation defined by Caroprese et al. We have added such a comparison at the end of Section 7.
 \item The first reviewer requested to add a discussion on limitations of our translations. We did this at the end of Section 7. 
 	  \end{enumerate}
 % 
