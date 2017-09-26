@@ -201,9 +201,9 @@ For the first one, the KK-repair is $\{\add a\mapsto\lfalse,\add b\mapsto\lfalse
 
 The reason why the equivalence does not hold in the previous example is because rules with $\remove a$ in the head are ignored, while in the context of AICs such rules can make a semantic difference. 
 
-\paragraph{Limitations}
-\todo{Luis, can you give your opinion on this paragraph? I'm not so very convinced myself}
-\luis{I added a new 2nd paragraph}
+\paragraph{Limitations and Related Work}
+% \todo{Luis, can you give your opinion on this paragraph? I'm not so very convinced myself}
+% \luis{I added a new 2nd paragraph}
 In this Section, we studied mappings from sets of active integrity constraints to logic programs and back and how the semantics of the two formalisms relate. 
 We briefly discuss the restrictions of this approach. 
 In our translation of AICs to logic programs, namely in Theorem \ref{thm:lplink}, we assume that $\db=\emptyset$ and that the only update actions that occur in heads of rules are positive, i.e., of the form $\add a$. 
@@ -213,22 +213,23 @@ However, the condition that all actions in heads of rules change \db is essentia
 %Example \ref{ex:unipolarno} illustrates that this condition is indeed essential. 
 as illustrated by Example~\ref{ex:unipolarno}.
 
-The translation $\mathit{Rew}$ introduced by \citet{iclp/CaropreseGSZ06}, on the other hand, is at first sight more expressive than ours, as applies to AICs with arbitrary actions on their head.
+The translation $\mathit{Rew}$ introduced by \citet{iclp/CaropreseGSZ06}, on the other hand, is at first sight more expressive than ours, as it applies to AICs with arbitrary actions on their head.
 In order to deal also with removal actions (in the case of an empty database), the authors are required to consider a logic program with an extended signature that includes two copies of the database and two atoms for each possible update action.
-They can then prove a precise correspondence between stable models of logic programs and founded repairs for AICs -- the only semantics that had been developed up to \cite{iclp/CaropreseGSZ06}.
+They can then prove a precise correspondence between stable models of logic programs and founded repairs for AICs -- the only semantics that had been developed at that point in time. 
+%to \cite{iclp/CaropreseGSZ06}.
 
 However, their construction is very directly tailored to founded repairs, and it is not obvious that it can be adapted to AFT semantics.
 In order to capture inertia, the authors duplicate all database atoms, so that every model contains both a copy of the original database and a copy of the repaired database.
 Additional rules ensure that, in each model, the repaired database corresponds exactly to the result of applying the update actions also included in that model to the original database.
-It is easy to construct examples where e.g.~a grounded repair for a set of AICs does not correspond to a grounded model of the corresponding logic program because of the additional interpretations (for the logic program) where the set of update actions and the updated database do not match.
-\luis{I have such an example on paper, but including it implies defining their translation in detail, which I would rather avoid. What do you think?}
+% It is easy to construct examples where e.g.~a grounded repair for a set of AICs does not correspond to a grounded model of the corresponding logic program because of the additional interpretations (for the logic program) where the set of update actions and the updated database do not match.
+% \luis{I have such an example on paper, but including it implies defining their translation in detail, which I would rather avoid. What do you think?}
 By contrast, the correspondence stated in Theorem~\ref{thm:lplink} holds for all different semantics considered in the current work.
 
 Another limitation of our results is that for the reverse translation, we only preserve (partial) stable repairs and the AFT-well-founded repair (cfr Theorem \ref{thm:partialstable-LP}). 
 However, our discussion does highlight where the difference comes from, namely the intuition of inertia. 
 That is, as shown in the proof of Theorem \ref{thm:partialstable-LP}: for each simple normal logic program $\PP$, the semantics of $\triv(\PP)$ and $\aicop(\PP)$ coincide. 
 
-Furthermore, we restrict our attention to \emph{normal} programs; \citet{tplp/CaropreseT11} discuss this translation without requiring normality. However, as mentioned before, we see non-normal AICs as syntactic sugar for their normalization and hence have no need for non-normal logic programs either. The same applies to the translation $\mathit{Rew}$ from~\cite{iclp/CaropreseGSZ06}.
+Furthermore, we restrict our attention to \emph{normal} programs; \citet{tplp/CaropreseT11} discuss this translation without requiring normality. However, as mentioned before, we see non-normal AICs as syntactic sugar for their normalization and hence have no need for non-normal logic programs either. The same applies to the translation $\mathit{Rew}$ from~\citet{iclp/CaropreseGSZ06}.
 The restriction that our programs are \emph{simple} is rather a technical requirement that simplifies proofs. For several semantics, this is non-essential: for (partial) stable and well-founded semantics, each program can easily be translated into an equivalent simple program.  
 
 
