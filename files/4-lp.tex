@@ -221,7 +221,8 @@ They can then prove a precise correspondence between stable models of logic prog
 However, their construction is very directly tailored to founded repairs, and it is not obvious that it can be adapted to AFT semantics.
 In order to capture inertia, the authors duplicate all database atoms, so that every model contains both a copy of the original database and a copy of the repaired database.
 Additional rules ensure that, in each model, the repaired database corresponds exactly to the result of applying the update actions also included in that model to the original database.
-This technique does not enforce a correspondence of AFT semantics for AICs and for the corresponding logic program.
+It can easily be seen that this mapping does not preserve AFT semantics for AICs. For instance, this technique maps founded repairs (which are not always grounded) to stable models (which are always grounded), hence, it certainly does not preserve grounded repairs. 
+% This technique does not enforce a correspondence of AFT semantics for AICs and for the corresponding logic program.
 % It is easy to construct examples where e.g.~a grounded repair for a set of AICs does not correspond to a grounded model of the corresponding logic program because of the additional interpretations (for the logic program) where the set of update actions and the updated database do not match.
 % \luis{I have such an example on paper, but including it implies defining their translation in detail, which I would rather avoid. What do you think?}
 By contrast, the correspondence stated in Theorem~\ref{thm:lplink} holds for all different semantics considered in the current work.
