@@ -1,0 +1,54 @@
+Comments from the AE handling the paper:
+
+The authors have addressed all points raised in the first round of reviewing to the satisfaction of the referees, and can be accepted.
+----------------------------------------
+
+Reviewer #1: The paper is revised from a previous submission. The main contribution is a fixpoint characterization of existing semantics for AIGs and the definition of new semantics by applying AFT. The most novel aspect of the work is the formulation of partial repairs, which leads to AFT-style well-founded semantics and (partial as well as total) stable semantics. The paper is ready to be published, subject to some small corrections/clarifications.
+
+P2L39: For "changing the department information for Ann", do we need additional rules? If not, how do we do it with the two rules?
+
+P7L26, 27: I don't see any reason to list nup(r7) before nup(r6).
+
+P12L31: "denote the operator L -> L: x \mapto ...".  Here the parameter x has nothing to do with the x in (x,y). To avoid possible confusion, write, e.g., L ->: z \mapto ..."
+
+P12L31: "analogously for A(x,.)_2". The domain of this operator is [x,L], not L. It's better to spell this out.
+
+Footnote 2 on P13: Some mess up in the last sentence.
+
+P15L12: Does default logic allow rules with dual heads? Earlier in the paper, you said that AFT has applied to DL.
+
+P18L16:  "in" and "not in" are exclusive. Need to find a terminology to allow the third truth value. E.g., use "definitely in" and "definitely not in", or "definitely in" and "possibly in", etc.
+
+P18L46: a => \alpha (the a in the middle).
+
+P30L21: "Another topic ... are ..."
+
+
+
+Reviewer #2: I think that this work is interesting and in the current version represents a step forward in the studying
+of Active Integrity Constraints and in general in the database repairing.
+
+In my opinion the authors addressed the main issues of the first version and now the paper can be accepted.
+
+In particular the authors enriched the paper with many other examples and made the notation less heavy.
+
+In general the paper is clearer and offers to the reader a better understanding of the results.
+
+
+
+Reviewer #3: AIJ Review Form
+
+===============
+
+Part B: DETAILED COMMENTS
+
+-------------------------
+
+Please provide a detailed review of the paper here.
+
+Recommendation: ACCEPT
+
+The authors have adequately dealt with my suggestions. I recommend acceptance of the paper in its present form.
+
+
+

@@ -37,7 +37,7 @@ These repairs can be computed \longpaper{directly }by means of tree algorithms\l
 
   AICs may also interact with each other.
   Suppose that we add the constraint
-  \[ \forall x, y, z: \mathrm{supervisor}(x,y),\mathrm{dept}(x,z),\neg\mathrm{dept}(y,z)\aicrule +\mathrm{dept}(y,z)\]
+  \begin{align} \forall x, y, z: \mathrm{supervisor}(x,y),\mathrm{dept}(x,z),\neg\mathrm{dept}(y,z)\aicrule +\mathrm{dept}(y,z)\label{rule:dept}\end{align}
   stating that employees can only supervise people from their own department, and that whenever this constraint is violated, the department of the supervisee needs to be updated (i.e., the  $\mathrm{supervisor}$ table and the department of the supervisor are deemed correct. 
   If the database is now
   \[
@@ -48,9 +48,12 @@ These repairs can be computed \longpaper{directly }by means of tree algorithms\l
   then this AIC detects an inconsistency, and suggests that it be fixed by adding the entry $\mathrm{dept}(\mathrm{john},\mathrm{hr})$.
   The database is still inconsistent, though, since there are now two entries for John in the $\mathrm{dept}$ table; restoring inconsistency would also require removing the entry $\mathrm{dept}(\mathrm{john},\mathrm{finance})$.
 
-  Alternatively, the database could be repaired by instead changing the department information for Ann. 
-%   However, such a repair will be disallowed by the semantics of AICs, as 
-  The semantics of AICs make it clear that the former solution is preferable.
+  An alternative repair of the integrity constraint that the supervisee and supervisor should belong to the same department would be to change the department information of $\mathrm{ann}$. 
+  By using \emph{active} integrity constraints, we discard this solution: the rule \eqref{rule:dept} only allows to insert a new department for the supervisee. 
+  If we additionally also want to allow changing $\mathrm{ann}$'s department, we need an extra constraint. 
+%   Alternatively, the database could be repaired by instead changing the department information for Ann. 
+% %   However, such a repair will be disallowed by the semantics of AICs, as 
+%   The semantics of AICs make it clear that the former solution is preferable.
 \end{example}	
 
 %% \todo{here example real-life? E.G., company database. A constraint that no person can be a member both of the department finance \& accounting and the department human resources. If such a situation occurs, remove membership of HR. 

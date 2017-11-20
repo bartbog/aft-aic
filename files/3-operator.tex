@@ -73,7 +73,7 @@ The intuitive reading of an AIC $r$ naturally suggests an operator over this lat
  Naively adding its head to $\UU$ results in the set $\{\add a,\remove a\}$, which is not an element of $2^\acts$. 
  We expect a semantic operator to map $\UU$ to $\emptyset$ since the rule in \aics indicates that the problems with $\UU(\db)$ can be solved by adding $a$, i.e., by not changing $\db$ at all. 
 \end{example}
-This kind of problems is inherent to the fact that AICs can have rules with dual heads and does not occur in other formalisms where AFT is applied, such as, e.g., logic programming. 
+This kind of problems is inherent to the fact that AICs can have rules with dual heads and does not occur in other formalisms where AFT is applied, such as, e.g., logic programming\footnote{Notice that for instance in default logic, rules with complementary literals in their head are allowed. However, such literals are treated as two independent statements and can be derived separately. In the current setting, an update action $\add p$ can undo the effect of a previously derived action $\remove p$.}. 
 Intuitively, the operator $\Op$ we wish to define should satisfy the following properties:
 \begin{itemize}
  \item \emph{(inertia)} Only change something in the input if there is a rule that warrants this change. 

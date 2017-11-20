@@ -55,7 +55,7 @@ We call $\UUU$ \emph{two-valued} if $\UUU_c = \UUU_p$, i.e., if $\UUU(\alpha)\in
 The truth order $\leqt$ on truth values is defined by $\lfalse\leqt\lunkn\leqt\ltrue; \lfalse \leqt \lincon\leqt \ltrue$. The inverse of a truth value is $\lfalse^{-1}=\ltrue, \ltrue^{-1}=\lfalse, \lunkn^{-1}=\lunkn, \lincon^{-1}=\lincon$.
 
 A (consistent) partial database is a mapping $\tdb: \atoms \to \{\ltrue,\lfalse,\lunkn\}$.
-The intended reading is that $\tdb(a)$ is true if $a$ is in the database, $\tdb(a)$ is false if $a$ is not in the database and $\tdb(a)$ is unknown otherwise. 
+The intended reading is that $\tdb(a)$ is true if $a$ is certainly in the database, $\tdb(a)$ is false if $a$ is certainly not in the database and $\tdb(a)$ is unknown otherwise. 
 
 If $\UUU \in P$ is a consistent partial action set and \db is a (regular) database, then we define $\UUU(\db)$ to be the partial database such that 
 \[ \UUU(\db): a \mapsto \left \{\begin{array}{ll}
@@ -137,7 +137,7 @@ Intuitively, this means that the support of an action $\alpha$ is the highest tr
 \end{figure}
 
 
-Using this notion, we define two additional values. 
+% Using this notion, we define two additional values. 
 % \bart{I REMOVED \suppin and \suppout!!!}
 \renewcommand\suppin{{\color{red}REMOVE}}
 \renewcommand\suppout{{\color{red}REMOVE}}
@@ -228,7 +228,7 @@ Given \db and \aics, we define an operator $\Apfull: P\to P$, such that for each
 % \cline{1-5}
 % 	\end{tabular}
 \begin{itemize}
- \item If $\UUU(\alpha)=\lfalse$, then $\Apfull(\UUU)(a) = \supp_{\UUU(\db),\eta}(\alpha).$
+ \item If $\UUU(\alpha)=\lfalse$, then $\Apfull(\UUU)(\alpha) = \supp_{\UUU(\db),\eta}(\alpha).$
  \item If $\UUU(\alpha)=\ltrue$, then $\Apfull(\UUU)(\alpha) = \supp_{\UUU(\db),\eta}(\alpha^D)^{-1}.$
  \item Otherwise (i.e., if $\UUU(\alpha) = \lunkn$):
   \begin{itemize}

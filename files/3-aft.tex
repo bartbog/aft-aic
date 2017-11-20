@@ -104,7 +104,7 @@ As usual, we often restrict our attention to \emph{symmetric} approximators: app
 AFT studies fixpoints of $O$ using fixpoints of $A$. 
  \begin{itemize}
   \item The \emph{$A$-Kripke-Kleene fixpoint} is the $\leqp$-least fixpoint of $A$, and it approximates all fixpoints of $O$. 
-\item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:x\mapsto A(x,y)_1$ and analogously for $A(x,\cdot)_2$. 
+\item A \emph{partial $A$-stable fixpoint} is a pair  $(x,y)$ such that $x=\lfp(A(\cdot,y)_1)$ and $y=\lfp(A(x,\cdot)_2)$, where $A(\cdot,y)_1$ denotes the operator $L\to L:z\mapsto A(z,y)_1$ and analogously  $A(x,\cdot)_2$ denotes the operator $L\to L:z\mapsto A(x,z)_2$. 
 \item The \emph{$A$-well-founded fixpoint} is the least precise (i.e., the $\leqp$-minimal) partial $A$-stable fixpoint.
 % \luis{maybe define ``least precise''? I'm guessing minimal wrt $\leqp$?}
 \item  An \emph{$A$-stable fixpoint} of $O$ is a fixpoint $x$ of $O$ such that $(x,x)$ is a partial $A$-stable fixpoint. This is equivalent to the condition that $x=\lfp(A(\cdot, x)_1)$.
@@ -172,7 +172,7 @@ For a given approximator $A$, there are many different terminal well-founded ind
 \subsection{Logic Programming and AFT}
 \renewcommand\voc\atoms
 % Let \voc be an alphabet, i.e., a collection of symbols which are called \emph{atoms}. A \emph{literal} is an atom $p$ or the negation $\lnot q$ of an atom $q$.  
-A (normal\footnote{Sometimes, logic programs are defined with disjunctive rules. In the current paper, we only consider \emph{normal} logic programs: logic programs where the head is a single atom. In some propositions, we explicate the fact our programs our normal to emphasize that these results are no longer guaranteed to hold in the more general case.}) logic program $\mathcal{P}$ is a set of \emph{rules} $r$ of the form 
+A (normal\footnote{Sometimes, logic programs are defined with disjunctive rules. In the current paper, we only consider \emph{normal} logic programs: logic programs where the head is a single atom. In some propositions, we explicate the fact our programs are normal to emphasize that these results are not guaranteed to hold in the more general case.}) logic program $\mathcal{P}$ is a set of \emph{rules} $r$ of the form 
 \begin{equation}
  \tag{2}h\lrule l_1\land \dots \land l_n \label{rule:lp}
 \end{equation}
