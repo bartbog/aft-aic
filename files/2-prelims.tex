@@ -6,7 +6,7 @@ This restriction is not essential for defining our semantics, or to any of the t
 A \emph{literal} is an atom $a$ or its negation $\lnot a$. 
 We say that $\lnot a$ is the \emph{dual} literal of $a$ and vice versa, and denote the dual of a literal $l$ by $l^D$. 
 Propositional formulas are defined as usual: atoms are formulas, the negation of a formula is a formula, and the conjunction of formulas is a formula. 
-The satisfaction relation between databases \db and literals is defined as usual: 
+The satisfaction relation between databases \db and formulas is defined as usual: 
 \begin{itemize}
  \item $\db \models a$ if $a\in\db$,
  \item $\db \models \lnot \varphi$ if $\db\not\models \varphi$,
@@ -140,7 +140,7 @@ The following example is due to \citet{tase/Cruz-FilipeGEN13}.
   \end{align}
   Suppose that the database is $\db=\{a,b\}$.
   There are two repairs for $\fulldb$: $\UU_1=\{{-a},{-b}\}$ and $\UU_2=\{{+c}\}$.
-  Intuitively, the rules suggest that $\UU_2$ should be the preferred repair, since it includes the action suggested by the only AICs that is not satisfied, and indeed $\UU_2$ is founded (removing its only element yields $\emptyset$, and as we observed both \ref{rf7} and \ref{rf8} provide support for ${+c}$ given the state of $\db$).
+  Intuitively, the rules suggest that $\UU_2$ should be the preferred repair, since it includes the action suggested by the only AIC that is not satisfied, and indeed $\UU_2$ is founded (removing its only element yields $\emptyset$, and as we observed both \ref{rf7} and \ref{rf8} provide support for ${+c}$ given the state of $\db$).
 
   However, $\UU_1$ is also a founded repair.
   If we remove ${-a}$ from $\UU_1$, we obtain $\UU_1'=\{{-b}\}$, and $\UU_1'(\db)=\{a\}$, where \ref{rf5} is applicable and ${-a}\in\head(\ref{rf5})$.
@@ -223,6 +223,7 @@ A different attempt to resolve the problems of circularity posed by founded repa
 
 
 \begin{definition}[\citenb{tase/Cruz-FilipeGEN13}]
+  \label{defn:wf-repair}
  A (weak) repair \UU for \fulldb is \emph{well-founded} if there exists a sequence of actions $\alpha_1,\dots,\alpha_n$ such that $\UU=\{\alpha_1,\dots,\alpha_n\}$ and, for each $i\in\{1,\dots,n\}$, there is a rule $r_i$ such that $U_{i-1}(\db) \models \body (r_i)$ and $\alpha_i \in \head(r_i)$, where $U_{i-1} = \{\alpha_1,\dots,\alpha_{i-1}\}$.
 \end{definition}
 

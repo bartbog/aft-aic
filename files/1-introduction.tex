@@ -31,7 +31,7 @@ These repairs can be computed \longpaper{directly }by means of tree algorithms\l
   The intended meaning of this rule is: if all the literals in the lefthandside (body) of the rule are true in some state of the database, for particular values of $x$, $y$ and $z$, then the database is inconsistent, and this inconsistency can be solved by performing the action on the right.
 
   Suppose that the database is
-  \[\db=\{\mathrm{employee}(\mathrm{john}),\mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{john},{hr})\}\,.\]
+  \[\db=\{\mathrm{employee}(\mathrm{john}),\mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{john},\mathrm{hr})\}\,.\]
   This database is inconsistent, and applying our AIC with $x=\mathrm{john}$, $y=\mathrm{finance}$ and $z=\mathrm{hr}$ gives us a possible fix consisting of the action ``remove $\mathrm{dept}(\mathrm{john},\mathrm{finance})$''.
   Observe, however, that the instantiation $x=\mathrm{john}$, $y=\mathrm{hr}$ and $z=\mathrm{finance}$ detects the same inconsistency, but proposes instead the fix ``remove $\mathrm{dept}(\mathrm{john},\mathrm{hr})$'': in general, there can be several different ways to repair inconsistencies.
 
@@ -48,8 +48,8 @@ These repairs can be computed \longpaper{directly }by means of tree algorithms\l
   then this AIC detects an inconsistency, and suggests that it be fixed by adding the entry $\mathrm{dept}(\mathrm{john},\mathrm{hr})$.
   The database is still inconsistent, though, since there are now two entries for John in the $\mathrm{dept}$ table; restoring inconsistency would also require removing the entry $\mathrm{dept}(\mathrm{john},\mathrm{finance})$.
 
-  An alternative repair of the integrity constraint that the supervisee and supervisor should belong to the same department would be to change the department information of $\mathrm{ann}$. 
-  By using \emph{active} integrity constraints, we discard this solution: the rule \eqref{rule:dept} only allows to insert a new department for the supervisee. 
+  An alternative repair of the integrity constraint that the supervisee and supervisor should belong to the same department would be to change the department information associated with $\mathrm{ann}$. 
+  By using \emph{active} integrity constraints, we discard this solution: rule \eqref{rule:dept} only allows to insert a new department for the supervisee. 
   If we additionally also want to allow changing $\mathrm{ann}$'s department, we need an extra constraint. 
 %   Alternatively, the database could be repaired by instead changing the department information for Ann. 
 % %   However, such a repair will be disallowed by the semantics of AICs, as 
