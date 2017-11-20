@@ -231,7 +231,10 @@ This result also gives some intuition regarding why founded repairs allow for ci
 %%   Conversely, if $\UU$ can be obtained in the manner described, then it defines a valid path in that same tree ending at a leaf.
 %% \end{proof}
 \begin{proof}
-  Direct consequence of the definitions of $\Op$ and of well-founded repair: writing $U_i=\{\alpha_1,\ldots,\alpha_i\}$ as in Definition~\ref{defn:wf-repair}, the condition $\alpha_i\in\Op(\{\alpha_1,\ldots,\alpha_{i-1}\})$ becomes $\alpha_i\in\Op(U_{i-1})$, which is equivalent to $U_{i-1}(\db)\models\body(r_i)$ and $\alpha_i\in\head(r_i)$ for some rule $r_i\in\eta$.
+This is a direct consequence of the definitions of $\Op$ and of well-founded repair. 
+% For each $i$, let .
+By definition, $\UU$ is well-founded if and only if there exists a ordering  $\alpha_1,\ldots,\alpha_n$ of the elements of\, $\UU$ such that for each $i$, there is a rule $r_i\in\eta$ with $U_{i-1}(\db)\models\body(r_i)$ and $\alpha_i\in\head(r_i)$ (where $U_i$ denotes $\{\alpha_1,\ldots,\alpha_i\}$).
+Now, the condition that there is a rule $r_i\in\eta$ with $U_{i-1}(\db)\models\body(r_i)$ and $\alpha_i\in\head(r_i)$ is equivalent with the condition that $\alpha_i\in \Op(\UU_{i-1})$, from which the result follows. 
 \end{proof}
 
 
