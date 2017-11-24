@@ -47,7 +47,7 @@ Note that a partial action set is characterized completely by the mapping $\acts
 \UUU_p &= \{\alpha \in \acts \mid \UUU(\alpha)\in \{\ltrue,\lunkn\}\}.
 \end{align*}
 We sometimes exploit this correspondence, by not explicating the partial action set itself, but the mapping, as this allows for more compact notation and more elegant definitions. 
-It can be seen that that $\UUU$ is consistent if and only if $\UUU(\alpha) \in \{\ltrue,\lfalse,\lunkn\}$ for all $\alpha$. 
+It can be seen that $\UUU$ is consistent if and only if $\UUU(\alpha) \in \{\ltrue,\lfalse,\lunkn\}$ for all $\alpha$. 
 The intended interpretation of a consistent partial action set is thus that $\UUU(a)$ is true iff $a$ is certainly changed by $\UUU$, it is false iff $a$ is certainly not changed by $\UUU$ and it is unknown if $\UUU$ leaves it open whether or not $a$ is changed. 
 The set of all consistent partial action sets is denoted as $P$. 
 As such, $P$ is exactly the consistent part of the bilattice $(2^{\acts})^2$. 
@@ -296,7 +296,7 @@ First, we show that $\Ap$ is $\leqp$-monotone. To see this, first note that Klee
 
 \end{itemize}
 
-Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $\alpha \in \acts$, we again prove this claim by a case analysis on the definition of of $\Ap(\UU)(\alpha)$. 
+Secondly, we show that on two-valued update sets, $\Op$ and $\Ap$ coincide, i.e., that for all $\UU$, $\Op(\UU) =  \Ap(\UU)$. Take any $\alpha \in \acts$, we again prove this claim by a case analysis on the definition of $\Ap(\UU)(\alpha)$. 
 \begin{itemize}
  \item If $\UU(\alpha)=\lfalse$, then $\Op(\UUU)(\alpha)= \ltrue$ if and only if there is some rule $r\in \eta$ with $\UU(\db) \models \body(r)$ and $\head(r)=\alpha$. 
    Since $\body(r)=\nup(r)\land \litof(\alpha^D)$, we conclude that $\Op(\UU)(\alpha)$ is true if and only if $\supp_{\UU(\db),\eta}(\alpha) = \ltrue$, if and only if $\Ap(\UU)(\alpha)=\ltrue$. 
@@ -318,7 +318,7 @@ Since \Ap is an approximator, it defines a family of semantics for AICs.
  \end{itemize}
 \end{definition}
 
-The terminology in the above definition uses ``repairs'' for certain classes of fixpoints of a semantic operator. It follows easily that  all two-valued update sets that are called ``repair'' in the the above definition, indeed are repairs according to AIC terminology. 
+The terminology in the above definition uses ``repairs'' for certain classes of fixpoints of a semantic operator. It follows easily that  all two-valued update sets that are called ``repair'' in the above definition, indeed are repairs according to AIC terminology. 
 This paper is the first work that studies partial (non-two-valued) repairs. 
 % Indeed, this follows from the fact that 
  
@@ -624,7 +624,7 @@ Take $\alpha\in\acts$ and a set $\VV$ of update actions. It holds that $ \alpha 
 \end{enumerate}
 In the first case, $\alpha \in \VV$, hence $\alpha\in\ext(\VV)$ and $\alpha \in \closure(\ext(\VV))$. 
 If $\supp_{(\VV,\UU)(\db),\aics}(\alpha)=\ltrue$ (i.e., in cases ii and iii), then by Claim 3, $\alpha\in \closure(\ext(\VV))$. Thus, in all cases, $\alpha\in \closure(\ext(\VV))$. 
-Now, since $\UU$ is a repair, $(\UU,\UU)$ is a fixpoint of of $\Ap$. Since $(\VV,\UU)\leqp(\UU,\UU)$, $\alpha \in \Ap(\VV,\UU)_1$ entails $\alpha \in \Ap(\UU,\UU)_1$, i.e., $\alpha \in \UU$. 
+Now, since $\UU$ is a repair, $(\UU,\UU)$ is a fixpoint of $\Ap$. Since $(\VV,\UU)\leqp(\UU,\UU)$, $\alpha \in \Ap(\VV,\UU)_1$ entails $\alpha \in \Ap(\UU,\UU)_1$, i.e., $\alpha \in \UU$. 
 Thus, $\alpha \not \in \neff_\UU(\db)$ and we find that $\alpha \in \closure(\ext(\VV))\setminus  \neff_\UU(\db) = O(\VV)$,  which we needed to prove. \qedhere
 
 
