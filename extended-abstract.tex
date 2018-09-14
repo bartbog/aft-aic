@@ -36,11 +36,13 @@ Lu\'\i s Cruz-Filipe\inst{3}\orcidID{0000-0002-7866-7484} }
 % First names are abbreviated in the running head.
 % If there are more than two authors, 'et al.' is used.
 %
-\institute{KU Leuven, Department of Computer Science, Leuven, Belgium \\
-\email{bart.bogaerts@cs.kuleuven.be} \and
+\institute{KU Leuven, Department of Computer Science, Leuven, Belgium 
+% \\\email{bart.bogaerts@cs.kuleuven.be} 
+\and
 Vrije Universiteit Brussel, Department of Computer Science, Brussels, Belgium \and 
-University of Southern Denmark,  Odense, Denmark   \\
-\email{lcfilipe@gmail.com}}
+University of Southern Denmark,  Odense, Denmark   
+% \\ \email{lcfilipe@gmail.com}
+}
 %
 \maketitle              % typeset the header of the contribution
 % %
@@ -57,60 +59,59 @@ University of Southern Denmark,  Odense, Denmark   \\
 %\todo{RVWR1: Though I can picture how AIGs might be used in practical database management, I still wish to see a motivating example for practical applications.}
 %\bart{We should make a ``real-life''-like example of a database, with AICs or AIGs.}
 
-One of the key components of modern-day databases are integrity constraints: logical formulas that specify semantic relationships between the data being modeled that have to be satisfied at all times.
-When the database is changed (typically due to updating), it is necessary to check if its integrity constraints still hold; in the negative case, the database must be repaired.
+One of the key components of modern-day databases are integrity constraints: logical formulas that specify semantic relationships between the data being modeled.
+When the database is changed (typically due to updating), it is necessary to check if its integrity constraints still hold; if not, the database must be repaired.
 
-The problem of database repair has been an important topic of research for more than thirty years~\cite{icdt/Abiteboul88}.
+The problem of database repair has been an important topic of research for more than thirty years~\cite{icdt/Abiteboul88}. 
 There are two major problems when deciding how to repair an inconsistent database: \emph{finding} possible repairs and \emph{choosing} which one to apply.
 Indeed, there are typically several ways to fix an inconsistent database, and several criteria to choose the ``best'' one have been proposed over the years.
-Among the most widely accepted criteria are minimality of change~\cite{Winslett90,ai/EiterG92} -- change as little as possible -- and the common-sense law of inertia~\cite[discussed in, e.g.,][]{jlp/PrzymusinskiT97} -- do not change anything \longpaper{unless there is a reason for the change.}\shortpaper{without a reason to do it.}
-
-A typical implementation of integrity constraints in database systems is by means of event-condition-action (ECA) rules~\cite{vldb/TenienteO95,mk/WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
-ECA rules are widely used in practice, as they are simple to implement and their individual semantics is easy to understand.
-However, the lack of declarative semantics for ECA rules makes their interaction complex to analyze and their joint behavior hard to understand.
-
-The formalism of \emph{active integrity constraints (AICs)} \cite{ppdp/FlescaGZ04} was inspired by a similar idea.
+% Among the most widely accepted criteria are minimality of change~\cite{Winslett90,ai/EiterG92} -- change as little as possible -- and the common-sense law of inertia~\cite[discussed in, e.g.,][]{jlp/PrzymusinskiT97} -- do not change anything \longpaper{unless there is a reason for the change.}\shortpaper{without a reason to do it.}
+% 
+% A typical implementation of integrity constraints in database systems is by means of event-condition-action (ECA) rules~\cite{vldb/TenienteO95,mk/WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
+% ECA rules are widely used in practice, as they are simple to implement and their individual semantics is easy to understand.
+% However, the lack of declarative semantics for ECA rules makes their interaction complex to analyze and their joint behavior hard to understand.
+The formalism of \emph{active integrity constraints (AICs)} \cite{ppdp/FlescaGZ04} grew out of the idea to give the user more control over how inconsistencies are fixed. 
 AICs express database dependencies through logic programming-style rules that include update actions in their heads.
-They come with a set of declarative semantics that identifies several progressively more restricted classes of repairs, which can be used as criteria to select a preferred repair~\cite{tplp/CaropreseT11}.
-These repairs can be computed \longpaper{directly }by means of tree algorithms\longpaper{~\cite{tase/Cruz-FilipeGEN13}, which have been implemented as a prototype~\cite{ic3k/Cruz-FilipeFHLN15}.}\shortpaper{\cite{tase/Cruz-FilipeGEN13,CFHLNS15}.}
+They have been equipped with various declarative semantics.
+% These repairs can be computed \longpaper{directly }by means of tree algorithms\longpaper{~\cite{tase/Cruz-FilipeGEN13}, which have been implemented as a prototype~\cite{ic3k/Cruz-FilipeFHLN15}.}\shortpaper{\cite{tase/Cruz-FilipeGEN13,CFHLNS15}.}
 
-\begin{example}\label{ex:intro}
-  We motivate the use of AICs in practice by means of a simple example.
-  Consider a company's database, including tables $\mathrm{employee}$ and $\mathrm{dept}$ (relating employees to the department where they work).
-  In particular, each employee is assigned to a unique department; if an employee is listed as working in two different departments, then the database is inconsistent, and this inconsistency must be fixed by removing one of those entries.
-
-  We can write this requirement as the following AIC.
-  \[
-  \forall x, y, z: \mathrm{employee}(x),\mathrm{dept}(x,y),\mathrm{dept}(x,z),y\neq z \aicrule -\mathrm{dept}(x,y)
-  \]
-
-  The intended meaning of this rule is: if all the literals in the lefthandside (body) of the rule are true in some state of the database, for particular values of $x$, $y$ and $z$, then the database is inconsistent, and this inconsistency can be solved by performing the action on the right.
-
-  Suppose that the database is
-  \[\db=\{\mathrm{employee}(\mathrm{john}),\mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{john},\mathrm{hr})\}\,.\]
-  This database is inconsistent, and applying our AIC with $x=\mathrm{john}$, $y=\mathrm{finance}$ and $z=\mathrm{hr}$ gives us a possible fix consisting of the action ``remove $\mathrm{dept}(\mathrm{john},\mathrm{finance})$''.
-  Observe, however, that the instantiation $x=\mathrm{john}$, $y=\mathrm{hr}$ and $z=\mathrm{finance}$ detects the same inconsistency, but proposes instead the fix ``remove $\mathrm{dept}(\mathrm{john},\mathrm{hr})$'': in general, there can be several different ways to repair inconsistencies.
-
-  AICs may also interact with each other.
-  Suppose that we add the constraint
-  \begin{align} \forall x, y, z: \mathrm{supervisor}(x,y),\mathrm{dept}(x,z),\neg\mathrm{dept}(y,z)\aicrule +\mathrm{dept}(y,z)\label{rule:dept}\end{align}
-  stating that employees can only supervise people from their own department, and that whenever this constraint is violated, the department of the supervisee needs to be updated (i.e., the  $\mathrm{supervisor}$ table and the department of the supervisor are deemed correct. 
-  If the database is now
-  \[
-    \db=\{\mathrm{employee}(\mathrm{john}),\mathrm{employee}(\mathrm{ann}),
-    \mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{ann},\mathrm{hr}),
-    \mathrm{supervisor}(\mathrm{ann},\mathrm{john})\}
-  \]
-  then this AIC detects an inconsistency, and suggests that it be fixed by adding the entry $\mathrm{dept}(\mathrm{john},\mathrm{hr})$.
-  The database is still inconsistent, though, since there are now two entries for John in the $\mathrm{dept}$ table; restoring inconsistency would also require removing the entry $\mathrm{dept}(\mathrm{john},\mathrm{finance})$.
-
-  An alternative repair of the integrity constraint that the supervisee and supervisor should belong to the same department would be to change the department information associated with $\mathrm{ann}$. 
-  By using \emph{active} integrity constraints, we discard this solution: rule \eqref{rule:dept} only allows to insert a new department for the supervisee. 
-  If we additionally also want to allow changing $\mathrm{ann}$'s department, we need an extra constraint. 
-%   Alternatively, the database could be repaired by instead changing the department information for Ann. 
-% %   However, such a repair will be disallowed by the semantics of AICs, as 
-%   The semantics of AICs make it clear that the former solution is preferable.
-\end{example}	
+% \begin{example}\label{ex:intro}
+%   We motivate the use of AICs in practice by means of a simple example.
+%   Consider a company's database, including tables $\mathrm{employee}$ and $\mathrm{dept}$ (relating employees to the department where they work).
+%   In particular, each employee is assigned to a unique department; if an employee is listed as working in two different departments, then the database is inconsistent, and this inconsistency must be fixed by removing one of those entries.
+% 
+%   We can write this requirement as the following AIC.
+%   \[
+%   \forall x, y, z: \mathrm{employee}(x),\mathrm{dept}(x,y),\mathrm{dept}(x,z),y\neq z \aicrule -\mathrm{dept}(x,y)
+%   \]
+% 
+%   The intended meaning of this rule is: if all the literals in the lefthandside (body) of the rule are true in some state of the database, for particular values of $x$, $y$ and $z$, then the database is inconsistent, and this inconsistency can be solved by performing the action on the right.
+% 
+%   Suppose that the database is
+%   \[\db=\{\mathrm{employee}(\mathrm{john}),\mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{john},\mathrm{hr})\}\,.\]
+%   This database is inconsistent, and applying our AIC with $x=\mathrm{john}$, $y=\mathrm{finance}$ and $z=\mathrm{hr}$ gives us a possible fix consisting of the action ``remove $\mathrm{dept}(\mathrm{john},\mathrm{finance})$''.
+%   Observe, however, that the instantiation $x=\mathrm{john}$, $y=\mathrm{hr}$ and $z=\mathrm{finance}$ detects the same inconsistency, but proposes instead the fix ``remove $\mathrm{dept}(\mathrm{john},\mathrm{hr})$'': in general, there can be several different ways to repair inconsistencies.
+% 
+%   AICs may also interact with each other.
+%   Suppose that we add the constraint
+%   \begin{align} \forall x, y, z: \mathrm{supervisor}(x,y),\mathrm{dept}(x,z),\neg\mathrm{dept}(y,z)\aicrule +\mathrm{dept}(y,z)\label{rule:dept}\end{align}
+%   stating that employees can only supervise people from their own department, and that whenever this constraint is violated, the department of the supervisee needs to be updated (i.e., the  $\mathrm{supervisor}$ table and the department of the supervisor are deemed correct. 
+%   If the database is now
+%   \[
+%     \db=\{\mathrm{employee}(\mathrm{john}),\mathrm{employee}(\mathrm{ann}),
+%     \mathrm{dept}(\mathrm{john},\mathrm{finance}),\mathrm{dept}(\mathrm{ann},\mathrm{hr}),
+%     \mathrm{supervisor}(\mathrm{ann},\mathrm{john})\}
+%   \]
+%   then this AIC detects an inconsistency, and suggests that it be fixed by adding the entry $\mathrm{dept}(\mathrm{john},\mathrm{hr})$.
+%   The database is still inconsistent, though, since there are now two entries for John in the $\mathrm{dept}$ table; restoring inconsistency would also require removing the entry $\mathrm{dept}(\mathrm{john},\mathrm{finance})$.
+% 
+%   An alternative repair of the integrity constraint that the supervisee and supervisor should belong to the same department would be to change the department information associated with $\mathrm{ann}$. 
+%   By using \emph{active} integrity constraints, we discard this solution: rule \eqref{rule:dept} only allows to insert a new department for the supervisee. 
+%   If we additionally also want to allow changing $\mathrm{ann}$'s department, we need an extra constraint. 
+% %   Alternatively, the database could be repaired by instead changing the department information for Ann. 
+% % %   However, such a repair will be disallowed by the semantics of AICs, as 
+% %   The semantics of AICs make it clear that the former solution is preferable.
+% \end{example}	
 
 %% \todo{here example real-life? E.G., company database. A constraint that no person can be a member both of the department finance \& accounting and the department human resources. If such a situation occurs, remove membership of HR. 
 
@@ -161,14 +162,42 @@ These repairs can be computed \longpaper{directly }by means of tree algorithms\l
 %% lcf: not sure what to include from this list of references
 %% Defining a natural semantics for such AICs has been a topic of intensive research \cite{iclp/CaropreseGSZ06,sebd/MolinaroGC06,iclp/CaropreseTZ07,dasfaa/CaropreseGM07,iclp/CaropreseT08,tkde/CaropreseGZ09,tplp/CaropreseT11,iclp/Cruz-Filipe16}. 
 
-It is striking that many intuitions about what ``good'' repairs are, such as minimality of change, are similar to intuitions that surfaced in other domains of non-monotonic reasoning, such as logic programming \mycite{LP} and default logic \mycite{DL}. 
+It is striking that many intuitions about what ``good'' repairs are, such as the principle of minimality of change, are similar to intuitions that surfaced in various domains of non-monotonic reasoning. %, such as logic programming and default logic . 
 % For instance \todo{minimality} of change \cite{}, ... 
 Still, it has been hard to find satisfying semantics for AICs.
 %\todo{list some problems.}
-As shown by Cruz-Filipe et.\ al. \cite{tase/Cruz-FilipeGEN13}, the semantics of so-called \emph{founded repairs}~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia, while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs in some cases.
-That work proposed the operational semantics of well-founded repairs, which however is not modular~\cite{foiks/Cruz-Filipe14} and is therefore severely restricted in its practical applicability.
+As shown by Cruz-Filipe et al.\ \cite{tase/Cruz-FilipeGEN13}, the semantics of so-called \emph{founded repairs}~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia, while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs in some cases. On the other hand, well-founded repairs are not modular~\cite{foiks/Cruz-Filipe14} and therefore severely restricted in their practical applicability.
 
 % Essentially, fixing similar problems as in other NMR domains... 
+
+In the full version of this paper \mycite{AFT-AIC}, we use techniques that were developed for non-monotonic reasoning to solve the semantic problems of the field of active integrity constraints. 
+More specifically, we develop several novel semantics for AICs that are natural counterparts of existing logic programming semantics using \emph{approximation fixpoint theory}, a general algebraic framework for studying logics with a fixpoint semantics \cite{DeneckerMT00}.
+In a nutshell, given a complete lattice $L$ and an operator $O:L\to L$, Denecker Marek and Truszczynski \cite{DeneckerMT00} defined the notion of an \emph{approximating operator} $A: L^2\to L^2$ on the square bilattice $L^2$. 
+From such an operator and approximator, using purely algebraic techniques, various types of fixpoints are defined (supported, (partial) stable, Kripke-Kleene, well-founded, (partial) grounded). 
+For logic programming, they showed that Fittings four-valued immediate consequence operator $\Phi_\PP$ is an approximator of van Emden-Kowalski's two-valued immediate consequence operator $T_\PP$ and that various types of fixpoints capture the equally named semantics of logic programming.
+AFT has been applied to various other fields, such as non-monotonic reasoning, abstract argumentation and causality. 
+
+In order to bring this rich family of semantics to the field of AICs, we defined a semantic operator and an approximator associated with a set of AICs. Two of the resulting semantics stand out.
+% \emph{Grounded repairs} are natural counterparts to existing semantics in various non-monotonic reasoning domains such as logic programming; we discuss how they relate to other semantics for AICs.
+We also argue that \emph{grounded repairs} match our intuitions regarding AICs on a broad set of examples. 
+% We studied properties of these new semantics. Some of them are existing semantics that are recovered using AFT; some are new, and relevant to the field.
+% We showed that in particular the well-founded semantics induced by AFT and the grounded fixpoint semantics are very much in line with intuitions regarding AICs and satisfy several desirable properties. 
+We argue that, from a practical point of view, the \emph{AFT-style well-founded repair} is very valuable. 
+Indeed, we show that the AFT-well-founded repair can be computed in polynomial time, and that, on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
+
+The contribution of this work goes beyond the definition of new semantics for AICs. 
+By integrating active integrity constraints in AFT, we provide solid foundations for applying a rich algebraic theory to AICs.
+For instance, we can now directly apply existing results from AFT, such as modularity results to AICs. 
+It remains to be researched how these related for instance to existing modularity results for AICs. 
+% Similarly, AFT provides us with predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
+Furthermore, our work paves the way to applying AFT to revision programming \cite{tplp/CaropreseT11}, and to AICs outside the database world \cite{ekaw/Cruz-Filipe16}.
+
+\ignore{
+
+
+This framework was initially developed by Denecker, Marek and Truszczy\'nski, henceforth referred to as DMT (\cite{DeneckerMT00}), after identifying analogies in the semantics of logic programming \mycite{LP}, autoepistemic logic (AEL) \cite{mo85} and default logic, hereafter abbreviated to DL \cite{ai/Reiter80}.
+The theory defines different types of fixpoints for what are called \emph{approximating} operators, or \emph{approximators}.
+
 
 In this work, we begin by defining a new semantics for AICs that avoids these problems: \emph{grounded repairs}.
 Grounded repairs are natural counterparts to existing semantics in various non-monotonic reasoning domains such as logic programming; we discuss how they relate to other semantics for AICs.
@@ -244,20 +273,20 @@ Furthermore, our work paves the way to applying AFT to revision programming, fol
 % Similarly, AFT provides us with predicate introduction results \cite{VennekensMWD07a,VennekensMWD07b}. 
 % In view of the results from \citet{tplp/CaropreseT11}, our work also paves the way to applying AFT to revision programming.
 
-The rest of this paper is structured as follows. In Section \ref{sec:prelims}, we provide preliminaries related to active integrity constraints. 
-In Section \ref{sec:grounded} we discuss the semantics of grounded repairs. While our definitions are motivated from approximation fixpoint theory, their semantics can also be given without this machinery, hence we start with a direct definition. 
-Next, in Section \ref{sec:aft}, we give background on approximation fixpoint theory. 
-In Section \ref{sec:operator}, we define a semantic operator for AICs and show that its grounded fixpoints indeed correspond to grounded repairs, as defined in Section \ref{sec:grounded}.
-Next, we define an approximator of our operator in Section \ref{sec:approximator} and use it to derive more AFT-style semantics for AICs; we study how these semantics relate to existing semantics. 
-Afterwards, in Section \ref{sec:lp}, we discuss the relationship between our newly defined semantics and the equally-named semantics for logic programming. 
-In Section \ref{sec:complexity}, we study complexity of various tasks related to our newly defined semantics. We conclude in Section \ref{sec:concl}.
-
-
-\paragraph{Publication history}
-The semantic operator for grounded AICs and the resulting semantics of grounded repairs were originally proposed by Cruz-Filipe \cite{iclp/Cruz-Filipe16}.
-The approximator for this operator and its properties were introduced by Bogaerts and Cruz-Filipe \cite{ijcai/BogaertsC17}.
-Our current work combines results from those conference papers and extends it with proofs, examples, and a detailed analysis of the connection between the approximation semantics for AICs and logic programming.
-% \luis{anything else?}
+% The rest of this paper is structured as follows. In Section \ref{sec:prelims}, we provide preliminaries related to active integrity constraints. 
+% In Section \ref{sec:grounded} we discuss the semantics of grounded repairs. While our definitions are motivated from approximation fixpoint theory, their semantics can also be given without this machinery, hence we start with a direct definition. 
+% Next, in Section \ref{sec:aft}, we give background on approximation fixpoint theory. 
+% In Section \ref{sec:operator}, we define a semantic operator for AICs and show that its grounded fixpoints indeed correspond to grounded repairs, as defined in Section \ref{sec:grounded}.
+% Next, we define an approximator of our operator in Section \ref{sec:approximator} and use it to derive more AFT-style semantics for AICs; we study how these semantics relate to existing semantics. 
+% Afterwards, in Section \ref{sec:lp}, we discuss the relationship between our newly defined semantics and the equally-named semantics for logic programming. 
+% In Section \ref{sec:complexity}, we study complexity of various tasks related to our newly defined semantics. We conclude in Section \ref{sec:concl}.
+% 
+% 
+% \paragraph{Publication history}
+% The semantic operator for grounded AICs and the resulting semantics of grounded repairs were originally proposed by Cruz-Filipe \cite{iclp/Cruz-Filipe16}.
+% The approximator for this operator and its properties were introduced by Bogaerts and Cruz-Filipe \cite{ijcai/BogaertsC17}.
+% Our current work combines results from those conference papers and extends it with proofs, examples, and a detailed analysis of the connection between the approximation semantics for AICs and logic programming.
+% % \luis{anything else?}
 % \bart{I also added examples}
 
 % To establish this relationship, we define a family of new semantics for AICs with some desirable properties:
@@ -297,6 +326,7 @@ Our current work combines results from those conference papers and extends it wi
 % BibTeX users should specify bibliography style 'splncs04'.
 % References will then be sorted and formatted in the correct style.
 %
+}
 \bibliographystyle{splncs04}
 \bibliography{extra-refs,idp-latex/krrlib.bib}
 %
