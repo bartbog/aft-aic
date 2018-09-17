@@ -172,18 +172,18 @@ As shown by Cruz-Filipe et al.\ \cite{tase/Cruz-FilipeGEN13}, the semantics of s
 
 In the full version of this paper \mycite{AFT-AIC}, we use techniques that were developed for non-monotonic reasoning to solve the semantic problems of the field of active integrity constraints. 
 More specifically, we develop several novel semantics for AICs that are natural counterparts of existing logic programming semantics using \emph{approximation fixpoint theory}, a general algebraic framework for studying logics with a fixpoint semantics \cite{DeneckerMT00}.
-In a nutshell, given a complete lattice $L$ and an operator $O:L\to L$, Denecker Marek and Truszczynski \cite{DeneckerMT00} defined the notion of an \emph{approximating operator} $A: L^2\to L^2$ on the square bilattice $L^2$. 
+In a nutshell, given a complete lattice $L$ and an operator $O:L\to L$, Denecker, Marek, and Truszczynski \cite{DeneckerMT00} defined the notion of an \emph{approximating operator} $A: L^2\to L^2$ on the square bilattice $L^2$. 
 From such an operator and approximator, using purely algebraic techniques, various types of fixpoints are defined (supported, (partial) stable, Kripke-Kleene, well-founded, (partial) grounded). 
-For logic programming, they showed that Fittings four-valued immediate consequence operator $\Phi_\PP$ is an approximator of van Emden-Kowalski's two-valued immediate consequence operator $T_\PP$ and that various types of fixpoints capture the equally named semantics of logic programming.
+For logic programming, Denecker, Marek, and Truszczynski showed that Fittings four-valued immediate consequence operator $\Phi_\PP$ is an approximator of van Emden-Kowalski's two-valued immediate consequence operator $T_\PP$ and that various types of fixpoints capture the equally named semantics of logic programming.
 AFT has been applied to various other fields, such as non-monotonic reasoning, abstract argumentation and causality. 
 
-In order to bring this rich family of semantics to the field of AICs, we defined a semantic operator and an approximator associated with a set of AICs. Two of the resulting semantics stand out.
+In order to bring this rich family of semantics to the field of AICs, we define a semantic operator and an approximator associated with a set of AICs. Two of the resulting semantics stand out.
 % \emph{Grounded repairs} are natural counterparts to existing semantics in various non-monotonic reasoning domains such as logic programming; we discuss how they relate to other semantics for AICs.
 We argue that \emph{grounded repairs} match our intuitions regarding AICs on a broad set of examples. 
 % We studied properties of these new semantics. Some of them are existing semantics that are recovered using AFT; some are new, and relevant to the field.
 % We showed that in particular the well-founded semantics induced by AFT and the grounded fixpoint semantics are very much in line with intuitions regarding AICs and satisfy several desirable properties. 
 We argue that, from a practical point of view, the \emph{AFT-style well-founded repair} is very valuable. 
-Indeed, we show that the AFT-well-founded repair can be computed in polynomial time, and that, on a broad set of practical examples, it corresponds to the intuitions underlying database repairs,  providing natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
+Indeed, we show that the AFT-well-founded repair can be computed in polynomial time, and that, on a broad set of practical examples, it provides natural upper and lower bounds on the set of acceptable repairs (formally: the AFT-style well-founded model approximates all justified, stable and grounded repairs).
 
 The contribution of this work goes beyond the definition of new semantics for AICs. 
 By integrating active integrity constraints in AFT, we provide solid foundations for applying a rich algebraic theory to AICs.
