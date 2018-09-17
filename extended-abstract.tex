@@ -70,7 +70,7 @@ Indeed, there are typically several ways to fix an inconsistent database, and se
 % A typical implementation of integrity constraints in database systems is by means of event-condition-action (ECA) rules~\cite{vldb/TenienteO95,mk/WidomC96}, which specify update actions to be performed when a particular event (a trigger) occurs and specific conditions hold.
 % ECA rules are widely used in practice, as they are simple to implement and their individual semantics is easy to understand.
 % However, the lack of declarative semantics for ECA rules makes their interaction complex to analyze and their joint behavior hard to understand.
-The formalism of \emph{active integrity constraints (AICs)} \cite{ppdp/FlescaGZ04} grew out of the idea to give the user more control over how inconsistencies are fixed. 
+One such approach is the formalism of \emph{active integrity constraints (AICs)} \cite{ppdp/FlescaGZ04}, which grew out of the idea of giving the user more control over how inconsistencies are fixed. 
 AICs express database dependencies through logic programming-style rules that include update actions in their heads.
 They have been equipped with various declarative semantics.
 % These repairs can be computed \longpaper{directly }by means of tree algorithms\longpaper{~\cite{tase/Cruz-FilipeGEN13}, which have been implemented as a prototype~\cite{ic3k/Cruz-FilipeFHLN15}.}\shortpaper{\cite{tase/Cruz-FilipeGEN13,CFHLNS15}.}
@@ -162,11 +162,11 @@ They have been equipped with various declarative semantics.
 %% lcf: not sure what to include from this list of references
 %% Defining a natural semantics for such AICs has been a topic of intensive research \cite{iclp/CaropreseGSZ06,sebd/MolinaroGC06,iclp/CaropreseTZ07,dasfaa/CaropreseGM07,iclp/CaropreseT08,tkde/CaropreseGZ09,tplp/CaropreseT11,iclp/Cruz-Filipe16}. 
 
-It is striking that many intuitions about what ``good'' repairs are, such as the principle of minimality of change, are similar to intuitions that surfaced in various domains of non-monotonic reasoning. %, such as logic programming and default logic . 
+It is striking that many intuitions about what ``good'' repairs are, such as the principle of minimality of change (change as little as possible), are similar to intuitions that surfaced in various domains of non-monotonic reasoning. %, such as logic programming and default logic . 
 % For instance \todo{minimality} of change \cite{}, ... 
 Still, it has been hard to find satisfying semantics for AICs.
 %\todo{list some problems.}
-As shown by Cruz-Filipe et al.\ \cite{tase/Cruz-FilipeGEN13}, the semantics of so-called \emph{founded repairs}~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia, while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs in some cases. On the other hand, well-founded repairs are not modular~\cite{foiks/Cruz-Filipe14} and therefore severely restricted in their practical applicability.
+As shown by Cruz-Filipe et al.\ \cite{tase/Cruz-FilipeGEN13}, the semantics of so-called \emph{founded repairs}~\cite{iclp/CaropreseGSZ06} unexpectedly fails to respect the common-sense law of inertia (all changes must have an underlying reason), while the more restricted semantics of justified repairs~\cite{tplp/CaropreseT11} forbids natural repairs in some cases. On the other hand, well-founded repairs are not modular~\cite{foiks/Cruz-Filipe14} and therefore severely restricted in their practical applicability.
 
 % Essentially, fixing similar problems as in other NMR domains... 
 
@@ -179,7 +179,7 @@ AFT has been applied to various other fields, such as non-monotonic reasoning, a
 
 In order to bring this rich family of semantics to the field of AICs, we defined a semantic operator and an approximator associated with a set of AICs. Two of the resulting semantics stand out.
 % \emph{Grounded repairs} are natural counterparts to existing semantics in various non-monotonic reasoning domains such as logic programming; we discuss how they relate to other semantics for AICs.
-We also argue that \emph{grounded repairs} match our intuitions regarding AICs on a broad set of examples. 
+We argue that \emph{grounded repairs} match our intuitions regarding AICs on a broad set of examples. 
 % We studied properties of these new semantics. Some of them are existing semantics that are recovered using AFT; some are new, and relevant to the field.
 % We showed that in particular the well-founded semantics induced by AFT and the grounded fixpoint semantics are very much in line with intuitions regarding AICs and satisfy several desirable properties. 
 We argue that, from a practical point of view, the \emph{AFT-style well-founded repair} is very valuable. 
@@ -312,12 +312,6 @@ Furthermore, our work paves the way to applying AFT to revision programming, fol
 % \item Following results from \citet{tplp/CaropreseT11}, our work also opens the way to applying AFT to revision programming. 
 % \end{compactitem}
 %  
-
-
-%%% Local Variables: 
-%%% mode: latex
-%%% TeX-master: "../AFT-semantics-AIC"
-%%% End: 
 
 
 %
